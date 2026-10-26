@@ -26,6 +26,12 @@ python src/validate_wins.py            # Layer 2 out-of-sample test
 python src/coaches.py                  # head coach for every game (W-L-aligned)
 python src/coach_effects.py            # Layer 4 v1: coach O/D effects + SEs
 python src/validate_coaches.py         # split-half reliability of coach effects
+python src/archetypes.py               # 8 player types per season
+python src/coach_styles.py             # coach x player-type model, style fingerprints
+python src/coach_cells.py              # flags cells that are really one star
+python src/rotation.py                 # Rotation IQ + Closing IQ
+python src/development.py              # young-player growth by coach
+python src/firings.py                  # mid-season firings: out-of-sample test
 ```
 
 Season labels in files are the START year: `war_2024.csv` = 2024-25.
@@ -125,6 +131,45 @@ shows up mostly on defense.
   effects. A player's prime coinciding with one coach is partly absorbed by the
   experience curve, not fully.
 - Players already active in 1996-97 have unknown true experience (separate curve).
+
+## Layer 4b — Which players, which styles, and is it real?
+
+**Player types** (`data/archetypes.parquet`): k-means on role stats z-scored within
+season. The 8 types: Lead creator, Playmaking guard, Scoring wing, Spot-up shooter,
+Defensive wing, Interior scorer, Frontcourt finisher, Rim runner.
+
+**1. Coach x player type** (`out/coach_archetype.csv`): for each player type, the points
+per 100 a player gains under this coach beyond his own career level. Split-half r =
+0.33-0.47, rising with sample size: real. `coach_cells.py` flags cells that are really
+one star; 462 of 513 well-sampled cells are broad. Strongest broad findings: Thibodeau
+x lead creators +4.2 (8 players), Donovan x lead creators +3.6 (7), Doc Rivers x rim
+runners +3.2 (11), Sloan x lead creators +3.4, D'Antoni x defensive wings +2.6.
+Phil Jackson x lead creators (+5.6) is 84% Kobe: a Kobe finding, not a type finding.
+**Style -> type** (`out/style_effects.csv`): only 5 of 64 trait x type links reach |t| >= 2,
+roughly what chance would produce. Hints: three-heavy offenses get less from interior
+scorers and frontcourt finishers (about -0.5 per SD). Treat as tentative.
+
+**2. Rotation IQ / Closing IQ** (`out/coach_rotation.csv`). Rotation IQ = wins per 82 games
+gained or lost vs league by how each game's minutes were split across the available
+players, judged on coach-free talent, within bigs/perimeter. Closing IQ = how much
+more talent is on the floor in high-leverage possessions. Both are stable: split-half
+r = 0.73 and 0.71. Rotation IQ is not just rotation length (r with depth = -0.03).
+Closing leaders: Kerr, Popovich, Budenholzer, Phil Jackson, Sloan. Caveats: tanking
+seasons (e.g. OKC 2020-23) are front-office choices that score as poor rotation, and
+injuries/DNPs aren't seen.
+
+**3. Development** (`out/coach_development.csv`): NULL result. Same-coach young-player
+growth shows no detectable coach differences (true-effect SD 0.06/100, split-half
+r = 0.09). Season ratings are shrunk toward prior seasons, which damps year-to-year
+change, so this is low power, not proof of absence.
+
+**4. Mid-season firings** (`out/firings.csv`, 76 changes, both coaches 15+ games): with
+those team-seasons held out of the fit, coach effects learned elsewhere predict the
+before/after change: r = 0.30, slope 0.59 (47 changes where both coaches have other
+data; p about 0.04). They do NOT beat a no-effect guess on squared error, so the
+direction is right but individual predictions are noisy. Teams that fire their coach
+were underplaying their talent by 1.4/100 and still were after (-1.4): **no new-coach
+bump** once talent is controlled.
 
 ## Known limits
 

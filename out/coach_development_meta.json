@@ -1,0 +1,15 @@
+{
+ "pairs": 1632,
+ "expected_by_exp": {
+  "e_1": 0.193,
+  "e_2": 0.061,
+  "e_3": 0.289,
+  "e_4": 0.435,
+  "e_5": 0.275,
+  "start": -0.179
+ },
+ "sd_true_coach_effect": 0.06020165553132083,
+ "sd_noise_per_player": 1.6423949909104854,
+ "split_half_r": 0.08752230535300266,
+ "split_half_coaches": 45
+}

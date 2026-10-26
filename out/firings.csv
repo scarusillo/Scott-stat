@@ -1,0 +1,77 @@
+season,team_id,old_coach,new_coach,old,new,old_games,new_games,switch_game,resid_before,resid_after,actual_change,pred_change,new_has_other_data
+1996,1610612753,Brian Hill,Richie Adubato,hill-brian,adubato-richie,49,33,29600743,3.115,5.627,2.512,0.805,False
+1996,1610612758,Garry St. Jean,Eddie Jordan,jean-st-garry,jordan-eddie,67,15,29600973,-2.186,-2.469,-0.283,-1.661,True
+1996,1610612759,Bob Hill,Gregg Popovich,hill-bob,popovich-gregg,18,64,29600271,-2.834,-3.049,-0.215,2.053,True
+1996,1610612763,Brian Winters,Stu Jackson,winters-brian,jackson-stu,43,39,29600600,-9.985,-6.171,3.813,0.000,False
+1997,1610612742,Jim Cleamons,Don Nelson,cleamons-jim,nelson-don,16,66,29700239,-5.635,-0.433,5.202,0.577,True
+1997,1610612761,Darrell Walker,Butch Carter,walker-darrell,carter-butch,49,33,29700707,-9.343,-11.876,-2.533,0.684,True
+1997,1610612765,Doug Collins,Alvin Gentry,collins-doug,gentry-alvin,45,37,29700653,-0.957,-2.083,-1.126,-1.102,True
+1998,1610612751,John Calipari,Don Casey,calipari-john,casey-don,20,30,29800309,-5.959,-1.061,4.898,-0.947,True
+1998,1610612764,Bernie Bickerstaff,Jim Brovelli,bickerstaff-bernie,brovelli-jim,32,18,29800479,3.813,-6.450,-10.263,-2.170,False
+1998,1610612766,Dave Cowens,Paul Silas,cowens-dave,silas-paul,15,35,29800249,-2.951,3.883,6.833,0.017,True
+1999,1610612744,P.J. Carlesimo,Garry St. Jean,carlesimo-j-p,jean-st-garry,27,55,29900395,-5.307,-3.321,1.986,2.978,False
+1999,1610612746,Chris Ford,Jim Todd,ford-chris,todd-jim,45,37,29900667,-5.603,-10.950,-5.347,0.671,False
+1999,1610612756,Danny Ainge,Scott Skiles,ainge-danny,skiles-scott,20,62,29900304,4.649,6.943,2.294,2.488,True
+1999,1610612763,Brian Hill,Lionel Hollins,hill-brian,hollins-lionel,22,60,29900342,-2.643,0.270,2.913,-0.056,True
+1999,1610612764,Gar Heard,Darrell Walker,heard-gar,walker-darrell,44,38,29900612,2.540,4.323,1.783,-2.039,True
+1999,1610612765,Alvin Gentry,George Irvine,gentry-alvin,irvine-george,58,24,29900871,-0.261,6.702,6.964,0.976,True
+2000,1610612738,Rick Pitino,Jim O'Brien,pitino-rick,brien-o-jim,34,48,20000486,-2.010,6.200,8.210,1.239,True
+2000,1610612760,Paul Westphal,Nate McMillan,westphal-paul,mcmillan-nate,15,67,20000207,-2.588,0.591,3.179,0.555,True
+2001,1610612743,Dan Issel,Mike Evans,issel-dan,evans-mike,26,56,20100395,0.072,-1.736,-1.808,-3.475,False
+2001,1610612744,Dave Cowens,Brian Winters,cowens-dave,winters-brian,23,59,20100330,-2.422,-3.059,-0.637,1.482,False
+2001,1610612752,Jeff Van Gundy,Don Chaney,gundy-van-jeff,chaney-don,19,63,20100276,-1.511,-4.101,-2.590,-1.683,True
+2001,1610612756,Scott Skiles,Frank Johnson,skiles-scott,johnson-frank,51,31,20100743,3.279,-2.376,-5.655,-3.499,True
+2002,1610612737,Lon Kruger,Terry Stotts,kruger-lon,stotts-terry,26,56,20200409,2.822,0.436,-2.386,-0.157,True
+2002,1610612739,John Lucas II,Keith Smart,ii-lucas-john,smart-keith,42,40,20200588,-5.058,-3.774,1.285,-1.283,True
+2002,1610612746,Alvin Gentry,Dennis Johnson,gentry-alvin,johnson-dennis,58,24,20200862,-7.330,-5.063,2.267,-0.235,False
+2003,1610612738,Jim O'Brien,John Carroll,brien-o-jim,carroll-john,46,36,20300645,3.476,3.552,0.077,-2.508,False
+2003,1610612751,Byron Scott,Lawrence Frank,scott-byron,frank-lawrence,42,40,20300640,-3.990,-0.041,3.949,0.764,True
+2003,1610612755,Randy Ayers,Chris Ford,ayers-randy,ford-chris,52,30,20300750,1.454,0.223,-1.232,-0.671,True
+2003,1610612756,Frank Johnson,Mike D'Antoni,johnson-frank,antoni-d-mike,21,61,20300308,-2.268,-2.935,-0.667,1.252,True
+2004,1610612739,Paul Silas,Brendan Malone,silas-paul,malone-brendan,64,18,20400990,1.542,-4.570,-6.112,1.465,False
+2004,1610612742,Don Nelson,Avery Johnson,nelson-don,johnson-avery,64,18,20400974,0.890,7.014,6.124,3.824,True
+2004,1610612747,Rudy Tomjanovich,Frank Hamblen,tomjanovich-rudy,hamblen-frank,43,39,20400679,0.283,-5.282,-5.565,-1.294,False
+2004,1610612750,Flip Saunders,Kevin McHale,saunders-flip,mchale-kevin,50,32,20400739,-1.097,0.052,1.149,-0.509,True
+2004,1610612752,Lenny Wilkens,Herb Williams,wilkens-lenny,williams-herb,39,43,20400594,1.430,1.066,-0.365,-0.713,True
+2004,1610612753,Johnny Davis,Chris Jent,davis-johnny,jent-chris,64,18,20400969,-5.794,-8.715,-2.921,1.807,False
+2004,1610612757,Maurice Cheeks,Kevin Pritchard,cheeks-maurice,pritchard-kevin,55,27,20400863,-1.176,-0.421,0.755,0.766,False
+2005,1610612748,Stan Van Gundy,Pat Riley,gundy-van-stan,riley-pat,21,61,20500304,4.302,4.901,0.598,-2.534,True
+2005,1610612760,Bob Weiss,Bob Hill,weiss-bob,hill-bob,30,52,20500453,-3.394,0.774,4.168,-0.878,True
+2006,1610612749,Terry Stotts,Larry Krystkowiak,stotts-terry,krystkowiak-larry,64,18,20600944,-0.792,-5.988,-5.196,-1.782,True
+2006,1610612750,Dwane Casey,Randy Wittman,casey-dwane,wittman-randy,40,42,20600630,3.344,-2.507,-5.850,-0.808,True
+2006,1610612763,Mike Fratello,Tony Barone,fratello-mike,barone-tony,30,52,20600445,5.319,1.098,-4.221,-3.584,False
+2008,1610612750,Randy Wittman,Kevin McHale,wittman-randy,mchale-kevin,19,63,20800307,-2.415,0.230,2.645,1.166,True
+2008,1610612755,Maurice Cheeks,Tony DiLeo,cheeks-maurice,dileo-tony,22,60,20800326,-6.034,-1.450,4.584,0.766,False
+2008,1610612756,Terry Porter,Alvin Gentry,porter-terry,gentry-alvin,51,31,20800795,-4.204,-1.782,2.422,-2.035,True
+2008,1610612758,Reggie Theus,Kenny Natt,theus-reggie,natt-kenny,24,58,20800358,-3.327,-4.862,-1.535,-0.657,False
+2008,1610612761,Sam Mitchell,Jay Triano,mitchell-sam,triano-jay,17,65,20800286,-4.162,-3.833,0.329,-2.316,True
+2009,1610612746,"Mike Dunleavy, Sr.",Kim Hughes,sr-dunleavy-mike,hughes-kim,49,33,20900752,0.634,-7.933,-8.567,0.691,False
+2010,1610612754,Jim O'Brien,Frank Vogel,brien-o-jim,vogel-frank,44,38,21000708,1.070,-0.798,-1.868,-1.733,True
+2010,1610612762,Jerry Sloan,Tyrone Corbin,sloan-jerry,corbin-tyrone,53,29,21000780,-4.537,-8.938,-4.401,-1.403,True
+2010,1610612766,Larry Brown,Paul Silas,brown-larry,silas-paul,28,54,21000445,-1.941,2.292,4.233,-1.477,True
+2011,1610612752,Mike D'Antoni,Mike Woodson,antoni-d-mike,woodson-mike,42,24,21100628,-1.285,6.602,7.888,-0.804,True
+2011,1610612757,Nate McMillan,Kaleb Canales,mcmillan-nate,canales-kaleb,43,23,21100647,0.813,-2.695,-3.509,-1.949,False
+2011,1610612764,Flip Saunders,Randy Wittman,saunders-flip,wittman-randy,17,49,21100258,-3.767,4.788,8.555,-1.674,True
+2012,1610612749,Scott Skiles,Jim Boylan,skiles-scott,boylan-jim,32,50,21200513,1.169,0.505,-0.663,-2.490,True
+2012,1610612751,Avery Johnson,P.J. Carlesimo,johnson-avery,carlesimo-j-p,28,54,21200427,3.340,5.724,2.384,-5.056,True
+2012,1610612756,Alvin Gentry,Lindsey Hunter,gentry-alvin,hunter-lindsey,41,41,21200626,-3.817,-8.511,-4.695,-0.235,False
+2013,1610612765,Maurice Cheeks,John Loyer,cheeks-maurice,loyer-john,50,32,21300751,-1.779,-5.341,-3.563,0.766,False
+2014,1610612743,Brian Shaw,Melvin Hunt,shaw-brian,hunt-melvin,59,23,21400895,-2.677,5.107,7.784,-3.857,False
+2014,1610612753,Jacque Vaughn,James Borrego,vaughn-jacque,borrego-james,52,30,21400748,-3.258,-1.946,1.312,1.915,True
+2014,1610612758,Michael Malone,Tyrone Corbin,malone-michael,corbin-tyrone,24,28,21400368,3.845,-3.900,-7.745,-3.847,True
+2014,1610612758,Tyrone Corbin,George Karl,corbin-tyrone,karl-george,28,30,21400792,-3.900,-2.673,1.227,3.228,True
+2015,1610612739,David Blatt,Tyronn Lue,blatt-david,lue-tyronn,41,41,21500659,1.708,-0.704,-2.412,1.639,True
+2015,1610612751,Lionel Hollins,Tony Brown,hollins-lionel,brown-tony,37,45,21500566,-3.375,-6.375,-3.000,0.861,False
+2015,1610612752,Derek Fisher,Kurt Rambis,fisher-derek,rambis-kurt,54,28,21500785,5.658,3.566,-2.091,1.138,True
+2015,1610612756,Jeff Hornacek,Earl Watson,hornacek-jeff,watson-earl,49,33,21500732,-2.075,-4.486,-2.411,-3.987,True
+2017,1610612749,Jason Kidd,Joe Prunty,kidd-jason,prunty-joe,45,37,21700691,-4.055,-2.973,1.082,1.483,True
+2017,1610612763,David Fizdale,J.B. Bickerstaff,fizdale-david,bickerstaff-b-j,19,63,21700311,-1.620,-3.357,-1.738,-2.292,True
+2018,1610612741,Fred Hoiberg,Jim Boylen,hoiberg-fred,boylen-jim,24,58,21800350,-2.887,-5.099,-2.211,-0.438,True
+2018,1610612750,Tom Thibodeau,Ryan Saunders,thibodeau-tom,saunders-ryan,40,42,21800603,-0.630,0.508,1.138,-1.955,True
+2019,1610612752,David Fizdale,Mike Miller,fizdale-david,miller-mike,22,44,21900331,-5.092,-0.569,4.523,-2.234,False
+2020,1610612737,Lloyd Pierce,Nate McMillan,pierce-lloyd,mcmillan-nate,34,38,22000522,4.587,4.398,-0.189,1.464,True
+2020,1610612750,Ryan Saunders,Chris Finch,saunders-ryan,finch-chris,31,41,22000469,-7.433,-6.726,0.706,0.044,True
+2021,1610612758,Luke Walton,Alvin Gentry,walton-luke,gentry-alvin,17,65,22100262,0.484,-5.361,-5.845,0.786,True
+2023,1610612751,Jacque Vaughn,Kevin Ollie,vaughn-jacque,ollie-kevin,55,27,22300833,-1.681,-1.598,0.083,0.086,False
+2023,1610612764,Wes Unseld Jr.,Brian Keefe,jr-unseld-wes,keefe-brian,43,39,22300665,-5.485,-6.916,-1.431,-0.985,True
+2024,1610612758,Mike Brown,Doug Christie,brown-mike,christie-doug,31,51,22400462,0.267,4.687,4.420,-1.188,False

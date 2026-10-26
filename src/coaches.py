@@ -160,6 +160,7 @@ def main():
             assigned.append(blk)
 
     a = pd.concat(assigned)
+    a["season"] = a.season - 1   # output in the project convention: season START year (2024 = 2024-25)
     out_dir = ROOT / "data" / "coaches"
     out_dir.mkdir(parents=True, exist_ok=True)
     a.to_parquet(out_dir / "coach_games.parquet", index=False)
