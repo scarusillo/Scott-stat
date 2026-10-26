@@ -10,7 +10,7 @@ context he plays in**: coach, teammates, system. Basketball (NBA) first.
 | 1. Impact | How good is he, on offense and defense, independent of team? | **RAPM built and validated (1996-97 → 2024-25)** |
 | 2. Wins | How much did he add to the wins that actually happened? | **WAR + leverage-weighted cWAR built (1996-97 → 2024-25)** |
 | 3. Breakdown | *Why* — scoring, creation, playmaking, turnovers, defense | planned |
-| 4. Context | Coach / teammate / system effects, learned from players who switch teams (AKM-style) | planned |
+| 4. Context | Coach / teammate / system effects, learned from players who switch teams (AKM-style) | **coach effects v1 built; split-half validated** |
 
 ## Pipeline
 
@@ -23,6 +23,9 @@ python src/validate.py 2010 2016 2023  # out-of-sample test
 python src/box.py 1996 2024            # box-score totals from the same play-by-play
 python src/wins.py 1996 2024           # Layer 2: season ratings -> WAR / cWAR
 python src/validate_wins.py            # Layer 2 out-of-sample test
+python src/coaches.py                  # head coach for every game (W-L-aligned)
+python src/coach_effects.py            # Layer 4 v1: coach O/D effects + SEs
+python src/validate_coaches.py         # split-half reliability of coach effects
 ```
 
 Season labels in files are the START year: `war_2024.csv` = 2024-25.
@@ -90,6 +93,38 @@ At about 32 PPG on mediocre teams, the two were the same value (about 8 WAR). Sh
 2024-25 doubling came from his own defense (−0.6 → +3.2) and bigger offensive impact,
 not from his points or his team. Across all 20+ PPG seasons, scoring explains
 only about 15% of the variation in WAR (r = 0.38).
+
+## Layer 4 (v1) — Coaches
+
+**Coach for every game:** `data/coaches/coach_games.parquet`, `out/coach_seasons.csv`.
+Source: every NBA head-coaching tenure (Wikipedia's per-franchise lists, CC BY-SA),
+compiled in `rptetzloff/are-they-sports` (PR #119). That gives W-L per tenure but no
+firing dates, so `coaches.py` places each tenure in the franchise's game sequence with a
+dynamic programme that must reproduce the tenure's W-L from our own results. All
+68,626 team-games are assigned. Of 290 tenures fully inside 1996-2025, 274 match the
+source W-L exactly and all 290 are within one game (mostly COVID 2019-20 games missing
+from the play-by-play). Two source errors were found this way and fixed in
+`CORRECTIONS` (Westphal / Fitzsimmons, PHX 1995-97). Check: `out/coach_check.csv`.
+
+**Coach effects:** `out/coach_effects.csv`. One ridge regression over all 1M stints:
+career-level player O/D + a league experience curve + coach O/D. Players are held at
+their career level, so a coach only gets credit when players beat their own norm under
+him. Players moving between coaches separate the two. λ_coach = 3000 by game-grouped CV.
+
+**Is it real?** Estimated separately on even and odd seasons (no shared possessions),
+coach effects agree: r = 0.42 net (105 coaches with 82+ games in both halves), and
+**defense r = 0.52–0.63 vs offense r = 0.18–0.24**. Coaching is measurable, and it
+shows up mostly on defense.
+
+**Read with care:**
+- Typical SE is ±0.7–1.1 per 100. Only the ends of the table are clearly separated.
+- Coach + long-tenured star (Popovich/Duncan, Kerr/Curry, Sloan/Stockton-Malone) is
+  hard to separate: the shared credit goes mostly to the player. Their ratings here are
+  conservative.
+- "Coach" still contains the front office, the system's assistants, and arena/era
+  effects. A player's prime coinciding with one coach is partly absorbed by the
+  experience curve, not fully.
+- Players already active in 1996-97 have unknown true experience (separate curve).
 
 ## Known limits
 
