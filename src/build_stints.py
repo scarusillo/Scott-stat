@@ -119,8 +119,8 @@ def process_game(gid, g):
         last_miss = None  # (side, is_and_one)
 
         def open_stint(t):
-            return {"pts_H": 0, "pts_A": 0, "poss_H": 0, "poss_A": 0,
-                    "t0": t, "t1": t, "H": sorted(on["H"]), "A": sorted(on["A"]),
+            return {"pts_H": 0, "pts_A": 0, "poss_H": 0, "poss_A": 0, "period": int(period),
+                    "margin0": score_h - score_a, "t0": t, "t1": t, "H": sorted(on["H"]), "A": sorted(on["A"]),
                     "valid": ok and len(on["H"]) == 5 and len(on["A"]) == 5}
 
         def close(c):
@@ -177,7 +177,8 @@ def process_game(gid, g):
     for i, c in enumerate(stints):
         r = {"game_id": int(gid), "stint": i, "home_team": home_team, "away_team": away_team,
              "pts_h": c["pts_H"], "pts_a": c["pts_A"], "poss_h": c["poss_H"], "poss_a": c["poss_A"],
-             "seconds": c["t0"] - c["t1"]}
+             "seconds": c["t0"] - c["t1"], "period": c["period"], "clock0": c["t0"],
+             "margin0": c["margin0"], "final_margin": score_h - score_a}
         for j, p in enumerate(c["H"]):
             r[f"h{j}"] = p
         for j, p in enumerate(c["A"]):
