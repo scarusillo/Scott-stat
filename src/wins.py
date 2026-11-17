@@ -93,11 +93,24 @@ def season_ratings(year):
         if nw.sum() > 0 and prior is not None:
             newO = np.average(beta[:p][~known], weights=nw)
             newD = np.average(beta[p:2 * p][~known], weights=nw)
-    return s, pl, ids, idx, beta, mu
+    # standard errors (ridge sandwich): Var(y_i) ~ sigma2 / w_i
+    XtW = X.T.multiply(w).tocsr()
+    G = (XtW @ X).toarray()
+    M = G.copy()
+    pen = np.full(G.shape[0], float(LAM))
+    pen[-1] = 1e-6
+    M[np.diag_indices_from(M)] += pen
+    Minv = np.linalg.inv(M)
+    resid = (y - mu) - X @ beta
+    sigma2 = np.sum(w * resid ** 2) / len(y)
+    cov = Minv @ G @ Minv * sigma2
+    se_O, se_D = np.sqrt(np.diag(cov)[:p]), np.sqrt(np.diag(cov)[p:2 * p])
+    se_net = np.sqrt(np.diag(cov)[:p] + np.diag(cov)[p:2 * p] + 2 * np.diag(cov[:p, p:2 * p]))
+    return s, pl, ids, idx, beta, mu, (se_O, se_D, se_net)
 
 
 def run(year, wpm):
-    s, pl, ids, idx, beta, mu = season_ratings(year)
+    s, pl, ids, idx, beta, mu, ses = season_ratings(year)
     p = len(ids)
     O, D = beta[:p], beta[p:2 * p]
     lev = leverage(s, wpm)
@@ -116,7 +129,8 @@ def run(year, wpm):
     pp = pt.groupby("player_id")[["off", "def", "off_lev", "def_lev"]].sum()
     main_team = pt.sort_values("off").groupby("player_id").team_id.last()
 
-    r = pd.DataFrame({"player_id": ids, "O": O, "D": D}).set_index("player_id").join(pp)
+    r = pd.DataFrame({"player_id": ids, "O": O, "D": D, "se_O": ses[0], "se_D": ses[1],
+                      "se_net": ses[2]}).set_index("player_id").join(pp)
     r["team_id"] = main_team
     r["poss"] = (r.off + r["def"]) / 2
     # O and D levels are each unidentified (a constant shift is absorbed by the
@@ -172,7 +186,7 @@ def run(year, wpm):
             "team_margin_r": float(np.corrcoef(team.margin, team.pred_margin)[0, 1]),
             "league_war": float(r.WAR.sum()), "league_wins": float(team.wins.sum())}
     cols = ["season", "player_id", "name", "team_id", "team_wins", "team_games", "games", "ppg", "ts",
-            "O", "D", "net", "poss", "leverage", "WAR", "cWAR", "pts", "ast", "reb", "tov"]
+            "O", "D", "net", "se_O", "se_D", "se_net", "poss", "leverage", "WAR", "cWAR", "pts", "ast", "reb", "tov"]
     r[cols].to_csv(OUT / f"war_{year}.csv", index=False, float_format="%.3f")
     return meta
 

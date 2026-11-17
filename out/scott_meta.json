@@ -1,0 +1,6 @@
+{
+ "clutch_weight": 0.12047146177860056,
+ "clutch_possession_share": 0.040183025602694024,
+ "min_season_poss": 1000,
+ "formula": "scott_stat = impact + clutch_weight*clutch_rise + playoff_share*playoff_elevation"
+}

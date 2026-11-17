@@ -1,0 +1,367 @@
+<title>The Scott Stat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: a scorer's-table app. Sticky nav, one view at a time, tables and per-player pages. */
+:root {
+  --bg: #f4f6f8; --surface: #ffffff; --ink: #131b26; --muted: #5a6677; --line: #dce2ea;
+  --accent: #c2410c; --off: #c2410c; --def: #1d5fd1; --good: #157f3b; --bad: #b42318; --band: rgba(194,65,12,.12);
+  --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e131a; --surface: #151c26; --ink: #e7ecf2; --muted: #95a1b2; --line: #263142;
+  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --band: rgba(251,122,53,.16); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e131a; --surface: #151c26; --ink: #e7ecf2; --muted: #95a1b2; --line: #263142;
+  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --band: rgba(251,122,53,.16); color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+a { color: inherit }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; gap: 20px; padding-block: 10px; flex-wrap: wrap; }
+.brand { font: 700 26px/1 var(--display); letter-spacing: .02em; text-transform: uppercase; text-decoration: none; }
+.brand span { color: var(--accent) }
+nav { display: flex; gap: 4px; flex-wrap: wrap; }
+nav a { text-decoration: none; padding: 6px 10px; border-radius: 6px; color: var(--muted); font-weight: 500; font-size: 14px; }
+nav a.on, nav a:hover { color: var(--ink); background: var(--bg); }
+nav a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, tr[tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main { padding-block: 28px 64px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.05; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(34px, 6vw, 56px); text-transform: uppercase; letter-spacing: .01em; }
+h2 { font-size: 28px; text-transform: uppercase; letter-spacing: .02em; }
+h3 { font-size: 20px; letter-spacing: .02em; text-transform: uppercase; }
+.lede { max-width: 66ch; color: var(--muted); font-size: 16px; margin: 10px 0 0; }
+.stack { display: grid; gap: 24px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; min-width: 0; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+.num { font-variant-numeric: tabular-nums; }
+.pos { color: var(--good) } .neg { color: var(--bad) }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.controls label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+select, input[type=search], button { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; background: transparent; padding: 7px 12px; cursor: pointer; color: var(--muted); font-weight: 500; }
+.seg button.on { background: var(--ink); color: var(--surface); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+th.l, td.l { text-align: left }
+tbody tr { cursor: pointer } tbody tr:hover { background: var(--bg) }
+td.rank { color: var(--muted); width: 1% }
+.pm { color: var(--muted); font-size: 12px; margin-left: 3px }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.tile { border-top: 3px solid var(--line); padding-top: 8px; }
+.tile.o { border-color: var(--off) } .tile.d { border-color: var(--def) } .tile.a { border-color: var(--accent) }
+.tile b { display: block; font: 600 32px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.tile small { color: var(--muted); font-size: 12px; display: block; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: end; }
+.big { font: 700 clamp(64px, 12vw, 104px)/.9 var(--display); font-variant-numeric: tabular-nums; color: var(--accent); }
+.big small { font-size: 28px; color: var(--muted); font-weight: 500; }
+.split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 760px) { .split, .hero { grid-template-columns: 1fr } }
+.barline { display: grid; grid-template-columns: 120px minmax(0, 1fr) 56px; gap: 10px; align-items: center; font-size: 13px; }
+.track { position: relative; height: 12px; background: var(--bg); border-radius: 3px; }
+.track .zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--muted); }
+.track .fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap }
+.chip { font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+.note { font-size: 13px; color: var(--muted); max-width: 72ch; }
+.prose { max-width: 70ch } .prose p { margin: 0 0 12px } .prose li { margin-bottom: 6px }
+.cols2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+svg text { fill: var(--muted); font: 11px var(--body); }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); padding: 6px 8px; border-radius: 6px; font-size: 12px; z-index: 20; }
+.flag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 1px 6px; border-radius: 4px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+@media (prefers-reduced-motion: no-preference) { .fade { animation: fade .25s ease-out } @keyframes fade { from { opacity: .4 } to { opacity: 1 } } }
+</style>
+
+<header><div class="wrap bar">
+  <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
+  <nav id="nav">
+    <a href="#leaders">Leaderboard</a><a href="#compare">Compare</a><a href="#coaches">Coaches</a>
+    <a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
+  </nav>
+</div></header>
+<main class="wrap" id="app"><p class="note">Loading the Scott Stat…</p></main>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const f = (x, d = 1, sign = true) => x == null ? "–" : (sign && x > 0 ? "+" : "") + x.toFixed(d);
+const cls = x => x == null ? "" : x > 0.05 ? "pos" : x < -0.05 ? "neg" : "";
+const yr = y => `${y}-${String((y + 1) % 100).padStart(2, "0")}`;
+let D = null;
+const state = { tier: "plus", sort: "scott", q: "", minPoss: 30000, csort: "net", fseason: null, ftype: "", a: null, b: null };
+try { Object.assign(state, JSON.parse(localStorage.getItem("scott-ui") || "{}")); } catch (e) {}
+const save = () => { try { localStorage.setItem("scott-ui", JSON.stringify(state)); } catch (e) {} };
+
+fetch("data.json").then(r => r.json()).then(d => { D = d; D.byId = new Map(D.players.map(p => [String(p.id), p]));
+  D.cById = new Map(D.classic.map(p => [p.id, p])); route(); })
+  .catch(() => { $("#app").innerHTML = `<p class="note">The data file didn't load. Reload the page to try again.</p>`; });
+addEventListener("hashchange", route);
+
+function route() {
+  const h = location.hash.slice(1) || "leaders";
+  document.querySelectorAll("#nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + h.split("-")[0] ||
+    (h.startsWith("player") || h.startsWith("legend")) && a.getAttribute("href") === "#leaders"));
+  const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
+  if (h.startsWith("player-")) return playerView(h.slice(7));
+  if (h.startsWith("legend-")) return classicView(h.slice(7));
+  ({ leaders, compare, coaches, finder, method, launch }[h] || leaders)();
+  scrollTo(0, 0);
+}
+
+/* ---------- leaderboard ---------- */
+function leaders() {
+  const plus = state.tier === "plus";
+  const sorts = plus ? [["scott", "Scott Stat"], ["peak5", "Peak (best 5)"], ["war", "Career wins"], ["lift", "Lift"],
+    ["def", "Defense"], ["clutch", "Clutch rise"], ["po", "Playoff rise"]] :
+    [["best5", "Peak (best 5)"], ["impact", "Career impact"], ["war", "Career wins"], ["lift", "Lift"], ["def", "Defense"]];
+  if (!sorts.some(s => s[0] === state.sort)) state.sort = sorts[0][0];
+  const rows = (plus ? D.players : D.classic).filter(p => (p.poss ?? 1e9) >= state.minPoss || !plus)
+    .filter(p => !state.q || p.name.toLowerCase().includes(state.q.toLowerCase()))
+    .filter(p => plus || p.seasons >= 6)
+    .slice().sort((a, b) => (b[state.sort] ?? -99) - (a[state.sort] ?? -99)).slice(0, 150);
+  $("#app").innerHTML = `
+  <div class="stack">
+    <div><div class="eyebrow">${plus ? "Play-by-play tier · 1996-97 to 2024-25" : "Classic tier · 1977-78 to 2024-25 · box score + team results"}</div>
+      <h1>Who makes a team better</h1>
+      <p class="lede">${plus ? "Points per 100 possessions a player adds over an average player, measured from every lineup on the floor, then adjusted for clutch and playoff performance. +5 is All-NBA. +7 is MVP level."
+        : "The same scale estimated for every season since 1977-78, so Jordan, Magic and Bird sit next to LeBron, Curry and Jokić. Less precise than Plus: a single season can be off by about ±1.8."}</p></div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Tier">
+        <button id="t-plus" class="${plus ? "on" : ""}">Plus</button><button id="t-classic" class="${plus ? "" : "on"}">Classic (all eras)</button></div>
+      <label for="sort">Rank by<select id="sort">${sorts.map(([k, l]) => `<option value="${k}" ${k === state.sort ? "selected" : ""}>${l}</option>`).join("")}</select></label>
+      ${plus ? `<label for="minp">Career length<select id="minp">${[[12000, "Any"], [30000, "4+ seasons"], [60000, "8+ seasons"]].map(([v, l]) =>
+        `<option value="${v}" ${v == state.minPoss ? "selected" : ""}>${l}</option>`).join("")}</select></label>` : ""}
+      <label for="q">Find a player<input id="q" type="search" placeholder="Name" value="${esc(state.q)}"></label>
+    </div>
+    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Years</th>
+      ${plus ? `<th>Scott Stat</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Clutch</th><th>Playoffs</th><th>Peak 5</th><th>Wins</th>`
+        : `<th>Peak 5</th><th>Career</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Best season</th><th>Wins</th>`}
+    </tr></thead><tbody>${rows.map((p, i) => plus ? `<tr tabindex="0" data-go="#player-${p.id}">
+      <td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td>
+      <td class="num"><b>${f(p.scott, 2)}</b><span class="pm">±${f(p.se, 1, false)}</span></td>
+      <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td>
+      <td class="num">${f(p.prod)}</td><td class="num ${cls(p.lift)}">${f(p.lift)}</td>
+      <td class="num ${cls(p.clutch)}">${f(p.clutch)}</td><td class="num ${cls(p.po)}">${f(p.po)}</td>
+      <td class="num">${f(p.peak5)}</td><td class="num">${f(p.war, 0, false)}</td></tr>`
+      : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td>
+      <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.impact)}</td>
+      <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td><td class="num">${f(p.prod)}</td>
+      <td class="num ${cls(p.lift)}">${f(p.lift)}</td><td class="num">${f(p.best)} <span class="pm">${p.best_year}</span></td><td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="note">${plus ? `Scott Stat = all-game impact + ${(D.meta.clutch_weight * 100).toFixed(0)}% of the clutch rise (clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of possessions but ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games) + the playoff rise weighted by the player's share of playoff possessions. Production = what his own box score explains. Lift = the rest: teammates playing better and the team defending better while he's on the floor. ± is one standard error.`
+      : `Classic ranks by the best five consecutive seasons. Players whose careers began before 1977-78 show only their later seasons.`}</p>
+  </div>`;
+  $("#t-plus").onclick = () => { state.tier = "plus"; save(); leaders(); };
+  $("#t-classic").onclick = () => { state.tier = "classic"; save(); leaders(); };
+  $("#sort").onchange = e => { state.sort = e.target.value; save(); leaders(); };
+  if ($("#minp")) $("#minp").onchange = e => { state.minPoss = +e.target.value; save(); leaders(); };
+  $("#q").oninput = e => { state.q = e.target.value; const pos = e.target.selectionStart; leaders(); const q = $("#q"); q.focus(); q.setSelectionRange(pos, pos); };
+  bindRows();
+}
+function bindRows() { document.querySelectorAll("tr[data-go]").forEach(tr => { tr.onclick = () => location.hash = tr.dataset.go;
+  tr.onkeydown = e => { if (e.key === "Enter") location.hash = tr.dataset.go; }; }); }
+
+/* ---------- charts ---------- */
+function seasonChart(seasons, opts = {}) {
+  // seasons: [{season, net, se, team, extra}]
+  if (!seasons.length) return "";
+  const W = 720, Hh = 230, m = { l: 36, r: 12, t: 12, b: 26 };
+  const xs = seasons.map(s => s.season), lo = Math.min(...xs), hi = Math.max(...xs);
+  const vals = seasons.flatMap(s => [s.net - (s.se || 0), s.net + (s.se || 0), s.plus ?? s.net]);
+  let ymin = Math.min(-2, Math.floor(Math.min(...vals))), ymax = Math.max(6, Math.ceil(Math.max(...vals)));
+  const X = v => m.l + (hi === lo ? 0.5 : (v - lo) / (hi - lo)) * (W - m.l - m.r);
+  const Y = v => m.t + (ymax - v) / (ymax - ymin) * (Hh - m.t - m.b);
+  const ticks = []; for (let v = Math.ceil(ymin / 2) * 2; v <= ymax; v += 2) ticks.push(v);
+  const band = seasons.filter(s => s.se != null);
+  const area = band.length > 1 ? `<path d="M${band.map(s => `${X(s.season)},${Y(s.net + s.se)}`).join("L")}L${band.slice().reverse().map(s => `${X(s.season)},${Y(s.net - s.se)}`).join("L")}Z" fill="var(--band)" stroke="none"/>` : "";
+  const line = `<path d="M${seasons.map(s => `${X(s.season)},${Y(s.net)}`).join("L")}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
+  const plusLine = opts.plus ? `<path d="M${seasons.filter(s => s.plus != null).map(s => `${X(s.season)},${Y(s.plus)}`).join("L")}" fill="none" stroke="var(--def)" stroke-width="2" stroke-dasharray="4 3"/>` : "";
+  const xt = []; const step = Math.max(1, Math.ceil((hi - lo) / 8)); for (let v = lo; v <= hi; v += step) xt.push(v);
+  return `<div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:420px" role="img" aria-label="Impact by season">
+    ${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" + t : t}</text>`).join("")}
+    ${xt.map(v => `<text x="${X(v)}" y="${Hh - 6}" text-anchor="middle">${String(v).slice(2)}-${String((v + 1) % 100).padStart(2, "0")}</text>`).join("")}
+    ${area}${plusLine}${line}
+    ${seasons.map(s => `<circle cx="${X(s.season)}" cy="${Y(s.net)}" r="4" fill="var(--surface)" stroke="var(--accent)" stroke-width="2" data-tip="${esc(`${yr(s.season)} ${s.team || ""}: ${f(s.net)}${s.se != null ? " ±" + s.se.toFixed(1) : ""}${s.plus != null ? " · Plus " + f(s.plus) : ""}${s.extra || ""}`)}"/>`).join("")}
+  </svg></div>`;
+}
+function hbar(label, v, max, color, se) {
+  const w = Math.min(50, Math.abs(v ?? 0) / max * 50);
+  return `<div class="barline"><span>${label}</span><div class="track"><div class="zero"></div>
+    <div class="fill" style="background:${color};${(v ?? 0) >= 0 ? `left:50%;width:${w}%` : `left:${50 - w}%;width:${w}%`}"></div></div>
+    <span class="num ${cls(v)}" style="text-align:right">${f(v)}${se ? `<span class="pm">±${se.toFixed(1)}</span>` : ""}</span></div>`;
+}
+document.addEventListener("mousemove", e => { const t = e.target.closest?.("[data-tip]"); const tip = $("#tip");
+  if (t) { tip.textContent = t.dataset.tip; tip.hidden = false; tip.style.left = Math.min(e.clientX + 12, innerWidth - 240) + "px"; tip.style.top = (e.clientY + 12) + "px"; }
+  else tip.hidden = true; });
+
+/* ---------- player page (Plus) ---------- */
+function explain(p) {
+  const parts = [];
+  const big = (p.off ?? 0) >= (p.def ?? 0) ? "offense" : "defense";
+  parts.push(`${esc(p.name)} adds ${f(p.impact)} points per 100 possessions over an average player, mostly on ${big} (offense ${f(p.off)}, defense ${f(p.def)}).`);
+  if (p.lift != null) parts.push(p.lift > 1 ? `About ${f(p.lift, 1, false)} of it doesn't show up in his own stats: his teammates play better and his team defends better while he's out there. That's lift.`
+    : p.lift < -1 ? `His own stats overstate him by ${f(-p.lift, 1, false)}: his team does worse than his box score suggests when he plays. A production-first player.`
+    : `His impact lines up with his own stats: what you see in the box score is about what the team gets.`);
+  if (p.clutch != null && p.clutch_se) parts.push(Math.abs(p.clutch) > 1.5 * p.clutch_se ? `In the clutch he plays ${p.clutch > 0 ? "better" : "worse"} than his usual self (${f(p.clutch)} ±${p.clutch_se.toFixed(1)}), one of the few clear clutch signals in the data.`
+    : `His clutch number (${f(p.clutch)} ±${p.clutch_se.toFixed(1)}) is within noise; for most players clutch isn't a separate skill.`);
+  if (p.po != null && p.po_se) parts.push(Math.abs(p.po) > 1.5 * p.po_se ? `In the playoffs he plays ${p.po > 0 ? "above" : "below"} his regular-season level (${f(p.po)}).` : "");
+  return parts.filter(Boolean).join(" ");
+}
+function playerView(id) {
+  const p = D.byId.get(id); if (!p) return leaders();
+  const rank = D.players.filter(q => q.poss >= 30000).sort((a, b) => b.scott - a.scott).findIndex(q => q.id === p.id) + 1;
+  const ss = p.s.map(s => ({ season: s[0], team: s[1], net: s[2], se: s[3], extra: s[9] != null ? ` · ${s[9]} ppg` : "" }));
+  const pairs = D.pairs.filter(x => x[0] === p.id).sort((a, b) => a[2] - b[2]);
+  const max = 6;
+  $("#app").innerHTML = `<div class="stack">
+    <a href="#leaders" class="note">← Leaderboard</a>
+    <div class="hero"><div><div class="eyebrow">${p.first}-${String(p.last + 1).slice(2)} · ${p.seasons} seasons · ${esc(p.type || "")}${rank ? ` · #${rank} career Scott Stat (4+ seasons)` : ""}</div>
+      <h1>${esc(p.name)}</h1><p class="lede">${explain(p)}</p></div>
+      <div style="text-align:right"><div class="eyebrow">Scott Stat</div><div class="big">${f(p.scott, 1)}<small> ±${f(p.se, 1, false)}</small></div></div></div>
+    <div class="tiles">
+      <div class="tile o"><small>Offense</small><b class="${cls(p.off)}">${f(p.off)}</b><small>per 100 possessions</small></div>
+      <div class="tile d"><small>Defense</small><b class="${cls(p.def)}">${f(p.def)}</b><small>points prevented per 100</small></div>
+      <div class="tile"><small>Own production</small><b>${f(p.prod)}</b><small>what his box score explains</small></div>
+      <div class="tile a"><small>Lift</small><b class="${cls(p.lift)}">${f(p.lift)}</b><small>impact beyond his own stats</small></div>
+      <div class="tile"><small>Peak (best 5)</small><b>${f(p.peak5)}</b><small>${p.best5_years || "–"}</small></div>
+      <div class="tile"><small>Career wins added</small><b>${f(p.war, 0, false)}</b><small>crunch-weighted ${f(p.cwar, 0, false)}</small></div>
+    </div>
+    <div class="split">
+      <div class="panel"><h3>Impact by season</h3><p class="note">Points per 100 possessions over average, luck-adjusted. Shaded band = ±1 standard error.</p>${seasonChart(ss)}</div>
+      <div class="panel stack" style="gap:12px"><h3>What makes up the number</h3>
+        ${hbar("Offense", p.off, max, "var(--off)")}${hbar("Defense", p.def, max, "var(--def)")}
+        ${hbar("Production", p.prod, max, "var(--muted)")}${hbar("Lift", p.lift, max, "var(--accent)")}
+        ${hbar("Clutch rise", p.clutch, 3, "var(--accent)", p.clutch_se)}${hbar("Playoff rise", p.po, 3, "var(--accent)", p.po_se)}
+        <p class="note">Clutch counts ${(D.meta.clutch_weight * 100).toFixed(0)}% toward the Scott Stat; the playoff rise counts by his playoff share of possessions (${((p.po_share || 0) * 100).toFixed(0)}%).</p></div>
+    </div>
+    <div class="cols2">
+      <div class="panel"><h3>By team</h3><div class="tablewrap"><table><tbody>${p.eras.map(([t, v]) => `<tr><td class="l">${esc(t)}</td><td class="num ${cls(v)}">${f(v)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="note">A career number can hide very different stretches. Read the eras.</p></div>
+      <div class="panel"><h3>Under each coach</h3>${pairs.length ? `<div class="tablewrap"><table><thead><tr><th class="l">Coach</th><th class="l">Years</th><th>Uplift</th><th>Trend-adjusted</th></tr></thead><tbody>
+        ${pairs.map(x => `<tr><td class="l">${esc(x[1])}</td><td class="l num">${x[2]}-${String(x[3] + 1).slice(2)}</td><td class="num ${cls(x[5])}">${f(x[5])}<span class="pm">±${f(x[6], 1, false)}</span></td><td class="num ${cls(x[7])}">${f(x[7])}<span class="pm">±${f(x[8], 1, false)}</span></td></tr>`).join("")}
+        </tbody></table></div><p class="note">How much better he played under each coach than his own career level predicts. Trend-adjusted also removes his own career arc (a player who was simply getting better).</p>`
+        : `<p class="note">Fewer than two coaches with 2,000+ shared possessions, so there's nothing to compare.</p>`}</div>
+    </div></div>`;
+}
+
+/* ---------- player page (Classic) ---------- */
+function classicView(id) {
+  const p = D.cById.get(id); if (!p) return leaders();
+  const ss = p.s.map(s => ({ season: s[0], team: s[1], net: s[2], plus: s[6] }));
+  $("#app").innerHTML = `<div class="stack"><a href="#leaders" class="note">← Leaderboard</a>
+    <div class="hero"><div><div class="eyebrow">Classic tier · ${p.first}-${String(p.last + 1).slice(2)} · ${p.seasons} seasons</div><h1>${esc(p.name)}</h1>
+      <p class="lede">Classic estimates impact from season box scores and team results, calibrated on the play-by-play era. Peak ${f(p.best5)} over ${p.best5_years || "–"}; best single season ${f(p.best)} in ${p.best_year}.</p></div>
+      <div style="text-align:right"><div class="eyebrow">Peak (best 5)</div><div class="big">${f(p.best5, 1)}</div></div></div>
+    <div class="tiles"><div class="tile o"><small>Offense</small><b>${f(p.off)}</b></div><div class="tile d"><small>Defense</small><b>${f(p.def)}</b></div>
+      <div class="tile"><small>Own production</small><b>${f(p.prod)}</b></div><div class="tile a"><small>Lift (team-level)</small><b>${f(p.lift)}</b></div>
+      <div class="tile"><small>Career impact</small><b>${f(p.impact)}</b></div><div class="tile"><small>Career wins</small><b>${f(p.war, 0, false)}</b></div></div>
+    <div class="panel"><h3>Impact by season</h3><p class="note">Solid = Classic. Dashed = Plus (play-by-play) where it exists, for comparison. Classic compresses the very top: the best seasons read lower than Plus.</p>${seasonChart(ss, { plus: true })}</div></div>`;
+}
+
+/* ---------- compare ---------- */
+function compare() {
+  const all = [...D.classic.map(p => ({ key: "c:" + p.id, label: p.name + " (Classic)", p, tier: "classic" })),
+               ...D.players.map(p => ({ key: "p:" + p.id, label: p.name + " (Plus)", p, tier: "plus" }))].sort((a, b) => a.label.localeCompare(b.label));
+  const find = k => all.find(x => x.key === k);
+  if (!state.a) state.a = all.find(x => x.label === "Michael Jordan (Classic)")?.key;
+  if (!state.b) state.b = all.find(x => x.label === "LeBron James (Classic)")?.key;
+  const A = find(state.a), B = find(state.b);
+  const metrics = [["Peak (best 5)", "best5"], ["Best season", "best"], ["Career impact", "impact"], ["Offense", "off"], ["Defense", "def"], ["Own production", "prod"], ["Lift", "lift"], ["Career wins", "war"]];
+  const plusOnly = [["Scott Stat", "scott"], ["Clutch rise", "clutch"], ["Playoff rise", "po"]];
+  const opt = sel => all.map(x => `<option value="${x.key}" ${x.key === sel ? "selected" : ""}>${esc(x.label)}</option>`).join("");
+  const row = ([l, k]) => { const a = A?.p[k], b = B?.p[k]; const w = a != null && b != null ? (a > b ? 0 : b > a ? 1 : -1) : -1;
+    return `<tr><td class="l">${l}</td><td class="num" style="${w === 0 ? "font-weight:700" : ""}">${k === "war" ? f(a, 0, false) : f(a)}</td><td class="num" style="${w === 1 ? "font-weight:700" : ""}">${k === "war" ? f(b, 0, false) : f(b)}</td></tr>`; };
+  const same = A && B && A.tier === B.tier;
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Compare</div><h1>Head to head</h1>
+    <p class="lede">Compare players on the same tier. Plus is the precise number; Classic covers every era. Mixing tiers is allowed but flagged.</p></div>
+    <div class="controls"><label for="ca">Player A<select id="ca">${opt(state.a)}</select></label><label for="cb">Player B<select id="cb">${opt(state.b)}</select></label></div>
+    ${same ? "" : `<p class="flag">Different tiers: Classic reads lower at the very top</p>`}
+    <div class="panel tablewrap"><table><thead><tr><th class="l"></th><th>${esc(A?.p.name)}</th><th>${esc(B?.p.name)}</th></tr></thead>
+      <tbody>${(A?.tier === "plus" && B?.tier === "plus" ? plusOnly : []).map(row).join("")}${metrics.map(row).join("")}</tbody></table></div>
+    <div class="cols2">${[A, B].map(X => X ? `<div class="panel"><h3>${esc(X.p.name)}</h3>${seasonChart(X.tier === "plus" ? X.p.s.map(s => ({ season: s[0], team: s[1], net: s[2], se: s[3] })) : X.p.s.map(s => ({ season: s[0], team: s[1], net: s[2], plus: s[6] })), { plus: X.tier === "classic" })}</div>` : "").join("")}</div></div>`;
+  $("#ca").onchange = e => { state.a = e.target.value; save(); compare(); };
+  $("#cb").onchange = e => { state.b = e.target.value; save(); compare(); };
+}
+
+/* ---------- coaches ---------- */
+function coaches() {
+  const sorts = [["net", "Overall effect"], ["def", "Defense"], ["off", "Offense"], ["rotation", "Rotation IQ"], ["closing", "Closing IQ"]];
+  const rows = D.coaches.filter(c => c.seasons >= 3).slice().sort((a, b) => (b[state.csort] ?? -99) - (a[state.csort] ?? -99));
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Coaches · 1996-97 to 2024-25</div><h1>Who gets more out of players</h1>
+    <p class="lede">A coach's effect is how much better his players play than their own career levels predict, learned from every player who moved between coaches. Coaching shows up mostly on defense.</p></div>
+    <div class="controls"><label for="csort">Rank by<select id="csort">${sorts.map(([k, l]) => `<option value="${k}" ${k === state.csort ? "selected" : ""}>${l}</option>`).join("")}</select></label></div>
+    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Coach</th><th class="l">Teams</th><th>Seasons</th><th>Win %</th><th>Effect</th><th>Offense</th><th>Defense</th><th>Rotation IQ</th><th>Closing IQ</th><th class="l">Gets most from</th></tr></thead>
+    <tbody>${rows.map((c, i) => `<tr><td class="rank num">${i + 1}</td><td class="l"><b>${esc(c.name)}</b></td><td class="l">${esc(c.teams)}</td><td class="num">${c.seasons}</td>
+      <td class="num">${(c.win_pct * 100).toFixed(0)}%</td><td class="num ${cls(c.net)}"><b>${f(c.net)}</b><span class="pm">±${f(c.se, 1, false)}</span></td>
+      <td class="num ${cls(c.off)}">${f(c.off)}</td><td class="num ${cls(c.def)}">${f(c.def)}</td><td class="num ${cls(c.rotation)}">${f(c.rotation)}</td><td class="num ${cls(c.closing)}">${f(c.closing, 2)}</td>
+      <td class="l"><span class="chips">${c.best_types.map(([t, v]) => `<span class="chip">${esc(t)} ${f(v)}</span>`).join("")}</span></td></tr>`).join("")}</tbody></table></div>
+    <p class="note">Effect: points per 100 possessions. Rotation IQ: wins per 82 games gained or lost by how minutes were split among available players. Closing IQ: extra talent on the floor in the possessions that decide games. "Gets most from": player types who play furthest above their norm under him (cells built on one star are excluded).</p></div>`;
+  $("#csort").onchange = e => { state.csort = e.target.value; save(); coaches(); };
+}
+
+/* ---------- GM finder ---------- */
+function finder() {
+  const seasons = [...new Set(D.recent.map(r => r[2]))].sort();
+  if (!state.fseason || !seasons.includes(state.fseason)) state.fseason = seasons[seasons.length - 1];
+  const types = [...new Set(D.recent.map(r => r[12]).filter(Boolean))].sort();
+  const rows = D.recent.filter(r => r[2] === state.fseason && (!state.ftype || r[12] === state.ftype));
+  const W = 720, Hh = 330, m = { l: 40, r: 14, t: 14, b: 34 };
+  const xs = rows.map(r => r[10] ?? 0), ys = rows.map(r => r[4]);
+  const xmax = Math.ceil(Math.max(30, ...xs) / 5) * 5, ymin = Math.floor(Math.min(-4, ...ys)), ymax = Math.ceil(Math.max(8, ...ys));
+  const X = v => m.l + v / xmax * (W - m.l - m.r), Y = v => m.t + (ymax - v) / (ymax - ymin) * (Hh - m.t - m.b);
+  const hidden = rows.filter(r => r[9] != null).sort((a, b) => b[9] - a[9]).slice(0, 15);
+  const yt = []; for (let v = Math.ceil(ymin / 2) * 2; v <= ymax; v += 2) yt.push(v);
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">For front offices</div><h1>Find the value the box score misses</h1>
+    <p class="lede">Points per game are what get paid. Impact is what wins. Players high on this chart and far to the left help a team win far more than their scoring suggests. That's where the bargains are.</p></div>
+    <div class="controls"><label for="fs">Season<select id="fs">${seasons.map(s => `<option value="${s}" ${s === state.fseason ? "selected" : ""}>${yr(s)}</option>`).join("")}</select></label>
+      <label for="ft">Player type<select id="ft"><option value="">All types</option>${types.map(t => `<option ${t === state.ftype ? "selected" : ""}>${esc(t)}</option>`).join("")}</select></label></div>
+    <div class="panel"><h3>Impact vs. scoring, ${yr(state.fseason)}</h3><div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:420px" role="img" aria-label="Impact versus points per game">
+      ${yt.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" + t : t}</text>`).join("")}
+      ${[0, 5, 10, 15, 20, 25, 30, 35].filter(v => v <= xmax).map(v => `<text x="${X(v)}" y="${Hh - 14}" text-anchor="middle">${v}</text>`).join("")}
+      <text x="${(W + m.l) / 2}" y="${Hh - 2}" text-anchor="middle">Points per game</text>
+      ${rows.map(r => `<circle cx="${X(r[10] ?? 0)}" cy="${Y(r[4])}" r="4" fill="${(r[9] ?? 0) > 1.5 ? "var(--accent)" : "var(--muted)"}" fill-opacity="${(r[9] ?? 0) > 1.5 ? .9 : .35}" data-tip="${esc(`${r[1]} (${r[3]}): impact ${f(r[4])}, ${r[10]} ppg, lift ${f(r[9])}`)}"/>`).join("")}
+    </svg></div><p class="note">Orange = lift above +1.5: impact well beyond what the player's own stats explain.</p></div>
+    <div class="panel tablewrap"><h3>Biggest lift, ${yr(state.fseason)}</h3><table><thead><tr><th class="l">Player</th><th class="l">Team</th><th class="l">Type</th><th>PPG</th><th>Impact</th><th>Production</th><th>Lift</th><th>Offense</th><th>Defense</th></tr></thead>
+    <tbody>${hidden.map(r => `<tr ${D.byId.has(String(r[0])) ? `tabindex="0" data-go="#player-${r[0]}"` : ""}><td class="l"><b>${esc(r[1])}</b></td><td class="l">${esc(r[3])}</td><td class="l">${esc(r[12] || "")}</td><td class="num">${f(r[10], 1, false)}</td>
+      <td class="num ${cls(r[4])}">${f(r[4])}<span class="pm">±${f(r[5], 1, false)}</span></td><td class="num">${f(r[8])}</td><td class="num ${cls(r[9])}"><b>${f(r[9])}</b></td><td class="num ${cls(r[6])}">${f(r[6])}</td><td class="num ${cls(r[7])}">${f(r[7])}</td></tr>`).join("")}</tbody></table></div></div>`;
+  $("#fs").onchange = e => { state.fseason = +e.target.value; save(); finder(); };
+  $("#ft").onchange = e => { state.ftype = e.target.value; save(); finder(); };
+  bindRows();
+}
+
+/* ---------- method ---------- */
+function method() {
+  const v = D.validation || {}; const cl = v.classic || {};
+  const pct = x => x == null ? "–" : x.toFixed(2);
+  $("#app").innerHTML = `<div class="stack prose"><div><div class="eyebrow">Method</div><h1>How the Scott Stat works</h1></div>
+  <div class="panel prose"><h3>1 · Impact, from every lineup</h3><p>Every NBA game since 1996-97 is rebuilt possession by possession: who was on the floor, and what happened. About a million stretches of play. A regression solves for every player at once, so a player gets credit only for what his team does better when he's on the floor, after accounting for every teammate and opponent. Three-pointers and free throws are replaced by each shooter's expected percentage, so a cold-shooting night by opponents doesn't count as defense.</p>
+    <p>Checked out of sample: ratings fit on three seasons predict the next season's games better than raw plus-minus, and predict team win totals better than last season's record.</p></div>
+  <div class="panel prose"><h3>2 · Production and lift</h3><p>Each player's box score is converted to an expected impact using skill prices learned from the play-by-play era (a turnover costs 0.75 points per 100 possessions, a steal is worth about 1). Production is that part. Lift is everything else: teammates playing better and the team defending better while he's out there. The box score explains about ${v.box_fit ? Math.round(v.box_fit.O_cv_r2 * 100) : 61}% of offensive impact and only ${v.box_fit ? Math.round(v.box_fit.D_cv_r2 * 100) : 25}% of defensive impact.</p></div>
+  <div class="panel prose"><h3>3 · Clutch and playoffs</h3><p>Clutch is the NBA's definition: the last five minutes of the fourth quarter or overtime, within five points. A player's clutch rise is how much better his lineups did in those minutes than everyone's normal ratings predict. Clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of all possessions but carry ${(D.meta.clutch_weight * 100).toFixed(0)}% of the swings in win probability, so that's its weight in the Scott Stat. Playoff rise works the same way over every playoff possession.</p>
+    <p>For most players, clutch is not a repeatable skill: estimated on odd and even seasons separately, the two halves barely agree. The ranking keeps it at its earned weight and shows the error range.</p></div>
+  <div class="panel prose"><h3>4 · Coaches</h3><p>Players are held at their own career level and aging curve, so a coach gets credit only when players play above their norm under him. Players moving between coaches separate the coach from the player. The same machinery estimates how each player did under each coach, with or without his own career arc removed.</p></div>
+  <div class="panel prose"><h3>5 · Classic, for every era</h3><p>Before 1996-97 there's no play-by-play. Classic estimates the same impact from season box scores plus team results, trained on the seasons where both exist. Tested on 2014-2025, it tracks the play-by-play number at r = ${pct(cl.test_classic?.r_net)} (Basketball-Reference's BPM: ${pct(cl.test_bref_bpm?.r_net)}). It squeezes the very top, so Plus and Classic are never mixed in one ranking.</p></div>
+  <div class="panel prose"><h3>What it can't do yet</h3><ul><li>Prime Jordan, Magic and Bird are Classic only. A with-or-without-you signal from game logs would sharpen pre-1996 defense.</li><li>"Coach" still includes the front office and the team's system.</li><li>Single seasons are noisy. Read the ± and the eras.</li></ul></div></div>`;
+}
+
+/* ---------- launch plan ---------- */
+function launch() {
+  $("#app").innerHTML = `<div class="stack prose"><div><div class="eyebrow">Internal · not part of the public site</div><h1>Launch plan</h1>
+    <p class="lede">The pitch in one line: the Scott Stat measures how much better a team is with a player on the floor, and shows exactly why.</p></div>
+  <div class="cols2">
+    <div class="panel"><h3>What we say</h3><ul><li>Same 32 points, different player: why Shai's season was worth twice Dame's.</li><li>LeBron is the most clutch player of the play-by-play era, and his late-game defense is why. Here's the audit.</li><li>Kidd lifted, Iverson produced: the players whose value never shows in the box score.</li><li>The coaches who make players better, and the ones who don't.</li><li>Jordan vs. LeBron on one scale, with the error bars.</li></ul></div>
+    <div class="panel"><h3>Who it's for</h3><ul><li><b>Fans and media:</b> one number, a player page that explains itself.</li><li><b>Analysts:</b> open method, published validation, downloadable data.</li><li><b>Front offices:</b> hidden-value finder, coach fit by player type, player-under-coach history.</li></ul></div>
+    <div class="panel"><h3>How it spreads</h3><ul><li>Our own site first, refreshed daily in season.</li><li>Methodology post plus data release: APBRmetrics, analytics accounts on X, r/nba.</li><li>Story pitches: The Ringer, The Athletic, ESPN.</li><li>MIT Sloan Sports Analytics Conference research paper.</li><li>Then data partnerships with the big stat sites, with an audience behind us.</li></ul></div>
+    <div class="panel"><h3>Before launch</h3><ul><li>Load 2025-26 and refresh nightly.</li><li>Pre-1996 game logs for the with-or-without signal.</li><li>Lock the formula and publish it with a version number.</li><li>Name and domain.</li></ul></div>
+  </div></div>`;
+}
+</script>

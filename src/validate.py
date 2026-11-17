@@ -51,7 +51,9 @@ def evaluate(year, lam=3000):
         return vals[ii].sum(axis=1)
 
     poss = ((te.poss_h + te.poss_a) / 2).to_numpy()
-    actual = (te.pts_h - te.pts_a).to_numpy()
+    # judge against what really happened on the scoreboard, not luck-adjusted points
+    raw = ("pts_h_raw", "pts_a_raw") if "pts_h_raw" in te else ("pts_h", "pts_a")
+    actual = (te[raw[0]] - te[raw[1]]).to_numpy()
     preds = {"baseline": np.full(len(te), 2 * hca)}
     for name, vals in (("raw_pm", net_raw), ("rapm", net_rapm)):
         # home lineup net minus away lineup net, per 100 -> scale to stint possessions.
