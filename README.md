@@ -37,7 +37,15 @@ python src/validate_boxprior.py 2010 2016 2023 [--span 1]   # does a box-score p
 python src/shots.py 1996 2024          # every shot with the shooter's 5 on the floor
 python src/teammates.py                # teammate shot-making with each star on vs off
 python src/teammates_fit.py            # star x teammate-type lineup fit
+python src/classic.py                  # CLASSIC tier: 1977-78+ from season box + team results
+python src/greats.py                   # all-time comparison on one scale
 ```
+
+**Two tiers.** *Scott Stat Plus* (1996-97 on) is the play-by-play impact model above:
+the official number wherever it exists. *Scott Stat Classic* (1977-78 on) estimates the
+same thing from season box scores + team results, calibrated on Plus, so players from
+any era can be compared on one scale. Historical tables: Basketball-Reference via
+`sumitrodatta/bball-reference-datasets` (data/hist/, not committed).
 
 Season labels in files are the START year: `war_2024.csv` = 2024-25.
 
@@ -259,6 +267,45 @@ points above baseline:
 **Star x teammate-type fit** (`out/teammates_fit.csv`): lineup residuals regressed on the
 mix of teammate types around each star. Nothing clears noise: all within ~1.5 SE of 0.
 LeBron's best (playmaking guards +0.8, defensive wings +0.8, ±0.5) is suggestive only.
+
+## Classic tier — every season since 1977-78
+
+`out/classic_<YYYY>.csv` (start-year labels). Two steps, fit where both tiers exist:
+1. **Box estimate**: Plus O/D regressed on per-100 box rates vs league (efficiency, volume,
+   assists, turnovers, boards, steals, blocks, fouls, 3PA), position and role.
+2. **Team adjustment**: the gap between the team's actual offensive/defensive rating and the
+   sum of its players' box estimates is shared out per possession played. This is how
+   defense the box can't see reaches the players on the floor. Full share (alpha = 1) won
+   on held-out seasons.
+
+**Validation** (train 1997-2013, test 2014-2025 vs Plus, players 1000+ poss, n = 4,298):
+
+| | r (net) | r (O) | r (D) |
+|---|---|---|---|
+| Box only | 0.61 | 0.69 | 0.48 |
+| **Classic (box + team)** | **0.64** | **0.71** | **0.54** |
+| Basketball-Reference BPM | 0.63 | 0.67 | 0.54 |
+
+Error SD 1.8 per 100 per season. Overall calibration is right (Plus = 1.03 x Classic).
+Small point-guard lean (+0.26). Like every box model, Classic **compresses the very top**:
+the 50 best Plus seasons average +8.1 in Plus but +5.0 in Classic. Players whose impact is
+mostly invisible to the box score get the biggest compression: Garnett -2.7, Dirk -2.5,
+Duncan -1.9, Shaq -1.8, LeBron -1.5 (Classic minus Plus on the same seasons).
+
+**All-time, one scale** (`out/greats.csv`, Classic, regular season, per 100 poss):
+
+| | Best season | Best 3 | Best 5 | Career /100 | Career WAR |
+|---|---|---|---|---|---|
+| Jokić | 7.3 | 7.0 | 6.8 | 5.4 | 104 |
+| Stockton | 7.0 | 6.8 | 6.8 | 5.4 | 221 |
+| **Jordan** | **7.4** (90-91) | **6.7** | **6.70** (87-92) | **5.2** | **175** |
+| **LeBron** | **7.5** (08-09) | **6.7** | **6.65** (08-13) | **4.6** | **242** |
+| Curry | 8.1 | 6.8 | 6.3 | 4.2 | 134 |
+| Magic | 6.4 | 6.2 | 5.8 | 5.1 | 156 |
+| Bird | 5.9 | 5.8 | 5.5 | 4.6 | 150 |
+
+Stockton's rank isn't a box-score artifact: Plus rates his 1996-2003 seasons even higher
+than Classic does (5.97 vs 4.65).
 
 ## Known limits
 
