@@ -39,6 +39,7 @@ python src/teammates.py                # teammate shot-making with each star on 
 python src/teammates_fit.py            # star x teammate-type lineup fit
 python src/classic.py                  # CLASSIC tier: 1977-78+ from season box + team results
 python src/greats.py                   # all-time comparison on one scale
+python src/clutch.py                   # clutch impact + clutch shooting + is it real?
 ```
 
 **Two tiers.** *Scott Stat Plus* (1996-97 on) is the play-by-play impact model above:
@@ -306,6 +307,28 @@ Duncan -1.9, Shaq -1.8, LeBron -1.5 (Classic minus Plus on the same seasons).
 
 Stockton's rank isn't a box-score artifact: Plus rates his 1996-2003 seasons even higher
 than Classic does (5.97 vs 4.65).
+
+## Clutch (1996-97 on)
+
+NBA definition: last 5 minutes of the 4th quarter or overtime, within 5 points.
+`out/clutch_players.csv`. 66,301 clutch stints.
+
+- **Clutch delta**: how much better or worse a player's lineups did in clutch possessions
+  than the ten players' *normal* ratings predict, fit by ridge so it is adjusted for
+  teammates and opponents. **Clutch rating** = normal rating + clutch delta.
+- **Clutch shooting**: true shooting in clutch vs his normal, relative to the league's own
+  clutch drop (.542 normal -> .537 clutch).
+
+**Is clutch real?** Re-estimated on even vs odd seasons (no shared possessions):
+clutch *impact* delta r = 0.01-0.10 (149-620 players); clutch *shooting* r = 0.17-0.22.
+League-wide, rising in the clutch is mostly noise, and the CV curve is nearly flat. A few
+players rise in BOTH independent halves: LeBron (+1.2 / +1.6), Lillard (+1.2 / +1.0),
+Dirk (+1.5 / +0.7), Kobe (+0.6 / +0.5). Jordan's 1996-2003 sample is small (-0.2 / +0.3).
+
+**Who is best in the clutch** (normal + delta, 1500+ clutch possessions): LeBron +8.3,
+Jokić +7.2, Dirk +7.0, Embiid +6.7, Garnett +6.2, Chris Paul / Shaq / Stockton +6.1,
+Lillard +5.8, Curry +5.7. Mostly the best players overall. Being great is what makes
+someone great in the clutch.
 
 ## Known limits
 
