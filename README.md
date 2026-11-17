@@ -40,6 +40,7 @@ python src/teammates_fit.py            # star x teammate-type lineup fit
 python src/classic.py                  # CLASSIC tier: 1977-78+ from season box + team results
 python src/greats.py                   # all-time comparison on one scale
 python src/clutch.py                   # clutch impact + clutch shooting + is it real?
+python src/clutch_breakdown.py         # where a clutch rise comes from (own play / teammates / era)
 ```
 
 **Two tiers.** *Scott Stat Plus* (1996-97 on) is the play-by-play impact model above:
@@ -329,6 +330,22 @@ Dirk (+1.5 / +0.7), Kobe (+0.6 / +0.5). Jordan's 1996-2003 sample is small (-0.2
 Jokić +7.2, Dirk +7.0, Embiid +6.7, Garnett +6.2, Chris Paul / Shaq / Stockton +6.1,
 Lillard +5.8, Curry +5.7. Mostly the best players overall. Being great is what makes
 someone great in the clutch.
+
+**LeBron's +2.3 clutch rise, broken down** (`out/clutch_breakdown.json`):
+- Offense +1.2, defense +1.0.
+- He takes over: 31% -> 39% of his lineup's shots, 36 -> 50 points per 100 possessions,
+  with efficiency held (TS .590 -> .581; the league drops about .005).
+- Not passing more (assists 10.2 -> 9.2 per 100), no extra turnovers. Steals + blocks up
+  (3.0 -> 3.5).
+- Teammates don't shoot better with him in clutch (.560 -> .558): the rise is him, not
+  setting others up.
+- By era (raw lineup over-performance vs normal ratings, per 100 clutch possessions):
+  Cavs 2003-10 +11.9, Heat +6.0, Cavs 2014-18 +8.8, **Lakers -1.6** (clutch defense -7.7).
+  The rise is a Cleveland/Miami phenomenon.
+- Is he #1? P(biggest rise) = 36% (Lillard 11%, Marion 9%, Dirk 9%). P(best clutch rating)
+  = 85%. The most likely #1, not a certain one.
+- Contrast: Kobe also takes over (31% -> 42% of shots) but efficiency drops (.548 -> .538).
+  Curry's teammates shoot worse in his clutch minutes (.582 -> .546).
 
 ## Known limits
 
