@@ -4,12 +4,14 @@ floor — so any player's shooting can be split by who he was playing next to.
 Reuses build_stints' lineup reconstruction (period starters + substitutions).
 Shots in periods whose starting lineup couldn't be rebuilt are dropped (~0.3%).
 
-Usage: python src/shots.py 1996 2024    -> data/shots/shots_<YYYY>.parquet
+Usage: python src/shots.py 1996 2024 [--playoffs]   -> data/shots/shots_[po_]<YYYY>.parquet
   columns: season, game_id, team_id, shooter, kind (fg|ft), made, three, rim,
            assisted, pts, period, clock (seconds left in period), margin (shooter's
-           team minus opponent, before the shot), on0..on4 (shooter's team on floor)
+           team minus opponent, before the shot), on0..on4 (shooter's team on floor),
+           opp0..opp4 (defenders on floor)
 """
 import sys
+from functools import partial
 from multiprocessing import Pool
 from pathlib import Path
 
@@ -54,9 +56,9 @@ def game_shots(gid, g):
             if et == FT and e.EVENTMSGACTIONTYPE in TECH_FT:
                 continue
             s = SIDE[e.PERSON1TYPE]
-            if len(on[s]) != 5:
-                continue
             o = "A" if s == "H" else "H"
+            if len(on[s]) != 5 or len(on[o]) != 5:
+                continue
             ctx = (int(period), clock(e.PCTIMESTRING), prev[s] - prev[o])   # margin BEFORE this shot, shooter's view
             if pd.notna(e.PLAYER1_TEAM_ID):
                 team[s] = int(e.PLAYER1_TEAM_ID)
@@ -65,18 +67,18 @@ def game_shots(gid, g):
             if et == FT:
                 made = "MISS" not in desc
                 rows.append((int(gid), team.get(s), int(e.PLAYER1_ID), "ft", made, False, False, False,
-                             int(made), *ctx, *sorted(on[s])))
+                             int(made), *ctx, *sorted(on[s]), *sorted(on[o])))
             else:
                 made = et == MADE
                 rim = not three and any(w in desc for w in RIM_WORDS)
                 assisted = made and e.PERSON2TYPE == e.PERSON1TYPE
                 rows.append((int(gid), team.get(s), int(e.PLAYER1_ID), "fg", made, three, rim, assisted,
-                             (3 if three else 2) * made, *ctx, *sorted(on[s])))
+                             (3 if three else 2) * made, *ctx, *sorted(on[s]), *sorted(on[o])))
     return rows
 
 
-def season(year):
-    d = pd.read_csv(RAW / f"nbastats_{year}.csv", usecols=COLS, low_memory=False)
+def season(year, tag=""):
+    d = pd.read_csv(RAW / f"nbastats_{tag}{year}.csv", usecols=COLS, low_memory=False)
     for k in (1, 2, 3):
         d[f"PLAYER{k}_ID"] = pd.to_numeric(d[f"PLAYER{k}_ID"], errors="coerce").fillna(0).astype("int64")
         d[f"PERSON{k}TYPE"] = pd.to_numeric(d[f"PERSON{k}TYPE"], errors="coerce").fillna(0).astype(int)
@@ -84,16 +86,19 @@ def season(year):
     for gid, g in d.groupby("GAME_ID"):
         rows += game_shots(gid, g)
     s = pd.DataFrame(rows, columns=["game_id", "team_id", "shooter", "kind", "made", "three", "rim",
-                                    "assisted", "pts", "period", "clock", "margin", "on0", "on1", "on2", "on3", "on4"])
+                                    "assisted", "pts", "period", "clock", "margin", "on0", "on1", "on2", "on3", "on4",
+                                    "opp0", "opp1", "opp2", "opp3", "opp4"])
     s["team_id"] = s.groupby(["game_id", "shooter"]).team_id.transform(lambda x: x.ffill().bfill())
     s.insert(0, "season", year)
     OUT.mkdir(parents=True, exist_ok=True)
-    s.to_parquet(OUT / f"shots_{year}.parquet", index=False)
+    s.to_parquet(OUT / f"shots_{tag}{year}.parquet", index=False)
     return year, len(s)
 
 
 if __name__ == "__main__":
-    a, b = int(sys.argv[1]), int(sys.argv[2] if len(sys.argv) > 2 else sys.argv[1])
+    args = [x for x in sys.argv[1:] if not x.startswith("--")]
+    a, b = int(args[0]), int(args[1] if len(args) > 1 else args[0])
+    tag = "po_" if "--playoffs" in sys.argv else ""
     with Pool(4) as p:
-        for y, n in p.imap_unordered(season, range(a, b + 1)):
+        for y, n in p.imap_unordered(partial(season, tag=tag), range(a, b + 1)):
             print(y, n, flush=True)

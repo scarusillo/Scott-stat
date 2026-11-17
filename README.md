@@ -41,6 +41,9 @@ python src/classic.py                  # CLASSIC tier: 1977-78+ from season box 
 python src/greats.py                   # all-time comparison on one scale
 python src/clutch.py                   # clutch impact + clutch shooting + is it real?
 python src/clutch_breakdown.py         # where a clutch rise comes from (own play / teammates / era)
+python src/build_stints.py 1996 2024 --playoffs; python src/shots.py 1996 2024 --playoffs
+python src/playoffs.py                 # playoff clutch, all clutch, playoff elevation
+python src/clutch_defense.py           # the defensive evidence behind clutch D numbers
 ```
 
 **Two tiers.** *Scott Stat Plus* (1996-97 on) is the play-by-play impact model above:
@@ -346,6 +349,36 @@ someone great in the clutch.
   = 85%. The most likely #1, not a certain one.
 - Contrast: Kobe also takes over (31% -> 42% of shots) but efficiency drops (.548 -> .538).
   Curry's teammates shoot worse in his clutch minutes (.582 -> .546).
+
+## Playoffs (1996-97 on)
+
+Every playoff game is loaded (`stints_po_*`, `shots_po_*`; the same lineup checks pass).
+`out/playoffs_players.csv`, three runs against each player's normal regular-season rating:
+
+| Run | Possessions | Split-half r | Top of the list |
+|---|---|---|---|
+| Playoff clutch | 4,766 stints | too few players to test | LeBron +2.1 ± 1.0 (level 8.2) |
+| All clutch (regular season + playoffs) | 71,067 stints | 0.06-0.13 | LeBron +2.6 ± 0.7 (level 8.7), Marion, Dirk, Chandler, Lillard |
+| **Playoff elevation** (every playoff possession) | 73,348 stints | **0.14-0.18** | **LeBron +2.1 ± 0.7** (level 8.1), P.J. Tucker, Kyrie, Draymond, Ray Allen |
+
+Playoff elevation is a little more repeatable than clutch. Jordan's numbers here are
+1996-2003 only (age 33-39, including Washington) and aren't representative of his career.
+
+**Clutch defense, shown** (`out/clutch_defense.json`, regular + playoffs, him on the floor):
+
+| | LeBron | Dirk | Kobe | Duncan |
+|---|---|---|---|---|
+| Opp. points/100, actual | 104.4 | 105.5 | 107.6 | 104.0 |
+| Predicted from everyone's normal ratings | 108.0 | 110.2 | 109.7 | 104.5 |
+| Lineup over-performance | **+3.6** | +4.7 | +2.1 | +0.5 |
+| Credited to him (ridge) | **+1.5** | +1.2 | +0.4 | +0.1 |
+| Opp. true shooting, clutch / normal | **.523 / .540** | .516 / .532 | .526 / .524 | .511 / .496 |
+| His blocks per 100, clutch / normal | 1.6 / 1.0 | 1.6 / 1.3 | 1.0 / 0.7 | 3.0 / 3.4 |
+| His rebounds per 100, clutch / normal | 12.7 / 10.4 | 14.5 / 11.7 | 8.7 / 7.4 | 17.9 / 17.0 |
+
+League clutch opponent TS is .537 (normal .542). LeBron's all-game defensive rating is
++1.25 per 100 over his career (peaks +2.8 in 2010-11, +3.6 in 2019-20): above average, not
+elite. Duncan +4.0 and Garnett +3.8 are elite.
 
 ## Known limits
 

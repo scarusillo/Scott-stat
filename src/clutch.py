@@ -35,16 +35,25 @@ LAMS = (1000, 3000, 10000, 30000, 100000)
 PRIOR_TSA = 100
 
 
-def clutch_stints():
+def clutch_stints(tags=("",), clutch_only=True):
+    """tags: "" = regular season, "po_" = playoffs. Expectations always use the
+    player's REGULAR-season rating for that season (his normal level).
+    clutch_only=False keeps every possession (used for playoff elevation)."""
     rows = []
-    for y in range(1996, 2025):
-        s = pd.read_parquet(STINTS / f"stints_{y}.parquet").dropna(subset=H + A)
-        end = s.clock0 - s.seconds
-        frac = ((np.minimum(s.clock0, 300) - np.maximum(end, 0)).clip(lower=0) / s.seconds.clip(lower=1))
-        frac = np.where(s.seconds == 0, (s.clock0 <= 300).astype(float), frac)
-        keep = (s.period >= 4) & (frac > 0) & (s.margin0.abs() <= 5)
+    for tag in tags:
+      for y in range(1996, 2025):
+        s = pd.read_parquet(STINTS / f"stints_{tag}{y}.parquet").dropna(subset=H + A)
+        if clutch_only:
+            end = s.clock0 - s.seconds
+            frac = ((np.minimum(s.clock0, 300) - np.maximum(end, 0)).clip(lower=0) / s.seconds.clip(lower=1))
+            frac = np.where(s.seconds == 0, (s.clock0 <= 300).astype(float), frac)
+            keep = (s.period >= 4) & (frac > 0) & (s.margin0.abs() <= 5)
+        else:
+            frac = np.ones(len(s))
+            keep = pd.Series(True, index=s.index)
         s = s[keep].copy()
         s["frac"] = np.asarray(frac)[keep.to_numpy()]
+        s["playoffs"] = tag == "po_"
         w = pd.read_csv(OUT / f"war_{y}.csv").set_index("player_id")
         for c in H + A:
             s[c + "_O"] = s[c].astype("int64").map(w.O).fillna(0).to_numpy()

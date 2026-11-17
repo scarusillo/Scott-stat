@@ -38,8 +38,8 @@ def clutch_flags(d):
     return late, m_before
 
 
-def season_box(y):
-    d = pd.read_csv(RAW / f"nbastats_{y}.csv", usecols=COLS, low_memory=False).reset_index(drop=True)
+def season_box(y, tag=""):
+    d = pd.read_csv(RAW / f"nbastats_{tag}{y}.csv", usecols=COLS, low_memory=False).reset_index(drop=True)
     late, mh = clutch_flags(d)
     desc = d.HOMEDESCRIPTION.fillna(d.VISITORDESCRIPTION).fillna("")
     t, a = d.EVENTMSGTYPE, d.EVENTMSGACTIONTYPE

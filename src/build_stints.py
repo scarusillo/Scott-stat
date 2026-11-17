@@ -2,7 +2,7 @@
 format) and collapse each game into STINTS: stretches with the same ten
 players on the floor, with points and possessions for each side.
 
-Usage:  python src/build_stints.py 1996 2024      (season start years, inclusive)
+Usage:  python src/build_stints.py 1996 2024 [--playoffs]   (season start years, inclusive)
 
 Input : data/raw/nbastats_<YYYY>.csv   (downloaded by src/fetch.py)
 Output: data/stints/stints_<YYYY>.parquet, data/stints/players_<YYYY>.parquet,
@@ -15,6 +15,7 @@ Conventions verified across 1996/2010/2023 files:
 import json
 import re
 import sys
+from functools import partial
 from multiprocessing import Pool
 from pathlib import Path
 
@@ -187,8 +188,9 @@ def process_game(gid, g):
     return rows, n_periods, bad_periods, (score_h, score_a)
 
 
-def process_season(year):
-    src = RAW / f"nbastats_{year}.csv"
+def process_season(year, tag=""):
+    """tag="po_" for playoffs: reads nbastats_po_<YYYY>.csv, writes *_po_<YYYY> files."""
+    src = RAW / f"nbastats_{tag}{year}.csv"
     d = pd.read_csv(src, usecols=COLS, low_memory=False)
     for k in (1, 2, 3):
         d[f"PLAYER{k}_ID"] = pd.to_numeric(d[f"PLAYER{k}_ID"], errors="coerce").fillna(0).astype("int64")
@@ -202,7 +204,7 @@ def process_season(year):
     s = pd.DataFrame(rows)
     s.insert(0, "season", year)
     OUT.mkdir(parents=True, exist_ok=True)
-    s.to_parquet(OUT / f"stints_{year}.parquet", index=False)
+    s.to_parquet(OUT / f"stints_{tag}{year}.parquet", index=False)
 
     # player names + team per game (for minutes/roster lookups later)
     pl = []
@@ -213,20 +215,22 @@ def process_season(year):
     pl = pd.concat(pl).dropna().drop_duplicates(["game_id", "player_id"])
     pl["team_id"] = pl["team_id"].astype("int64")
     pl.insert(0, "season", year)
-    pl.to_parquet(OUT / f"players_{year}.parquet", index=False)
+    pl.to_parquet(OUT / f"players_{tag}{year}.parquet", index=False)
 
     games = d.GAME_ID.nunique()
     cov = {"season": year, "games": int(games), "periods": periods, "bad_periods": bad,
            "stints": len(s), "poss_per_team_game": float((s.poss_h.sum() + s.poss_a.sum()) / 2 / games),
            "pts_per_team_game": float((s.pts_h.sum() + s.pts_a.sum()) / 2 / games),
            "seconds_per_game": float(s.seconds.sum() / games)}
-    (OUT / f"coverage_{year}.json").write_text(json.dumps(cov, indent=1))
+    (OUT / f"coverage_{tag}{year}.json").write_text(json.dumps(cov, indent=1))
     return cov
 
 
 if __name__ == "__main__":
-    a, b = int(sys.argv[1]), int(sys.argv[2] if len(sys.argv) > 2 else sys.argv[1])
-    years = [y for y in range(a, b + 1) if (RAW / f"nbastats_{y}.csv").exists()]
+    args = [x for x in sys.argv[1:] if not x.startswith("--")]
+    a, b = int(args[0]), int(args[1] if len(args) > 1 else args[0])
+    tag = "po_" if "--playoffs" in sys.argv else ""
+    years = [y for y in range(a, b + 1) if (RAW / f"nbastats_{tag}{y}.csv").exists()]
     with Pool(min(4, len(years))) as p:
-        for c in p.imap_unordered(process_season, years):
+        for c in p.imap_unordered(partial(process_season, tag=tag), years):
             print(json.dumps(c))
