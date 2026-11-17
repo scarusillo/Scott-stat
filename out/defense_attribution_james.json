@@ -1,0 +1,167 @@
+{
+ "player": "LeBron James",
+ "clutch_def_possessions": 6753.254200984298,
+ "split": {
+  "lineup_overperformance": 3.640913451012494,
+  "credited_to_him": 1.5299796288596432,
+  "se_his_credit": 0.4836530770181741,
+  "credited_to_his_4_teammates_combined": 0.22986890591188067,
+  "not_credited_to_anyone_(shrunk_as_noise)": 1.8810649162409703,
+  "even_split_would_be": 0.7281826902024988
+ },
+ "teammates": [
+  {
+   "teammate": "Zydrunas Ilgauskas",
+   "shared_clutch_poss": 1282.6891062393884,
+   "overperf_with_him": 4.0746659055058245,
+   "overperf_without_him": 6.7590537644057855,
+   "poss_without_him": 676.7474514867481,
+   "own_credit_D": 0.5349406175862879
+  },
+  {
+   "teammate": "Dwyane Wade",
+   "shared_clutch_poss": 1227.971101004195,
+   "overperf_with_him": 11.677664852458268,
+   "overperf_without_him": 1.5513333433740057,
+   "poss_without_him": 3210.223595304632,
+   "own_credit_D": 0.9772907305432026
+  },
+  {
+   "teammate": "Chris Bosh",
+   "shared_clutch_poss": 1222.4512091161243,
+   "overperf_with_him": 9.39436811192868,
+   "overperf_without_him": 0.18898920650121187,
+   "poss_without_him": 2342.976243458729,
+   "own_credit_D": 0.654925942957235
+  },
+  {
+   "teammate": "Anderson Varejao",
+   "shared_clutch_poss": 1086.3816923207735,
+   "overperf_with_him": 7.045318267402283,
+   "overperf_without_him": 3.1687103076325687,
+   "poss_without_him": 595.2188005627472,
+   "own_credit_D": 0.6730946033258117
+  },
+  {
+   "teammate": "Anthony Davis",
+   "shared_clutch_poss": 963.3239405216669,
+   "overperf_with_him": -8.818767089359799,
+   "overperf_without_him": -3.235371508553957,
+   "poss_without_him": 2035.66711488297,
+   "own_credit_D": -0.9801372042269797
+  },
+  {
+   "teammate": "JR Smith",
+   "shared_clutch_poss": 777.1006903163034,
+   "overperf_with_him": 12.050034604511792,
+   "overperf_without_him": -2.363944816849444,
+   "poss_without_him": 1690.6996468920934,
+   "own_credit_D": 0.3317071677003192
+  },
+  {
+   "teammate": "Mario Chalmers",
+   "shared_clutch_poss": 756.2892482347453,
+   "overperf_with_him": 3.752262175829838,
+   "overperf_without_him": 4.359186953238749,
+   "poss_without_him": 865.4585397458075,
+   "own_credit_D": 0.3126005397349371
+  },
+  {
+   "teammate": "Kevin Love",
+   "shared_clutch_poss": 698.9886706603477,
+   "overperf_with_him": 8.101703260821576,
+   "overperf_without_him": -10.964972442900667,
+   "poss_without_him": 1531.9268157766776,
+   "own_credit_D": -0.8353242702901642
+  },
+  {
+   "teammate": "Drew Gooden",
+   "shared_clutch_poss": 688.7534350044749,
+   "overperf_with_him": 10.170304374495442,
+   "overperf_without_him": -4.744269295238394,
+   "poss_without_him": 950.4066100567638,
+   "own_credit_D": 0.07410342624244808
+  },
+  {
+   "teammate": "Eric Snow",
+   "shared_clutch_poss": 683.0187131883122,
+   "overperf_with_him": 1.9276898069033734,
+   "overperf_without_him": 2.6109566035072387,
+   "poss_without_him": 2037.385966860475,
+   "own_credit_D": 0.24033541343534567
+  }
+ ],
+ "luck": {
+  "league_clutch": {
+   "ft_pct": 0.7664719578448593,
+   "fta": 122405,
+   "three_pct": 0.31544270578874634,
+   "fg3a": 71639,
+   "two_pct": 0.45668840138249683,
+   "fg2a": 165787
+  },
+  "with_him": {
+   "ft_pct": 0.7688751926040062,
+   "fta": 2596,
+   "three_pct": 0.3041125541125541,
+   "fg3a": 1848,
+   "two_pct": 0.4489080614720949,
+   "fg2a": 3709
+  },
+  "opp_ft_misses_beyond_league_pts_per100": -0.0923820909012408,
+  "opp_3pt_misses_beyond_league_pts_per100": 0.9301347028171159,
+  "note": "FT% is not defense; 3P% allowed is mostly not defense (shot volume/quality is)."
+ },
+ "by_coach": [
+  {
+   "coach": "Mike Brown",
+   "poss": 1671.28,
+   "def_overperf": 6.45
+  },
+  {
+   "coach": "Erik Spoelstra",
+   "poss": 1071.3,
+   "def_overperf": 5.66
+  },
+  {
+   "coach": "Frank Vogel",
+   "poss": 667.0,
+   "def_overperf": -8.32
+  },
+  {
+   "coach": "Tyronn Lue",
+   "poss": 597.04,
+   "def_overperf": 5.55
+  },
+  {
+   "coach": "Paul Silas",
+   "poss": 470.26,
+   "def_overperf": 8.64
+  },
+  {
+   "coach": "Darvin Ham",
+   "poss": 433.31,
+   "def_overperf": -9.45
+  },
+  {
+   "coach": "David Blatt",
+   "poss": 346.37,
+   "def_overperf": 4.62
+  },
+  {
+   "coach": "Luke Walton",
+   "poss": 207.63,
+   "def_overperf": -4.74
+  },
+  {
+   "coach": "JJ Redick",
+   "poss": 194.57,
+   "def_overperf": -5.82
+  },
+  {
+   "coach": "Brendan Malone",
+   "poss": 33.99,
+   "def_overperf": 0.71
+  }
+ ]
+}

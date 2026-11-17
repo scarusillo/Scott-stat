@@ -44,6 +44,7 @@ python src/clutch_breakdown.py         # where a clutch rise comes from (own pla
 python src/build_stints.py 1996 2024 --playoffs; python src/shots.py 1996 2024 --playoffs
 python src/playoffs.py                 # playoff clutch, all clutch, playoff elevation
 python src/clutch_defense.py           # the defensive evidence behind clutch D numbers
+python src/defense_attribution.py "LeBron James"   # audit: how a lineup's D gets split, luck, coaches
 ```
 
 **Two tiers.** *Scott Stat Plus* (1996-97 on) is the play-by-play impact model above:
@@ -379,6 +380,19 @@ Playoff elevation is a little more repeatable than clutch. Jordan's numbers here
 League clutch opponent TS is .537 (normal .542). LeBron's all-game defensive rating is
 +1.25 per 100 over his career (peaks +2.8 in 2010-11, +3.6 in 2019-20): above average, not
 elite. Duncan +4.0 and Garnett +3.8 are elite.
+
+**Audit: why LeBron gets 1.5 of his lineups' 3.6** (`out/defense_attribution_james.json`):
+- Split of the 3.6: **LeBron +1.53 (±0.48)**, his four teammates +0.23 combined, and
+  **1.88 credited to no one** (ridge treats it as noise). An even split would be 0.73 each.
+- Why him: the over-performance follows him while teammates change. Their clutch D,
+  with LeBron vs without: Wade +11.7 / +1.6, Bosh +9.4 / +0.2, J.R. Smith +12.1 / -2.4,
+  Love +8.1 / -11.0, Gooden +10.2 / -4.7. Exceptions: Ilgauskas +4.1 / +6.8, Chalmers +3.8 / +4.4.
+  Blocks and rebounds play no part in the calculation; they are supporting evidence only.
+- Luck: opponents' FT% is normal (.769 vs .766 league clutch), but they shot 30.4% from
+  three vs 31.5%, worth **about 0.9 of the 3.6**. Two-point % allowed is also lower (.449 vs .457).
+- By coach (raw lineup clutch D over-performance): Silas +8.6, Brown +6.5, Spoelstra +5.7,
+  Lue +5.6, Blatt +4.6; then every Lakers coach negative (Walton -4.7, Vogel -8.3, Ham -9.5,
+  Redick -5.8). It's Cleveland/Miami LeBron, age 19-33.
 
 ## Known limits
 
