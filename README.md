@@ -45,6 +45,10 @@ python src/build_stints.py 1996 2024 --playoffs; python src/shots.py 1996 2024 -
 python src/playoffs.py                 # playoff clutch, all clutch, playoff elevation
 python src/clutch_defense.py           # the defensive evidence behind clutch D numbers
 python src/defense_attribution.py "LeBron James"   # audit: how a lineup's D gets split, luck, coaches
+python src/luck.py                     # luck adjustment written into every stint (run before the models)
+python src/player_coach.py             # each player under each coach (raw + own-trend removed)
+python src/composite.py                # THE SCOTT STAT: careers (Plus + Classic), seasons
+python src/build_site_data.py          # site/data.json for the site prototype (site/index.html)
 ```
 
 **Two tiers.** *Scott Stat Plus* (1996-97 on) is the play-by-play impact model above:
@@ -393,6 +397,40 @@ elite. Duncan +4.0 and Garnett +3.8 are elite.
 - By coach (raw lineup clutch D over-performance): Silas +8.6, Brown +6.5, Spoelstra +5.7,
   Lue +5.6, Blatt +4.6; then every Lakers coach negative (Walton -4.7, Vogel -8.3, Ham -9.5,
   Redick -5.8). It's Cleveland/Miami LeBron, age 19-33.
+
+## The Scott Stat (composite)
+
+`out/scott_careers_plus.csv`, `out/scott_careers_classic.csv`, `out/scott_seasons.csv`.
+
+**Scott Stat = all-game impact + 12% x clutch rise + playoff share x playoff rise.**
+Clutch possessions are 4.0% of all possessions but 12.0% of the swings in win
+probability, so clutch counts 12%: as much as it decides games, measured, not chosen.
+
+Every impact number splits into **own production** (what his box score explains) and
+**lift** (teammates playing better and the team defending better while he's on the floor).
+Kidd +1.7 lift vs Iverson 0.0 and Carmelo -0.3. Marcus Smart: production -0.2, lift +1.4.
+
+**Luck adjustment** (`luck.py`): every 3PA and FTA is replaced by the shooter's expected %
+(his season %, shrunk to league). Out-of-sample error vs **real** final margins improves
+13.11 -> 12.99 (winner accuracy unchanged at about 64%). Standard errors are now on every
+player-season rating (`se_O`, `se_D`, `se_net` in `war_*.csv`).
+
+**Player x coach** (`out/player_coach.csv`, 3,944 pairs with 2,000+ shared possessions):
+how each player did under each coach, beyond his own career level, the league aging
+curve and the coach's general effect. The *trend-adjusted* version also removes the
+player's own career arc. The CV-chosen penalty is the largest tried, so pair effects are
+heavily shrunk: player-specific coach fit is a small effect next to the coach's general
+effect. Curry: Mark Jackson +0.0, Kerr +0.8 (+0.9 trend-adjusted). J.R. Smith: Karl +0.9,
+Woodson +0.6, Lue -0.6.
+
+**Results** (Plus, 20k+ possessions): career Scott Stat: Jokić 6.26, LeBron 5.91,
+Stockton 5.74 (1996-2003 only), Duncan 5.53, Garnett 5.38. Peak (best 5 + clutch +
+playoffs): LeBron 8.11, Duncan 7.57, Curry 7.21, Jokić 7.18, Garnett 7.17. Classic peak
+(1977-78 on): Stockton 6.28, Jokić 6.22, **Jordan 6.10, LeBron 5.94**, Paul 5.78, Curry 5.58.
+
+**Site prototype** (`site/`): leaderboard (Plus / Classic), player pages with
+production / lift / clutch / playoffs / eras / coaches, compare, coaches, GM hidden-value
+finder, method, launch plan.
 
 ## Known limits
 
