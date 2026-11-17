@@ -1,0 +1,9 @@
+{
+ "arrivals": 3163,
+ "coaches": 160,
+ "sd_true_coach_effect": 0.13518057965471772,
+ "sd_noise_per_arrival": 1.3417310903260717,
+ "split_half_r": 0.023568187661492743,
+ "split_half_coaches": 73,
+ "expected_change_from_start_level": -0.21633082805843734
+}

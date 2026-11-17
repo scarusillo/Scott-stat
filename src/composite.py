@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "out"
 STINTS = ROOT / "data" / "stints"
 MIN_SEASON_POSS = 1000
+CLASSIC_FIRST, CLASSIC_LAST = 1951, 2025     # season START years
 
 
 def clutch_leverage_share():
@@ -121,7 +122,9 @@ def plus_tables(c):
 
 
 def classic_table():
-    a = pd.concat([pd.read_csv(OUT / f"classic_{y}.csv") for y in range(1977, 2025)], ignore_index=True)
+    # every completed season with individual minutes: 1951-52 .. 2025-26 (2026-27 is in progress)
+    a = pd.concat([pd.read_csv(OUT / f"classic_{y}.csv") for y in range(CLASSIC_FIRST, CLASSIC_LAST + 1)],
+                  ignore_index=True)
     a = a.rename(columns={"season_start": "season", "net_classic": "net"})
     a["production"] = a.box_O + a.box_D
     a["lift"] = a.net - a.production
@@ -139,7 +142,8 @@ def classic_table():
                      "best_season": float(top.net), "best_season_year": label(int(top.season)),
                      "best3": b3, "best3_years": at3, "best5": b5, "best5_years": at5,
                      "career_WAR": x.WAR_classic.sum(),
-                     "pre_1977_career": bool(x.age.min() > 23 and x.season.min() == 1977)})
+                     "lite_share": float((x.band == "lite").mean()),
+                     "first_season_counted": int(x.season.min())})
     car = pd.DataFrame(rows).sort_values("best5", ascending=False)
     car.to_csv(OUT / "scott_careers_classic.csv", index=False, float_format="%.3f")
     return car

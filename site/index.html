@@ -83,8 +83,8 @@ svg text { fill: var(--muted); font: 11px var(--body); }
 <header><div class="wrap bar">
   <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
   <nav id="nav">
-    <a href="#leaders">Leaderboard</a><a href="#compare">Compare</a><a href="#coaches">Coaches</a>
-    <a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
+    <a href="#leaders">Leaderboard</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#progression">Progression</a>
+    <a href="#coaches">Coaches</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
   </nav>
 </div></header>
 <main class="wrap" id="app"><p class="note">Loading the Scott Stat…</p></main>
@@ -113,7 +113,7 @@ function route() {
   const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ leaders, compare, coaches, finder, method, launch }[h] || leaders)();
+  ({ leaders, guide, compare, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
   scrollTo(0, 0);
 }
 
@@ -130,10 +130,10 @@ function leaders() {
     .slice().sort((a, b) => (b[state.sort] ?? -99) - (a[state.sort] ?? -99)).slice(0, 150);
   $("#app").innerHTML = `
   <div class="stack">
-    <div><div class="eyebrow">${plus ? "Play-by-play tier · 1996-97 to 2024-25" : "Classic tier · 1977-78 to 2024-25 · box score + team results"}</div>
+    <div><div class="eyebrow">${plus ? "Play-by-play tier · 1996-97 to 2024-25" : "Classic tier · 1951-52 to 2025-26 · box score + team results"}</div>
       <h1>Who makes a team better</h1>
       <p class="lede">${plus ? "Points per 100 possessions a player adds over an average player, measured from every lineup on the floor, then adjusted for clutch and playoff performance. +5 is All-NBA. +7 is MVP level."
-        : "The same scale estimated for every season since 1977-78, so Jordan, Magic and Bird sit next to LeBron, Curry and Jokić. Less precise than Plus: a single season can be off by about ±1.8."}</p></div>
+        : "The same scale estimated for every season since 1951-52, when minutes were first recorded, so Wilt, Russell, Jordan and Bird sit next to LeBron, Curry and Jokić. Less precise than Plus: a single season can be off by about ±1.6, and before 1973-74 no steals, blocks or turnovers were recorded."}</p></div>
     <div class="controls">
       <div class="seg" role="group" aria-label="Tier">
         <button id="t-plus" class="${plus ? "on" : ""}">Plus</button><button id="t-classic" class="${plus ? "" : "on"}">Classic (all eras)</button></div>
@@ -152,7 +152,7 @@ function leaders() {
       <td class="num">${f(p.prod)}</td><td class="num ${cls(p.lift)}">${f(p.lift)}</td>
       <td class="num ${cls(p.clutch)}">${f(p.clutch)}</td><td class="num ${cls(p.po)}">${f(p.po)}</td>
       <td class="num">${f(p.peak5)}</td><td class="num">${f(p.war, 0, false)}</td></tr>`
-      : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td>
+      : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b>${p.lite > 0.5 ? ` <span class="flag" title="Most seasons before 1973-74: no steals, blocks or turnovers recorded">limited stats</span>` : ""}</td>
       <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.impact)}</td>
       <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td><td class="num">${f(p.prod)}</td>
       <td class="num ${cls(p.lift)}">${f(p.lift)}</td><td class="num">${f(p.best)} <span class="pm">${p.best_year}</span></td><td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
@@ -184,7 +184,7 @@ function seasonChart(seasons, opts = {}) {
   const band = seasons.filter(s => s.se != null);
   const area = band.length > 1 ? `<path d="M${band.map(s => `${X(s.season)},${Y(s.net + s.se)}`).join("L")}L${band.slice().reverse().map(s => `${X(s.season)},${Y(s.net - s.se)}`).join("L")}Z" fill="var(--band)" stroke="none"/>` : "";
   const line = `<path d="M${seasons.map(s => `${X(s.season)},${Y(s.net)}`).join("L")}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
-  const plusLine = opts.plus ? `<path d="M${seasons.filter(s => s.plus != null).map(s => `${X(s.season)},${Y(s.plus)}`).join("L")}" fill="none" stroke="var(--def)" stroke-width="2" stroke-dasharray="4 3"/>` : "";
+  const plusLine = opts.plus && seasons.filter(s => s.plus != null).length > 1 ? `<path d="M${seasons.filter(s => s.plus != null).map(s => `${X(s.season)},${Y(s.plus)}`).join("L")}" fill="none" stroke="var(--def)" stroke-width="2" stroke-dasharray="4 3"/>` : "";
   const xt = []; const step = Math.max(1, Math.ceil((hi - lo) / 8)); for (let v = lo; v <= hi; v += step) xt.push(v);
   return `<div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:420px" role="img" aria-label="Impact by season">
     ${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" + t : t}</text>`).join("")}
@@ -259,7 +259,7 @@ function classicView(id) {
   const ss = p.s.map(s => ({ season: s[0], team: s[1], net: s[2], plus: s[6] }));
   $("#app").innerHTML = `<div class="stack"><a href="#leaders" class="note">← Leaderboard</a>
     <div class="hero"><div><div class="eyebrow">Classic tier · ${p.first}-${String(p.last + 1).slice(2)} · ${p.seasons} seasons</div><h1>${esc(p.name)}</h1>
-      <p class="lede">Classic estimates impact from season box scores and team results, calibrated on the play-by-play era. Peak ${f(p.best5)} over ${p.best5_years || "–"}; best single season ${f(p.best)} in ${p.best_year}.</p></div>
+      <p class="lede">Classic estimates impact from season box scores and team results, calibrated on the play-by-play era. Peak ${f(p.best5)} over ${p.best5_years || "–"}; best single season ${f(p.best)} in ${p.best_year}.${p.lite > 0 ? ` <b>${Math.round(p.lite * 100)}% of these seasons are before 1973-74,</b> when steals, blocks and turnovers weren't recorded. His defense shows up only through rebounding and a per-minute share of his team's defense, so an elite individual defender (Bill Russell is the clearest case) is undercounted.` : ""}</p></div>
       <div style="text-align:right"><div class="eyebrow">Peak (best 5)</div><div class="big">${f(p.best5, 1)}</div></div></div>
     <div class="tiles"><div class="tile o"><small>Offense</small><b>${f(p.off)}</b></div><div class="tile d"><small>Defense</small><b>${f(p.def)}</b></div>
       <div class="tile"><small>Own production</small><b>${f(p.prod)}</b></div><div class="tile a"><small>Lift (team-level)</small><b>${f(p.lift)}</b></div>
@@ -335,6 +335,87 @@ function finder() {
       <td class="num ${cls(r[4])}">${f(r[4])}<span class="pm">±${f(r[5], 1, false)}</span></td><td class="num">${f(r[8])}</td><td class="num ${cls(r[9])}"><b>${f(r[9])}</b></td><td class="num ${cls(r[6])}">${f(r[6])}</td><td class="num ${cls(r[7])}">${f(r[7])}</td></tr>`).join("")}</tbody></table></div></div>`;
   $("#fs").onchange = e => { state.fseason = +e.target.value; save(); finder(); };
   $("#ft").onchange = e => { state.ftype = e.target.value; save(); finder(); };
+  bindRows();
+}
+
+/* ---------- guide: how to read the Scott Stat ---------- */
+function guide() {
+  const top = D.classic.filter(p => p.best5 != null).sort((a, b) => b.best5 - a.best5).slice(0, 5);
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Guide</div><h1>How to read the Scott Stat</h1>
+    <p class="lede">One question, answered for every player who has played real minutes since 1951-52: how much better is a team with him on the floor than with an average player in his place, and why?</p></div>
+  <div class="cols2">
+    <div class="panel prose"><h3>The unit: points per 100 possessions</h3>
+      <p>A possession is one trip down the floor. A team gets about 100 a game, so "per 100 possessions" is roughly "per full game." A rating of +6 means: swap an average NBA player out and this player in, same teammates, same opponents, and the team comes out 6 points better per 100 possessions. That counts both ends: points his team scores and points the other team doesn't.</p>
+      <p>Because a star plays about three-quarters of the game, each point of rating is worth about <b>2 wins</b> over a season. A +6 player turns a 41-win team into a 53-win team.</p></div>
+    <div class="panel"><h3>The scale</h3><div class="tablewrap"><table><tbody>
+      <tr><td class="l">−2</td><td class="l">Replacement level: freely available, end of the bench</td></tr>
+      <tr><td class="l">0</td><td class="l">Average NBA player</td></tr>
+      <tr><td class="l">+2 to +3</td><td class="l">Good starter</td></tr>
+      <tr><td class="l">+5</td><td class="l">All-NBA</td></tr>
+      <tr><td class="l">+7 or more</td><td class="l">MVP-level season</td></tr></tbody></table></div></div>
+  </div>
+  <div class="panel prose"><h3>What "peak 6.2" means</h3>
+    <p>Peak is the player's average rating over his best five consecutive seasons. It's the fairest way to compare greatness across careers of different length: one great year can be luck, five in a row can't. The all-time peaks right now: ${top.map(p => `${esc(p.name)} ${f(p.best5)} (${p.best5_years})`).join(", ")}. A peak of +6.2 means that for five straight years, his team was about 6 points per 100 possessions better because he was the one on the floor: roughly 12 extra wins a season, every season, for five years.</p>
+    <p>Career impact is the same rating averaged over every season (it rewards consistency and punishes a long decline). Career wins added is the total: rate × minutes × seasons, above a replacement-level player. A long great career (LeBron) wins on total; a shorter, higher peak (Jordan) can win on peak.</p></div>
+  <div class="cols2">
+    <div class="panel prose"><h3>Offense and defense</h3><p>The two halves of the number. Defense comes from the scoreboard: points the other team didn't score while he was out there, compared with what the ten players' normal levels predict. Steals and blocks are evidence, not the calculation.</p></div>
+    <div class="panel prose"><h3>Own production and lift</h3><p>Production is what his own box score explains: scoring efficiency, volume, assists, turnovers, boards, steals, blocks. Lift is everything else: his teammates playing better and his team defending better while he's on the floor. High-lift players (Jason Kidd, Draymond Green, Marcus Smart) are worth more than their stats. Negative-lift players produce numbers the team doesn't turn into wins.</p></div>
+    <div class="panel prose"><h3>Clutch and playoffs</h3><p>Clutch is the last five minutes of the fourth quarter or overtime within five points. Clutch rise is how much better his lineups did in those minutes than everyone's normal levels predict. It counts ${(D.meta.clutch_weight * 100).toFixed(0)}% in the Scott Stat because clutch possessions carry ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games. For most players it's noise; a few (LeBron, Lillard, Dirk) rise in both halves of their careers. Playoff rise works the same way over every playoff possession.</p></div>
+    <div class="panel prose"><h3>Plus and Classic</h3><p><b>Plus</b> (1996-97 on) is measured from every lineup on the floor, possession by possession. It's the precise number: a career rating is good to about ±0.3. <b>Classic</b> (1951-52 on) estimates the same thing from season box scores and team results, trained on the seasons where both exist. It's the only way to put Wilt, Russell, Magic and prime Jordan on the same scale, but a single season can be off by ±1.6, and it reads a little low at the very top. Rank within one tier, never across them.</p></div>
+  </div>
+  <div class="cols2">
+    <div class="panel prose"><h3>Three eras of data</h3><ul><li><b>1977-78 on:</b> full box score.</li><li><b>1973-74 to 1976-77:</b> no turnovers.</li><li><b>1951-52 to 1972-73:</b> no steals, blocks or turnovers. Accuracy drops (r 0.66 to 0.60 against play-by-play), and great individual defenders are undercounted because team defense is shared evenly.</li><li><b>Before 1951-52:</b> no individual minutes, so no per-possession rating. George Mikan's early years can't be rated.</li></ul></div>
+    <div class="panel prose"><h3>Coaches: what's reliable</h3><ul><li><b>Reliable:</b> a coach's overall effect on players (mostly on defense), which player types he gets most from, Rotation IQ and Closing IQ. Each holds up when estimated on separate halves of the data.</li><li><b>Suggestive:</b> coaching style × player type. A few cells are real (rim protectors under defense-first coaches); most are noise.</li><li><b>Not detectable yet:</b> players jumping the year they arrive at a new coach, and young-player development by coach.</li></ul></div>
+  </div></div>`;
+}
+
+/* ---------- progression ---------- */
+function progression() {
+  const tier = state.ptier || "plus", P = D.progression[tier];
+  const nameCell = (id, n) => tier === "plus" && D.byId.has(String(id)) ? `<a href="#player-${id}">${esc(n)}</a>` : (D.cById.has(id) ? `<a href="#legend-${id}">${esc(n)}</a>` : esc(n));
+  const chg = (rows, title) => `<div class="panel tablewrap"><h3>${title}</h3><table><thead><tr><th class="l">Player</th><th class="l">Season</th><th class="l">Team</th><th>Before</th><th>After</th><th>Change</th></tr></thead><tbody>
+    ${rows.slice(0, 20).map(r => `<tr><td class="l">${nameCell(r[0], r[1])}</td><td class="l num">${yr(r[2])} → ${String(r[2] + 1).slice(2)}-${String((r[2] + 2) % 100).padStart(2, "0")}</td><td class="l">${esc(r[3])}${r[4] !== r[3] ? " → " + esc(r[4]) : ""}</td>
+      <td class="num">${f(r[5])}</td><td class="num">${f(r[6])}</td><td class="num ${cls(r[7])}"><b>${f(r[7])}</b><span class="pm">±${f(r[8], 1, false)}</span></td></tr>`).join("")}</tbody></table></div>`;
+  const arc = (rows, title, k) => `<div class="panel tablewrap"><h3>${title}</h3><table><thead><tr><th class="l">Player</th><th class="l">Career</th><th>Start</th><th>Peak (3 yr)</th><th class="l">When</th><th>End</th><th>${k === 8 ? "Rise" : "Fall"}</th></tr></thead><tbody>
+    ${rows.slice(0, 20).map(r => `<tr><td class="l">${nameCell(r[0], r[1])}</td><td class="l num">${r[2]}–${String(r[3] + 1).slice(2)}</td><td class="num">${f(r[4])}</td><td class="num">${f(r[5])}</td><td class="l num">${r[6]}</td><td class="num">${f(r[7])}</td><td class="num ${cls(r[k])}"><b>${f(r[k])}</b></td></tr>`).join("")}</tbody></table></div>`;
+  const am = D.progression.arrivals_meta;
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Progression</div><h1>Who rose, who fell</h1>
+    <p class="lede">Every player's season-by-season arc is on his page. These lists pull out the biggest moves. A one-year change is listed only when it's more than twice its own margin of error, so noise doesn't make the list.</p></div>
+    <div class="controls"><div class="seg" role="group" aria-label="Tier"><button id="pt-plus" class="${tier === "plus" ? "on" : ""}">Plus (1996 on)</button><button id="pt-classic" class="${tier === "classic" ? "on" : ""}">Classic (all eras)</button></div></div>
+    <div class="cols2">${chg(P.rises, "Biggest one-year rises")}${chg(P.falls, "Biggest one-year falls")}</div>
+    <div class="cols2">${arc(P.arc_rise, "Biggest climb to a peak", 8)}${arc(P.arc_fall, "Biggest fall from a peak", 9)}</div>
+    <div class="panel tablewrap"><h3>Players arriving at a new coach</h3>
+      <p class="note">Every time a player started playing for a new coach (${am.arrivals.toLocaleString()} moves since 1996-97): his change in impact against what's expected for his experience and starting level, averaged per coach. <b>This does not hold up yet:</b> the same list built from odd and even seasons agrees at r = ${am.split_half_r.toFixed(2)}, which is noise. Read it as a record of what happened, not as a coach skill. The coach effects on the Coaches and Scenarios pages are the reliable measure.</p>
+      <table><thead><tr><th class="l">Coach</th><th>Arrivals</th><th>Average change</th><th>Shrunk estimate</th><th class="l">Biggest arrival jump</th></tr></thead><tbody>
+      ${D.progression.arrivals.slice(0, 25).map(r => `<tr><td class="l">${esc(r[0])}</td><td class="num">${r[1]}</td><td class="num ${cls(r[2])}">${f(r[2])}</td><td class="num">${f(r[3], 2)}<span class="pm">±${f(r[4], 2, false)}</span></td><td class="l">${esc(r[5])}</td></tr>`).join("")}</tbody></table></div></div>`;
+  $("#pt-plus").onclick = () => { state.ptier = "plus"; save(); progression(); };
+  $("#pt-classic").onclick = () => { state.ptier = "classic"; save(); progression(); };
+}
+
+/* ---------- scenarios: coach style x player type ---------- */
+function scenarios() {
+  const M = D.scenarios.matrix, B = D.scenarios.best;
+  const groups = [...new Set(M.map(r => r[0]))], types = [...new Set(M.map(r => r[1]))].sort();
+  const cell = (g, t) => M.find(r => r[0] === g && r[1] === t);
+  const color = v => v == null ? "transparent" : v > 0 ? `color-mix(in srgb, var(--good) ${Math.min(60, Math.abs(v) * 90)}%, transparent)` : `color-mix(in srgb, var(--bad) ${Math.min(60, Math.abs(v) * 90)}%, transparent)`;
+  const ptype = state.stype || "Rim runner";
+  const best = B.filter(r => r[0] === ptype);
+  const nowPlayers = D.recent.filter(r => r[12] === ptype && r[2] === Math.max(...D.recent.map(x => x[2]))).sort((a, b) => b[4] - a[4]).slice(0, 8);
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">For front offices</div><h1>Which coach for which player</h1>
+    <p class="lede">Pair a coach with a player type and see how players of that type have played under him, compared with their own career levels. Start with a type (a pass-first point guard is a Playmaking guard; a Rudy Gobert type is a Rim runner).</p></div>
+    <div class="controls"><label for="stype">Player type<select id="stype">${types.map(t => `<option ${t === ptype ? "selected" : ""}>${esc(t)}</option>`).join("")}</select></label></div>
+    <div class="split">
+      <div class="panel tablewrap"><h3>Coaches who get the most from ${esc(ptype)}s</h3><table><thead><tr><th class="l">Coach</th><th>Uplift</th><th>Players</th><th class="l">Most-used player</th></tr></thead><tbody>
+        ${best.map(r => `<tr><td class="l"><b>${esc(r[1])}</b></td><td class="num ${cls(r[2])}"><b>${f(r[2])}</b><span class="pm">±${f(r[3], 1, false)}</span></td><td class="num">${r[5]}</td><td class="l">${esc(r[6])} <span class="pm">${Math.round(r[7] * 100)}%</span></td></tr>`).join("")}</tbody></table>
+        <p class="note">Uplift = points per 100 possessions a ${esc(ptype.toLowerCase())} plays above his own career level under that coach. Only coaches whose result comes from several players (no single star above 50% of the minutes). Halves of the data agree at r ≈ 0.4: a real but noisy signal.</p></div>
+      <div class="panel tablewrap"><h3>${esc(ptype)}s now (${yr(Math.max(...D.recent.map(x => x[2])))})</h3><table><tbody>
+        ${nowPlayers.map(r => `<tr ${D.byId.has(String(r[0])) ? `tabindex="0" data-go="#player-${r[0]}"` : ""}><td class="l">${esc(r[1])}</td><td class="l">${esc(r[3])}</td><td class="num ${cls(r[4])}">${f(r[4])}</td></tr>`).join("")}</tbody></table></div>
+    </div>
+    <div class="panel tablewrap"><h3>Coaching style × player type</h3>
+      <p class="note">Each cell: how much more (green) or less (red) that player type gets under coaches of that style than under coaches in general, points per 100. A dot marks the ${M.filter(r => Math.abs(r[4]) >= 2).length} cells that clear two standard errors. With ${M.length} cells, about ${Math.round(M.length * 0.05)} would clear by chance alone, so treat single cells as leads, not conclusions.</p>
+      <table><thead><tr><th class="l">Coach style</th>${types.map(t => `<th>${esc(t)}</th>`).join("")}</tr></thead><tbody>
+      ${groups.map(g => `<tr><td class="l"><b>${esc(g)}</b></td>${types.map(t => { const c = cell(g, t); return `<td class="num" style="background:${color(c?.[2])}" ${c ? `data-tip="${esc(`${g} × ${t}: ${f(c[2], 2)} ±${c[3].toFixed(2)} (${c[5]} coaches: ${c[6]})`)}"` : ""}>${c ? f(c[2], 2) + (Math.abs(c[4]) >= 2 ? " •" : "") : "–"}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div></div>`;
+  $("#stype").onchange = e => { state.stype = e.target.value; save(); scenarios(); };
   bindRows();
 }
 

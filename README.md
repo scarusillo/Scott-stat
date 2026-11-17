@@ -48,6 +48,8 @@ python src/defense_attribution.py "LeBron James"   # audit: how a lineup's D get
 python src/luck.py                     # luck adjustment written into every stint (run before the models)
 python src/player_coach.py             # each player under each coach (raw + own-trend removed)
 python src/composite.py                # THE SCOTT STAT: careers (Plus + Classic), seasons
+python src/progression.py              # risers/fallers, career arcs, coach arrivals
+python src/scenarios.py                # coach style x player type matrix, best coaches per type
 python src/build_site_data.py          # site/data.json for the site prototype (site/index.html)
 ```
 
@@ -446,6 +448,37 @@ careers began before 1996-97 are labeled "late career" on the site.
 **Site prototype** (`site/`): leaderboard (Plus / Classic), player pages with
 production / lift / clutch / playoffs / eras / coaches, compare, coaches, GM hidden-value
 finder, method, launch plan.
+
+## All eras, progression, scenarios
+
+**Classic back to 1951-52** (first season with individual minutes). Each era is rated with
+only the stats it recorded, by its own model trained on the play-by-play seasons:
+
+| Band | Stats | Holdout r vs Plus |
+|---|---|---|
+| 1977-78 on | full box score | 0.66 |
+| 1973-74 to 1976-77 | no turnovers | 0.65 |
+| 1951-52 to 1972-73 | no steals, blocks, turnovers; total rebounds only | 0.60 |
+
+Before 1951-52 there are no individual minutes, so no rating. Also covers the completed
+2025-26 season (Basketball-Reference tables). Classic peak (best 5): Jokić 6.41,
+Jordan 6.27, LeBron 6.10, Paul, Curry, Robinson, Kareem 5.42, Stockton, Magic, Wilt 5.03.
+Bill Russell's peak is 3.60: with no blocks recorded, Boston's team defense is shared
+evenly per minute, which undercounts him. Game-by-game with/without data would fix it.
+
+**Progression** (`out/progression_changes.csv`, `out/progression_arcs.csv`): one-year changes
+listed only when larger than 2x their own SE. Biggest climbs to a peak: Nash, Durant, Shai,
+Hayward, Giannis. **Coach arrivals** (`out/coach_arrivals.csv`, 3,163 moves): a player's
+change the year he arrives at a new coach, vs expectation. Not reliable: even/odd-season
+halves agree at r = 0.02. The lineup-based coach effects are the measure to use.
+
+**Scenarios** (`out/scenario_matrix.csv`, `out/scenario_best_coaches.csv`): coach groups
+(defense-first, offense-first, pace, three-point heavy, inside-out, ball movement,
+isolation, rotation depth) x eight player types. 5 of 80 cells clear |z| >= 2 (about 4 by
+chance). Leads: rim runners under defense-first coaches +0.5 (z 2.5), scoring wings in
+three-point-heavy systems +0.3, interior scorers under isolation coaches -0.6, scoring
+wings in deep rotations -0.4. Per-type coach rankings (broad cells only) are the reliable
+part: e.g. rim runners under Doc Rivers +3.5 across 11 players.
 
 ## Known limits
 

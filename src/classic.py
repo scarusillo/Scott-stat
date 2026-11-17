@@ -37,10 +37,24 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 HIST = ROOT / "data" / "hist"
 OUT = ROOT / "out"
-FIRST_END = 1978             # 1977-78: turnovers recorded from here
+FIRST_END = 1952             # 1951-52: first season with individual minutes
 BOX = ["pts_added", "tsa", "ast", "tov", "oreb", "dreb", "stl", "blk", "pf", "fg3a"]
 EXTRA = ["guard", "big", "mpg"]
 FEATS = BOX + EXTRA
+# What the box score recorded, by era (season END years). Each band gets its own
+# model, trained on the play-by-play seasons using only the stats that band has.
+BANDS = {
+    "full": (1978, 2100, BOX),                                                   # 1977-78 on
+    "no_turnovers": (1974, 1977, [f for f in BOX if f != "tov"]),                # 1973-74 to 1976-77
+    "lite": (1952, 1973, ["pts_added", "tsa", "ast", "reb", "pf"]),             # 1951-52 to 1972-73
+}
+
+
+def band_of(season):
+    for name, (a, z, _) in BANDS.items():
+        if a <= season <= z:
+            return name
+    return None
 PRIOR_POSS = 300
 LAM = 50.0
 REPL_WINPCT = 0.20
@@ -63,7 +77,7 @@ def load_box():
     multi = t.team.str.match(r"^\dTM$|^TOT$")
     per_team = t[~multi].copy()
     per_team["poss"] = per_team.mp * per_team.set_index(["season", "team"]).index.map(pace).to_numpy() / 48
-    stats = ["g", "mp", "fga", "fta", "pts", "x3pa", "orb", "drb", "ast", "stl", "blk", "tov", "pf", "poss"]
+    stats = ["g", "mp", "fga", "fta", "pts", "x3pa", "orb", "drb", "trb", "ast", "stl", "blk", "tov", "pf", "poss"]
     agg = per_team.groupby(["season", "player_id"])[stats].sum()
     info = t.sort_values("g").groupby(["season", "player_id"]).agg(player=("player", "last"), pos=("pos", "last"),
                                                                     age=("age", "last"))
@@ -79,7 +93,7 @@ def features(b):
         d = d[d.poss > 0].copy()
         tsa = d.fga + 0.44 * d.fta
         raw = pd.DataFrame({"pts": d.pts, "tsa": tsa, "ast": d.ast, "tov": d.tov, "oreb": d.orb, "dreb": d.drb,
-                            "stl": d.stl, "blk": d.blk, "pf": d.pf, "fg3a": d.x3pa}, index=d.index)
+                            "stl": d.stl, "blk": d.blk, "pf": d.pf, "fg3a": d.x3pa, "reb": d.trb}, index=d.index)
         lg = raw.sum() / d.poss.sum() * 100
         pps = raw.pts.sum() / raw.tsa.sum()
         r = raw.add(lg * PRIOR_POSS / 100).div(d.poss + PRIOR_POSS, axis=0) * 100
@@ -118,25 +132,32 @@ def predict(d, bO, bD):
     return X @ bO, X @ bD
 
 
-def era_fit(d, train, tau):
+def era_fit(d, train, tau, force_band=None):
     """Box estimate for every row, with each season's skill prices fit on the
     training seasons weighted by exp(-|training season - anchor| / tau), where
     anchor is the target season clipped into the training range. tau = inf is
-    one model for every era."""
+    one model for every era. Each season uses only the stats its era recorded
+    (BANDS); force_band applies one band's stat set everywhere (for testing)."""
     d = d.copy()
-    feats = ["f_" + f for f in FEATS]
     tr = d[train]
     lo, hi = tr.season.min(), tr.season.max()
-    X_tr, yO, yD, w0 = tr[feats].to_numpy(), tr.O.to_numpy(), tr.D.to_numpy(), tr.plus_poss.to_numpy()
+    yO, yD, w0 = tr.O.to_numpy(), tr.D.to_numpy(), tr.plus_poss.to_numpy()
     d["box_O"], d["box_D"] = np.nan, np.nan
+    d["band"] = None
     cache = {}
     for season in sorted(d.season.unique()):
+        band = force_band or band_of(season)
+        if band is None:
+            continue
+        feats = ["f_" + f for f in BANDS[band][2] + EXTRA]
         anchor = min(max(season, lo), hi)
-        if anchor not in cache:
+        if (anchor, band) not in cache:
             w = w0 if np.isinf(tau) else w0 * np.exp(-np.abs(tr.season.to_numpy() - anchor) / tau)
-            cache[anchor] = (wls(X_tr, yO, w), wls(X_tr, yD, w))
-        bO, bD = cache[anchor]
+            X_tr = tr[feats].to_numpy()
+            cache[(anchor, band)] = (wls(X_tr, yO, w), wls(X_tr, yD, w))
+        bO, bD = cache[(anchor, band)]
         m = d.season == season
+        d.loc[m, "band"] = band
         X = np.c_[np.ones(m.sum()), d.loc[m, feats].to_numpy()]
         d.loc[m, "box_O"], d.loc[m, "box_D"] = X @ bO, X @ bD
         if season == 1990:
@@ -189,7 +210,7 @@ def main():
 
     # 1) never extrapolate: clip every box rate to the range seen in the training era
     ref = d[d.nba_id.notna() & (d.plus_poss >= 1000)]
-    for f_ in BOX:
+    for f_ in BOX + ["reb"]:
         lo, hi = ref["f_" + f_].min(), ref["f_" + f_].max()
         d["f_" + f_] = d["f_" + f_].clip(lo, hi)
     base = d.nba_id.notna() & (d.plus_poss >= 250)
@@ -229,6 +250,10 @@ def main():
            "test_classic": score(dt, test, "O_c", "D_c"),
            "test_classic_uniform_era": score(du, test, "O_c", "D_c"),
            "test_bref_bpm": score(dt, test & dt.obpm.notna(), "obpm", "dbpm")}
+    # how much accuracy each older era's stat set costs: same test, that band's stats only
+    for band in ("no_turnovers", "lite"):
+        xb = team_adjust(era_fit(d, fwd_tr, tau, force_band=band), per_team, ts, alpha)
+        val[f"test_{band}_stats_only"] = score(xb, test, "O_c", "D_c")
     print(json.dumps({k: v for k, v in val.items() if k != "backcast"}, indent=1), flush=True)
 
     # final: every season rated with era-matched prices learned from ALL overlap seasons
@@ -241,7 +266,10 @@ def main():
     # wins: same replacement-level logic as wins.py, from each season's team results
     tsn = ts[ts.season >= FIRST_END]
     for season, x in f.groupby("season"):
-        t = tsn[tsn.season == season]
+        t = tsn[(tsn.season == season)].dropna(subset=["mov", "w", "l", "pace"])
+        t = t[(t.w + t.l) > 0]
+        if len(t) < 5:
+            continue
         k = np.polyfit(t.mov, t.w / (t.w + t.l), 1)[0]
         pace = np.average(t.pace, weights=t.w + t.l)
         repl = (REPL_WINPCT - 0.5) / k / (pace / 100) / 5
@@ -249,7 +277,7 @@ def main():
         f.loc[idx, "WAR_c"] = (f.loc[idx, "net_c"] - repl) * f.loc[idx, "poss"] / 100 * k
     f["se_net"] = resid_sd
     f["season_start"] = f.season - 1
-    cols = ["season_start", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
+    cols = ["season_start", "band", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
             "se_net", "WAR_c", "box_O", "box_D", "gap_O", "gap_D", "nba_id", "O", "D", "net"]
     for y, x in f.groupby("season_start"):
         x[cols].rename(columns={"O_c": "O_classic", "D_c": "D_classic", "net_c": "net_classic", "WAR_c": "WAR_classic",
