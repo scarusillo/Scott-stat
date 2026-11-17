@@ -34,6 +34,9 @@ python src/development.py              # young-player growth by coach
 python src/firings.py                  # mid-season firings: out-of-sample test
 python src/breakdown.py                # Layer 3: skill prices + every player-season broken down
 python src/validate_boxprior.py 2010 2016 2023 [--span 1]   # does a box-score prior help?
+python src/shots.py 1996 2024          # every shot with the shooter's 5 on the floor
+python src/teammates.py                # teammate shot-making with each star on vs off
+python src/teammates_fit.py            # star x teammate-type lineup fit
 ```
 
 Season labels in files are the START year: `war_2024.csv` = 2024-25.
@@ -215,6 +218,47 @@ scheme the player model can't fully separate.
 toward the box estimate instead of 0. With 3 training seasons it changes nothing (RMSE
 13.11 vs 13.11). With 1 training season it helps a little (13.04 vs 13.12; winners
 63.7% vs 63.1%). Worth using where data is thin, not a big upgrade.
+
+## Teammates — LeBron vs Jordan (and 19 other stars)
+
+A star's impact rating already contains any lift he gives teammates: in lineup data,
+"makes others better" and "is good" can't be told apart. So this measures the lift from
+the teammates' side, with the shot-level data (`data/shots/`, 7.3M attempts, each with
+the shooter's five on the floor).
+
+**Teammate shot-making** (`out/teammates_stars.csv`): each teammate's true shooting with
+the star on vs off the floor, same season. Every team's #1 player gets some lift for free
+(he plays with starters, against starters), so each star is measured against that
+season's league baseline, the same split for every team's #1 player. In TS percentage
+points above baseline:
+
+| | Seasons | Teammate TS lift | ± SE | Teammates take more 3s | More of their makes assisted |
+|---|---|---|---|---|---|
+| LeBron, career | 22 | **+1.4** | 0.4 | +3.6 pts | +6.2 pts |
+| LeBron, Cavs 2014-18 | 4 | **+3.4** (best star-era measured) | 0.4 | +5.3 | +7.6 |
+| LeBron, Heat 2010-14 | 4 | +1.1 | 1.1 | +2.8 | +8.5 |
+| Jordan, all available | 4 | +0.8 | 0.8 | +2.0 | 0.0 |
+| Jordan, Bulls 1996-98 | 2 | +0.5 | 1.8 | +2.5 | -2.0 |
+| Curry | 15 | +2.9 | 0.4 | -1.4 | +3.2 |
+| Jokić | 10 | +2.1 | 0.7 | -0.2 | +7.9 |
+
+- LeBron makes teammates better shooters, consistently, for 22 years: 77th percentile
+  of #1 players in a typical season, and 95th in 2014-18. He does it by creating: his
+  teammates' shots become more threes and more assisted. Biggest beneficiaries:
+  frontcourt finishers (+3.3) and spot-up shooters (+2.7).
+- Jordan's teammates also shot better with him (+0.8), but with fewer of their makes
+  assisted (-2.0 in Chicago): the triangle spread creation around rather than running it
+  through him.
+- **LeBron vs Jordan cannot be called from this data.** Jordan's 1996-98 estimate is
+  +0.5 ± 1.8 (two seasons, both at age 33-35). Nothing from 1984-96 exists here. The
+  honest verdict: LeBron's lift is measured and real; Jordan's is unmeasured, not
+  smaller.
+- Curry's lift (+2.9 over 15 seasons) is the strongest sustained number. It shows up as
+  more rim attempts for teammates (+5.1): defenders chasing him leave the paint open.
+
+**Star x teammate-type fit** (`out/teammates_fit.csv`): lineup residuals regressed on the
+mix of teammate types around each star. Nothing clears noise: all within ~1.5 SE of 0.
+LeBron's best (playmaking guards +0.8, defensive wings +0.8, ±0.5) is suggestive only.
 
 ## Known limits
 
