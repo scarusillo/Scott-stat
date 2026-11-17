@@ -7,9 +7,10 @@ Usage: python src/box.py 1996 2024     -> data/stints/box_<YYYY>.parquet,
 import sys
 from multiprocessing import Pool
 
+import numpy as np
 import pandas as pd
 
-from build_stints import COLS, RAW, OUT
+from build_stints import COLS, OUT, RAW, TECH_FOULS
 
 
 def season_box(year):
@@ -22,6 +23,16 @@ def season_box(year):
     dist = pd.to_numeric(desc.str.extract(r"(\d+)' ")[0], errors="coerce")
     rim = ~three & (desc.str.contains("Layup|Dunk|Tip|Alley Oop|Putback") | (dist <= 3))
     ft_made = (t == 3) & ~desc.str.contains("MISS")
+    # offensive vs defensive rebound: compare the rebounder's team with the team of
+    # the last missed shot in the same game (file order; reset on makes/turnovers)
+    team1 = d.PLAYER1_TEAM_ID
+    missed = (t == 2) | ((t == 3) & desc.str.contains("MISS"))
+    shooter = pd.Series(np.where(missed, team1, np.where(t.isin([1, 5]) | ft_made, -1, np.nan)), index=d.index)
+    shooter[t == 4] = np.nan
+    last_miss = shooter.groupby(d.GAME_ID).ffill()
+    oreb = (t == 4) & is_p(1) & (team1 == last_miss)
+    # personal fouls charged to a defender (no technicals, no offensive/charge fouls)
+    pfoul = (t == 6) & is_p(1) & ~a.isin(list(TECH_FOULS) + [4, 26])
     rows = {
         "pts": [(1, (t == 1) & is_p(1), 2 + three.astype(int)), (1, ft_made & is_p(1), 1)],
         "fga": [(1, t.isin([1, 2]) & is_p(1), 1)],
@@ -32,6 +43,8 @@ def season_box(year):
         "fta": [(1, (t == 3) & ~a.isin([16, 21, 22]) & is_p(1), 1)],
         "ast": [(2, (t == 1) & is_p(2), 1)],
         "reb": [(1, (t == 4) & is_p(1), 1)],
+        "oreb": [(1, oreb, 1)],
+        "pf": [(1, pfoul, 1)],
         "tov": [(1, (t == 5) & is_p(1), 1)],
         "stl": [(2, (t == 5) & is_p(2), 1)],
         "blk": [(3, (t == 2) & is_p(3), 1)],

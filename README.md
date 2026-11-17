@@ -9,7 +9,7 @@ context he plays in**: coach, teammates, system. Basketball (NBA) first.
 |---|---|---|
 | 1. Impact | How good is he, on offense and defense, independent of team? | **RAPM built and validated (1996-97 → 2024-25)** |
 | 2. Wins | How much did he add to the wins that actually happened? | **WAR + leverage-weighted cWAR built (1996-97 → 2024-25)** |
-| 3. Breakdown | *Why* — scoring, creation, playmaking, turnovers, defense | planned |
+| 3. Breakdown | *Why* — scoring, creation, playmaking, turnovers, defense | **skill prices + per-season breakdown built (1996-97 → 2024-25)** |
 | 4. Context | Coach / teammate / system effects, learned from players who switch teams (AKM-style) | **coach effects v1 built; split-half validated** |
 
 ## Pipeline
@@ -32,6 +32,8 @@ python src/coach_cells.py              # flags cells that are really one star
 python src/rotation.py                 # Rotation IQ + Closing IQ
 python src/development.py              # young-player growth by coach
 python src/firings.py                  # mid-season firings: out-of-sample test
+python src/breakdown.py                # Layer 3: skill prices + every player-season broken down
+python src/validate_boxprior.py 2010 2016 2023 [--span 1]   # does a box-score prior help?
 ```
 
 Season labels in files are the START year: `war_2024.csv` = 2024-25.
@@ -171,12 +173,55 @@ direction is right but individual predictions are noisy. Teams that fire their c
 were underplaying their talent by 1.4/100 and still were after (-1.4): **no new-coach
 bump** once talent is controlled.
 
+## Layer 3 — Why
+
+`out/breakdown_<YYYY>.csv`, one row per player-season: each skill's contribution to the
+season rating in points per 100, plus what's left over ("not in the box score").
+
+**Skill prices** (`out/breakdown_coefs.json`): 3-season RAPM regressed on the same
+seasons' box-score rates, relative to league, all 27 rolling windows. Per 100
+possessions: +1 point above average efficiency on his own attempts = +0.54;
+assist +0.33; offensive rebound +0.34; turnover -0.75; steal +0.96; block +0.54;
+defensive rebound +0.13; extra 3PA +0.16 (spacing).
+
+**How much the box score explains** (5-fold CV, grouped by player): **61% of offensive
+impact, 25% of defensive impact.** Most defense is invisible in the box score.
+
+**Is "not in the box score" real?** In non-overlapping 3-season windows (no shared data)
+it repeats: r = 0.20 on offense, 0.36 on defense. Part noise, part real skill
+(spacing, screens, positioning, off-ball defense), especially on defense.
+
+**Shai vs Dame, broken down** (points per 100):
+
+| | Lillard 22-23 | Shai 22-23 | Shai 24-25 |
+|---|---|---|---|
+| Scoring efficiency | +2.3 | +1.7 | +2.4 |
+| Shot volume + self-creation | +2.3 | +2.5 | +3.0 |
+| Shot profile (3s) | +1.2 | -0.6 | 0.0 |
+| Playmaking | +1.5 | +0.7 | +1.1 |
+| Ball security | -1.2 | -0.7 | -0.5 |
+| Offense not in box | -0.5 | +1.0 | +0.8 |
+| Steals + blocks + boards | -0.7 | +0.7 | +0.8 |
+| **Defense not in box** | -0.2 | **-1.3** | **+2.4** |
+| **Net** | **+4.4** | **+3.5** | **+9.8** |
+
+Shai's +6.3 jump: about +2.4 on offense (efficiency, volume, fewer turnovers) and
++3.8 on defense, almost all of it **not in the box score**. That is off-ball and
+positional defense, the part steals and blocks don't show. Caveat: it coincides with
+OKC's elite defensive group and Daigneault (+2.1 D in Layer 4), so some of it may be
+scheme the player model can't fully separate.
+
+**Box-score prior as an accuracy upgrade** (`validate_boxprior.py`): shrinking ratings
+toward the box estimate instead of 0. With 3 training seasons it changes nothing (RMSE
+13.11 vs 13.11). With 1 training season it helps a little (13.04 vs 13.12; winners
+63.7% vs 63.1%). Worth using where data is thin, not a big upgrade.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
   Cross-era layers need a box-score model calibrated against RAPM on modern seasons.
-- Pure RAPM is noisy for low-minute players. The standard fix (a box-score
-  prior, as EPM / LEBRON do) is the next accuracy step.
+- Pure RAPM is noisy for low-minute players. A box-score prior (EPM / LEBRON style) was
+  tested in Layer 3: small gain with 1 season of data, none with 3.
 - WAR scale runs below B-Ref's (≈ 2.7 × VORP): RAPM-based ratings are shrunk. It is
   internally consistent; compare within this system.
 - The win-probability model ignores pregame team strength, so early-game leverage for
