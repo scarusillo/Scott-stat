@@ -258,6 +258,18 @@ def main():
 
     # final: every season rated with era-matched prices learned from ALL overlap seasons
     f = team_adjust(era_fit(d, base, tau), per_team, ts, alpha)
+    f["O_box"], f["D_box"] = f.O_c, f.D_c
+    # game logs (hist_games.py): the with/without signal from every game, used only if it
+    # beat box-only Classic on the held-out seasons
+    gm_path, gm_meta = OUT / "games_ratings.csv", OUT / "hist_games_meta.json"
+    games_used = False
+    if gm_path.exists() and gm_meta.exists() and json.load(open(gm_meta)).get("adopted"):
+        gr = pd.read_csv(gm_path)[["season", "player_id", "O_g", "D_g"]].drop_duplicates(["season", "player_id"])
+        f = f.merge(gr, on=["season", "player_id"], how="left")
+        f["O_c"] = f.O_g.fillna(f.O_c)
+        f["D_c"] = f.D_g.fillna(f.D_c)
+        f["games_informed"] = f.O_g.notna()
+        games_used = True
     f["net_c"] = f.O_c + f.D_c
     m = f.nba_id.notna() & (f.plus_poss >= 1000)
     resid_sd = float(np.sqrt(np.average((f.net_c[m] - f.net[m]) ** 2, weights=f.plus_poss[m])))
@@ -278,14 +290,16 @@ def main():
     f["se_net"] = resid_sd
     f["season_start"] = f.season - 1
     cols = ["season_start", "band", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
-            "se_net", "WAR_c", "box_O", "box_D", "gap_O", "gap_D", "nba_id", "O", "D", "net"]
+            "se_net", "WAR_c", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
+    if games_used:
+        cols.append("games_informed")
     for y, x in f.groupby("season_start"):
         x[cols].rename(columns={"O_c": "O_classic", "D_c": "D_classic", "net_c": "net_classic", "WAR_c": "WAR_classic",
                                 "O": "O_plus", "D": "D_plus", "net": "net_plus"}).sort_values(
             "WAR_classic", ascending=False).to_csv(OUT / f"classic_{y}.csv", index=False, float_format="%.3f")
     meta = {"validation": val, "coef_O_1989_90": dict(zip(["intercept"] + FEATS, bO)),
             "coef_D_1989_90": dict(zip(["intercept"] + FEATS, bD)),
-            "alpha": alpha, "resid_sd_net": resid_sd, "first_season": FIRST_END - 1}
+            "alpha": alpha, "resid_sd_net": resid_sd, "first_season": FIRST_END - 1, "games_informed": games_used}
     (OUT / "classic_meta.json").write_text(json.dumps(meta, indent=1, default=float))
     print("resid sd", round(resid_sd, 2))
 

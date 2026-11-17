@@ -48,6 +48,8 @@ python src/defense_attribution.py "LeBron James"   # audit: how a lineup's D get
 python src/luck.py                     # luck adjustment written into every stint (run before the models)
 python src/player_coach.py             # each player under each coach (raw + own-trend removed)
 python src/composite.py                # THE SCOTT STAT: careers (Plus + Classic), seasons
+python src/hist_games.py               # game logs (Kaggle, 1946-47 on): with/without signal, tested
+python src/classic.py                  # (again) Classic now game-informed where adopted
 python src/progression.py              # risers/fallers, career arcs, coach arrivals
 python src/scenarios.py                # coach style x player type matrix, best coaches per type
 python src/build_site_data.py          # site/data.json for the site prototype (site/index.html)
@@ -479,6 +481,36 @@ chance). Leads: rim runners under defense-first coaches +0.5 (z 2.5), scoring wi
 three-point-heavy systems +0.3, interior scorers under isolation coaches -0.6, scoring
 wings in deep rotations -0.4. Per-type coach rankings (broad cells only) are the reliable
 part: e.g. rim runners under Doc Rivers +3.5 across 11 players.
+
+## Game logs: the with/without signal for every era
+
+Source: every NBA box score since 1946-47 (Kaggle `eoinamoore/historical-nba-data-and-player-box-scores`,
+downloaded with the owner's Kaggle token into `data/kaggle_dl/`, not committed). Pre-1975
+minutes are mostly blank; who played is recorded, and blanks get the player's season
+minutes per game. `hist_games.py` explains every game's score (each team's points per 100)
+by who played, minutes-weighted, adjusted for opponents and home court, per three-season
+window, as a ridge regression **toward each player's Classic rating**. Game results move a
+player off his box-score estimate only as far as the with/without evidence supports.
+
+**Tested honestly:** Classic fit on 1996-97..2012-13 only, then 2013-14..2024-25 (3,912
+player-seasons) rated with and without game logs vs Plus: r 0.658 -> **0.674**, RMSE
+1.62 -> 1.59 (penalty 300, chosen by RMSE). Adopted. About 92% of Classic player-seasons
+are game-informed.
+
+**Bill Russell, raw:** Boston +7.0 per game in his 963 games, +1.5 in the 52 he missed;
++0.7 the season before he arrived, +5.8 his first full season; +6.0 -> -1.9 after he
+retired (with Sam Jones). Against a backup for ~44 minutes, that's about +3.5 per 100
+over average, close to Classic's box + team estimate. Game logs confirm him; they don't
+lift him further. Peak 3.68 (1960-65).
+
+**New all-time peaks (best 5):** Jokić 6.50, LeBron 6.37, Curry 6.10, Jordan 6.06,
+Paul 5.98, Robinson 5.97, Kareem 5.40, Stockton 5.18, Magic 5.16. The top four sit within
+0.45; a five-season peak is good to about ±0.7, so they're a statistical tie.
+Jordan's 1987-92 seasons moved -0.2 on average, along with Pippen (-0.1) and Grant (-0.2):
+game by game, those Bulls were slightly less dominant than season totals suggest. LeBron
+rose +0.3, most in 2009-11, windows that include Cleveland's 61 -> 19 win collapse after he left.
+Jokić's 6.41 -> 6.50 and earlier jump past Jordan come from adding his 2025-26 season (+6.9,
+Classic only so far; his best five moved from 2020-25 to 2021-26).
 
 ## Known limits
 

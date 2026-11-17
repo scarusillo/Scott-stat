@@ -115,6 +115,7 @@
   "mpg": 0.0
  },
  "alpha": 0.75,
- "resid_sd_net": 1.593401901727228,
- "first_season": 1951
+ "resid_sd_net": 1.5578415236329728,
+ "first_season": 1951,
+ "games_informed": true
 }

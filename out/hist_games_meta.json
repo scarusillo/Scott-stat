@@ -1,0 +1,24 @@
+{
+ "test_r": {
+  "classic_only": 0.6575771659287935,
+  "with_games_lam30": 0.6257560832234725,
+  "rmse_classic_lam30": 1.6210596347334345,
+  "rmse_games_lam30": 1.7958914345980452,
+  "n": 3912,
+  "with_games_lam100": 0.6743381763265561,
+  "rmse_classic_lam100": 1.6210596347334345,
+  "rmse_games_lam100": 1.6041652791933703,
+  "with_games_lam300": 0.6739845373470452,
+  "rmse_classic_lam300": 1.6210596347334345,
+  "rmse_games_lam300": 1.5909562430551467,
+  "with_games_lam1000": 0.665686310130142,
+  "rmse_classic_lam1000": 1.6210596347334345,
+  "rmse_games_lam1000": 1.6050569901810001,
+  "with_games_lam3000": 0.6608635216245484,
+  "rmse_classic_lam3000": 1.6210596347334345,
+  "rmse_games_lam3000": 1.6144444698417648
+ },
+ "lambda": 300,
+ "adopted": true,
+ "test": "Classic fit on 1996-97..2012-13; seasons 2013-14..2024-25 rated with and without game logs; r vs Plus"
+}
