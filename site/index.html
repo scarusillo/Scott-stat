@@ -146,7 +146,7 @@ function leaders() {
       ${plus ? `<th>Scott Stat</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Clutch</th><th>Playoffs</th><th>Peak 5</th><th>Wins</th>`
         : `<th>Peak 5</th><th>Career</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Best season</th><th>Wins</th>`}
     </tr></thead><tbody>${rows.map((p, i) => plus ? `<tr tabindex="0" data-go="#player-${p.id}">
-      <td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td>
+      <td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}${p.partial_from ? ` <span class="flag" title="Career began ${p.partial_from}; play-by-play covers only from 1996-97">late career</span>` : ""}</td>
       <td class="num"><b>${f(p.scott, 2)}</b><span class="pm">±${f(p.se, 1, false)}</span></td>
       <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td>
       <td class="num">${f(p.prod)}</td><td class="num ${cls(p.lift)}">${f(p.lift)}</td>
@@ -157,7 +157,7 @@ function leaders() {
       <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td><td class="num">${f(p.prod)}</td>
       <td class="num ${cls(p.lift)}">${f(p.lift)}</td><td class="num">${f(p.best)} <span class="pm">${p.best_year}</span></td><td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
     </tbody></table></div>
-    <p class="note">${plus ? `Scott Stat = all-game impact + ${(D.meta.clutch_weight * 100).toFixed(0)}% of the clutch rise (clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of possessions but ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games) + the playoff rise weighted by the player's share of playoff possessions. Production = what his own box score explains. Lift = the rest: teammates playing better and the team defending better while he's on the floor. ± is one standard error.`
+    <p class="note">${plus ? `Scott Stat = all-game impact + ${(D.meta.clutch_weight * 100).toFixed(0)}% of the clutch rise (clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of possessions but ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games) + the playoff rise weighted by the player's share of playoff possessions. Production = what his own box score explains. Lift = the rest: teammates playing better and the team defending better while he's on the floor. ± is one standard error. "Late career" marks players whose careers began before 1996-97: only their later seasons are measured here, so use the Classic tier for their full careers.`
       : `Classic ranks by the best five consecutive seasons. Players whose careers began before 1977-78 show only their later seasons.`}</p>
   </div>`;
   $("#t-plus").onclick = () => { state.tier = "plus"; save(); leaders(); };
@@ -225,7 +225,7 @@ function playerView(id) {
   $("#app").innerHTML = `<div class="stack">
     <a href="#leaders" class="note">← Leaderboard</a>
     <div class="hero"><div><div class="eyebrow">${p.first}-${String(p.last + 1).slice(2)} · ${p.seasons} seasons · ${esc(p.type || "")}${rank ? ` · #${rank} career Scott Stat (4+ seasons)` : ""}</div>
-      <h1>${esc(p.name)}</h1><p class="lede">${explain(p)}</p></div>
+      <h1>${esc(p.name)}</h1><p class="lede">${p.partial_from ? `<b>Late career only:</b> his career began in ${p.partial_from}, before play-by-play. These numbers cover ${p.first}-${String(p.last + 1).slice(2)}; see the Classic tier for the full career. ` : ""}${explain(p)}</p></div>
       <div style="text-align:right"><div class="eyebrow">Scott Stat</div><div class="big">${f(p.scott, 1)}<small> ±${f(p.se, 1, false)}</small></div></div></div>
     <div class="tiles">
       <div class="tile o"><small>Offense</small><b class="${cls(p.off)}">${f(p.off)}</b><small>per 100 possessions</small></div>
@@ -349,7 +349,7 @@ function method() {
   <div class="panel prose"><h3>3 · Clutch and playoffs</h3><p>Clutch is the NBA's definition: the last five minutes of the fourth quarter or overtime, within five points. A player's clutch rise is how much better his lineups did in those minutes than everyone's normal ratings predict. Clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of all possessions but carry ${(D.meta.clutch_weight * 100).toFixed(0)}% of the swings in win probability, so that's its weight in the Scott Stat. Playoff rise works the same way over every playoff possession.</p>
     <p>For most players, clutch is not a repeatable skill: estimated on odd and even seasons separately, the two halves barely agree. The ranking keeps it at its earned weight and shows the error range.</p></div>
   <div class="panel prose"><h3>4 · Coaches</h3><p>Players are held at their own career level and aging curve, so a coach gets credit only when players play above their norm under him. Players moving between coaches separate the coach from the player. The same machinery estimates how each player did under each coach, with or without his own career arc removed.</p></div>
-  <div class="panel prose"><h3>5 · Classic, for every era</h3><p>Before 1996-97 there's no play-by-play. Classic estimates the same impact from season box scores plus team results, trained on the seasons where both exist. Tested on 2014-2025, it tracks the play-by-play number at r = ${pct(cl.test_classic?.r_net)} (Basketball-Reference's BPM: ${pct(cl.test_bref_bpm?.r_net)}). It squeezes the very top, so Plus and Classic are never mixed in one ranking.</p></div>
+  <div class="panel prose"><h3>5 · Classic, for every era</h3><p>Before 1996-97 there's no play-by-play. Classic estimates the same impact from season box scores plus team results, trained on the seasons where both exist. Two rules keep it honest across eras. It never extrapolates: every stat is capped at the range seen in the training seasons (John Stockton's late-1980s assist rate is higher than any season since 1996). And skill values are era-matched: each season is priced mostly from the play-by-play seasons nearest to it, because values drift (an assist was worth 0.33 points per 100 possessions in 1997-2004 and 0.42 in 2019-25). The weighting was chosen by predicting 1996-2002 from later seasons only, the same situation Classic faces for the 1980s. Tested on 2014-2025, it tracks the play-by-play number at r = ${pct(cl.test_classic?.r_net)} (Basketball-Reference's BPM: ${pct(cl.test_bref_bpm?.r_net)}). It squeezes the very top, so Plus and Classic are never mixed in one ranking.</p></div>
   <div class="panel prose"><h3>What it can't do yet</h3><ul><li>Prime Jordan, Magic and Bird are Classic only. A with-or-without-you signal from game logs would sharpen pre-1996 defense.</li><li>"Coach" still includes the front office and the team's system.</li><li>Single seasons are noisy. Read the ± and the eras.</li></ul></div></div>`;
 }
 

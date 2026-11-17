@@ -6,6 +6,12 @@ github.com/sumitrodatta/bball-reference-datasets (data/hist/). Classic starts
 in 1977-78, the first season with turnovers recorded (steals/blocks 1973-74).
 
 Model, fit on every 1996-97+ player-season where both tiers exist:
+  0. No extrapolation: every box rate is clipped to the range seen in the
+     training era (John Stockton's 1987-92 assist rate exceeds every training
+     season). Skill prices are ERA-MATCHED: each season is rated with prices
+     fit mostly on the play-by-play seasons nearest to it (exponential weight,
+     half-width TAU chosen by a backcast test), because prices drift (an assist
+     was worth 0.33/100 in 1997-2004 and 0.42 in 2019-25).
   1. Box estimate: Plus offense and defense (season ratings, wins.py) regressed
      on per-100 box rates relative to league (efficiency, volume, assists,
      turnovers, boards, steals, blocks, fouls, 3PA), position and role.
@@ -38,6 +44,7 @@ FEATS = BOX + EXTRA
 PRIOR_POSS = 300
 LAM = 50.0
 REPL_WINPCT = 0.20
+TAUS = (3.0, 5.0, 8.0, 12.0, float("inf"))   # era-weighting half-widths (seasons) tried in the backcast
 
 
 def norm(name):
@@ -111,6 +118,32 @@ def predict(d, bO, bD):
     return X @ bO, X @ bD
 
 
+def era_fit(d, train, tau):
+    """Box estimate for every row, with each season's skill prices fit on the
+    training seasons weighted by exp(-|training season - anchor| / tau), where
+    anchor is the target season clipped into the training range. tau = inf is
+    one model for every era."""
+    d = d.copy()
+    feats = ["f_" + f for f in FEATS]
+    tr = d[train]
+    lo, hi = tr.season.min(), tr.season.max()
+    X_tr, yO, yD, w0 = tr[feats].to_numpy(), tr.O.to_numpy(), tr.D.to_numpy(), tr.plus_poss.to_numpy()
+    d["box_O"], d["box_D"] = np.nan, np.nan
+    cache = {}
+    for season in sorted(d.season.unique()):
+        anchor = min(max(season, lo), hi)
+        if anchor not in cache:
+            w = w0 if np.isinf(tau) else w0 * np.exp(-np.abs(tr.season.to_numpy() - anchor) / tau)
+            cache[anchor] = (wls(X_tr, yO, w), wls(X_tr, yD, w))
+        bO, bD = cache[anchor]
+        m = d.season == season
+        X = np.c_[np.ones(m.sum()), d.loc[m, feats].to_numpy()]
+        d.loc[m, "box_O"], d.loc[m, "box_D"] = X @ bO, X @ bD
+        if season == 1990:
+            d.attrs["coef_O_1990"], d.attrs["coef_D_1990"] = bO, bD
+    return d
+
+
 def team_adjust(d, per_team, ts, alpha):
     """Share alpha x (team actual - sum of box estimates) per possession played."""
     d = d.copy()
@@ -154,41 +187,56 @@ def main():
     print(f"matched to Plus: {matched.mean():.3f} of player-seasons, "
           f"{np.average(matched, weights=overlap.poss):.3f} of possessions", flush=True)
 
-    feats = ["f_" + f for f in FEATS]
-    train = d.nba_id.notna() & (d.season <= 2013) & (d.plus_poss >= 250)
+    # 1) never extrapolate: clip every box rate to the range seen in the training era
+    ref = d[d.nba_id.notna() & (d.plus_poss >= 1000)]
+    for f_ in BOX:
+        lo, hi = ref["f_" + f_].min(), ref["f_" + f_].max()
+        d["f_" + f_] = d["f_" + f_].clip(lo, hi)
+    base = d.nba_id.notna() & (d.plus_poss >= 250)
+
+    # 2) era-matched skill prices: choose TAU by a BACKCAST (train on 2002-03 on,
+    #    predict 1996-97..2001-02 as if it were the unseen past), the situation
+    #    Classic is in for every pre-1996 season
+    back_tr = base & (d.season >= 2003)
+    back_te = d.nba_id.notna() & (d.season <= 2002)
+    backcast = {}
+    for tau in TAUS:
+        x = team_adjust(era_fit(d, back_tr, tau), per_team, ts, 1.0)
+        backcast[str(tau)] = score(x, back_te, "O_c", "D_c")
+    tau = min(TAUS, key=lambda t: backcast[str(t)]["rmse_net"])
+    print("backcast by tau:", {k: round(v["r_net"], 3) for k, v in backcast.items()}, "-> tau", tau, flush=True)
+
+    # 3) forward test (train 1997-2013, test 2014-2025), team-adjustment share alpha
+    fwd_tr = base & (d.season <= 2013)
     test = d.nba_id.notna() & (d.season >= 2014)
-    bO = wls(d.loc[train, feats].to_numpy(), d.loc[train, "O"].to_numpy(), d.loc[train, "plus_poss"].to_numpy())
-    bD = wls(d.loc[train, feats].to_numpy(), d.loc[train, "D"].to_numpy(), d.loc[train, "plus_poss"].to_numpy())
-    d["box_O"], d["box_D"] = predict(d, bO, bD)
-    # pick alpha on the TRAIN seasons, report on test
+    dfit = era_fit(d, fwd_tr, tau)
     best = None
     for a in (0.0, 0.25, 0.5, 0.75, 1.0):
-        s = score(team_adjust(d, per_team, ts, a), train, "O_c", "D_c")
-        if best is None or s["rmse_net"] < best[1]["rmse_net"]:
-            best = (a, s)
+        sc = score(team_adjust(dfit, per_team, ts, a), fwd_tr, "O_c", "D_c")
+        if best is None or sc["rmse_net"] < best[1]["rmse_net"]:
+            best = (a, sc)
     alpha = best[0]
-    dt = team_adjust(d, per_team, ts, alpha)
+    dt = team_adjust(dfit, per_team, ts, alpha)
+    du = team_adjust(era_fit(d, fwd_tr, float("inf")), per_team, ts, alpha)
     adv = pd.read_csv(HIST / "Advanced.csv")
     adv = adv[(adv.lg == "NBA") & ~adv.team.str.match(r"^\dTM$|^TOT$")]
     bpm = adv.assign(w=adv.mp).groupby(["season", "player_id"]).apply(
         lambda x: pd.Series({"obpm": np.average(x.obpm, weights=x.w.clip(lower=1)),
                              "dbpm": np.average(x.dbpm, weights=x.w.clip(lower=1))}), include_groups=False)
     dt = dt.join(bpm, on=["season", "player_id"])
-    val = {"alpha": alpha,
+    val = {"alpha": alpha, "tau": tau, "backcast": backcast,
            "test_box_only": score(dt, test, "box_O", "box_D"),
            "test_classic": score(dt, test, "O_c", "D_c"),
+           "test_classic_uniform_era": score(du, test, "O_c", "D_c"),
            "test_bref_bpm": score(dt, test & dt.obpm.notna(), "obpm", "dbpm")}
-    print(json.dumps(val, indent=1), flush=True)
+    print(json.dumps({k: v for k, v in val.items() if k != "backcast"}, indent=1), flush=True)
 
-    # final fit on all overlap seasons; residual SD -> uncertainty
-    allm = d.nba_id.notna() & (d.plus_poss >= 250)
-    bO = wls(d.loc[allm, feats].to_numpy(), d.loc[allm, "O"].to_numpy(), d.loc[allm, "plus_poss"].to_numpy())
-    bD = wls(d.loc[allm, feats].to_numpy(), d.loc[allm, "D"].to_numpy(), d.loc[allm, "plus_poss"].to_numpy())
-    d["box_O"], d["box_D"] = predict(d, bO, bD)
-    f = team_adjust(d, per_team, ts, alpha)
+    # final: every season rated with era-matched prices learned from ALL overlap seasons
+    f = team_adjust(era_fit(d, base, tau), per_team, ts, alpha)
     f["net_c"] = f.O_c + f.D_c
     m = f.nba_id.notna() & (f.plus_poss >= 1000)
     resid_sd = float(np.sqrt(np.average((f.net_c[m] - f.net[m]) ** 2, weights=f.plus_poss[m])))
+    bO, bD = f.attrs.get("coef_O_1990", np.zeros(len(FEATS) + 1)), f.attrs.get("coef_D_1990", np.zeros(len(FEATS) + 1))
 
     # wins: same replacement-level logic as wins.py, from each season's team results
     tsn = ts[ts.season >= FIRST_END]
@@ -207,7 +255,8 @@ def main():
         x[cols].rename(columns={"O_c": "O_classic", "D_c": "D_classic", "net_c": "net_classic", "WAR_c": "WAR_classic",
                                 "O": "O_plus", "D": "D_plus", "net": "net_plus"}).sort_values(
             "WAR_classic", ascending=False).to_csv(OUT / f"classic_{y}.csv", index=False, float_format="%.3f")
-    meta = {"validation": val, "coef_O": dict(zip(["intercept"] + FEATS, bO)), "coef_D": dict(zip(["intercept"] + FEATS, bD)),
+    meta = {"validation": val, "coef_O_1989_90": dict(zip(["intercept"] + FEATS, bO)),
+            "coef_D_1989_90": dict(zip(["intercept"] + FEATS, bD)),
             "alpha": alpha, "resid_sd_net": resid_sd, "first_season": FIRST_END - 1}
     (OUT / "classic_meta.json").write_text(json.dumps(meta, indent=1, default=float))
     print("resid sd", round(resid_sd, 2))

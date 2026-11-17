@@ -426,7 +426,22 @@ Woodson +0.6, Lue -0.6.
 **Results** (Plus, 20k+ possessions): career Scott Stat: Jokić 6.26, LeBron 5.91,
 Stockton 5.74 (1996-2003 only), Duncan 5.53, Garnett 5.38. Peak (best 5 + clutch +
 playoffs): LeBron 8.11, Duncan 7.57, Curry 7.21, Jokić 7.18, Garnett 7.17. Classic peak
-(1977-78 on): Stockton 6.28, Jokić 6.22, **Jordan 6.10, LeBron 5.94**, Paul 5.78, Curry 5.58.
+(1977-78 on, era-matched): **Jordan 6.27**, Jokić 6.16, **LeBron 6.10**, Paul 5.93, Curry 5.79,
+Robinson 5.65, Stockton 5.26, Magic 5.05, Hakeem 4.99, Bird 4.96.
+
+**Classic fix (Stockton).** The first Classic ranked Stockton's 1987-92 peak #1. The cause
+was two kinds of extrapolation, not a judgment call:
+1. His assist rate (+12.9 per 100 over league) is above every one of the 15,006 training
+   player-seasons (max +12.0, Nash). The linear model credited his assists +4.9 per 100
+   (Jordan's +1.1). Fix: every box rate is capped at the training-era range.
+2. Skill prices drift by era (assist 0.33 -> 0.42, efficiency 0.49 -> 0.43, defensive
+   rebound 0.28 -> 0.09 from 1997-2004 to 2019-25), and the all-era model priced the 1980s
+   at mostly three-point-era values. Fix: era-matched prices (exponential weight on the
+   nearest play-by-play seasons, half-width 5 seasons chosen by backcasting 1996-2002
+   from 2002-03 onward).
+Holdout (2014-2025) r improves 0.653 -> 0.660 (BPM 0.644); backcast r 0.673 -> 0.676.
+`src/classic_variants.py` keeps the comparison of capping variants. Plus-tier players whose
+careers began before 1996-97 are labeled "late career" on the site.
 
 **Site prototype** (`site/`): leaderboard (Plus / Classic), player pages with
 production / lift / clutch / playoffs / eras / coaches, compare, coaches, GM hidden-value

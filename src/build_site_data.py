@@ -31,6 +31,8 @@ def main():
     arch = pd.read_parquet(ROOT / "data" / "archetypes.parquet")
 
     keep = plus[plus.poss >= MIN_CAREER_POSS]
+    # careers that began before play-by-play: Plus measures only their later seasons
+    cfirst = classic.assign(k=classic.player.str.lower()).groupby("k")["first"].min()
     S = seasons[seasons.player_id.isin(keep.player_id) & (seasons.poss >= 500)]
     main_type = arch.groupby("player_id").archetype.agg(lambda x: x.mode().iat[0])
     players = []
@@ -43,6 +45,7 @@ def main():
                 eras.append([head, float(v)])
         players.append({
             "id": int(p.player_id), "name": p.player, "first": int(p.first), "last": int(p.last),
+            "partial_from": int(cfirst.get(p.player.lower(), p.first)) if cfirst.get(p.player.lower(), p.first) < p.first else None,
             "seasons": int(p.seasons), "poss": int(p.poss), "type": main_type.get(p.player_id),
             "scott": r(p.scott_stat), "impact": r(p.impact), "se": r(p.impact_se),
             "off": r(p.offense), "def": r(p.defense), "prod": r(p.production), "lift": r(p.lift),
