@@ -374,6 +374,18 @@ def main():
     credit = fit_credit(dfin, per_team, ts, base)
     val["credit"] = credit
     f = team_adjust(dfin, per_team, ts, alpha, credit)
+    # SPREAD RESTORATION: with fewer recorded stats the model knows less, so its ratings sit closer to
+    # average. Measured on the same modern players (1996-97 on, 2,000+ possessions): rated with only the
+    # stats an older era recorded, the spread of ratings shrinks. That is missing information, not
+    # missing talent, so older bands are widened back by the same ratio (below, before the ABA step).
+    mm_ = (f.season >= 1997) & (f.poss >= 2000)
+    full_sd = float((f.O_c + f.D_c)[mm_].std())
+    spread = {}
+    for band_ in ("no_turnovers", "lite"):
+        xb = team_adjust(era_fit(d, base, tau, force_band=band_), per_team, ts, alpha, credit)
+        spread[band_] = full_sd / float((xb.O_c + xb.D_c)[mm_].std())
+    val["spread_restoration"] = spread
+    print("spread restoration:", spread, flush=True)
     f["O_box"], f["D_box"] = f.O_c, f.D_c
     # game logs (hist_games.py): the with/without signal from every game, used only if it
     # beat box-only Classic on the held-out seasons
@@ -388,6 +400,16 @@ def main():
         f["D_c"] = f.D_g.fillna(f.D_c)
         f["games_informed"] = f.O_g.notna()
         games_used = True
+    f["net_c"] = f.O_c + f.D_c
+    for band_, fac in spread.items():
+        mb = f.band == band_
+        if not mb.any():
+            continue
+        g_ = f[mb].groupby(["season", "lg"])
+        for c in ("O_c", "box_O", "O_box", "D_c", "box_D", "D_box"):
+            mu = g_.apply(lambda z: np.average(z[c], weights=z.poss), include_groups=False)
+            base_ = pd.MultiIndex.from_arrays([f.loc[mb, "season"], f.loc[mb, "lg"]]).map(mu).to_numpy()
+            f.loc[mb, c] = base_ + fac * (f.loc[mb, c] - base_)
     f["net_c"] = f.O_c + f.D_c
     # ABA seasons: rated against their own league above, then moved down to NBA level
     aba = f.lg == "ABA"

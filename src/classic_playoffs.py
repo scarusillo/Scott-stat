@@ -160,7 +160,12 @@ def main():
     reg["season"] = reg.season_start + 1
     m = reg.merge(po, on=["season", "player_id"], how="left")
     m["po_poss"] = m.po_poss.fillna(0)
-    m["playoff_rise_raw"] = m.po_net - m.net_classic
+    # like for like: the playoff rating (box + team playoff results) against the SAME construction for his
+    # regular season (box + team results), not against the full regular rating, which also carries game
+    # logs, play-by-play and the creation premium (comparing to that made every such star look worse in
+    # the playoffs: Jordan "dropped" 1.3-1.9 a year). The rise is then added to his full rating.
+    m["reg_same"] = m.box_O + m.box_D + alpha * (m.gap_O.fillna(0) + m.gap_D.fillna(0))
+    m["playoff_rise_raw"] = m.po_net - m.reg_same
     # zero point = the typical playoff player's rise that season (playoff possession-weighted)
     has = m.po_poss > 0
     season_mean = m[has].groupby("season").apply(lambda g: np.average(g.playoff_rise_raw, weights=g.po_poss), include_groups=False)

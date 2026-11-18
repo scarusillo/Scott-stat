@@ -123,7 +123,7 @@ def main():
     # TITLE SHARES: each real championship (1.0) split among the champion's players by their
     # contribution in THOSE playoffs: (rating - replacement) x playoff possessions, positive part.
     # League-size version: a title among N teams counts N/30 (one of 30 is harder than one of 8).
-    po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "po_poss"]]
+    po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "po_poss", "po_net"]]
     pl = pl.merge(po, on=["season_start", "player_id"], how="left")
     pl["po_poss"] = pl.po_poss.fillna(0)
     if "po_poss_moved" in pl:
@@ -134,7 +134,9 @@ def main():
     # title odds actually behave. (An earlier version split by value above replacement, which gave a
     # No. 2 about 80% of the star's share.) d uses his share of the team's playoff possessions.
     team_po = pl.groupby(["season", "team"]).po_poss.transform("sum") / 5
-    d_po = (pl.net_classic - pl.season.map(repl)) * (pl.po_poss / team_po.where(team_po > 0)) * pl.pace / 100
+    # rating IN THOSE PLAYOFFS (classic_playoffs.py: playoff box + team, shrunk toward his own season)
+    po_rating = pl.po_net.fillna(pl.net_classic) if "po_net" in pl else pl.net_classic
+    d_po = (po_rating - pl.season.map(repl)) * (pl.po_poss / team_po.where(team_po > 0)) * pl.pace / 100
     pl["po_contrib"] = np.expm1(b * d_po.fillna(0).clip(lower=0))
     pl["po_contrib_even"] = ((pl.net_classic - pl.season.map(repl)) * pl.po_poss).clip(lower=0)
     tot = pl[pl.won_title].groupby(["season", "team"]).po_contrib.transform("sum")

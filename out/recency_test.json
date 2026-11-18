@@ -3,17 +3,17 @@
   {
    "era": "1951-64",
    "n": 21,
-   "individual": 3.0,
-   "team_credit": 0.9,
-   "impact": 3.9,
+   "individual": 3.31,
+   "team_credit": 1.0,
+   "impact": 4.31,
    "team_margin": 5.33
   },
   {
    "era": "1965-76",
    "n": 22,
-   "individual": 3.36,
-   "team_credit": 0.56,
-   "impact": 3.92,
+   "individual": 3.65,
+   "team_credit": 0.62,
+   "impact": 4.26,
    "team_margin": 5.98
   },
   {
@@ -60,20 +60,20 @@
  "scale": [
   {
    "era": "1951-64",
-   "best_player": 4.6,
-   "top3": 4.0,
-   "top10": 2.74,
+   "best_player": 5.03,
+   "top3": 4.4,
+   "top10": 3.02,
    "player_seasons": 841.0,
-   "share_of_top100": 0.02,
+   "share_of_top100": 0.03,
    "share_of_all": 0.08
   },
   {
    "era": "1965-76",
-   "best_player": 5.64,
-   "top3": 4.5,
-   "top10": 3.21,
+   "best_player": 6.07,
+   "top3": 4.83,
+   "top10": 3.44,
    "player_seasons": 1982.0,
-   "share_of_top100": 0.08,
+   "share_of_top100": 0.1,
    "share_of_all": 0.18
   },
   {
@@ -91,7 +91,7 @@
    "top3": 6.21,
    "top10": 4.74,
    "player_seasons": 1863.0,
-   "share_of_top100": 0.25,
+   "share_of_top100": 0.22,
    "share_of_all": 0.17
   },
   {
@@ -151,11 +151,11 @@
  ],
  "peak_se": 0.69,
  "p_best_peak": {
-  "LeBron James": 0.329,
-  "Michael Jordan": 0.281,
-  "Nikola Joki\u0107": 0.217,
-  "Stephen Curry": 0.141,
-  "David Robinson": 0.022,
-  "Giannis Antetokounmpo": 0.01
+  "LeBron James": 0.323,
+  "Michael Jordan": 0.276,
+  "Nikola Joki\u0107": 0.212,
+  "Stephen Curry": 0.138,
+  "Kareem Abdul-Jabbar": 0.029,
+  "David Robinson": 0.021
  }
 }

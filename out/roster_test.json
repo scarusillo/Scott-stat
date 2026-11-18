@@ -1,21 +1,21 @@
 {
- "rookie_rating": -0.8711498325726272,
+ "rookie_rating": -0.8891395029665319,
  "actual_on_predicted": {
-  "intercept": -0.00032474727168033086,
-  "slope": 1.19332750388533,
-  "r": 0.8525996160973637,
+  "intercept": 0.010970164489909404,
+  "slope": 1.19214889178118,
+  "r": 0.8526733234200123,
   "n": 1358
  },
  "split": {
-  "stayers_slope": 1.1713158276074693,
-  "se_stay": 0.024717308342462194,
-  "movers_slope": 1.2711613996750903,
-  "se_move": 0.05578150668226384
+  "stayers_slope": 1.1707589929661109,
+  "se_stay": 0.02474029236081801,
+  "movers_slope": 1.2671230733378596,
+  "se_move": 0.055581842959700395
  },
  "stars_moving": {
   "n": 54,
-  "mean_resid_team_left": -0.9916394039679063,
-  "mean_resid_team_joined": -0.3208961974418872,
+  "mean_resid_team_left": -0.9880168137340534,
+  "mean_resid_team_joined": -0.3174871750888335,
   "note": "positive left / negative joined would mean the star was over-rated; the reverse, under-rated"
  },
  "star_moves": [
@@ -27,7 +27,7 @@
    "net_classic": 8.6,
    "new_team": "MIA",
    "resid_left": -5.85,
-   "resid_joined": -4.2
+   "resid_joined": -4.19
   },
   {
    "season": 2020,
@@ -36,7 +36,7 @@
    "team": "HOU",
    "net_classic": 6.76,
    "new_team": "BRK",
-   "resid_left": -4.02,
+   "resid_left": -3.99,
    "resid_joined": 2.9
   },
   {
@@ -46,8 +46,8 @@
    "team": "LAC",
    "net_classic": 6.38,
    "new_team": "HOU",
-   "resid_left": -0.98,
-   "resid_joined": 0.44
+   "resid_left": -0.96,
+   "resid_joined": 0.45
   },
   {
    "season": 2014,
@@ -56,8 +56,8 @@
    "team": "MIA",
    "net_classic": 6.33,
    "new_team": "CLE",
-   "resid_left": -2.89,
-   "resid_joined": -2.97
+   "resid_left": -2.87,
+   "resid_joined": -2.98
   },
   {
    "season": 2018,
@@ -67,7 +67,7 @@
    "net_classic": 5.42,
    "new_team": "LAL",
    "resid_left": -4.02,
-   "resid_joined": -1.97
+   "resid_joined": -1.98
   },
   {
    "season": 2024,
@@ -77,7 +77,7 @@
    "net_classic": 5.25,
    "new_team": "LAL",
    "resid_left": -1.1,
-   "resid_joined": -0.5
+   "resid_joined": -0.49
   },
   {
    "season": 2019,
@@ -87,7 +87,7 @@
    "net_classic": 5.06,
    "new_team": "LAC",
    "resid_left": 2.47,
-   "resid_joined": 1.88
+   "resid_joined": 1.89
   },
   {
    "season": 2016,
@@ -97,7 +97,7 @@
    "net_classic": 5.05,
    "new_team": "GSW",
    "resid_left": -1.17,
-   "resid_joined": -3.33
+   "resid_joined": -3.31
   },
   {
    "season": 2020,
@@ -107,7 +107,7 @@
    "net_classic": 4.92,
    "new_team": "PHO",
    "resid_left": -5.95,
-   "resid_joined": 2.13
+   "resid_joined": 2.12
   },
   {
    "season": 2011,
@@ -117,7 +117,7 @@
    "net_classic": 4.84,
    "new_team": "LAC",
    "resid_left": 1.67,
-   "resid_joined": 0.8
+   "resid_joined": 0.79
   },
   {
    "season": 2023,
@@ -126,7 +126,7 @@
    "team": "MIL",
    "net_classic": 4.56,
    "new_team": "BOS",
-   "resid_left": -3.21,
+   "resid_left": -3.19,
    "resid_joined": 2.99
   },
   {
@@ -136,8 +136,8 @@
    "team": "POR",
    "net_classic": 4.5,
    "new_team": "MIL",
-   "resid_left": -4.65,
-   "resid_joined": -3.21
+   "resid_left": -4.63,
+   "resid_joined": -3.19
   },
   {
    "season": 2007,
@@ -146,8 +146,8 @@
    "team": "MIN",
    "net_classic": 4.47,
    "new_team": "BOS",
-   "resid_left": 0.16,
-   "resid_joined": 2.25
+   "resid_left": 0.14,
+   "resid_joined": 2.26
   },
   {
    "season": 2004,
@@ -156,8 +156,8 @@
    "team": "LAL",
    "net_classic": 4.41,
    "new_team": "MIA",
-   "resid_left": -0.81,
-   "resid_joined": 4.5
+   "resid_left": -0.83,
+   "resid_joined": 4.49
   },
   {
    "season": 2022,
@@ -167,7 +167,7 @@
    "net_classic": 4.29,
    "new_team": "MIN",
    "resid_left": 0.11,
-   "resid_joined": -3.69
+   "resid_joined": -3.7
   },
   {
    "season": 2017,
@@ -176,7 +176,7 @@
    "team": "CHI",
    "net_classic": 4.17,
    "new_team": "MIN",
-   "resid_left": -1.33,
+   "resid_left": -1.35,
    "resid_joined": -1.96
   },
   {
@@ -186,8 +186,8 @@
    "team": "PHI",
    "net_classic": 4.06,
    "new_team": "PHO",
-   "resid_left": -4.11,
-   "resid_joined": 0.63
+   "resid_left": -4.1,
+   "resid_joined": 0.65
   },
   {
    "season": 1996,
@@ -196,8 +196,8 @@
    "team": "ORL",
    "net_classic": 4.06,
    "new_team": "LAL",
-   "resid_left": 0.44,
-   "resid_joined": -0.35
+   "resid_left": 0.45,
+   "resid_joined": -0.34
   },
   {
    "season": 2000,
@@ -226,8 +226,8 @@
    "team": "POR",
    "net_classic": 3.96,
    "new_team": "SAS",
-   "resid_left": 0.88,
-   "resid_joined": 2.21
+   "resid_left": 0.86,
+   "resid_joined": 2.23
   },
   {
    "season": 1982,
@@ -237,7 +237,7 @@
    "net_classic": 3.87,
    "new_team": "SAS",
    "resid_left": -1.69,
-   "resid_joined": -1.99
+   "resid_joined": -2.0
   },
   {
    "season": 2018,
@@ -247,7 +247,7 @@
    "net_classic": 3.79,
    "new_team": "PHI",
    "resid_left": -1.97,
-   "resid_joined": -2.21
+   "resid_joined": -2.2
   },
   {
    "season": 2004,
@@ -256,8 +256,8 @@
    "team": "ORL",
    "net_classic": 3.78,
    "new_team": "HOU",
-   "resid_left": -2.87,
-   "resid_joined": 2.73
+   "resid_left": -2.84,
+   "resid_joined": 2.72
   },
   {
    "season": 2019,
@@ -266,7 +266,7 @@
    "team": "MEM",
    "net_classic": 3.68,
    "new_team": "UTA",
-   "resid_left": 2.81,
+   "resid_left": 2.82,
    "resid_joined": -2.9
   },
   {
@@ -277,7 +277,7 @@
    "net_classic": 3.67,
    "new_team": "DEN",
    "resid_left": -3.2,
-   "resid_joined": -0.24
+   "resid_joined": -0.25
   },
   {
    "season": 2017,
@@ -286,8 +286,8 @@
    "team": "UTA",
    "net_classic": 3.67,
    "new_team": "BOS",
-   "resid_left": 2.89,
-   "resid_joined": 4.29
+   "resid_left": 2.91,
+   "resid_joined": 4.31
   },
   {
    "season": 2019,
@@ -296,7 +296,7 @@
    "team": "NOP",
    "net_classic": 3.65,
    "new_team": "LAL",
-   "resid_left": -1.42,
+   "resid_left": -1.41,
    "resid_joined": 1.88
   },
   {
@@ -306,8 +306,8 @@
    "team": "LAC",
    "net_classic": 3.63,
    "new_team": "PHI",
-   "resid_left": 3.62,
-   "resid_joined": -5.42
+   "resid_left": 3.63,
+   "resid_joined": -5.41
   },
   {
    "season": 1982,
@@ -317,7 +317,7 @@
    "net_classic": 3.62,
    "new_team": "PHI",
    "resid_left": -4.04,
-   "resid_joined": -1.33
+   "resid_joined": -1.32
   },
   {
    "season": 2017,
@@ -326,8 +326,8 @@
    "team": "BOS",
    "net_classic": 3.61,
    "new_team": "LAL",
-   "resid_left": 4.29,
-   "resid_joined": 1.97
+   "resid_left": 4.31,
+   "resid_joined": 1.99
   },
   {
    "season": 1998,
@@ -336,8 +336,8 @@
    "team": "CHI",
    "net_classic": 3.58,
    "new_team": "HOU",
-   "resid_left": -7.46,
-   "resid_joined": -0.82
+   "resid_left": -7.44,
+   "resid_joined": -0.79
   },
   {
    "season": 2004,
@@ -346,8 +346,8 @@
    "team": "NOH",
    "net_classic": 3.57,
    "new_team": "GSW",
-   "resid_left": -2.75,
-   "resid_joined": -1.7
+   "resid_left": -2.74,
+   "resid_joined": -1.72
   },
   {
    "season": 1996,
@@ -357,7 +357,7 @@
    "net_classic": 3.44,
    "new_team": "HOU",
    "resid_left": -0.21,
-   "resid_joined": 0.13
+   "resid_joined": 0.16
   },
   {
    "season": 2019,
@@ -367,7 +367,7 @@
    "net_classic": 3.41,
    "new_team": "LAC",
    "resid_left": 4.31,
-   "resid_joined": 1.88
+   "resid_joined": 1.89
   },
   {
    "season": 2000,
@@ -377,7 +377,7 @@
    "net_classic": 3.4,
    "new_team": "ORL",
    "resid_left": -0.36,
-   "resid_joined": -0.8
+   "resid_joined": -0.79
   },
   {
    "season": 2012,
@@ -386,7 +386,7 @@
    "team": "HOU",
    "net_classic": 3.37,
    "new_team": "TOR",
-   "resid_left": 1.41,
+   "resid_left": 1.39,
    "resid_joined": -1.06
   },
   {
@@ -396,8 +396,8 @@
    "team": "MIN",
    "net_classic": 3.37,
    "new_team": "CLE",
-   "resid_left": -3.58,
-   "resid_joined": -2.97
+   "resid_left": -3.57,
+   "resid_joined": -2.98
   },
   {
    "season": 1989,
@@ -407,7 +407,7 @@
    "net_classic": 3.34,
    "new_team": "LAC",
    "resid_left": -3.41,
-   "resid_joined": 2.14
+   "resid_joined": 2.12
   },
   {
    "season": 2017,
@@ -416,8 +416,8 @@
    "team": "SAC",
    "net_classic": 3.31,
    "new_team": "NOP",
-   "resid_left": -2.5,
-   "resid_joined": -1.12
+   "resid_left": -2.48,
+   "resid_joined": -1.11
   },
   {
    "season": 2004,
@@ -436,8 +436,8 @@
    "team": "LAL",
    "net_classic": 3.27,
    "new_team": "DAL",
-   "resid_left": 0.36,
-   "resid_joined": -1.57
+   "resid_left": 0.35,
+   "resid_joined": -1.56
   },
   {
    "season": 2001,
@@ -446,8 +446,8 @@
    "team": "ATL",
    "net_classic": 3.26,
    "new_team": "PHI",
-   "resid_left": 1.08,
-   "resid_joined": -0.47
+   "resid_left": 1.06,
+   "resid_joined": -0.46
   },
   {
    "season": 2019,
@@ -457,7 +457,7 @@
    "net_classic": 3.21,
    "new_team": "BOS",
    "resid_left": -0.72,
-   "resid_joined": 2.73
+   "resid_joined": 2.74
   },
   {
    "season": 1995,
@@ -466,8 +466,8 @@
    "team": "POR",
    "net_classic": 3.16,
    "new_team": "HOU",
-   "resid_left": 1.34,
-   "resid_joined": -1.36
+   "resid_left": 1.35,
+   "resid_joined": -1.35
   },
   {
    "season": 2012,
@@ -476,7 +476,7 @@
    "team": "ORL",
    "net_classic": 3.13,
    "new_team": "LAL",
-   "resid_left": -4.94,
+   "resid_left": -4.93,
    "resid_joined": -2.96
   },
   {
@@ -517,7 +517,7 @@
    "net_classic": 3.11,
    "new_team": "BRK",
    "resid_left": -0.51,
-   "resid_joined": -1.82
+   "resid_joined": -1.81
   },
   {
    "season": 2024,
@@ -536,8 +536,8 @@
    "team": "BOS",
    "net_classic": 3.06,
    "new_team": "BRK",
-   "resid_left": 2.73,
-   "resid_joined": 1.12
+   "resid_left": 2.74,
+   "resid_joined": 1.11
   },
   {
    "season": 2002,
@@ -547,7 +547,7 @@
    "net_classic": 3.01,
    "new_team": "NJN",
    "resid_left": 0.45,
-   "resid_joined": -0.0
+   "resid_joined": -0.01
   },
   {
    "season": 1998,
@@ -557,7 +557,7 @@
    "net_classic": 3.0,
    "new_team": "CHH",
    "resid_left": -3.3,
-   "resid_joined": 3.75
+   "resid_joined": 3.76
   }
  ]
 }

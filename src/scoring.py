@@ -10,7 +10,11 @@ players with 70%+ of the season's games (each league separately).
 
 Scoring & creation (the Legacy ingredient) adds playmaking: each assist counts 1.1 points (a basket
 worth about 2.2 points, half credited to the passer), same formula otherwise:
-    creation load = ((points + 1.1 x assists) per 100 - league per player) x mpg / 48
+    creation load = ((points + 1.1 x assists + 0.5 x PPP x offensive rebounds) per 100
+                     - league per player) x mpg / 48
+An offensive rebound creates a new possession worth the league's points per possession (PPP); half is
+credited to the rebounder, the same split as an assist. (1951-52 to 1972-73 did not record offensive
+rebounds: those seasons get none, for everyone.)
 
 Usage: python src/scoring.py -> out/scoring_seasons.csv, out/scoring_careers.csv
 """
@@ -34,7 +38,7 @@ def main():
     c["season"] = c.season_start + 1
     c["lg"] = c.lg.fillna("NBA") if "lg" in c else "NBA"
     s = c[["season", "lg", "player_id", "player", "poss", "mp", "g"]].merge(
-        t[["season", "lg", "player_id", "pts", "ast", "fga", "fta"]], on=["season", "lg", "player_id"])
+        t[["season", "lg", "player_id", "pts", "ast", "orb", "fga", "fta"]], on=["season", "lg", "player_id"])
     s = s[s.poss > 0]
     grp = s.groupby(["season", "lg"])
     s["lg_pts100"] = grp.pts.transform("sum") / grp.poss.transform("sum") * 100
@@ -42,7 +46,8 @@ def main():
     s["pts100"] = s.pts / s.poss * 100
     s["mpg"] = s.mp / s.g.clip(lower=1)
     s["load"] = (s.pts100 - s.lg_pts100) * s.mpg / 48
-    s["made"] = s.pts + 1.1 * s.ast.fillna(0)
+    ppp = grp.pts.transform("sum") / grp.poss.transform("sum")
+    s["made"] = s.pts + 1.1 * s.ast.fillna(0) + 0.5 * ppp * s.orb.fillna(0)
     s["lg_made100"] = s.groupby(["season", "lg"]).made.transform("sum") / grp.poss.transform("sum") * 100
     s["cload"] = (s.made / s.poss * 100 - s.lg_made100) * s.mpg / 48
     s["ts_rel"] = s.pts / (2 * (s.fga + 0.44 * s.fta)).where(lambda x: x > 0) - s.lg_ts

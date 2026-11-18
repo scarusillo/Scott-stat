@@ -1,20 +1,20 @@
 {
  "top10_by_decade": {
   "1950": {
-   "wins82": 8.897,
-   "rating": 2.479,
+   "wins82": 9.423,
+   "rating": 2.735,
    "mpg": 37.418,
    "pace": 107.225
   },
   "1960": {
-   "wins82": 10.905,
-   "rating": 2.847,
-   "mpg": 40.935,
+   "wins82": 11.601,
+   "rating": 3.153,
+   "mpg": 40.929,
    "pace": 120.446
   },
   "1970": {
-   "wins82": 10.392,
-   "rating": 3.193,
+   "wins82": 10.685,
+   "rating": 3.325,
    "mpg": 38.846,
    "pace": 107.774
   },
@@ -85,17 +85,17 @@
   "1950": {
    "teams": 8.8,
    "repl_model": -1.83,
-   "repl_measured": -1.52
+   "repl_measured": -1.69
   },
   "1960": {
    "teams": 10.3,
    "repl_model": -1.55,
-   "repl_measured": -1.64
+   "repl_measured": -1.83
   },
   "1970": {
    "teams": 19.2,
    "repl_model": -1.78,
-   "repl_measured": -1.6
+   "repl_measured": -1.67
   },
   "1980": {
    "teams": 23.6,
@@ -129,24 +129,24 @@
    "mpg": 48.52,
    "poss": 10602.71,
    "pace": 126.23,
-   "net_classic": 6.36,
-   "WAR82": 24.95
+   "net_classic": 6.9,
+   "WAR82": 26.62
   },
   "Bill Russell": {
    "season": 1964,
    "mpg": 44.64,
    "poss": 9067.71,
    "pace": 116.84,
-   "net_classic": 4.75,
-   "WAR82": 17.73
+   "net_classic": 5.26,
+   "WAR82": 19.12
   },
   "Kareem Abdul-Jabbar": {
    "season": 1972,
    "mpg": 44.23,
    "poss": 8300.62,
    "pace": 112.01,
-   "net_classic": 7.11,
-   "WAR82": 22.03
+   "net_classic": 7.83,
+   "WAR82": 23.81
   },
   "Michael Jordan": {
    "season": 1988,

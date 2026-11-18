@@ -780,6 +780,26 @@ with modern players to measure it from).
 5. Checked and left alone: Pistons title split (deep team: Isiah 24%, Laimbeer 24%); 1980s Celtics
    (McHale and Parish ratings track B-Ref BPM).
 
+## Moses vs Tatum, Carter, Lillard, McGrady: three fixes
+
+1. **Title shares now use the playoff rating** (championships.py): each player's effect on the team's title odds
+   in THOSE playoffs. A bug made this impossible before: classic_playoffs compared the playoff rating (box +
+   team playoff results) with the FULL regular-season rating, which also carries game logs, play-by-play and
+   the creation premium, so stars "dropped" in the playoffs (Jordan -1.3 to -1.9 every year). Now like for
+   like (regular box + team results). Splits: 1991 Bulls Jordan 0.84; 1996 Jordan 0.62 / Pippen 0.24;
+   1994 Rockets Hakeem 0.85; 2016 Cavs LeBron 0.88; 1983 76ers Moses 0.67 (was 0.39); 2009 Lakers Kobe 0.56;
+   2019 Raptors Kawhi 0.52.
+2. **Spread restoration for older stat sets** (classic.py): on the same modern players, the pre-1973-74 stat set
+   shrinks the spread of ratings by 10% and the 1973-77 set by
+   3% (less information, ratings pulled toward average). Those eras are widened back
+   by x1.108 and x1.026 around each season's mean. Full-stat eras (1977-78 on)
+   are unaffected; dropping 3PA costs nothing.
+3. **Offensive rebounds count as creation**: + 0.5 x league points per possession per offensive rebound
+   (a new possession, half credit like an assist). Moses 6.4 -> 6.8.
+Moses Malone's own numbers did not move: peak +2.8 per 100 (box +2.5 O, 0 D; his Houston teams were average,
+SRS -0.4 to +0.9 in 1978-79..1981-82). Legacy, equal weights: Moses 50th, Tatum 47th, Carter 52nd, McGrady 35th,
+Lillard 29th, Gilgeous-Alexander 26th. Impact only (no scoring & creation): Moses 35th, ahead of all five.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
