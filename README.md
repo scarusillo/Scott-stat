@@ -851,6 +851,17 @@ Ginobili's per-possession impact holds up: play-by-play +3.72 vs model +3.04 ove
 does not (+0.76 on the floor), which is why Ginobili gets more of the 2005 and 2007 titles.
 Legacy default after the fix: Erving 25, Kawhi 28, Ginobili 29 (was 25), Chris Paul 31 -- within 2 points.
 
+## Era-neutral peak wins (Wilt and Russell were #1-2 on peak wins)
+
+Peak wins per season had Russell 20.2, Wilt 20.0, Jordan 18.2, LeBron 17.1. Per possession they were well behind
+(best seasons: LeBron +8.3, Jordan +7.6, Wilt +6.9, Russell +5.9 per 100); the difference was 60% more possessions
+(9,000-10,600 a season vs 5,600-6,600): 45-48 minutes a night (real load) and a ~125-possession pace (the era).
+The pooled win curve's pace correction (gamma 0.34 +/- 0.10) offsets only part of it. Peak wins is now era-neutral:
+(rating - replacement) x minutes at 100 possessions per 48 minutes x 82 games, win curve and replacement level at
+pace 100; the in-era version stays as its own ranking. Neutral: Jordan 18.8, Kareem 18.4, LeBron 18.2, Wilt 18.1,
+Russell 17.4, Robinson 17.2. Legacy default: Jordan, LeBron, Russell (titles, winning), Duncan, Bird, Magic,
+Curry, Kareem, Shaq, Garnett; Wilt 12th.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

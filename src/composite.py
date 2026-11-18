@@ -133,6 +133,17 @@ def classic_table():
     gps = (tsum.w + tsum.l).groupby([tsum.season - 1, tsum.lg]).mean()
     lg_ = a.lg.fillna("NBA") if "lg" in a else pd.Series("NBA", index=a.index)
     a["WAR82"] = a.WAR_classic * 82 / pd.MultiIndex.from_arrays([a.season, lg_]).map(gps).to_numpy()
+    # ERA-NEUTRAL wins: his per-possession level and his real minutes, played at a standard 100 possessions
+    # per 48 minutes over 82 games, with the win curve and replacement level at that pace. Pace is a trait of
+    # an era, not a player: the 1960s' ~125 possessions a game gave every per-possession edge 25% more
+    # possessions to act on, and the win curve's pace correction offsets only part of that.
+    import json as _json
+    wc = _json.load(open(OUT / "classic_meta.json"))["validation"].get("win_curve", {"k0": 0.0309})
+    k100 = wc["k0"]
+    repl100 = (0.2 - 0.5) / k100 / 5
+    mpg_ = a.mp / a.g.clip(lower=1)
+    gp = (a.g / pd.MultiIndex.from_arrays([a.season, lg_]).map(gps).to_numpy()).clip(upper=1)
+    a["WAR_neutral"] = (a.net - repl100) * (mpg_ / 48 * 100) / 100 * k100 * 82 * gp
     a["lift"] = a.net - a.production
     # playoffs (classic_playoffs.py): season rating with playoff possessions pooled in
     po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "net_with_playoffs", "poss_total",
@@ -163,12 +174,14 @@ def classic_table():
         bp5, bp5y = runs(x.assign(net=x.production), "net", 5)
         bpo5, bpo5y = runs(x.assign(net=x.net_with_playoffs, poss=x.poss_total), "net", 5)
         xw = x.sort_values("season")
-        wins5 = [(xw.WAR82.iloc[i:i + 5].sum() / 5, f"{xw.season.iat[i]}-{(xw.season.iat[i + 4] + 1) % 100:02d}")
+        era5 = [xw.WAR82.iloc[i:i + 5].sum() / 5 for i in range(len(xw) - 4) if xw.season.iat[i + 4] - xw.season.iat[i] == 4]
+        wins5 = [(xw.WAR_neutral.iloc[i:i + 5].sum() / 5, f"{xw.season.iat[i]}-{(xw.season.iat[i + 4] + 1) % 100:02d}")
                  for i in range(len(xw) - 4) if xw.season.iat[i + 4] - xw.season.iat[i] == 4]
         war5, war5y = max(wins5) if wins5 else (np.nan, None)
         xp = x[x.po_poss > 0]
         bz5, bz5y = runs(x.assign(net=x.z), "net", 5)
         rows.append({"best5_with_playoffs": bpo5, "best5_with_playoffs_years": bpo5y, "peak_wins_per_season": war5, "peak_wins_years": war5y,
+                     "peak_wins_in_era": max(era5) if era5 else np.nan,
                      "playoff_rise": np.average(xp.playoff_rise, weights=xp.po_poss) if len(xp) else np.nan,
                      "playoff_poss": float(x.po_poss.sum()),
                      "peak_individual": win[1] if win else np.nan, "peak_team_credit": (win[0] - win[1]) if win else np.nan,
