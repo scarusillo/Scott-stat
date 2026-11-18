@@ -57,6 +57,7 @@ def main():
             "s": [[int(q.season), q.team if isinstance(q.team, str) else "", r(q.net), r(q.se_net), r(q.O), r(q.D),
                    r(q.production), r(q.lift), r(q.WAR, 1), r(q.ppg, 1)] for q in x.itertuples()],
         })
+    ch = pd.read_csv(OUT / "championships_careers.csv", index_col=0)
     ckeep = classic[classic.poss >= MIN_CAREER_POSS]
     classic_rows = []
     for p in ckeep.itertuples():
@@ -70,6 +71,10 @@ def main():
             "prod5": r(p.production_peak5), "prod5_years": p.production_peak5_years if isinstance(p.production_peak5_years, str) else None,
             "dom5": r(p.dominance_peak5), "dom5_years": p.dominance_peak5_years if isinstance(p.dominance_peak5_years, str) else None,
             "no1": int(p.seasons_ranked_1), "top3": int(p.seasons_top3),
+            "titles": int(ch.titles.get(p.player, 0)) if p.player in ch.index else 0,
+            "tshare": r(ch.title_shares_league_adj.get(p.player)) if p.player in ch.index else 0,
+            "tshare_raw": r(ch.title_shares.get(p.player)) if p.player in ch.index else 0,
+            "codds": r(ch.championships_added.get(p.player)) if p.player in ch.index else 0,
             "s": [[int(q.season_start), q.team, r(q.net_classic), r(q.O_classic), r(q.D_classic), r(q.WAR_classic, 1),
                    r(q.net_plus), {"full": "F", "no_turnovers": "T", "lite": "L"}.get(q.band, "")] for q in x.itertuples()],
         })

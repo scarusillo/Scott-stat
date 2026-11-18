@@ -83,7 +83,7 @@ svg text { fill: var(--muted); font: 11px var(--body); }
 <header><div class="wrap bar">
   <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
   <nav id="nav">
-    <a href="#leaders">Leaderboard</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#progression">Progression</a>
+    <a href="#leaders">Leaderboard</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#progression">Progression</a>
     <a href="#coaches">Coaches</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
   </nav>
 </div></header>
@@ -113,7 +113,7 @@ function route() {
   const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ leaders, guide, compare, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
+  ({ leaders, legacy, guide, compare, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
   scrollTo(0, 0);
 }
 
@@ -339,6 +339,41 @@ function finder() {
       <td class="num ${cls(r[4])}">${f(r[4])}<span class="pm">±${f(r[5], 1, false)}</span></td><td class="num">${f(r[8])}</td><td class="num ${cls(r[9])}"><b>${f(r[9])}</b></td><td class="num ${cls(r[6])}">${f(r[6])}</td><td class="num ${cls(r[7])}">${f(r[7])}</td></tr>`).join("")}</tbody></table></div></div>`;
   $("#fs").onchange = e => { state.fseason = +e.target.value; save(); finder(); };
   $("#ft").onchange = e => { state.ftype = e.target.value; save(); finder(); };
+  bindRows();
+}
+
+/* ---------- legacy: peak + career + championships, reader-weighted ---------- */
+function legacy() {
+  const W = state.lw || { peak: 1, career: 1, rings: 1 };
+  const pool = D.classic.filter(p => p.seasons >= 8 && p.best5 != null);
+  const stat = k => { const v = pool.map(p => p[k] ?? 0), m = v.reduce((a, b) => a + b, 0) / v.length;
+    const sd = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length); return p => ((p[k] ?? 0) - m) / sd; };
+  const zp = stat("best5"), zc = stat("war"), zr = stat("tshare");
+  const tot = W.peak + W.career + W.rings || 1;
+  const rows = pool.map(p => ({ p, score: (W.peak * zp(p) + W.career * zc(p) + W.rings * zr(p)) / tot }))
+    .sort((a, b) => b.score - a.score).slice(0, 40);
+  const presets = [["Equal", { peak: 1, career: 1, rings: 1 }], ["Peak + titles", { peak: 1, career: 0, rings: 1 }],
+                   ["Titles count double", { peak: 1, career: 1, rings: 2 }], ["Peak + career, no titles", { peak: 1, career: 1, rings: 0 }]];
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">All-time · 1951-52 to 2025-26</div><h1>Greatest of all time, your weights</h1>
+    <p class="lede">The all-time debate comes down to how much you value three things. The data supplies each one; you choose the weights.</p></div>
+    <div class="cols2">
+      <div class="panel prose"><h3>The three ingredients</h3><ul>
+        <li><b>Peak:</b> best five straight seasons of impact (Classic, points per 100 possessions).</li>
+        <li><b>Career value:</b> total wins added above a replacement player, every season.</li>
+        <li><b>Championships:</b> every title split among that team's players by how much each contributed in those playoffs, then adjusted for league size (a title among 30 teams counts more than one among 8). A ring Jordan carried counts more than one where a player was the third option.</li></ul></div>
+      <div class="panel stack" style="gap:14px"><h3>Weights</h3>
+        ${[["peak", "Peak"], ["career", "Career value"], ["rings", "Championships"]].map(([k, l]) => `<label for="w-${k}" class="row" style="justify-content:space-between"><span>${l}</span>
+          <input id="w-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}" style="flex:1;max-width:220px"><span class="num" style="width:2ch">${W[k]}</span></label>`).join("")}
+        <div class="row">${presets.map(([l, w], i) => `<button data-preset="${i}">${l}</button>`).join("")}</div>
+        <p class="note">Each ingredient is put on the same footing (how far above the field it is) before weighting.</p></div>
+    </div>
+    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Peak (best 5)</th><th>Career wins</th><th>Titles</th><th>Title shares</th></tr></thead><tbody>
+      ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.p.name)}</b></td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
+        <td class="num"><b>${r.score.toFixed(2)}</b></td><td class="num">${f(r.p.best5)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="note">What the weights decide: with any real weight on championships, Michael Jordan is first. Leave championships out and LeBron James is first, on peak plus longevity. At equal weights the two are close enough that the order can flip. Players with fewer than eight qualifying seasons (Jokić, so far) aren't ranked here yet.</p></div>`;
+  for (const k of ["peak", "career", "rings"]) $("#w-" + k).oninput = e => { state.lw = { ...W, [k]: +e.target.value }; save(); legacy(); $("#w-" + k).focus(); };
+  document.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { state.lw = presets[+b.dataset.preset][1]; save(); legacy(); });
   bindRows();
 }
 

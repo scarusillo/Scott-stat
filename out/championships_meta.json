@@ -1,0 +1,6 @@
+{
+ "b": 0.5951364091842101,
+ "seasons_fit": 75,
+ "top_srs_team_won_title": 0.48,
+ "note": "conditional logit of champion on SRS; player value = title odds with him minus with replacement"
+}

@@ -559,6 +559,25 @@ elevation at only r = 0.17 (201 players), too weak to move rankings. What it sho
 Jordan's playoffs were about as dominant as his regular seasons (rise -0.6, within noise),
 LeBron +0.2, Russell +0.4, Hakeem +0.4, Curry -1.3, Jokić -1.5.
 
+## Championships (`src/championships.py`)
+
+Rings depend on teammates and luck, so they aren't counted raw. Two measures, every season
+since 1951-52 (75 champions, read from each season's last playoff game; playoff game ids
+give the season, so the Oct-2020 bubble Finals land in 2019-20):
+- **Title odds added**: conditional logit of the champion on regular-season SRS (b = 0.60);
+  a player's value = his team's title odds minus its odds with a replacement player in his
+  minutes. Regular-season strength only, so it misses teams that won from modest regular
+  seasons (Hakeem's Rockets ~0). Shown, not used in Legacy.
+- **Title shares**: each real title (1.0) split among the champion's players by their
+  contribution in those playoffs ((rating - replacement) x playoff possessions). League-size
+  version: a title among N teams counts N/30. Leaders (adjusted): **Jordan 1.70**, Russell 1.33,
+  Pippen 1.31, Duncan 1.28, Magic 1.19, Shaq 1.16, Kobe 1.04, LeBron 1.04, Kareem 0.93.
+
+**Legacy view (site)**: peak (Classic best 5) + career wins added + title shares (adjusted),
+each standardized over players with 8+ seasons, weighted by the reader. With any weight on
+championships, Jordan is #1; with championships left out, LeBron is #1 (peak + longevity).
+At equal weights the two are close (the order depends on the comparison pool).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
