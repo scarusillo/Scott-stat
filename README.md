@@ -862,6 +862,38 @@ pace 100; the in-era version stays as its own ranking. Neutral: Jordan 18.8, Kar
 Russell 17.4, Robinson 17.2. Legacy default: Jordan, LeBron, Russell (titles, winning), Duncan, Bird, Magic,
 Curry, Kareem, Shaq, Garnett; Wilt 12th.
 
+## Audit, two passes (skeptical-analyst review of the full model)
+
+Calibration test used throughout: within each decade, regress actual team strength (SRS per 100) on the
+possession-weighted sum of its players' ratings. Equal slopes = equal footing across eras.
+Before: 1950s-60s 0.89, 1980s 0.99, 2000s+ 1.14-1.17 (old-era ratings ~25% wider than modern relative to team results).
+After: 1.07-1.13 in every decade, 1950s through 2020s.
+
+Found and fixed:
+1. **Spread restoration widened team-level differences** (pre-1974 stats). Missing stats blur teammates, not
+   teams. Now applied within teams only (x1.129 lite, x1.026 no-turnovers around each team's average).
+2. **WINNING removed from the ratings.** 0.7% gain vs play-by-play, stacked on team credit, and double-counted
+   with the Legacy winning ingredient. It stays as that ingredient only.
+3. **Creation premium removed.** Passed its bar at t 1.65, fell to 1.45 after unrelated changes and had silently
+   switched off while the docs said it was on.
+4. **The play-by-play blend leaked team credit** (summed ratings explained ~80% of team spread from 2000 on vs ~91%
+   before). The blend now preserves each team's possession-weighted total: play-by-play decides who on a team
+   gets the credit, team results decide how much there is. Final vs play-by-play r 0.93.
+5. **Peak wins also neutralizes era workload norms**: minutes measured against the season's heavy-minute norm
+   (top two per team) on a 38-minute standard. Wilt's 46-48 minutes came in a 44-minute era.
+6. **A vacuous check retracted**: "player wins sum to team wins in every era" holds by construction for any ratings.
+
+Found, left for the owner: championships carry about twice the real influence of any other Legacy ingredient
+(SD x weight among the top 60: titles 12.4, peak 5.9, winning 5.0, scoring & creation 4.6), because title shares
+are highly skewed. Halving the titles weight moves Shaq 8 -> 14, Kobe 15 -> 19, Kawhi 25 -> 33, Ginobili 29 -> 39,
+Draymond 42 -> 65; Jordan and LeBron stay 1-2. Scoring & creation and winning are negatively correlated (-0.46
+among the top 60) and partly cancel. Peak requires five consecutive seasons (penalizes Kawhi's 2017-18).
+What earns its place: team credit (r 0.650 -> 0.679 vs play-by-play out of sample), game logs (0.677 -> 0.697),
+the play-by-play blend, ABA compression (CI excludes a flat shift). Classic beats B-Ref BPM (0.679 vs 0.644).
+
+Now: peak wins Jordan 18.7, LeBron 18.4, Wilt 17.6, Kareem 17.1, Robinson 16.7, Jokic 16.2, Curry 15.7, Russell 15.3.
+Legacy: Jordan 117, LeBron 116, Russell, Duncan, Magic, Bird, Curry, Shaq, Kareem, Jokic; Wilt 12, Kobe 15.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

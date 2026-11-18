@@ -1,63 +1,63 @@
 {
  "top10_by_decade": {
   "1950": {
-   "wins82": 9.341,
-   "rating": 2.699,
-   "mpg": 37.488,
+   "wins82": 9.308,
+   "rating": 2.681,
+   "mpg": 37.418,
    "pace": 107.225
   },
   "1960": {
-   "wins82": 11.454,
-   "rating": 3.084,
-   "mpg": 40.787,
+   "wins82": 11.4,
+   "rating": 3.073,
+   "mpg": 40.863,
    "pace": 120.446
   },
   "1970": {
-   "wins82": 10.764,
-   "rating": 3.385,
-   "mpg": 38.667,
+   "wins82": 10.471,
+   "rating": 3.216,
+   "mpg": 38.977,
    "pace": 107.774
   },
   "1980": {
-   "wins82": 11.323,
-   "rating": 4.09,
-   "mpg": 36.621,
+   "wins82": 10.85,
+   "rating": 3.839,
+   "mpg": 36.658,
    "pace": 101.079
   },
   "1990": {
-   "wins82": 12.165,
-   "rating": 4.63,
-   "mpg": 37.551,
+   "wins82": 11.698,
+   "rating": 4.363,
+   "mpg": 37.597,
    "pace": 93.349
   },
   "2000": {
-   "wins82": 11.256,
-   "rating": 4.286,
-   "mpg": 37.351,
+   "wins82": 10.922,
+   "rating": 4.094,
+   "mpg": 37.421,
    "pace": 91.321
   },
   "2010": {
-   "wins82": 11.045,
-   "rating": 4.636,
-   "mpg": 35.124,
+   "wins82": 10.769,
+   "rating": 4.47,
+   "mpg": 35.139,
    "pace": 95.307
   },
   "2020": {
-   "wins82": 9.883,
-   "rating": 4.251,
-   "mpg": 34.055,
+   "wins82": 9.651,
+   "rating": 4.125,
+   "mpg": 34.152,
    "pace": 99.077
   }
  },
  "sum_of_player_wins_over_team_wins": {
-  "1950": 1.019,
-  "1960": 1.031,
-  "1970": 1.023,
-  "1980": 1.016,
-  "1990": 1.028,
-  "2000": 1.026,
-  "2010": 1.022,
-  "2020": 1.026
+  "1950": 1.026,
+  "1960": 1.043,
+  "1970": 1.026,
+  "1980": 1.009,
+  "1990": 1.022,
+  "2000": 1.023,
+  "2010": 1.013,
+  "2020": 1.017
  },
  "pace_gamma": {
   "gamma": 0.3372211822775297,
@@ -85,12 +85,12 @@
   "1950": {
    "teams": 8.8,
    "repl_model": -1.83,
-   "repl_measured": -1.7
+   "repl_measured": -1.71
   },
   "1960": {
    "teams": 10.3,
    "repl_model": -1.55,
-   "repl_measured": -1.85
+   "repl_measured": -1.87
   },
   "1970": {
    "teams": 19.2,
@@ -100,22 +100,22 @@
   "1980": {
    "teams": 23.6,
    "repl_model": -1.81,
-   "repl_measured": -1.59
+   "repl_measured": -1.58
   },
   "1990": {
    "teams": 28.0,
    "repl_model": -2.02,
-   "repl_measured": -1.57
+   "repl_measured": -1.55
   },
   "2000": {
    "teams": 29.6,
    "repl_model": -1.97,
-   "repl_measured": -1.57
+   "repl_measured": -1.56
   },
   "2010": {
    "teams": 30.0,
    "repl_model": -1.99,
-   "repl_measured": -1.35
+   "repl_measured": -1.34
   },
   "2020": {
    "teams": 30.0,
@@ -129,40 +129,40 @@
    "mpg": 45.46,
    "poss": 9427.45,
    "pace": 121.6,
-   "net_classic": 6.89,
-   "WAR82": 23.74
+   "net_classic": 6.85,
+   "WAR82": 23.63
   },
   "Bill Russell": {
    "season": 1964,
    "mpg": 44.64,
    "poss": 9067.71,
    "pace": 116.84,
-   "net_classic": 5.87,
-   "WAR82": 20.79
+   "net_classic": 5.23,
+   "WAR82": 19.05
   },
   "Kareem Abdul-Jabbar": {
    "season": 1972,
    "mpg": 44.23,
    "poss": 8300.62,
    "pace": 112.01,
-   "net_classic": 7.7,
-   "WAR82": 23.47
+   "net_classic": 7.39,
+   "WAR82": 22.71
   },
   "Michael Jordan": {
    "season": 1989,
    "mpg": 40.19,
    "poss": 6577.81,
    "pace": 100.64,
-   "net_classic": 7.56,
-   "WAR82": 19.27
+   "net_classic": 7.13,
+   "WAR82": 18.4
   },
   "LeBron James": {
    "season": 2010,
    "mpg": 39.03,
    "poss": 5647.76,
    "pace": 92.74,
-   "net_classic": 8.28,
-   "WAR82": 18.49
+   "net_classic": 7.87,
+   "WAR82": 17.77
   }
  }
 }

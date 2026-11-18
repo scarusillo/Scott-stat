@@ -374,16 +374,22 @@ def main():
     credit = fit_credit(dfin, per_team, ts, base)
     val["credit"] = credit
     f = team_adjust(dfin, per_team, ts, alpha, credit)
-    # SPREAD RESTORATION: with fewer recorded stats the model knows less, so its ratings sit closer to
-    # average. Measured on the same modern players (1996-97 on, 2,000+ possessions): rated with only the
-    # stats an older era recorded, the spread of ratings shrinks. That is missing information, not
-    # missing talent, so older bands are widened back by the same ratio (below, before the ABA step).
+    # SPREAD RESTORATION, WITHIN TEAMS ONLY: with fewer recorded stats the model can't tell TEAMMATES apart
+    # as well, so they sit closer to their team's average. (How good each TEAM was is pinned by its results
+    # in every era, so team-level differences must not be widened: an earlier version widened everything
+    # and left 1950s-60s ratings ~11% too wide against team results.) Measured on the same modern players
+    # (1996-97 on, 2,000+ possessions): the spread of ratings around the team's own average, full stats vs
+    # an older era's stats. Older bands are widened around each team's average by that ratio (below).
     mm_ = (f.season >= 1997) & (f.poss >= 2000)
-    full_sd = float((f.O_c + f.D_c)[mm_].std())
+    def within_sd(x):
+        net_ = x.O_c + x.D_c
+        tmean = (net_ * x.poss).groupby([x.season, x.team]).transform("sum") / x.poss.groupby([x.season, x.team]).transform("sum")
+        return float((net_ - tmean)[mm_].std())
+    full_sd = within_sd(f)
     spread = {}
     for band_ in ("no_turnovers", "lite"):
         xb = team_adjust(era_fit(d, base, tau, force_band=band_), per_team, ts, alpha, credit)
-        spread[band_] = full_sd / float((xb.O_c + xb.D_c)[mm_].std())
+        spread[band_] = full_sd / within_sd(xb)
     val["spread_restoration"] = spread
     print("spread restoration:", spread, flush=True)
     f["O_box"], f["D_box"] = f.O_c, f.D_c
@@ -405,10 +411,10 @@ def main():
         mb = f.band == band_
         if not mb.any():
             continue
-        g_ = f[mb].groupby(["season", "lg"])
+        g_ = f[mb].groupby(["season", "lg", "team"])
         for c in ("O_c", "box_O", "O_box", "D_c", "box_D", "D_box"):
             mu = g_.apply(lambda z: np.average(z[c], weights=z.poss), include_groups=False)
-            base_ = pd.MultiIndex.from_arrays([f.loc[mb, "season"], f.loc[mb, "lg"]]).map(mu).to_numpy()
+            base_ = pd.MultiIndex.from_arrays([f.loc[mb, "season"], f.loc[mb, "lg"], f.loc[mb, "team"]]).map(mu).to_numpy()
             f.loc[mb, c] = base_ + fac * (f.loc[mb, c] - base_)
     f["net_c"] = f.O_c + f.D_c
     # ABA seasons: rated against their own league above, then moved down to NBA level
@@ -459,15 +465,30 @@ def main():
         qb[ob] = (np.cumsum(ww[ob]) - ww[ob] / 2) / ww.sum()
         net_new[idx] = np.interp(qb, qc, cv[oc])
     diff = bl["O"] - bl["D"]
+    pre_net = f.O_c + f.D_c
     f.loc[pb, "O_c"] = (net_new + diff) / 2
     f.loc[pb, "D_c"] = (net_new - diff) / 2
+    # TEAM TOTALS PRESERVED: play-by-play decides who on a team gets the credit; the team's results decide
+    # how much credit there is. (Play-by-play ratings are shrunk for teammates who share the floor, so their
+    # team sums understate good teams; without this step summed ratings explained ~80% of team spread
+    # from 2000 on vs ~91% in every earlier era.) Each team's players get the same shift so that the
+    # possession-weighted team sum equals its pre-blend value.
+    post_net = f.O_c + f.D_c
+    gk = [f.season, f.lg, f.team]
+    tposs = f.poss.groupby(gk).transform("sum")
+    shift_t = ((pre_net - post_net) * f.poss).groupby(gk).transform("sum") / tposs
+    has_pb = pb.groupby(gk).transform("any")
+    f.loc[has_pb, "O_c"] = f.O_c[has_pb] + shift_t[has_pb] / 2
+    f.loc[has_pb, "D_c"] = f.D_c[has_pb] + shift_t[has_pb] / 2
     f["net_c"] = f.O_c + f.D_c
     val["plus_blend"] = blend_ev
     # CREATION PREMIUM (absence_test.py): the highest-usage players' teams lose more when they sit than
     # their rating predicts. Fitted there on starters' missed games; applied here only if adopted.
     f["creation"] = 0.0
     cm = OUT / "creation_meta.json"
-    if cm.exists():
+    # (Audit: not applied. It cleared its one-sided 5% bar only marginally (t 1.65) and fell below it (t 1.45)
+    # after later changes; an adjustment that flips on and off with unrelated changes is not robust.)
+    if False and cm.exists():
         c_ = json.load(open(cm))
         if c_.get("adopted"):
             f["creation"] = c_["k"] * (f.usg_rel.clip(upper=c_.get("r_max", np.inf)) - c_["r0"]).clip(lower=0)  # no extrapolation
@@ -479,7 +500,10 @@ def main():
     # improves held-out play-by-play prediction (cross-fit on odd/even seasons), split evenly O/D.
     f["winning_adj"] = 0.0
     wm, wc = OUT / "winning_meta.json", OUT / "winning_careers.csv"
-    if wm.exists() and wc.exists():
+    # (Audit: not applied to ratings. The gain against play-by-play was 0.7% and it stacked on team credit:
+    # summed ratings then over-predicted team spread by 11% in the 1950s-60s. WINNING stays a separate,
+    # visible Legacy ingredient, counted once.)
+    if False and wm.exists() and wc.exists():
         atr = json.load(open(wm))["validation_vs_plus_leave_season_out"]["add_to_rating"]
         wv = pd.read_csv(wc).set_index("player_id").winning
         if "by_minutes" in atr:     # weight rises with minutes: a reserve's team-results credit is confirmed less

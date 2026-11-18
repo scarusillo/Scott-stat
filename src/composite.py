@@ -142,6 +142,16 @@ def classic_table():
     k100 = wc["k0"]
     repl100 = (0.2 - 0.5) / k100 / 5
     mpg_ = a.mp / a.g.clip(lower=1)
+    # workload norms are an era trait too (1960s stars averaged ~44 minutes; today's are held to ~35 by
+    # design): his minutes are measured against that season's heavy-minute norm (the average of the top
+    # two-per-team players by minutes per game, half a season or more) and set on a 38-minute standard.
+    # Playing more than his era's stars still counts; playing in a 44-minute era does not.
+    ok_ = a.g >= 0.5 * pd.MultiIndex.from_arrays([a.season, lg_]).map(gps).to_numpy()
+    nteams = a.groupby([a.season, lg_]).team.transform("nunique")
+    rk = mpg_.where(ok_).groupby([a.season, lg_]).rank(ascending=False)
+    norm_ = mpg_.where(rk <= 2 * nteams).groupby([a.season, lg_]).transform("mean")
+    a["mpg_norm"] = norm_
+    mpg_ = mpg_ * 38 / norm_
     gp = (a.g / pd.MultiIndex.from_arrays([a.season, lg_]).map(gps).to_numpy()).clip(upper=1)
     a["WAR_neutral"] = (a.net - repl100) * (mpg_ / 48 * 100) / 100 * k100 * 82 * gp
     a["lift"] = a.net - a.production
