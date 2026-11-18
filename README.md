@@ -537,6 +537,28 @@ production peak (`production_peak5`, own box only), era dominance (`dominance_pe
 that season's league, plus `seasons_ranked_1` / `seasons_top3`). Most #1 seasons:
 Kareem 11, Wilt 8, Jokić 6, Jordan 6, Robinson 6, LeBron 5.
 
+## Checked against Basketball-Reference's own advanced stats (through 2025-26)
+
+| B-Ref stat | #1 | #2 | #3 |
+|---|---|---|---|
+| Career BPM | Jokić 10.6 | Jordan 9.3 | LeBron 8.4 |
+| Best-5 BPM | Jokić 13.5 | Jordan 11.8 | LeBron 11.1 |
+| Career WS/48 | Jokić .265 | Jordan .253 | Wilt .248 |
+| Career PER | Jokić 28.8 | Jordan 28.0 | Shaq 27.0 |
+| Career VORP (total) | LeBron 159.5 | Jordan 113.7 | Paul 98.8 |
+
+Scott Stat **production peak** reproduces the rate-stat order (Jokić 6.18, Jordan 6.02,
+LeBron 5.37). Jordan trails LeBron and Curry only in the **impact** view, entirely through
+team results (team share and game logs). B-Ref's total-value stat (VORP) also has LeBron #1.
+
+**Classic playoffs: tested, not adopted** (`src/classic_playoffs.py`). Playoff box scores
+since 1951-52 (Kaggle), rates relative to that season's playoff league, the same era prices,
+team playoff margin vs opponents' regular-season strength, rise centered on the typical
+playoff player that season. Career playoff rise agrees with Plus's play-by-play playoff
+elevation at only r = 0.17 (201 players), too weak to move rankings. What it shows:
+Jordan's playoffs were about as dominant as his regular seasons (rise -0.6, within noise),
+LeBron +0.2, Russell +0.4, Hakeem +0.4, Curry -1.3, Jokić -1.5.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
