@@ -704,6 +704,19 @@ near-league-average efficiency (+0.9 points per 100 shots above league), so it a
 statistically tied (peak SE about 0.7). Peak is a per-possession rate; Drexler's minutes and longevity show
 up in career wins (119 vs 69) and Legacy (33rd vs 77th).
 
+## Missed-games test of skill prices (`src/absence_test.py`, `out/absence_test.json`)
+
+Question: does the box model over-price assists and steals relative to scoring? Independent evidence: the
+team's opponent- and home-adjusted margin per 100 with vs without each player, 1977-78 on (7,747
+player-seasons, 159,839 missed games). Observed with-minus-without regressed on each skill's contribution x
+minutes share; a correctly priced skill has multiplier 1. Starters only (28+ mpg, absences mostly injury,
+1,705 player-seasons): scoring 1.08 (SE 0.14), passing 0.96 (0.20), steals 1.00 (0.29), blocks 1.45 (0.37),
+turnovers 1.09 (0.27), rebounding 0.48 (0.27). No evidence assists/steals are over-priced vs scoring.
+Usage quintiles (starters): the top quintile (35% usage) hurts its team 2.85 per 100 when out vs 2.48
+predicted; the other quintiles match within 0.3. Player checks: Iverson's teams +2.07 predicted, -0.23
+observed (77 missed games); Doc Rivers +2.95 predicted, +3.85 observed; Kobe +2.15 / +2.74; Carmelo
++2.08 / +2.39. Rotation players' absences are often coaching decisions, so the all-player version is biased.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
