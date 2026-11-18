@@ -1,64 +1,91 @@
 <title>The Scott Stat</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: a scorer's-table app. Sticky nav, one view at a time, tables and per-player pages. */
+/* Layout: a consumer sports app. Brand header with six sections, pill sub-tabs, feed of cards; bottom tab bar on phones.
+   Display numerals in a condensed scoreboard face; everything else in one modern sans. */
 :root {
-  --bg: #f4f6f8; --surface: #ffffff; --ink: #131b26; --muted: #5a6677; --line: #dce2ea;
-  --accent: #c2410c; --off: #c2410c; --def: #1d5fd1; --good: #157f3b; --bad: #b42318; --c3: #7a3fb5; --band: rgba(194,65,12,.12);
+  --bg: #f4f5f9; --surface: #ffffff; --surface2: #f8f9fc; --ink: #0e1525; --muted: #5d667a; --faint: #8d95a6; --line: #e5e8ef;
+  --accent: #f25c05; --accent2: #e8336d; --off: #f25c05; --def: #2563eb; --good: #13914a; --bad: #dc3b3b; --c3: #7c4ddb;
+  --band: rgba(242,92,5,.10); --brand: linear-gradient(135deg, #ff8a00 0%, #f25c05 45%, #e8336d 100%);
+  --shadow: 0 1px 2px rgba(14,21,37,.04), 0 6px 20px rgba(14,21,37,.06); --shadow-lg: 0 2px 4px rgba(14,21,37,.05), 0 18px 48px rgba(14,21,37,.10);
   --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --body: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r: 16px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0e131a; --surface: #151c26; --ink: #e7ecf2; --muted: #95a1b2; --line: #263142;
-  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --c3: #c08cf0; --band: rgba(251,122,53,.16); color-scheme: dark } }
+  --bg: #0a0d14; --surface: #121722; --surface2: #171d2a; --ink: #edf1f7; --muted: #9aa4b6; --faint: #6f7a8e; --line: #232b3a;
+  --accent: #ff7a2e; --accent2: #ff5c8a; --off: #ff7a2e; --def: #6aa2ff; --good: #3ccf7c; --bad: #ff6b6b; --c3: #a98bff;
+  --band: rgba(255,122,46,.14); --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-lg: 0 10px 40px rgba(0,0,0,.45); color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #0e131a; --surface: #151c26; --ink: #e7ecf2; --muted: #95a1b2; --line: #263142;
-  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --c3: #c08cf0; --band: rgba(251,122,53,.16); color-scheme: dark }
+  --bg: #0a0d14; --surface: #121722; --surface2: #171d2a; --ink: #edf1f7; --muted: #9aa4b6; --faint: #6f7a8e; --line: #232b3a;
+  --accent: #ff7a2e; --accent2: #ff5c8a; --off: #ff7a2e; --def: #6aa2ff; --good: #3ccf7c; --bad: #ff6b6b; --c3: #a98bff;
+  --band: rgba(255,122,46,.14); --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-lg: 0 10px 40px rgba(0,0,0,.45); color-scheme: dark }
 * { box-sizing: border-box }
-body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
 a { color: inherit }
-.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
-.bar { display: flex; align-items: center; gap: 20px; padding-block: 10px; flex-wrap: wrap; }
-.brand { font: 700 26px/1 var(--display); letter-spacing: .02em; text-transform: uppercase; text-decoration: none; }
-.brand span { color: var(--accent) }
-nav { display: flex; gap: 4px; flex-wrap: wrap; }
-nav a { text-decoration: none; padding: 6px 10px; border-radius: 6px; color: var(--muted); font-weight: 500; font-size: 14px; }
-nav a.on, nav a:hover { color: var(--ink); background: var(--bg); }
-nav a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, tr[tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-main { padding-block: 28px 64px; }
-h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.05; text-wrap: balance; margin: 0; }
-h1 { font-size: clamp(34px, 6vw, 56px); text-transform: uppercase; letter-spacing: .01em; }
-h2 { font-size: 28px; text-transform: uppercase; letter-spacing: .02em; }
-h3 { font-size: 20px; letter-spacing: .02em; text-transform: uppercase; }
-.lede { max-width: 66ch; color: var(--muted); font-size: 16px; margin: 10px 0 0; }
-.stack { display: grid; gap: 24px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; gap: 28px; padding-block: 12px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 800 19px/1 var(--body); letter-spacing: -.02em; white-space: nowrap; }
+.mark { width: 32px; height: 32px; border-radius: 10px; background: var(--brand); display: grid; place-items: center; color: #fff; font: 700 20px/1 var(--display); box-shadow: 0 4px 12px rgba(242,92,5,.35); }
+nav { display: flex; gap: 2px; margin-left: auto; }
+nav a { text-decoration: none; padding: 8px 14px; border-radius: 99px; color: var(--muted); font-weight: 600; font-size: 14px; }
+nav a.on { color: var(--ink); background: var(--bg); }
+nav a:hover { color: var(--ink); }
+.tabbar { display: none; }
+@media (max-width: 760px) {
+  header nav { display: none }
+  .tabbar { display: grid; grid-template-columns: repeat(6, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+    background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+    padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+  .tabbar a { display: grid; justify-items: center; gap: 2px; text-decoration: none; color: var(--faint); font-size: 10.5px; font-weight: 600; padding: 4px 0; }
+  .tabbar a.on { color: var(--accent) }
+  .tabbar svg { width: 22px; height: 22px; }
+  main { padding-bottom: 96px !important }
+}
+nav a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, tr[tabindex]:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.subnav { display: flex; gap: 8px; overflow-x: auto; padding-block: 18px 2px; scrollbar-width: none; }
+.subnav::-webkit-scrollbar { display: none }
+.subnav a { flex: none; text-decoration: none; padding: 8px 16px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); font-weight: 600; font-size: 13.5px; box-shadow: var(--shadow); }
+.subnav a.on { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+main { padding-block: 22px 72px; }
+h1, h2, h3 { font-family: var(--body); line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -.025em; }
+h1 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 800; }
+h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 800; }
+h3 { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.lede { max-width: 64ch; color: var(--muted); font-size: 16.5px; margin: 10px 0 0; }
+.stack { display: grid; gap: 22px; }
 .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; min-width: 0; }
-.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; min-width: 0; box-shadow: var(--shadow); }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); font-weight: 700; }
 .num { font-variant-numeric: tabular-nums; }
 .pos { color: var(--good) } .neg { color: var(--bad) }
 .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
-.controls label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
-select, input[type=search], button { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
-.seg button { border: 0; border-radius: 0; background: transparent; padding: 7px 12px; cursor: pointer; color: var(--muted); font-weight: 500; }
-.seg button.on { background: var(--ink); color: var(--surface); }
+.controls label { display: grid; gap: 5px; font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+select, input[type=search], button { font: 500 14px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+button { cursor: pointer; font-weight: 600; } button:hover { border-color: var(--faint) }
+.btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 14px; padding: 11px 18px; border-radius: 99px; background: var(--ink); color: var(--surface); border: 0; }
+.btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 99px; overflow: hidden; background: var(--surface); padding: 3px; gap: 2px; }
+.seg button { border: 0; border-radius: 99px; background: transparent; padding: 6px 14px; color: var(--muted); font-weight: 600; }
+.seg button.on, .seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
 .tablewrap { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; }
-th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
-th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--faint); font-weight: 700; position: sticky; top: 0; background: var(--surface); }
 th.l, td.l { text-align: left }
-tbody tr { cursor: pointer } tbody tr:hover { background: var(--bg) }
-td.rank { color: var(--muted); width: 1% }
-.pm { color: var(--muted); font-size: 12px; margin-left: 3px }
+tbody tr { cursor: pointer; transition: background .12s } tbody tr:hover { background: var(--surface2) }
+tbody tr:last-child td { border-bottom: 0 }
+td.rank { color: var(--faint); width: 1%; font-weight: 700 }
+.pm { color: var(--faint); font-size: 12px; margin-left: 3px }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
-.tile { border-top: 3px solid var(--line); padding-top: 8px; }
-.tile.o { border-color: var(--off) } .tile.d { border-color: var(--def) } .tile.a { border-color: var(--accent) }
-.tile b { display: block; font: 600 32px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.tile { background: var(--surface2); border-radius: 12px; padding: 12px 14px; border-top: 0; position: relative; }
+.tile::before { content: ""; position: absolute; left: 14px; right: 14px; top: 0; height: 3px; border-radius: 0 0 3px 3px; background: var(--line); }
+.tile.o::before { background: var(--off) } .tile.d::before { background: var(--def) } .tile.a::before { background: var(--brand) }
+.tile b { display: block; font: 600 32px/1.1 var(--display); font-variant-numeric: tabular-nums; margin-top: 2px; }
 .tile small { color: var(--muted); font-size: 12px; display: block; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: end; }
 .big { font: 700 clamp(64px, 12vw, 104px)/.9 var(--display); font-variant-numeric: tabular-nums; color: var(--accent); }
@@ -67,47 +94,93 @@ td.rank { color: var(--muted); width: 1% }
 .split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
 @media (max-width: 760px) { .split, .hero { grid-template-columns: 1fr } }
 .barline { display: grid; grid-template-columns: 150px minmax(0, 1fr) 84px; gap: 10px; align-items: center; font-size: 13px; }
-.track { position: relative; height: 12px; background: var(--bg); border-radius: 3px; }
-.track .zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--muted); }
-.track .fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+.track { position: relative; height: 10px; background: var(--surface2); border-radius: 99px; }
+.track .zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--faint); }
+.track .fill { position: absolute; top: 0; bottom: 0; border-radius: 99px; }
 .chips { display: flex; gap: 6px; flex-wrap: wrap }
-.chip { font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+.chip { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--line); color: var(--muted); font-weight: 600; }
 .note { font-size: 13px; color: var(--muted); max-width: 72ch; }
-.prose { max-width: 70ch } .prose p { margin: 0 0 12px } .prose li { margin-bottom: 6px }
+.prose { max-width: 72ch } .prose p { margin: 0 0 12px } .prose li { margin-bottom: 6px }
 .cols2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 svg text { fill: var(--muted); font: 11px var(--body); }
-.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); padding: 6px 8px; border-radius: 6px; font-size: 12px; z-index: 20; }
-.flag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 1px 6px; border-radius: 4px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); padding: 7px 10px; border-radius: 10px; font-size: 12px; z-index: 20; box-shadow: var(--shadow-lg); max-width: 320px; }
+.flag { display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border-radius: 99px; background: var(--surface2); color: var(--muted); border: 1px solid var(--line); margin-left: 6px; }
+/* avatars and people */
+.who { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; }
+.av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; color: #fff; font: 700 12px/1 var(--body); letter-spacing: .02em; }
+.duo { display: inline-flex; } .duo .av + .av { margin-left: -9px; box-shadow: 0 0 0 2px var(--surface); }
+/* home */
+.homehero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: center; padding-block: 18px 6px; }
+@media (max-width: 860px) { .homehero { grid-template-columns: 1fr } }
+.homehero h1 { font-size: clamp(36px, 6vw, 64px); letter-spacing: -.035em; }
+.homehero h1 em { font-style: normal; background: var(--brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+@media (max-width: 520px) { .kpis { grid-template-columns: 1fr 1fr } .kpis div:last-child { grid-column: span 2 } }
+.kpis div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); }
+.kpis b { display: block; font: 700 30px/1 var(--display); }
+.kpis span { font-size: 12px; color: var(--muted); }
+.stories { display: flex; gap: 16px; overflow-x: auto; padding: 6px 2px 10px; scrollbar-width: none; }
+.stories::-webkit-scrollbar { display: none }
+.story { flex: none; display: grid; justify-items: center; gap: 6px; text-decoration: none; width: 78px; }
+.story .ring { display: inline-grid; padding: 3px; border-radius: 50%; background: var(--brand); line-height: 0; }
+.story .ring .av { width: 64px; height: 64px; font-size: 20px; box-shadow: 0 0 0 3px var(--surface); }
+.story span { font-size: 12px; font-weight: 600; text-align: center; line-height: 1.2; }
+.story small { font-size: 11px; color: var(--faint); font-weight: 700; }
+.feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.post { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.post:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.post .ph { display: flex; align-items: center; gap: 10px; padding: 14px 16px 0; font-size: 13px; font-weight: 700; }
+.post .ph small { display: block; color: var(--faint); font-weight: 600; font-size: 11.5px; }
+.post .pb { padding: 12px 16px 6px; display: grid; gap: 8px; align-content: start; }
+.post .pb h3 { font-size: 19px; }
+.post .stat { font: 700 56px/.95 var(--display); font-variant-numeric: tabular-nums; }
+.post .stat small { font-size: 18px; color: var(--muted); font-weight: 600; margin-left: 4px; }
+.post .pf { padding: 10px 16px 14px; font-size: 13px; font-weight: 700; color: var(--accent); }
+.memo { background: var(--ink); color: var(--surface); border-radius: 20px; padding: 26px; display: grid; gap: 18px; box-shadow: var(--shadow-lg); }
+.memo .eyebrow { color: #ffb37a }
+.memo h2 { color: var(--surface); }
+.memo .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+.memo p { margin: 0; color: color-mix(in srgb, var(--surface) 78%, var(--ink)); font-size: 14.5px; }
+.memo b { color: var(--surface) }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; counter-reset: s; }
+.steps div { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); }
+.steps div::before { counter-increment: s; content: counter(s); display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 800; font-size: 13px; margin-bottom: 8px; }
+.steps b { display: block; margin-bottom: 4px; }
+.steps p { margin: 0; font-size: 13.5px; color: var(--muted); }
+.about-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.about-nav a { font-size: 13px; font-weight: 600; text-decoration: none; padding: 6px 12px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--line); color: var(--muted); }
+.about h2 { margin-top: 8px; scroll-margin-top: 90px; }
+.about .panel p, .about .panel li { font-size: 15px; }
+/* charts and tools added earlier */
 .dot-g { fill: var(--off) } .dot-w { fill: var(--def) } .dot-b { fill: var(--c3) }
 .key { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
 .key i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
 .lab { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 20px; }
 @media (max-width: 860px) { .lab { grid-template-columns: 1fr } }
 .pool { display: flex; flex-wrap: wrap; gap: 6px; max-height: 420px; overflow-y: auto; padding: 2px; align-content: flex-start; align-items: flex-start; }
-.pchip { font-size: 13px; padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); cursor: grab; user-select: none; display: inline-flex; gap: 6px; align-items: center; }
+.pchip { font-size: 13px; padding: 4px 10px 4px 4px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); cursor: grab; user-select: none; display: inline-flex; gap: 7px; align-items: center; font-weight: 600; }
+.pchip .av { width: 24px; height: 24px; font-size: 10px; }
 .pchip:hover { border-color: var(--accent) } .pchip:active { cursor: grabbing }
-.pchip b { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--muted); font-size: 12px; }
+.pchip b { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--faint); font-size: 12px; }
 .slots { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
 @media (max-width: 560px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
-.slot { min-height: 96px; border: 2px dashed var(--line); border-radius: 10px; padding: 10px; display: grid; align-content: space-between; gap: 6px; background: var(--bg); }
+.slot { min-height: 110px; border: 2px dashed var(--line); border-radius: 16px; padding: 12px; display: grid; align-content: space-between; gap: 6px; background: var(--surface2); }
 .slot.over { border-color: var(--accent); background: var(--band); }
-.slot.full { border-style: solid; background: var(--surface); }
-.slot .nm { font: 600 18px/1.05 var(--display); text-transform: uppercase; letter-spacing: .02em; }
-.slot .rt { font: 600 22px/1 var(--display); font-variant-numeric: tabular-nums; }
-.slot button { padding: 2px 8px; font-size: 12px; justify-self: start; cursor: pointer; }
-.grid5 { display: grid; gap: 2px; font-size: 12px; }
-.grid5 div { padding: 6px 4px; text-align: center; border-radius: 4px; font-variant-numeric: tabular-nums; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slot.full { border-style: solid; background: var(--surface); box-shadow: var(--shadow); }
+.slot .nm { font: 700 14px/1.15 var(--body); letter-spacing: -.01em; }
+.slot .rt { font: 600 24px/1 var(--display); font-variant-numeric: tabular-nums; }
+.slot button { padding: 3px 10px; font-size: 12px; justify-self: start; border-radius: 99px; }
+.grid5 { display: grid; gap: 3px; font-size: 12px; }
+.grid5 div { padding: 7px 4px; text-align: center; border-radius: 6px; font-variant-numeric: tabular-nums; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (prefers-reduced-motion: no-preference) { .fade { animation: fade .25s ease-out } @keyframes fade { from { opacity: .4 } to { opacity: 1 } } }
 </style>
 
 <header><div class="wrap bar">
-  <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
-  <nav id="nav">
-    <a href="#leaders">Leaderboard</a><a href="#study">Study</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#careers">Careers</a><a href="#progression">Progression</a>
-    <a href="#coaches">Coaches</a><a href="#coachlab">Coach lab</a><a href="#synergy">Synergy</a><a href="#lineup">Lineup lab</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
-  </nav>
+  <a class="brand" href="#home"><span class="mark">S</span>Scott Stat</a>
+  <nav id="nav" aria-label="Sections"><a href="#home" data-sec="home">Home</a><a href="#players" data-sec="players">Players</a><a href="#goat" data-sec="goat">GOAT</a><a href="#coaches" data-sec="coaches">Coaches</a><a href="#teammates" data-sec="teammates">Teammates</a><a href="#about" data-sec="about">About</a></nav>
 </div></header>
+<nav class="tabbar" id="tabbar" aria-label="Sections"><a href="#home" data-sec="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="#players" data-sec="players"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>Players</a><a href="#goat" data-sec="goat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>GOAT</a><a href="#coaches" data-sec="coaches"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Coaches</a><a href="#teammates" data-sec="teammates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3.2"/><circle cx="16.5" cy="9" r="3.2"/><path d="M2.5 20c.4-3.3 2.8-5 5.5-5s5.1 1.7 5.5 5M11 20c.4-3.3 2.8-5 5.5-5s5.1 1.7 5.5 5"/></svg>Teammates</a><a href="#about" data-sec="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>About</a></nav>
+<div class="wrap"><nav class="subnav" id="subnav" aria-label="Views" hidden></nav></div>
 <main class="wrap" id="app"><p class="note">Loading the Scott Stat…</p></main>
 <div class="tip" id="tip" hidden></div>
 
@@ -128,14 +201,19 @@ fetch("data.json").then(r => r.json()).then(d => { D = d; D.byId = new Map(D.pla
 addEventListener("hashchange", route);
 
 function route() {
-  const h = location.hash.slice(1) || "leaders";
-  document.querySelectorAll("#nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + h.split("-")[0] ||
-    (h.startsWith("player") || h.startsWith("legend")) && a.getAttribute("href") === "#leaders"));
+  let h = location.hash.slice(1) || "home";
+  if (h === "players") h = "leaders"; else if (h === "goat") h = "legacy"; else if (h === "teammates") h = "synergy";
+  const view = h.split("-")[0];
+  const sec = h.startsWith("player-") || h.startsWith("legend-") ? "players" : VIEW_SEC[view] || "home";
+  document.querySelectorAll("[data-sec]").forEach(a => a.classList.toggle("on", a.dataset.sec === sec));
+  const sub = $("#subnav"), vs = SECTIONS[sec];
+  sub.hidden = vs.length < 2;
+  sub.innerHTML = vs.map(([k, l]) => `<a href="#${k}" class="${k === view ? "on" : ""}">${l}</a>`).join("");
   const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
+  scrollTo(0, 0);
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup }[h] || leaders)();
-  scrollTo(0, 0);
+  ({ home, about, leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup }[view] || home)();
 }
 
 /* ---------- leaderboard ---------- */
@@ -168,13 +246,13 @@ function leaders() {
       ${plus ? `<th>Scott Stat</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Clutch</th><th>Playoffs</th><th>Peak 5</th><th>Wins</th>`
         : `<th>Peak wins / season</th><th>Impact per 100</th><th>= Individual</th><th>+ Team credit</th><th>Scoring load</th><th>Era dominance</th><th>#1 seasons</th><th>Offense</th><th>Defense</th><th>Career wins</th>`}
     </tr></thead><tbody>${rows.map((p, i) => plus ? `<tr tabindex="0" data-go="#player-${p.id}">
-      <td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}${p.partial_from ? ` <span class="flag" title="Career began ${p.partial_from}; play-by-play covers only from 1996-97">late career</span>` : ""}</td>
+      <td class="rank num">${i + 1}</td><td class="l">${who(p.name)}</td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}${p.partial_from ? ` <span class="flag" title="Career began ${p.partial_from}; play-by-play covers only from 1996-97">late career</span>` : ""}</td>
       <td class="num"><b>${f(p.scott, 2)}</b><span class="pm">±${f(p.se, 1, false)}</span></td>
       <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td>
       <td class="num">${f(p.prod)}</td><td class="num ${cls(p.lift)}">${f(p.lift)}</td>
       <td class="num ${cls(p.clutch)}">${f(p.clutch)}</td><td class="num ${cls(p.po)}">${f(p.po)}</td>
       <td class="num">${f(p.peak5)}</td><td class="num">${f(p.war, 0, false)}</td></tr>`
-      : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b>${p.lite > 0.5 ? ` <span class="flag" title="Most seasons before 1973-74: no steals, blocks or turnovers recorded">limited stats</span>` : ""}</td>
+      : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l">${who(p.name)}${p.lite > 0.5 ? ` <span class="flag" title="Most seasons before 1973-74: no steals, blocks or turnovers recorded">limited stats</span>` : ""}</td>
       <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.pwar5, 1, false)}</b></td><td class="num">${f(p.best5, 2)}</td><td class="num">${f(p.ind, 2)}</td><td class="num ${cls(p.team)}">${f(p.team, 2)}</td>
       <td class="num">${f(p.score5, 1)}${p.stitles ? `<span class="pm">${p.stitles} title${p.stitles > 1 ? "s" : ""}</span>` : ""}</td>
       <td class="num">${p.dom5 == null ? "–" : p.dom5.toFixed(2)}</td><td class="num">${p.no1 || ""}${p.top3 ? `<span class="pm">top 3: ${p.top3}</span>` : ""}</td>
@@ -193,6 +271,163 @@ function leaders() {
 }
 function bindRows() { document.querySelectorAll("tr[data-go]").forEach(tr => { tr.onclick = () => location.hash = tr.dataset.go;
   tr.onkeydown = e => { if (e.key === "Enter") location.hash = tr.dataset.go; }; }); }
+
+/* ---------- sections, avatars ---------- */
+const SECTIONS = {
+  home: [["home", "Overview"]],
+  players: [["leaders", "Rankings"], ["compare", "Head to head"], ["careers", "Careers"], ["progression", "Risers & fallers"], ["finder", "GM finder"]],
+  goat: [["legacy", "All-time ranking"]],
+  coaches: [["coaches", "Coach rankings"], ["coachlab", "Coach lab"], ["scenarios", "Fit finder"]],
+  teammates: [["synergy", "Synergy"], ["lineup", "Lineup lab"]],
+  about: [["about", "About"], ["guide", "How to read it"], ["study", "The study"], ["method", "Method & tests"]],
+};
+const VIEW_SEC = {}; Object.entries(SECTIONS).forEach(([sec, vs]) => vs.forEach(([v]) => { if (!VIEW_SEC[v]) VIEW_SEC[v] = sec; }));
+const hue = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+const initials = n => { const w = String(n).replace(/[^\p{L}\s'-]/gu, "").trim().split(/\s+/); return ((w[0]?.[0] || "") + (w.length > 1 ? w[w.length - 1][0] : "")).toUpperCase(); };
+const av = n => `<span class="av" style="background:hsl(${hue(n)} 52% 44%)" aria-hidden="true">${esc(initials(n))}</span>`;
+const who = n => `<span class="who">${av(n)}<span>${esc(n)}</span></span>`;
+function legacyRank(W = { peak: 1, career: 0, rings: 1, scoring: 0.5, winning: 0.5 }) {
+  const pool = D.classic.filter(p => p.seasons >= 8 && p.pwar5 != null);
+  const stat = k => { const top = pool.map(p => p[k] ?? 0).sort((a, b) => b - a).slice(0, 10), ref = top.reduce((a, b) => a + b, 0) / top.length;
+    return p => 100 * Math.max(0, p[k] ?? 0) / ref; };
+  const zp = stat("pwar5"), zc = stat("war"), zr = stat("tshare"), zs = stat("create5"), zw = stat("winwins");
+  const tot = W.peak + W.career + W.rings + W.scoring + W.winning;
+  return pool.map(p => ({ p, score: (W.peak * zp(p) + W.career * zc(p) + W.rings * zr(p) + W.scoring * zs(p) + W.winning * zw(p)) / tot }))
+    .sort((a, b) => b.score - a.score);
+}
+
+/* ---------- home ---------- */
+function home() {
+  const L = legacyRank(), [g1, g2] = L;
+  const careers = D.classic.length;
+  const v = D.validation?.classic || {};
+  const rC = v.test_classic?.r_net, rB = v.test_bref_bpm?.r_net;
+  const pairs = D.syn.pairs.filter(p => p[7] >= 3000).map(p => ({ a: p[2], b: p[3], team: p[4], y0: p[5], y1: p[6], poss: p[7], syn: p[8], tot: p[8] * p[7] / 100 }));
+  const duo = pairs.slice().sort((a, b) => b.tot - a.tot)[0];
+  const gem = pairs.find(p => (p.a === "LeBron James" && p.b === "Mo Williams") || (p.b === "LeBron James" && p.a === "Mo Williams"));
+  const peak = D.classic.filter(p => p.seasons >= 6 && p.best5 != null).sort((a, b) => b.best5 - a.best5)[0];
+  const winner = D.classic.filter(p => p.seasons >= 8 && p.winning != null).sort((a, b) => b.winning - a.winning)[0];
+  const byCoach = new Map();
+  D.pairs.filter(x => x[4] >= 2000).forEach(x => { const a = byCoach.get(x[1]) || { w: 0, s: 0, n: 0 }; a.w += x[4]; a.s += x[4] * x[7]; a.n++; byCoach.set(x[1], a); });
+  const coach = [...byCoach.entries()].filter(([, a]) => a.n >= 15).map(([c, a]) => ({ c, v: a.s / a.w, n: a.n })).sort((a, b) => b.v - a.v)[0];
+  const post = (href, tag, sub, title, stat, unit, body, cta, ava) => `<a class="post" href="${href}">
+      <div class="ph">${ava}<div>${esc(tag)}<small>${esc(sub)}</small></div></div>
+      <div class="pb"><div class="stat">${stat}<small>${unit}</small></div><h3>${title}</h3><p class="note" style="margin:0">${body}</p></div>
+      <div class="pf">${cta} →</div></a>`;
+  $("#app").innerHTML = `<div class="stack" style="gap:34px">
+    <section class="homehero"><div>
+      <div class="eyebrow">Every NBA player since 1951-52, on one scale</div>
+      <h1>Who actually makes a team <em>better?</em></h1>
+      <p class="lede">The Scott Stat measures how much better a team was with a player on the floor, in points per 100 possessions, then turns it into wins and titles. Box scores count what a player did. This counts what it was worth.</p>
+      <div class="row" style="margin-top:20px"><a class="btn" href="#legacy">See the all-time ranking</a><a class="btn ghost" href="#about">How it works</a></div>
+      <div class="kpis"><div><b>${careers.toLocaleString()}</b><span>careers rated</span></div><div><b>75</b><span>seasons, 1951-52 to 2025-26</span></div><div><b>${rC ? rC.toFixed(2) : "–"}</b><span>accuracy on unseen seasons (B-Ref BPM: ${rB ? rB.toFixed(2) : "–"})</span></div></div>
+    </div>
+    <div class="panel" style="padding:18px 18px 8px"><div class="row" style="justify-content:space-between"><h3>The all-time top 10</h3><a href="#legacy" class="note" style="font-weight:700;color:var(--accent);text-decoration:none">Full ranking →</a></div>
+      <table style="margin-top:6px"><tbody>${L.slice(0, 10).map((r, i) => `<tr data-go="#legend-${r.p.id}" tabindex="0"><td class="rank num">${i + 1}</td><td class="l">${who(r.p.name)}</td><td class="num"><b>${r.score.toFixed(0)}</b></td></tr>`).join("")}</tbody></table></div>
+    </section>
+
+    <section class="stack" style="gap:10px"><div class="row" style="justify-content:space-between"><h2>The greatest, at a glance</h2><span class="note">Tap a player</span></div>
+      <div class="stories">${L.slice(0, 14).map((r, i) => `<a class="story" href="#legend-${r.p.id}"><span class="ring">${av(r.p.name)}</span><span>${esc(r.p.name)}</span><small>#${i + 1}</small></a>`).join("")}</div></section>
+
+    <section class="memo"><div><div class="eyebrow">The answer first</div><h2>One number for what a player is worth to winning, for every era</h2></div>
+      <div class="cols">
+        <p><b>What it is.</b> Points per 100 possessions a player adds over an average player, measured from every lineup on the floor since 1996-97 and estimated from box scores and team results before that, then converted to wins.</p>
+        <p><b>Why it's different.</b> It credits what helped the team win, not what filled the box score: defense, spacing, screening and lifting teammates show up; empty stats don't. Then it adds titles, offensive load and winning, and lets the reader set the weights.</p>
+        <p><b>Does it work.</b> On seasons it never saw, it tracks play-by-play impact at ${rC ? rC.toFixed(2) : "0.68"} against ${rB ? rB.toFixed(2) : "0.64"} for Basketball-Reference's BPM, predicts next season's team results from roster changes at 0.85, and holds every era on the same scale.</p>
+      </div></section>
+
+    <section class="stack" style="gap:14px"><h2>What the numbers say</h2>
+      <div class="feed">
+        ${post("#legacy", "The GOAT debate", "All-time ranking", `${esc(g1.p.name)} edges ${esc(g2.p.name)}`, g1.score.toFixed(0), `vs ${g2.score.toFixed(0)}`, `Peak wins per season, championships, offensive load and winning, at their best, with longevity left out. Change the weights and watch it move.`, "Set your own weights", av(g1.p.name))}
+        ${duo ? post("#synergy", "Best duo", `${duo.team} · ${duo.y0}-${String(duo.y1 + 1).slice(2)}`, `${esc(duo.a)} + ${esc(duo.b)}`, f(duo.tot, 0), "extra points", `Better together than their own ratings say, by ${f(duo.syn, 2)} per 100 possessions over ${Math.round(duo.poss).toLocaleString()} possessions on the floor together.`, "Explore synergy", `<span class="duo">${av(duo.a)}${av(duo.b)}</span>`) : ""}
+        ${gem ? post("#synergy", "Hidden gem", `${gem.team} · ${gem.y0}-${String(gem.y1 + 1).slice(2)}`, `LeBron James + Mo Williams`, f(gem.syn, 1), "per 100", `A star and a role player who were better together than either one's numbers suggest, over ${Math.round(gem.poss).toLocaleString()} possessions. LeBron and Wade: about zero.`, "Find more like it", `<span class="duo">${av("LeBron James")}${av("Mo Williams")}</span>`) : ""}
+        ${coach ? post("#coachlab", "Player development", "Coach lab", `${esc(coach.c)} grows players`, f(coach.v, 2), "per 100", `How much better his ${coach.n} players played under him than their own career trends predict: the most of any coach with 15 or more.`, "Open the coach lab", av(coach.c)) : ""}
+        ${peak ? post(`#legend-${peak.id}`, "Highest peak", `Best five seasons · ${esc(peak.best5_years || "")}`, `${esc(peak.name)}`, f(peak.best5, 1), "per 100", `The most points per 100 possessions added over an average player across five straight seasons, of anyone with six or more seasons.`, "See his career", av(peak.name)) : ""}
+        ${winner ? post(`#legend-${winner.id}`, "Winning beyond the box score", "Every team-season since 1951-52", `${esc(winner.name)}`, f(winner.winning, 1), "per 100", `His teams won more than their box scores predicted, on every roster he played for. Nobody with eight or more seasons did it by more.`, "See his career", av(winner.name)) : ""}
+      </div></section>
+
+    <section class="stack" style="gap:14px"><h2>How it works, in four steps</h2>
+      <div class="steps">
+        <div><b>Track every lineup</b><p>Since 1996-97, every possession, with all ten players on the floor. How much better the team did with each player on the court.</p></div>
+        <div><b>Reach back to 1951</b><p>Before play-by-play, the same impact is estimated from box scores and team results, trained on the modern era and tested on seasons it never saw.</p></div>
+        <div><b>Turn points into wins</b><p>Impact times minutes, against a replacement player, at a standard pace so a 1960s season and a 2020s season count the same.</p></div>
+        <div><b>Weigh a legacy</b><p>Peak, championships, offensive load and winning beyond the box score. The data supplies each one; the reader sets the weights.</p></div>
+      </div></section>
+
+    <section class="cols2">
+      <a class="post" href="#coaches"><div class="pb"><div class="eyebrow">Coaches</div><h3>Which coach gets the most out of which player</h3><p class="note" style="margin:0">Filter by position and play style; see who grew under whom.</p></div><div class="pf">Open coaches →</div></a>
+      <a class="post" href="#lineup"><div class="pb"><div class="eyebrow">Lineup lab</div><h3>Drag five players and see how they'd play</h3><p class="note" style="margin:0">Individual ratings plus measured synergy for every pair that shared the floor.</p></div><div class="pf">Build a five →</div></a>
+      <a class="post" href="#leaders"><div class="pb"><div class="eyebrow">Players</div><h3>Rankings, head to head, careers</h3><p class="note" style="margin:0">Every player since 1951-52, with offense, defense and the team credit behind each number.</p></div><div class="pf">Browse players →</div></a>
+    </section>
+  </div>`;
+  bindRows();
+}
+
+/* ---------- about ---------- */
+function about() {
+  const v = D.validation?.classic || {};
+  const r = k => v[k]?.r_net != null ? v[k].r_net.toFixed(2) : "–";
+  const toc = [["question", "The question"], ["rating", "How a rating is built"], ["wins", "From points to wins"], ["winning", "Winning beyond the box score"], ["titles", "Championships"],
+    ["legacy", "The all-time ranking"], ["coaches", "Coaches"], ["synergy", "Synergy"], ["eras", "Fair across eras"], ["proof", "Does it work?"], ["limits", "What it can't do"], ["data", "Data"]];
+  $("#app").innerHTML = `<div class="stack about" style="gap:26px">
+    <div><div class="eyebrow">About the Scott Stat</div><h1>A stat for what wins, not what fills a box score</h1>
+      <p class="lede">Points, rebounds and assists say what a player did. They don't say whether his team was better for it. The Scott Stat answers that one question for every player since 1951-52, on one scale, and shows the work behind every number.</p></div>
+    <nav class="about-nav" aria-label="On this page">${toc.map(([k, l]) => `<a href="javascript:void(0)" data-jump="${k}">${l}</a>`).join("")}</nav>
+
+    <h2 id="a-question">The question</h2>
+    <div class="panel prose"><p>When this player is on the floor, how much better is his team, in points per 100 possessions, compared with an average player in his place? +5 is All-NBA. +7 and up is an MVP season. Zero is average; about -2 is a player any team could sign off the street.</p>
+      <p>Two players with the same stat line can be worth very different amounts. One scores efficiently, defends, and makes his teammates better; the other takes the same shots on a team that loses more when he plays. The Scott Stat is built to tell them apart.</p></div>
+
+    <h2 id="a-rating">How a rating is built</h2>
+    <div class="steps">
+      <div><b>Play-by-play (1996-97 on)</b><p>Every stretch of game with the same ten players on the floor. A regression splits each lineup's margin among its players, with luck taken out of three-point and free-throw shooting.</p></div>
+      <div><b>Box score + team results (every era)</b><p>Each stat gets a price learned from the play-by-play era (an assist, a steal, a missed shot), matched to its era. Then the gap between how good the team was and what its players' stats add up to is shared out by minutes.</p></div>
+      <div><b>Game logs</b><p>Every game since 1946-47: how the team did with and without him. This sharpens the older eras, where there's no play-by-play.</p></div>
+      <div><b>One rating per season</b><p>From 1996-97 the play-by-play decides who on a team gets the credit; the team's results decide how much there is.</p></div>
+    </div>
+    <div class="panel prose"><p>The ABA (1967-76) is included. Its stars are discounted more than its role players, because the players who switched leagues show the ABA stretched the gap: an ABA +6 played like an NBA +3.9 the next season.</p></div>
+
+    <h2 id="a-wins">From points to wins</h2>
+    <div class="panel prose"><p>A rating times the minutes he played, measured against a replacement-level player, converted with the league's own curve from point margin to wins. Peak wins per season uses a neutral setting: a standard 100 possessions a game over 82 games, with minutes measured against his era's norm. Pace and 48-minute nights are traits of an era, not of a player, so a 1962 season and a 2016 season count the same.</p></div>
+
+    <h2 id="a-winning">Winning beyond the box score</h2>
+    <div class="panel prose"><p>For every team-season since 1951-52: how much better was the team than its players' box scores say? One number per player, fitted across all of them at once, so it's identified by players changing teams. A player whose teams outperform on every roster he joins gets the credit (Duncan, Russell, Bird, Garnett, LeBron); one whose teams fall short everywhere gets the blame. This is where defense, spacing and lifting teammates show up.</p></div>
+
+    <h2 id="a-titles">Championships</h2>
+    <div class="panel prose"><p>Each title is split among the champion's players by how much each raised the team's title odds in those playoffs, using his playoff rating. The best player on a champion typically gets 60-85% of it: Jordan 84% of the 1991 title, Hakeem 85% of 1994, LeBron 88% of 2016. A title in a 30-team league counts more than one in an 8-team league.</p></div>
+
+    <h2 id="a-legacy">The all-time ranking</h2>
+    <div class="panel prose"><p>Four ingredients, each measured at a player's best and scored against the all-time top-10 level: <b>peak</b> (wins per season, best five), <b>championships</b>, <b>scoring and creation</b> (offensive load, half weight) and <b>winning beyond the box score</b> (half weight). Longevity is off by default; the reader can turn it on. Every player shows his rank range across 81 weightings, so you can see which rankings depend on the weights and which don't.</p></div>
+
+    <h2 id="a-coaches">Coaches</h2>
+    <div class="panel prose"><p>A coach gets credit only when players play above their own career level and aging curve under him, learned from every player who moved between coaches. The coach lab shows each player's growth under each coach, filterable by position and play style, and ranks coaches for any type of player. These are small, damped numbers: a lead for a scout, not a verdict.</p></div>
+
+    <h2 id="a-synergy">Synergy</h2>
+    <div class="panel prose"><p>When two teammates share the floor, does the team do better than their individual ratings say? Synergy is that gap, shrunk toward zero by an amount chosen to best predict each pair's other seasons. It's real but noisy for any one pair (split-half r ${D.syn.reliability}), so long partnerships are the ones to trust.</p></div>
+
+    <h2 id="a-eras">Fair across eras</h2>
+    <div class="panel prose"><p>The test: in each decade, do players' ratings add up to how good their teams actually were? An equal answer in every era means one scale. Today the slope runs 1.07 to 1.13 in every decade from the 1950s to the 2020s. Older eras that recorded fewer stats are corrected for the information they're missing, within teams, so no era is pulled toward average just because less was written down.</p></div>
+
+    <h2 id="a-proof">Does it work?</h2>
+    <div class="tiles">
+      <div class="tile a"><small>Box score + team, unseen seasons</small><b>${r("test_classic")}</b><small>correlation with play-by-play impact</small></div>
+      <div class="tile"><small>Basketball-Reference BPM</small><b>${r("test_bref_bpm")}</b><small>same test</small></div>
+      <div class="tile"><small>Box score alone</small><b>${r("test_box_only")}</b><small>same test</small></div>
+      <div class="tile"><small>Next season from roster changes</small><b>0.85</b><small>team results predicted, 1,358 team-seasons</small></div>
+    </div>
+    <div class="panel prose"><p>Every layer was kept only if it improved prediction on seasons it never saw. Several were tried and removed: a scorer bonus that didn't hold up, and a winning adjustment that counted the same thing twice. The full audit log is under Method &amp; tests.</p></div>
+
+    <h2 id="a-limits">What it can't do</h2>
+    <div class="panel prose"><ul><li>Before 1996-97 there's no play-by-play, so Jordan's, Magic's and Bird's primes are estimates from box scores, team results and game logs, with wider error bars.</li>
+      <li>Before 1973-74 steals, blocks and turnovers weren't recorded, so Russell's and Wilt's defense is seen mostly through their teams' results.</li>
+      <li>Synergy and coach effects are small and noisy for any single pair; the tool shows the error on each.</li>
+      <li>The all-time ranking is a choice of weights. The site shows the choice and lets you change it.</li></ul></div>
+
+    <h2 id="a-data">Data</h2>
+    <div class="panel prose"><p>Play-by-play for every game since 1996-97; Basketball-Reference season tables for every NBA and ABA season since 1951-52; every box score since 1946-47 from game logs; head coaches for every game; player salaries since 2009-10. The code is open: <a href="https://github.com/scarusillo/Scott-stat" style="color:var(--accent);font-weight:700">github.com/scarusillo/Scott-stat</a>.</p></div>
+  </div>`;
+  document.querySelectorAll("[data-jump]").forEach(a => a.onclick = () => document.getElementById("a-" + a.dataset.jump)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }));
+}
 
 /* ---------- charts ---------- */
 function seasonChart(seasons, opts = {}) {
@@ -493,7 +728,7 @@ function legacy() {
         <p class="note">Each ingredient is scored as a percentage of the all-time top-10 level (100 = a typical top-10 mark), so equal weights count equally at the top.</p></div>
     </div>
     <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Rank range</th><th>Peak wins / season</th><th>Career wins</th><th>Titles</th><th>Title shares</th><th>Scoring &amp; creation</th><th>Winning wins / season</th></tr></thead><tbody>
-      ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.p.name)}</b></td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
+      ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l">${who(r.p.name)}</td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
         <td class="num"><b>${r.score.toFixed(0)}</b></td><td class="num">${(x => x[0] === x[1] ? x[0] : x[0] + "–" + x[1])(range.get(r.p.id))}</td><td class="num">${f(r.p.pwar5, 1, false)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td><td class="num">${f(r.p.create5, 1)}${r.p.stitles ? `<span class="pm">${r.p.stitles} scoring title${r.p.stitles > 1 ? "s" : ""}</span>` : ""}</td><td class="num">${f(r.p.winwins, 1)}</td></tr>`).join("")}
     </tbody></table></div>
     <p class="note">Rank range is each player's best and worst rank across 81 weightings (peak, titles, scoring &amp; creation and winning each at half, equal or double their setting). A narrow range means the ranking doesn't depend on the weights. Players with fewer than eight qualifying seasons aren't ranked here yet. ABA seasons (1967-68 to 1975-76) count, moved down to NBA level using the players who switched leagues; ABA titles count at their league-size weight (10-11 teams). From 1996-97 on, each season's ratings use play-by-play too, which decides who ranks where inside a season but never stretches the scale.</p></div>`;
@@ -544,7 +779,7 @@ function careers() {
       ${lineChart(arc, { band: [all.prime_from, all.prime_to], xlabel: "Age", ymin: -2, ymax: 7, label: "Impact by age" })}</div>
     <div class="panel tablewrap"><h3>Peak, split into individual and team credit</h3>
       <table><thead><tr><th class="l">Player</th><th class="l">Best 5 seasons</th><th>Best age</th><th>Impact peak</th><th>= Individual</th><th>+ Team credit</th><th class="l" style="min-width:180px">Split</th><th>Titles</th></tr></thead><tbody>
-      ${sel.map(p => `<tr tabindex="0" data-go="#legend-${p.id}"><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.best5_years || "–"}</td><td class="num">${peakAge(p)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.ind, 2)}</td><td class="num ${cls(p.team)}">${f(p.team, 2)}</td><td class="l">${split(p)}</td><td class="num">${p.titles || ""}</td></tr>`).join("")}</tbody></table>
+      ${sel.map(p => `<tr tabindex="0" data-go="#legend-${p.id}"><td class="l">${who(p.name)}</td><td class="l num">${p.best5_years || "–"}</td><td class="num">${peakAge(p)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.ind, 2)}</td><td class="num ${cls(p.team)}">${f(p.team, 2)}</td><td class="l">${split(p)}</td><td class="num">${p.titles || ""}</td></tr>`).join("")}</tbody></table>
       <p class="note">Grey = individual: what his own stats were worth, era-adjusted. Orange = team credit: his share of how much his team beat what its players' stats predict, from team results and from games with and without him. Reported separately because they answer different questions and the team part is the less certain one.</p></div>
     <div class="split">
       <div class="panel"><h3>Aging curves</h3>
@@ -717,14 +952,14 @@ function synergy() {
   const top = rows.slice(0, 50), worst = rows.slice().sort((a, b) => S.sort === "rate" ? a.syn - b.syn : a.total - b.total).slice(0, 10);
   // scatter: possessions together (log) vs synergy
   const W = 720, Hh = 300, m = { l: 44, r: 14, t: 14, b: 36 };
-  const pts = rows.slice(0, 1500);
+  const pts = rows;
   const xs = pts.map(r => Math.log10(r.poss)), x0 = Math.log10(S.min), x1 = Math.max(x0 + 0.5, ...xs);
   const ylim = Math.max(1, Math.ceil(Math.max(...pts.map(r => Math.abs(r.syn)), 1)));
   const X = v => m.l + (Math.log10(v) - x0) / (x1 - x0) * (W - m.l - m.r), Y = v => m.t + (ylim - v) / (2 * ylim) * (Hh - m.t - m.b);
   const xt = [1000, 2000, 5000, 10000, 20000, 50000].filter(v => Math.log10(v) >= x0 - 1e-9 && Math.log10(v) <= x1 + 1e-9);
   const yt = []; for (let v = -ylim; v <= ylim; v += ylim > 2 ? 1 : 0.5) yt.push(v);
   const hi = new Set(top.slice(0, 12));
-  const tr = r => `<tr><td class="l"><b>${r.names.map(esc).join(" + ")}</b></td><td class="l">${esc(r.team)}</td><td class="l num">${yr(r.a)}${r.z > r.a ? "–" + String(r.z + 1).slice(2) : ""}</td>
+  const tr = r => `<tr><td class="l"><span class="who"><span class="duo">${r.names.map(n => av(n)).join("")}</span><span>${r.names.map(esc).join(" + ")}</span></span></td><td class="l">${esc(r.team)}</td><td class="l num">${yr(r.a)}${r.z > r.a ? "–" + String(r.z + 1).slice(2) : ""}</td>
     <td class="num">${Math.round(r.poss).toLocaleString()}</td><td class="num ${cls(r.net)}">${f(r.net)}</td><td class="num ${cls(r.syn)}"><b>${f(r.syn, 2)}</b><span class="pm">±${r.se.toFixed(2)}</span></td><td class="num ${cls(r.total)}">${f(r.total, 0)}</td></tr>`;
   const head = `<thead><tr><th class="l">${isTrio ? "Trio" : "Duo"}</th><th class="l">Team</th><th class="l">Seasons</th><th>Possessions together</th><th>Net together</th><th>Synergy</th><th>Extra points</th></tr></thead>`;
   $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Synergy · play-by-play, 1996-97 to 2024-25</div><h1>Better together</h1>
@@ -788,10 +1023,10 @@ function lineup() {
     <p class="lede">Drag players into the five spots (or tap a name to add it). Each player brings his best-five-season rating; pairs that actually shared the floor add their measured synergy (averaged across the pairs, weighted by time together). The total is how many points per 100 possessions this five would beat an average lineup by.</p></div>
     <div class="lab">
       <div class="panel stack" style="gap:12px;align-content:start"><div class="controls"><label for="luq">Find a player<input id="luq" type="search" placeholder="Name" value="${esc(state.luq || "")}"></label></div>
-        <div class="pool" id="pool">${chips.map(p => `<span class="pchip" draggable="true" data-id="${p.id}" tabindex="0" role="button" aria-label="Add ${esc(p.name)}">${esc(p.name)}<b>${f(p.peak5)}</b></span>`).join("")}</div>
+        <div class="pool" id="pool">${chips.map(p => `<span class="pchip" draggable="true" data-id="${p.id}" tabindex="0" role="button" aria-label="Add ${esc(p.name)}">${av(p.name)}${esc(p.name)}<b>${f(p.peak5)}</b></span>`).join("")}</div>
         <p class="note">${pool.length} players with 15,000+ possessions, best first. Number = best five seasons, points per 100 possessions.</p></div>
       <div class="stack" style="gap:16px">
-        <div class="slots">${L.map((p, i) => `<div class="slot ${p ? "full" : ""}" data-slot="${i}">${p ? `<div class="nm">${esc(p.name)}</div><div class="rt ${cls(p.peak5)}">${f(p.peak5)}</div><button data-clear="${i}" aria-label="Remove ${esc(p.name)}">Remove</button>` : `<div class="note">Drop a player here</div>`}</div>`).join("")}</div>
+        <div class="slots">${L.map((p, i) => `<div class="slot ${p ? "full" : ""}" data-slot="${i}">${p ? `${av(p.name)}<div class="nm">${esc(p.name)}</div><div class="rt ${cls(p.peak5)}">${f(p.peak5)}</div><button data-clear="${i}" aria-label="Remove ${esc(p.name)}">Remove</button>` : `<div class="note">Drop a player here</div>`}</div>`).join("")}</div>
         <div class="panel"><div class="hero"><div><div class="eyebrow">This five, per 100 possessions vs an average lineup</div>
           <p class="note" style="margin:6px 0 0">${filled.length < 5 ? `Add ${5 - filled.length} more to complete the five.` : `That's ${verdict}.`} Individual ratings ${f(indiv)} · synergy ${f(synSum, 2)} (average of ${meas.length} of ${pairsIn.length} pairs measured).</p></div>
           <div class="big ${cls(total)}" style="color:inherit">${f(total)}</div></div></div>

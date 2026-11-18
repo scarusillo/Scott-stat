@@ -915,6 +915,15 @@ New views:
   measured pair synergies (a pair's number already includes its five's effect, so summing would count it
   up to ten times).
 
+## Site redesign
+
+Six sections instead of fourteen tabs: Home, Players (rankings, head to head, careers, risers & fallers, GM finder),
+GOAT (legacy), Coaches (rankings, coach lab, fit finder), Teammates (synergy, lineup lab), About (about, how to read
+it, the study, method & tests). New Home (thesis, all-time top 10, the greats as a story row, an answer-first memo,
+findings as cards computed live from the data, four-step explainer) and About (the full explanation with real
+numbers). Consumer-app styling: one sans (Plus Jakarta Sans) with scoreboard numerals for big numbers, cards,
+player avatars, pill sub-tabs, bottom tab bar on phones, light and dark. The internal launch plan is no longer linked.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
