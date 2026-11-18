@@ -59,6 +59,7 @@ def main():
         })
     ch = pd.read_csv(OUT / "championships_careers.csv", index_col=0)
     sc = pd.read_csv(OUT / "scoring_careers.csv").set_index("player_id")
+    wn = pd.read_csv(OUT / "winning_careers.csv").set_index("player_id")
     ckeep = classic[classic.poss >= MIN_CAREER_POSS]
     classic_rows = []
     for p in ckeep.itertuples():
@@ -81,6 +82,11 @@ def main():
             "score5_years": sc.scoring5_years.get(p.player_id) if p.player_id in sc.index and isinstance(sc.scoring5_years.get(p.player_id), str) else None,
             "stitles": int(sc.scoring_titles.get(p.player_id)) if p.player_id in sc.index else 0,
             "create5": r(sc.create5.get(p.player_id)) if p.player_id in sc.index else None,
+            "winwins": r(wn.winning_prime_wins.get(p.player_id), 1) if p.player_id in wn.index else None,
+            "winwins_career": r(wn.winning_wins.get(p.player_id), 1) if p.player_id in wn.index else None,
+            "winning": r(wn.winning.get(p.player_id)) if p.player_id in wn.index else None,
+            "elev": r(wn.elevation.get(p.player_id)) if p.player_id in wn.index and pd.notna(wn.elevation.get(p.player_id)) else None,
+            "twpct": r(wn.team_wpct.get(p.player_id), 3) if p.player_id in wn.index else None,
             "tshare_raw": r(ch.title_shares.get(p.player)) if p.player in ch.index else 0,
             "codds": r(ch.championships_added.get(p.player)) if p.player in ch.index else 0,
             "s": [[int(q.season_start), q.team, r(q.net_classic), r(q.O_classic), r(q.D_classic), r(q.WAR_classic, 1),

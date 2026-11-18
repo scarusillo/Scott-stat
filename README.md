@@ -800,6 +800,30 @@ Moses Malone's own numbers did not move: peak +2.8 per 100 (box +2.5 O, 0 D; his
 SRS -0.4 to +0.9 in 1978-79..1981-82). Legacy, equal weights: Moses 50th, Tatum 47th, Carter 52nd, McGrady 35th,
 Lillard 29th, Gilgeous-Alexander 26th. Impact only (no scoring & creation): Moses 35th, ahead of all five.
 
+## Winning: who played winning basketball? (`src/winning.py`)
+
+One number per career: how much more (or less) a player's teams won, per 100 possessions he played, than
+their box scores said they should. Fitted jointly over every NBA team-season since 1951-52 (1664 of them):
+team strength (SRS per 100) - sum of (box production x possession share) = sum of (WINNING_i x share) + noise,
+ridge penalty 1 chosen by 5-fold cross-validation on held-out team-seasons (recovers 42%
+of the team strength the box scores miss). Identified by players changing teams; a core that never split
+up shares its winning. (A first version credited each player with his whole team's surplus over his
+teammates' track records; stable cores -- Duncan/Parker/Ginobili -- were triple-counted. Replaced.)
+- Top: Duncan, Rodman, Moncrief, Mutombo, Ginobili, Nowitzki, Gobert, Bird, Russell, Garnett, LeBron.
+  Bottom: Ricky Davis, Weatherspoon, Bellamy, McAdoo, Vucevic, Abdur-Rahim, Bargnani, Nick Young.
+- LeBron +2.17, Jordan +1.66, Tatum +1.50, Moses +1.01, Lillard +0.55, Kobe +0.10, Cousins -0.15,
+  McGrady -0.68, Carmelo -0.71, Carter -0.98.
+- Against play-by-play, each season left out of the fit: adds information beyond the full rating; adopted
+  into every rating at beta 0.18 (odd/even seasons 0.18/0.19); held-out
+  error 1.533 -> 1.523.
+- Legacy: fifth ingredient, wins beyond the box score over his ten heaviest seasons (career length is
+  already in career value). Default weights: peak 1, career 1, titles 1, scoring & creation 0.5, winning 0.5
+  (the last two overlap with impact).
+- Teammate elevation (teammates' box production with him vs elsewhere) is reported but is not a winning
+  measure: stars absorb teammates' shots, so it runs slightly negative for LeBron (-0.29) and Jordan (-0.10).
+Legacy now: LeBron, Jordan, Russell, Duncan, Kareem, Magic, Bird, Wilt, Curry, Garnett; Shaq 11, Kobe 17;
+Moses 38, Lillard 44, Tatum 49, McGrady 70, Carter 84, Carmelo 170, Cousins 222.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

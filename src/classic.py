@@ -474,6 +474,19 @@ def main():
             f["O_c"] = f.O_c + f.creation
             f["net_c"] = f.O_c + f.D_c
             val["creation"] = c_
+    # WINNING (winning.py): each player's career-long effect on team results beyond the box score, fitted
+    # jointly over every NBA team-season (players changing teams identify it). Added at the weight that
+    # improves held-out play-by-play prediction (cross-fit on odd/even seasons), split evenly O/D.
+    f["winning_adj"] = 0.0
+    wm, wc = OUT / "winning_meta.json", OUT / "winning_careers.csv"
+    if wm.exists() and wc.exists():
+        beta_w = json.load(open(wm))["validation_vs_plus_leave_season_out"]["add_to_rating"]["beta"]
+        wv = pd.read_csv(wc).set_index("player_id").winning
+        f["winning_adj"] = beta_w * f.player_id.map(wv).fillna(0)
+        f["O_c"] = f.O_c + f.winning_adj / 2
+        f["D_c"] = f.D_c + f.winning_adj / 2
+        f["net_c"] = f.O_c + f.D_c
+        val["winning_beta"] = beta_w
     print("play-by-play blend:", blend_ev, flush=True)
     bO, bD = f.attrs.get("coef_O_1990", np.zeros(len(FEATS) + 1)), f.attrs.get("coef_D_1990", np.zeros(len(FEATS) + 1))
 
@@ -494,7 +507,7 @@ def main():
     f["se_net"] = resid_sd
     f["season_start"] = f.season - 1
     cols = ["season_start", "band", "lg", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
-            "se_net", "WAR_c", "net_c_box_team", "creation", "usg_rel", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
+            "se_net", "WAR_c", "net_c_box_team", "creation", "winning_adj", "usg_rel", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
     if games_used:
         cols.append("games_informed")
     for y, x in f.groupby("season_start"):

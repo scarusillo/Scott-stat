@@ -267,6 +267,8 @@ function classicView(id) {
       <div style="text-align:right"><div class="eyebrow">Peak (best 5)</div><div class="big">${f(p.best5, 1)}</div></div></div>
     <div class="tiles"><div class="tile a"><small>Peak = individual + team credit</small><b>${f(p.ind)} <span style="font-size:20px;color:var(--muted)">${(p.team ?? 0) >= 0 ? "+" : "−"} ${Math.abs(p.team ?? 0).toFixed(1)}</span></b><small>his own stats, then his share of team results</small></div>
       <div class="tile"><small>Peak incl. playoffs</small><b>${f(p.best5po)}</b><small>playoff rise ${f(p.porise)}</small></div>
+      <div class="tile"><small>Winning beyond the box score</small><b>${f(p.winning)}</b><small>${p.winwins_career == null ? "" : f(p.winwins_career, 0) + " career wins · "}teams won ${p.twpct == null ? "–" : (p.twpct * 100).toFixed(0) + "%"}</small></div>
+      <div class="tile"><small>Teammates with him vs elsewhere</small><b>${p.elev == null ? "–" : f(p.elev)}</b><small>their own production, per 100</small></div>
       <div class="tile"><small>Peak wins per season</small><b>${f(p.pwar5, 1, false)}</b><small>best 5 seasons, games missed count</small></div>
       <div class="tile"><small>Titles</small><b>${p.titles || 0}</b><small>title shares ${(p.tshare ?? 0).toFixed(2)}</small></div>
       <div class="tile a"><small>Era dominance</small><b>${p.dom5 == null ? "–" : p.dom5.toFixed(2)}</b><small>#1 in ${p.no1} season${p.no1 === 1 ? "" : "s"}, top 3 in ${p.top3}</small></div>
@@ -436,45 +438,46 @@ function study() {
 
 /* ---------- legacy: peak + career + championships, reader-weighted ---------- */
 function legacy() {
-  const W = { peak: 1, career: 1, rings: 1, scoring: 1, ...(state.lw || {}) };
+  const W = { peak: 1, career: 1, rings: 1, scoring: 0.5, winning: 0.5, ...(state.lw3 || {}) };
   const pool = D.classic.filter(p => p.seasons >= 8 && p.pwar5 != null);
   // each ingredient as a percentage of the all-time top-10 level, so equal weights are equal at the top
   // (z-scores let championships count ~3x: most players have none, so anyone with several looked extreme)
   const stat = k => { const top = pool.map(p => p[k] ?? 0).sort((a, b) => b - a).slice(0, 10), ref = top.reduce((a, b) => a + b, 0) / top.length;
     return p => 100 * Math.max(0, p[k] ?? 0) / ref; };
-  const zp = stat("pwar5"), zc = stat("war"), zr = stat("tshare"), zs = stat("create5");
-  const tot = W.peak + W.career + W.rings + W.scoring || 1;
-  const rows = pool.map(p => ({ p, score: (W.peak * zp(p) + W.career * zc(p) + W.rings * zr(p) + W.scoring * zs(p)) / tot }))
+  const zp = stat("pwar5"), zc = stat("war"), zr = stat("tshare"), zs = stat("create5"), zw = stat("winwins");
+  const tot = W.peak + W.career + W.rings + W.scoring + W.winning || 1;
+  const rows = pool.map(p => ({ p, score: (W.peak * zp(p) + W.career * zc(p) + W.rings * zr(p) + W.scoring * zs(p) + W.winning * zw(p)) / tot }))
     .sort((a, b) => b.score - a.score).slice(0, 40);
-  // how much does the choice of weights matter? rank under 81 weightings (each ingredient at half, equal or double)
-  const Z = pool.map(p => [p.id, zp(p), zc(p), zr(p), zs(p)]), range = new Map(pool.map(p => [p.id, [999, 0]]));
-  for (const a of [0.5, 1, 2]) for (const b of [0.5, 1, 2]) for (const c of [0.5, 1, 2]) for (const e of [0.5, 1, 2])
-    Z.map(z => [z[0], a * z[1] + b * z[2] + c * z[3] + e * z[4]]).sort((x, y) => y[1] - x[1])
+  // how much does the choice of weights matter? rank under 243 weightings (each ingredient at half, equal or double)
+  const Z = pool.map(p => [p.id, zp(p), zc(p), zr(p), zs(p), zw(p)]), range = new Map(pool.map(p => [p.id, [999, 0]]));
+  for (const a of [0.5, 1, 2]) for (const b of [0.5, 1, 2]) for (const c of [0.5, 1, 2]) for (const e of [0.5, 1, 2]) for (const g of [0.5, 1, 2])
+    Z.map(z => [z[0], a * z[1] + b * z[2] + c * z[3] + e * z[4] + g * z[5]]).sort((x, y) => y[1] - x[1])
       .forEach(([id], i) => { const r = range.get(id); r[0] = Math.min(r[0], i + 1); r[1] = Math.max(r[1], i + 1); });
-  const presets = [["Equal", { peak: 1, career: 1, rings: 1, scoring: 1 }], ["Impact only (no scoring)", { peak: 1, career: 1, rings: 1, scoring: 0 }],
-                   ["Titles count double", { peak: 1, career: 1, rings: 2, scoring: 1 }], ["Scoring & creation double", { peak: 1, career: 1, rings: 1, scoring: 2 }],
-                   ["No titles", { peak: 1, career: 1, rings: 0, scoring: 1 }]];
+  const presets = [["Default", { peak: 1, career: 1, rings: 1, scoring: 0.5, winning: 0.5 }], ["No scoring & creation", { peak: 1, career: 1, rings: 1, scoring: 0, winning: 0.5 }],
+                   ["Titles count double", { peak: 1, career: 1, rings: 2, scoring: 0.5, winning: 0.5 }], ["Scoring & creation full weight", { peak: 1, career: 1, rings: 1, scoring: 1, winning: 0.5 }],
+                   ["Winning full weight", { peak: 1, career: 1, rings: 1, scoring: 0.5, winning: 1 }], ["No titles", { peak: 1, career: 1, rings: 0, scoring: 0.5, winning: 0.5 }]];
   $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">All-time · 1951-52 to 2025-26</div><h1>Greatest of all time, your weights</h1>
-    <p class="lede">The all-time debate comes down to how much you value four things. The data supplies each one; you choose the weights.</p></div>
+    <p class="lede">The all-time debate comes down to how much you value five things. The data supplies each one; you choose the weights. The default counts scoring &amp; creation and winning at half weight each: both overlap with impact, which already includes what a player's scoring did for his team and part of his team's results.</p></div>
     <div class="cols2">
-      <div class="panel prose"><h3>The four ingredients</h3><ul>
+      <div class="panel prose"><h3>The five ingredients</h3><ul>
         <li><b>Peak:</b> wins added per season over his best five straight seasons (impact per possession x the load he carried, scaled to 82 games).</li>
         <li><b>Career value:</b> total wins added above a replacement player, every season.</li>
         <li><b>Championships:</b> every title split among that team's players by how much each raised the team's title odds in those playoffs (his playoff rating, not his regular season), then adjusted for league size (a title among 30 teams counts more than one among 8). The best player on a champion typically gets 60-75% of that title; a second option about 20-25%.</li>
-        <li><b>Scoring &amp; creation:</b> how much offense he carried: points, plus 1.1 points per assist (a basket worth about 2.2, half credited to the passer), plus half a possession's worth per offensive rebound (a new possession, same split), per 100 team possessions above an average player in his minutes, best five straight seasons, relative to his league and era. Impact already counts what this did for winning; this ingredient values the load itself.</li></ul></div>
+        <li><b>Scoring &amp; creation:</b> how much offense he carried: points, plus 1.1 points per assist (a basket worth about 2.2, half credited to the passer), plus half a possession's worth per offensive rebound (a new possession, same split), per 100 team possessions above an average player in his minutes, best five straight seasons, relative to his league and era. Impact already counts what this did for winning; this ingredient values the load itself.</li>
+        <li><b>Winning:</b> did his teams win more than their box scores said they should? Fitted jointly over every NBA team-season since 1951-52, so it is identified by players changing teams: a player whose teams outperform on every roster he joins gets the credit; one whose teams fall short everywhere gets the blame. Counted as wins beyond the box score over his ten heaviest seasons (career length is already in career value). This is where defense, spacing, screening and lifting (or dragging) teammates show up.</li></ul></div>
       <div class="panel stack" style="gap:14px"><h3>Weights</h3>
-        ${[["peak", "Peak"], ["career", "Career value"], ["rings", "Championships"], ["scoring", "Scoring &amp; creation"]].map(([k, l]) => `<label for="w-${k}" class="row" style="justify-content:space-between"><span>${l}</span>
-          <input id="w-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}" style="flex:1;max-width:220px"><span class="num" style="width:2ch">${W[k]}</span></label>`).join("")}
+        ${[["peak", "Peak"], ["career", "Career value"], ["rings", "Championships"], ["scoring", "Scoring &amp; creation"], ["winning", "Winning"]].map(([k, l]) => `<label for="w-${k}" class="row" style="justify-content:space-between"><span>${l}</span>
+          <input id="w-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}" style="flex:1;max-width:220px"><span class="num" style="width:3ch">${W[k]}</span></label>`).join("")}
         <div class="row">${presets.map(([l, w], i) => `<button data-preset="${i}">${l}</button>`).join("")}</div>
         <p class="note">Each ingredient is scored as a percentage of the all-time top-10 level (100 = a typical top-10 mark), so equal weights count equally at the top.</p></div>
     </div>
-    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Rank range</th><th>Peak wins / season</th><th>Career wins</th><th>Titles</th><th>Title shares</th><th>Scoring &amp; creation</th></tr></thead><tbody>
+    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Rank range</th><th>Peak wins / season</th><th>Career wins</th><th>Titles</th><th>Title shares</th><th>Scoring &amp; creation</th><th>Winning wins (prime)</th></tr></thead><tbody>
       ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.p.name)}</b></td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
-        <td class="num"><b>${r.score.toFixed(0)}</b></td><td class="num">${(x => x[0] === x[1] ? x[0] : x[0] + "–" + x[1])(range.get(r.p.id))}</td><td class="num">${f(r.p.pwar5, 1, false)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td><td class="num">${f(r.p.create5, 1)}${r.p.stitles ? `<span class="pm">${r.p.stitles} scoring title${r.p.stitles > 1 ? "s" : ""}</span>` : ""}</td></tr>`).join("")}
+        <td class="num"><b>${r.score.toFixed(0)}</b></td><td class="num">${(x => x[0] === x[1] ? x[0] : x[0] + "–" + x[1])(range.get(r.p.id))}</td><td class="num">${f(r.p.pwar5, 1, false)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td><td class="num">${f(r.p.create5, 1)}${r.p.stitles ? `<span class="pm">${r.p.stitles} scoring title${r.p.stitles > 1 ? "s" : ""}</span>` : ""}</td><td class="num">${f(r.p.winwins, 0)}</td></tr>`).join("")}
     </tbody></table></div>
-    <p class="note">Rank range is each player's best and worst rank across 81 weightings (each ingredient at half, equal or double weight). A narrow range means the ranking doesn't depend on the weights. Players with fewer than eight qualifying seasons aren't ranked here yet. ABA seasons (1967-68 to 1975-76) count, moved down to NBA level using the players who switched leagues; ABA titles count at their league-size weight (10-11 teams). From 1996-97 on, each season's ratings use play-by-play too, which decides who ranks where inside a season but never stretches the scale.</p></div>`;
-  for (const k of ["peak", "career", "rings", "scoring"]) $("#w-" + k).oninput = e => { state.lw = { ...W, [k]: +e.target.value }; save(); legacy(); $("#w-" + k).focus(); };
-  document.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { state.lw = presets[+b.dataset.preset][1]; save(); legacy(); });
+    <p class="note">Rank range is each player's best and worst rank across 243 weightings (each ingredient at half, equal or double weight). A narrow range means the ranking doesn't depend on the weights. Players with fewer than eight qualifying seasons aren't ranked here yet. ABA seasons (1967-68 to 1975-76) count, moved down to NBA level using the players who switched leagues; ABA titles count at their league-size weight (10-11 teams). From 1996-97 on, each season's ratings use play-by-play too, which decides who ranks where inside a season but never stretches the scale.</p></div>`;
+  for (const k of ["peak", "career", "rings", "scoring", "winning"]) $("#w-" + k).oninput = e => { state.lw3 = { ...W, [k]: +e.target.value }; save(); legacy(); $("#w-" + k).focus(); };
+  document.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { state.lw3 = presets[+b.dataset.preset][1]; save(); legacy(); });
   bindRows();
 }
 
@@ -702,7 +705,7 @@ function method() {
     <li><b>No playoffs in the all-era tier.</b> Added as its own number. Short playoff runs are pulled toward the player's own regular-season level; playoff rise repeats across a career (r 0.2 to 0.4).</li>
     <li><b>No availability.</b> Added peak wins per season, where missed games count.</li>
     <li><b>No contract value.</b> Added wins per dollar for 2009-25 on the GM finder.</li>
-    <li><b>Legacy weights are a choice.</b> Every player now shows his rank range across 81 weightings.</li></ul>
+    <li><b>Legacy weights are a choice.</b> Every player now shows his rank range across 243 weightings.</li></ul>
     <p>Checks that now pass every run: all 75 titles fully credited, league-average rating at zero each season, league wins added matching games played, and player ratings summing to team results (r 0.98).</p></div>
   <div class="panel prose"><h3>What it can't do yet</h3><ul><li>Prime Jordan, Magic and Bird are Classic only. A with-or-without-you signal from game logs would sharpen pre-1996 defense.</li><li>"Coach" still includes the front office and the team's system.</li><li>Single seasons are noisy. Read the ± and the eras.</li></ul></div></div>`;
 }
