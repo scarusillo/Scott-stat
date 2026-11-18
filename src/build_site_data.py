@@ -200,7 +200,7 @@ def main():
              "board": [[q.player_id, q.player, q.team, int(q.age), q.pos, r(q.rating, 1), r(q.norm_now, 1), r(q.gap, 1),
                         r(q.expected_next, 1)] for q in sb.itertuples()]}
     data = {"study": study, "value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
-                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn,
+                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn, "cmp": json.load(open(OUT / "compare_metrics.json")),
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),
                 "clutch_split_half": val.get("playoffs_meta", {}).get("all_clutch", {}).get("split_half"),

@@ -924,6 +924,16 @@ findings as cards computed live from the data, four-step explainer) and About (t
 numbers). Consumer-app styling: one sans (Plus Jakarta Sans) with scoreboard numerals for big numbers, cards,
 player avatars, pill sub-tabs, bottom tab bar on phones, light and dark. The internal launch plan is no longer linked.
 
+## Head to head against other advanced stats (`src/compare_metrics.py`, site: About -> Why it's better)
+
+Every metric as published (B-Ref PER, WS/48, BPM, VORP; raw plus-minus and on/off from the stints, 1996-97 on).
+1. Next season from roster changes (season-t values x season-(t+1) possession shares vs team SRS per 100), 1979-2026:
+   Scott Stat 0.82, VORP 0.74, BPM 0.74, Win Shares / 48 0.71, PER 0.66. 1998-2026: Scott Stat 0.79, VORP 0.72, BPM 0.70, Win Shares / 48 0.68, PER 0.63, Raw plus-minus 0.60, On/off 0.44.
+2. Change (strict; removes "good teams stay good"): Scott Stat 0.66, VORP 0.58, BPM 0.56, Win Shares / 48 0.54, Raw plus-minus 0.48, PER 0.47, On/off 0.29.
+3. Missed games, PREVIOUS season's metric (same-season on/off counts the missed games as off time, a leak): Scott Stat 0.28, VORP 0.22, BPM 0.22, PER 0.20, On/off 0.20, Win Shares / 48 0.19, Raw plus-minus 0.13.
+4. Year to year: Scott Stat 0.83, PER 0.82, BPM 0.78, VORP 0.78, Win Shares / 48 0.71, Raw plus-minus 0.50, On/off 0.37.
+The Scott Stat leads every test. EPM/LEBRON/RAPTOR are not scored (not public for every season).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

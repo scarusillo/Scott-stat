@@ -147,6 +147,8 @@ svg text { fill: var(--muted); font: 11px var(--body); }
 .steps div::before { counter-increment: s; content: counter(s); display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 800; font-size: 13px; margin-bottom: 8px; }
 .steps b { display: block; margin-bottom: 4px; }
 .steps p { margin: 0; font-size: 13.5px; color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .grid2 { grid-template-columns: 1fr } }
 .about-nav { display: flex; gap: 8px; flex-wrap: wrap; }
 .about-nav a { font-size: 13px; font-weight: 600; text-decoration: none; padding: 6px 12px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--line); color: var(--muted); }
 .about h2 { margin-top: 8px; scroll-margin-top: 90px; }
@@ -213,7 +215,7 @@ function route() {
   scrollTo(0, 0);
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ home, about, leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup }[view] || home)();
+  ({ home, about, why, leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup }[view] || home)();
 }
 
 /* ---------- leaderboard ---------- */
@@ -279,7 +281,7 @@ const SECTIONS = {
   goat: [["legacy", "All-time ranking"]],
   coaches: [["coaches", "Coach rankings"], ["coachlab", "Coach lab"], ["scenarios", "Fit finder"]],
   teammates: [["synergy", "Synergy"], ["lineup", "Lineup lab"]],
-  about: [["about", "About"], ["guide", "How to read it"], ["study", "The study"], ["method", "Method & tests"]],
+  about: [["why", "Why it's better"], ["about", "About"], ["guide", "How to read it"], ["study", "The study"], ["method", "Method & tests"]],
 };
 const VIEW_SEC = {}; Object.entries(SECTIONS).forEach(([sec, vs]) => vs.forEach(([v]) => { if (!VIEW_SEC[v]) VIEW_SEC[v] = sec; }));
 const hue = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
@@ -319,7 +321,7 @@ function home() {
       <div class="eyebrow">Every NBA player since 1951-52, on one scale</div>
       <h1>Who actually makes a team <em>better?</em></h1>
       <p class="lede">The Scott Stat measures how much better a team was with a player on the floor, in points per 100 possessions, then turns it into wins and titles. Box scores count what a player did. This counts what it was worth.</p>
-      <div class="row" style="margin-top:20px"><a class="btn" href="#legacy">See the all-time ranking</a><a class="btn ghost" href="#about">How it works</a></div>
+      <div class="row" style="margin-top:20px"><a class="btn" href="#legacy">See the all-time ranking</a><a class="btn ghost" href="#why">Why it beats PER and BPM</a></div>
       <div class="kpis"><div><b>${careers.toLocaleString()}</b><span>careers rated</span></div><div><b>75</b><span>seasons, 1951-52 to 2025-26</span></div><div><b>${rC ? rC.toFixed(2) : "–"}</b><span>accuracy on unseen seasons (B-Ref BPM: ${rB ? rB.toFixed(2) : "–"})</span></div></div>
     </div>
     <div class="panel" style="padding:18px 18px 8px"><div class="row" style="justify-content:space-between"><h3>The all-time top 10</h3><a href="#legacy" class="note" style="font-weight:700;color:var(--accent);text-decoration:none">Full ranking →</a></div>
@@ -333,7 +335,7 @@ function home() {
       <div class="cols">
         <p><b>What it is.</b> Points per 100 possessions a player adds over an average player, measured from every lineup on the floor since 1996-97 and estimated from box scores and team results before that, then converted to wins.</p>
         <p><b>Why it's different.</b> It credits what helped the team win, not what filled the box score: defense, spacing, screening and lifting teammates show up; empty stats don't. Then it adds titles, offensive load and winning, and lets the reader set the weights.</p>
-        <p><b>Does it work.</b> On seasons it never saw, it tracks play-by-play impact at ${rC ? rC.toFixed(2) : "0.68"} against ${rB ? rB.toFixed(2) : "0.64"} for Basketball-Reference's BPM, predicts next season's team results from roster changes at 0.85, and holds every era on the same scale.</p>
+        <p><b>Does it work.</b> On seasons it never saw, it tracks play-by-play impact at ${rC ? rC.toFixed(2) : "0.68"} against ${rB ? rB.toFixed(2) : "0.64"} for Basketball-Reference's BPM, beats PER, Win Shares, BPM, VORP and plus-minus at predicting how teams do after roster moves, and holds every era on the same scale. <a href="#why" style="color:#ffb37a;font-weight:700">See the head-to-head →</a></p>
       </div></section>
 
     <section class="stack" style="gap:14px"><h2>What the numbers say</h2>
@@ -361,6 +363,81 @@ function home() {
     </section>
   </div>`;
   bindRows();
+}
+
+/* ---------- why it's better ---------- */
+function why() {
+  const C = D.cmp, N = C.names;
+  const board = (title, sub, obj) => {
+    const rows = Object.entries(obj).map(([k, v]) => ({ k, n: N[k], r: v.r })).sort((a, b) => b.r - a.r);
+    const mx = Math.max(...rows.map(r => r.r));
+    return `<div class="panel stack" style="gap:12px"><div><h3>${title}</h3><p class="note" style="margin:4px 0 0">${sub}</p></div>
+      <div class="stack" style="gap:7px">${rows.map(r => `<div style="display:grid;grid-template-columns:128px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13.5px">
+        <span style="font-weight:${r.k === "scott" ? 800 : 500};color:${r.k === "scott" ? "var(--ink)" : "var(--muted)"}">${r.n}</span>
+        <div style="height:12px;border-radius:99px;background:var(--surface2);overflow:hidden"><div style="height:100%;width:${(r.r / mx * 100).toFixed(1)}%;border-radius:99px;background:${r.k === "scott" ? "var(--brand)" : "var(--faint)"};opacity:${r.k === "scott" ? 1 : .55}"></div></div>
+        <b class="num" style="text-align:right;color:${r.k === "scott" ? "var(--accent)" : "var(--muted)"}">${r.r.toFixed(2)}</b></div>`).join("")}</div></div>`;
+  };
+  const ch = C.change, others = Object.entries(ch).filter(([k]) => k !== "scott").sort((a, b) => b[1].r - a[1].r);
+  const best = others[0], gain = Math.round((ch.scott.r ** 2 / best[1].r ** 2 - 1) * 100);
+  const ns = C.next_season["1979-2026"], nsBest = Object.entries(ns).filter(([k]) => k !== "scott").sort((a, b) => b[1].r - a[1].r)[0];
+  const dot = (bg, bd, lab) => `<span role="img" aria-label="${lab}" style="display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;background:${bg};border:2px solid ${bd}"></span>`;
+  const Y = dot("var(--good)", "var(--good)", "yes"), P = dot("linear-gradient(90deg, var(--accent) 50%, transparent 50%)", "var(--accent)", "partly"), X = dot("transparent", "var(--faint)", "no");
+  const cols = ["PER", "Win Shares", "BPM / VORP", "Plus-minus, on/off", "EPM, LEBRON, RAPM", "Scott Stat"];
+  const feat = [
+    ["Reads the box score", [Y, Y, Y, X, P, Y], "PER and BPM are built on it; plus-minus ignores it."],
+    ["Credits what happens on the floor, not just in the box score", [X, P, P, Y, Y, Y], "Defense, screens, spacing, effort."],
+    ["Adjusts for teammates and opponents", [X, X, P, X, Y, Y], "Raw plus-minus credits a bench player for playing next to a star."],
+    ["Stat values learned from what wins, not set by hand", [X, X, Y, X, Y, Y], "PER's weights were chosen by its author in 2007."],
+    ["Every era since 1951-52 (and the ABA)", [P, Y, P, X, X, Y], "BPM starts in 1973-74; plus-minus and its descendants in 1996-97."],
+    ["Converts to wins", [X, Y, P, X, P, Y], "At a standard pace, so a 1960s season and a 2020s season count the same."],
+    ["Playoffs and championships", [X, P, X, X, X, Y], "Each title split by how much each player raised his team's odds."],
+    ["Winning beyond the box score, across every roster", [X, X, X, P, P, Y], "Who made every team he joined better than its numbers."],
+    ["Shown with its margin of error", [X, X, X, X, P, Y], "So a 0.3 gap isn't sold as a real difference."],
+    ["Coaches and teammate synergy", [X, X, X, X, X, Y], "Which coach grows which player; which duos win together."],
+    ["Tested to put every era on one scale", [X, X, X, X, X, Y], "Players' ratings add up to their teams' results equally in every decade."],
+  ];
+  $("#app").innerHTML = `<div class="stack" style="gap:30px">
+    <div class="homehero" style="padding-block:6px 0"><div>
+      <div class="eyebrow">Why the Scott Stat</div>
+      <h1>Every other stat does <em>part of the job</em></h1>
+      <p class="lede">PER reads the box score. Plus-minus reads the scoreboard. Win Shares turns numbers into wins. Each one sees part of the picture. The Scott Stat takes the best idea from each, adds what none of them have, and then proves it on tests none of them were built to win.</p></div>
+      <div class="memo" style="padding:22px"><div class="eyebrow">The headline</div>
+        <div style="font:700 72px/.9 var(--display);color:var(--surface)">+${gain}%</div>
+        <p>more of each team's season-to-season change explained than the next-best public stat (${N[best[0]]}), from roster moves alone. Ahead of PER, Win Shares, BPM, VORP, raw plus-minus and on/off on every test below.</p></div></div>
+
+    <section class="stack" style="gap:14px"><div><h2>The scoreboard</h2><p class="lede" style="font-size:15px">Four tests, every stat used exactly as published, nothing refit to the test. Higher is better (a correlation: 1.00 would be perfect).</p></div>
+      <div class="grid2">
+        ${board("Predict next season", `Rate each team's new roster with last season's numbers. How well does that predict how good the team actually was? ${ns.scott.n.toLocaleString()} team-seasons, 1979-2026.`, ns)}
+        ${board("Predict the change", "The strict version: from roster moves alone, how much did each team get better or worse? Being good last year doesn't help here. Plus-minus from 1998.", C.change)}
+        ${board("When a starter sits", "Starters who missed 8+ games: does last season's number predict how much worse his team played without him?", C.missed_games)}
+        ${board("Same player, next year", "A real skill holds steady. Year-to-year correlation for players with 1,500+ possessions both seasons.", C.consistency)}
+      </div>
+      <p class="note">Plus-minus and on/off exist only from 1996-97, so they appear in the play-by-play-era versions. On the next-season test in that era: Scott Stat ${C.next_season["1998-2026"].scott.r.toFixed(2)}, raw plus-minus ${C.next_season["1998-2026"].pm.r.toFixed(2)}, on/off ${C.next_season["1998-2026"].onoff.r.toFixed(2)}. Play-by-play-only stats such as EPM, LEBRON and RAPTOR aren't published for every season in this test, so they aren't scored here.</p></section>
+
+    <section class="stack" style="gap:14px"><h2>What each stat can and can't do</h2>
+      <div class="panel tablewrap" style="padding:8px 8px 4px"><table>
+        <thead><tr><th class="l">Capability</th>${cols.map((c, i) => `<th style="text-align:center;${i === 5 ? "color:var(--accent)" : ""}">${c}</th>`).join("")}</tr></thead>
+        <tbody>${feat.map(([l, v, n]) => `<tr style="cursor:default"><td class="l" style="white-space:normal;min-width:230px"><b style="font-size:14px">${l}</b><div class="note" style="font-size:12px">${n}</div></td>${v.map((x, i) => `<td style="text-align:center;${i === 5 ? "background:var(--band)" : ""}">${x}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      <p class="note">${Y} yes · ${P} partly · ${X} no.</p></section>
+
+    <section class="stack" style="gap:14px"><h2>The best of each, in one number</h2>
+      <div class="steps">
+        <div><b>From PER and BPM: the box score</b><p>Every stat a player records counts, but each is priced by what actually wins, learned from twenty-nine seasons of play-by-play, not set by hand.</p></div>
+        <div><b>From plus-minus: the scoreboard</b><p>What happens while he's on the floor, with all nine other players accounted for, so a bench player isn't credited for standing next to a star.</p></div>
+        <div><b>From Win Shares: wins</b><p>Points per 100 possessions become wins added over a replacement player, at a standard pace so every era counts the same.</p></div>
+        <div><b>Only here: the rest</b><p>Every era since 1951-52 on one tested scale, playoffs and titles, winning beyond the box score, coaches, synergy, and an error bar on every number.</p></div>
+      </div></section>
+
+    <section class="stack" style="gap:14px"><h2>The usual objections</h2>
+      <div class="grid2">
+        <div class="panel"><h3>"PER is simple and everyone knows it."</h3><p class="note" style="margin:8px 0 0">Simple because its weights were chosen by hand. It rewards taking shots, barely sees defense, and ranks last among the box-score stats at predicting how teams do (${C.next_season["1979-2026"].per.r.toFixed(2)} vs ${ns.scott.r.toFixed(2)}).</p></div>
+        <div class="panel"><h3>"Plus-minus is what actually happened."</h3><p class="note" style="margin:8px 0 0">It's what happened to the whole lineup. A role player next to a star inherits the star's numbers, which is why raw plus-minus barely repeats from year to year (${C.consistency.pm.r.toFixed(2)}) and on/off even less (${C.consistency.onoff.r.toFixed(2)}). The Scott Stat keeps the scoreboard and splits it fairly among the ten players.</p></div>
+        <div class="panel"><h3>"BPM is good enough."</h3><p class="note" style="margin:8px 0 0">BPM is the best of the box-score stats, and the Scott Stat beats it on every test here. BPM can't see what the box score misses, starts in 1973-74, and has nothing on playoffs, titles or winning.</p></div>
+        <div class="panel"><h3>"EPM and LEBRON already do this."</h3><p class="note" style="margin:8px 0 0">They're strong for today's players, and the Scott Stat uses the same idea for the play-by-play era. But they stop at 1996-97. Jordan's prime, Magic, Bird, Kareem, Wilt and Russell aren't in them. The Scott Stat puts all of them on the same tested scale.</p></div>
+      </div></section>
+
+    <div class="row"><a class="btn" href="#legacy">See the all-time ranking</a><a class="btn ghost" href="#method">Read the method and every test</a></div>
+  </div>`;
 }
 
 /* ---------- about ---------- */
