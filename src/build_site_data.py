@@ -84,6 +84,7 @@ def main():
     rot = rot.set_index("coach_id")
     style = pd.read_csv(OUT / "coach_style.csv", index_col=0)
     STYLE = ["pace", "three", "rim", "astd", "depth", "churn", "opp_three", "opp_rim"]
+    csplit = pd.read_csv(OUT / "coach_split.csv", index_col=0)
     coach_rows = []
     for c in coaches[coaches.games >= 164].itertuples():
         cells = carch[(carch.coach_id == c.coach_id) & (carch.exposure >= 20000) & carch.broad]
@@ -100,6 +101,9 @@ def main():
                        r(t.top_share), bool(t.broad)]
                       for t in carch[(carch.coach_id == c.coach_id) & (carch.exposure >= 8000)].itertuples()],
             "style": {k: r(style.at[c.coach_id, k]) for k in STYLE} if c.coach_id in style.index else None,
+            "ind": r(csplit.production_raw.get(c.coach_id)), "indlift": r(csplit.lift_raw.get(c.coach_id)),
+            "ind_s": r(csplit.production.get(c.coach_id)), "indlift_s": r(csplit.lift.get(c.coach_id)),
+            "dev_n": int(csplit.player_seasons.get(c.coach_id, 0) or 0),
         })
     pairs = []
     pc = pcoach[pcoach.player_id.isin(keep.player_id)]
@@ -153,7 +157,17 @@ def main():
     se_ = pd.read_csv(OUT / "scheme_effects.csv")
     schemes = [[q.outcome, q.trait, r(q.coef_per_sd), r(q.se), r(q.t), r(q.r_simple), r(q.r2_all_traits)] for q in se_.itertuples()]
     vmeta = json.load(open(OUT / "value_meta.json"))
-    data = {"value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
+    fm = json.load(open(OUT / "fit_meta.json"))
+    sm_ = json.load(open(OUT / "situations_meta.json"))
+    sb = pd.read_csv(OUT / "situation_board.csv")
+    sb = sb[(sb.season == sm_["latest_season"]) & (sb.poss >= 2000)]
+    fe = pd.read_csv(OUT / "fit_style_effects.csv")
+    fe = fe[fe.outcome == "net"]
+    study = {"coach_split": fm["coach_split"], "fit": {k: v for k, v in fm["fit"].items() if k != "carryover_note"},
+             "carry": sm_, "style_cells": [[q.archetype, q.trait, r(q.coef), r(q.t, 1)] for q in fe.itertuples()],
+             "board": [[q.player_id, q.player, q.team, int(q.age), q.pos, r(q.rating, 1), r(q.norm_now, 1), r(q.gap, 1),
+                        r(q.expected_next, 1)] for q in sb.itertuples()]}
+    data = {"study": study, "value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
                       "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs,
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),

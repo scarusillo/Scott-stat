@@ -84,7 +84,7 @@ svg text { fill: var(--muted); font: 11px var(--body); }
 <header><div class="wrap bar">
   <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
   <nav id="nav">
-    <a href="#leaders">Leaderboard</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#careers">Careers</a><a href="#progression">Progression</a>
+    <a href="#leaders">Leaderboard</a><a href="#study">Study</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#careers">Careers</a><a href="#progression">Progression</a>
     <a href="#coaches">Coaches</a><a href="#coachlab">Coach lab</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
   </nav>
 </div></header>
@@ -114,7 +114,7 @@ function route() {
   const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ leaders, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
+  ({ leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
   scrollTo(0, 0);
 }
 
@@ -352,6 +352,87 @@ function finder() {
   bindRows();
 }
 
+/* ---------- study: findings ---------- */
+function tierChart(list, se) {
+  const W = 720, rowH = 30, m = { l: 150, r: 60, t: 22, b: 8 }, Hh = m.t + m.b + rowH * list.length, mx = 8;
+  const X = v => m.l + Math.max(0, v) / mx * (W - m.l - m.r), lead = list[0].best5;
+  return `<div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:480px" role="img" aria-label="All-time peaks with margins of error">
+    ${[0, 2, 4, 6, 8].map(t => `<line x1="${X(t)}" x2="${X(t)}" y1="${m.t - 4}" y2="${Hh - m.b}" stroke="var(--line)"/><text x="${X(t)}" y="12" text-anchor="middle">+${t}</text>`).join("")}
+    <rect x="${X(lead - se)}" y="${m.t - 4}" width="${X(lead) - X(lead - se)}" height="${Hh - m.t - m.b + 4}" fill="var(--band)"/>
+    ${list.map((p, i) => { const y = m.t + i * rowH, ind = Math.max(0, p.ind ?? 0), tc = p.team ?? 0;
+      return `<text x="${m.l - 8}" y="${y + 17}" text-anchor="end" style="fill:var(--ink);font-size:13px;font-weight:${p.best5 >= lead - se ? 600 : 400}">${esc(p.name)}</text>
+      <rect x="${X(0)}" y="${y + 6}" width="${X(ind) - X(0)}" height="14" fill="var(--muted)" data-tip="${esc(`${p.name}: individual ${f(p.ind, 2)}`)}"/>
+      <rect x="${tc >= 0 ? X(ind) : X(ind + tc)}" y="${y + 6}" width="${Math.abs(X(ind + tc) - X(ind))}" height="14" fill="${tc >= 0 ? "var(--accent)" : "var(--bad)"}" data-tip="${esc(`${p.name}: team credit ${f(tc, 2)}`)}"/>
+      <line x1="${X(p.best5 - se)}" x2="${X(p.best5 + se)}" y1="${y + 13}" y2="${y + 13}" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="${X(p.best5 - se)}" x2="${X(p.best5 - se)}" y1="${y + 8}" y2="${y + 18}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${X(p.best5 + se)}" x2="${X(p.best5 + se)}" y1="${y + 8}" y2="${y + 18}" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="${W - m.r + 8}" y="${y + 17}" style="fill:var(--ink);font-size:12px">${f(p.best5, 2)}</text>`; }).join("")}
+  </svg></div>`;
+}
+function study() {
+  const S = D.study, C = S.carry, F = S.fit, se = 0.69;
+  const tiers = D.classic.filter(p => p.seasons >= 6 && p.best5 != null).sort((a, b) => b.best5 - a.best5).slice(0, 14);
+  const lead = tiers[0].best5, t1 = tiers.filter(p => p.best5 >= lead - se);
+  const cs = D.coaches.filter(c => c.dev_n >= 40 && c.ind != null);
+  const W = 720, Hh = 320, m = { l: 44, r: 14, t: 12, b: 34 };
+  const xa = -0.6, xb = 0.6, ya = -0.6, yb = 0.6, X = v => m.l + (Math.max(xa, Math.min(xb, v)) - xa) / (xb - xa) * (W - m.l - m.r), Y = v => m.t + (yb - Math.max(ya, Math.min(yb, v))) / (yb - ya) * (Hh - m.t - m.b);
+  const lab = new Set([...cs.slice().sort((a, b) => b.ind - a.ind).slice(0, 4), ...cs.slice().sort((a, b) => a.ind - b.ind).slice(0, 3),
+    ...cs.slice().sort((a, b) => b.indlift - a.indlift).slice(0, 4), ...cs.slice().sort((a, b) => a.indlift - b.indlift).slice(0, 3)].map(c => c.id));
+  const q = (state.sq || "").toLowerCase();
+  const B = S.board.map(r => ({ id: r[0], n: r[1], t: r[2], age: r[3], pos: r[4], now: r[5], norm: r[6], gap: r[7], next: r[8] }));
+  const brow = r => `<tr tabindex="0" data-go="#legend-${r.id}"><td class="l"><b>${esc(r.n)}</b></td><td class="l">${esc(r.t)}</td><td class="num">${r.age}</td><td class="num">${f(r.norm)}</td><td class="num">${f(r.now)}</td><td class="num ${cls(r.gap)}"><b>${f(r.gap)}</b></td><td class="num">${f(r.next)}</td></tr>`;
+  const bhead = `<thead><tr><th class="l">Player</th><th class="l">Team</th><th>Age</th><th>His norm</th><th>This season</th><th>Gap</th><th>Expected next</th></tr></thead>`;
+  const types = [...new Set(S.style_cells.map(r => r[0]))].sort(), traits = Object.keys(TRAIT);
+  const cell = (t, k) => S.style_cells.find(r => r[0] === t && r[1] === k);
+  const col = v => v > 0 ? `color-mix(in srgb, var(--good) ${Math.min(55, Math.abs(v) * 160)}%, transparent)` : `color-mix(in srgb, var(--bad) ${Math.min(55, Math.abs(v) * 160)}%, transparent)`;
+  const dn = C.down_years, up = C.up_years;
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">The study · every NBA season since 1951-52</div><h1>What the box score hides</h1>
+    <p class="lede">One measure of how much a player changes his team, applied to every player, coach and season on record, then tested against seasons it hadn't seen. What held up, what didn't, and what a front office can use.</p></div>
+
+  <div class="panel"><h3>1 · The greatest peaks are a tier, not an order</h3>
+    <p class="note">Best five straight seasons, points per 100 possessions over an average player. Grey = his own play. Orange = his share of how far his team beat its box scores. The black line is the margin of error (±${se}). Everyone whose bar reaches the shaded band is statistically tied with the leader: ${t1.map(p => esc(p.name)).join(", ")}.</p>
+    ${tierChart(tiers, se)}
+    <p class="note">Add championships and career length and the debate narrows to two: Michael Jordan and LeBron James hold the top two places under every weighting on the Legacy tab.</p></div>
+
+  <div class="cols2">
+    <div class="panel prose"><h3>2 · Teams pay for points, not wins</h3><div class="tiles"><div class="tile o"><small>Salary vs points per game</small><b>r = ${D.value.r_ppg}</b></div><div class="tile d"><small>Salary vs wins added</small><b>r = ${D.value.r_wins}</b></div></div>
+      <p style="margin-top:10px">Across 2009-25, a player's pay follows his scoring far more closely than what he adds to winning. The gap is where the bargains are: players with high lift, whose teams play better and defend better with them than their own stats show. The GM finder lists them by season.</p></div>
+    <div class="panel prose"><h3>3 · A down year is about 40% noise</h3><div class="tiles"><div class="tile a"><small>Carries over to next season</small><b>${Math.round(C.carryover * 100)}%</b></div><div class="tile"><small>After a down year of ${f(dn.this)}</small><b>${f(dn.next)}</b><small>next season, ${dn.n} cases</small></div></div>
+      <p style="margin-top:10px">Measured against a player's own prior level and his age, ${Math.round(C.carryover * 100)}% of an up or down season is still there the next year and the rest fades (${C.pairs.toLocaleString()} season pairs since 1977). Up years fade the same way: ${f(up.this)} becomes ${f(up.next)}. A player priced on one bad or one great season is mispriced by about that much.</p></div>
+    <div class="panel prose"><h3>4 · A change of scenery doesn't fix a down year</h3><div class="tiles"><div class="tile"><small>Stayed, next season</small><b>${f(dn.stayed_next)}</b><small>${dn.stayed_n} players</small></div><div class="tile"><small>Changed teams</small><b>${f(dn.moved_next)}</b><small>${dn.moved_n} players</small></div></div>
+      <p style="margin-top:10px">Players coming off a down year recover about the same whether they move or stay. The recovery is the noise fading, not the new team.</p></div>
+    <div class="panel prose"><h3>5 · Broad "style fit" didn't hold up</h3><div class="tiles"><div class="tile"><small>Predicting unseen seasons</small><b>r = ${F.oos_r_fit_vs_deviation.toFixed(2)}</b></div><div class="tile"><small>Style × type links that clear the bar</small><b>${F.sig_cells_net} of ${F.cells_net}</b><small>about 3 expected by chance</small></div></div>
+      <p style="margin-top:10px">Matching a player type to a coach's pace, three-point rate, rotation depth and the rest does not predict who plays above his norm (fit on 1996-2011, tested on 2012-24). What does hold up is narrower: specific coaches with specific player types (Coach lab), and a few scheme effects on defense.</p></div>
+  </div>
+
+  <div class="panel"><h3>6 · Coaches: who raises players' own production, and who raises their lift</h3>
+    <p class="note">Each player-season is compared with that player's own norm at his age (his other seasons). Right = his players' own stats run above their norm under him. Up = their impact beyond their stats runs above their norm. Coaches with 40+ player-seasons. Coaches differ about twice as much on production as on lift, and the measure is modest: the same list from odd and even seasons agrees at r ≈ ${S.coach_split.production.split_half_r.toFixed(1)}.</p>
+    <div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:480px" role="img" aria-label="Coaches: players' production against players' lift">
+      ${[-0.4, -0.2, 0, 0.2, 0.4].map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${f(t)}</text>
+        <line y1="${m.t}" y2="${Hh - m.b}" x1="${X(t)}" x2="${X(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${X(t)}" y="${Hh - 16}" text-anchor="middle">${f(t)}</text>`).join("")}
+      <text x="${(W + m.l) / 2}" y="${Hh - 2}" text-anchor="middle">Players' own production vs their norm (points per 100)</text>
+      ${cs.map(c => `<circle cx="${X(c.ind)}" cy="${Y(c.indlift)}" r="${lab.has(c.id) ? 5 : 3.5}" fill="${lab.has(c.id) ? "var(--accent)" : "var(--muted)"}" fill-opacity="${lab.has(c.id) ? 1 : .45}" data-tip="${esc(`${c.name}: production ${f(c.ind, 2)}, lift ${f(c.indlift, 2)} (${c.dev_n} player-seasons)`)}"/>` +
+        (lab.has(c.id) ? `<text x="${X(c.ind) + 7}" y="${Y(c.indlift) + 4}" style="fill:var(--ink)">${esc(c.name.split(" ").slice(-1)[0])}</text>` : "")).join("")}
+    </svg></div>
+    <div class="cols2" style="margin-top:10px"><div class="tablewrap"><div class="eyebrow">Best for players' own production</div><table><tbody>${cs.slice().sort((a, b) => b.ind_s - a.ind_s).slice(0, 7).map(c => `<tr><td class="l">${esc(c.name)}</td><td class="num pos">${f(c.ind, 2)}</td><td class="num"><span class="pm">${c.dev_n} seasons</span></td></tr>`).join("")}</tbody></table></div>
+      <div class="tablewrap"><div class="eyebrow">Best for players' lift</div><table><tbody>${cs.slice().sort((a, b) => b.indlift_s - a.indlift_s).slice(0, 7).map(c => `<tr><td class="l">${esc(c.name)}</td><td class="num pos">${f(c.indlift, 2)}</td><td class="num"><span class="pm">${c.dev_n} seasons</span></td></tr>`).join("")}</tbody></table></div></div></div>
+
+  <div class="panel tablewrap"><h3>7 · Style × player type, tested honestly</h3>
+    <p class="note">How far players of each type run above or below their own norm for each standard deviation of a coach's style, with the style measured from the coach's other seasons. • = clears two standard errors (${F.sig_cells_net} of ${F.cells_net}; chance alone gives about 3). Leads worth a scout's look, not rules.</p>
+    <table><thead><tr><th class="l">Player type</th>${traits.map(k => `<th>${esc(TRAIT[k])}</th>`).join("")}</tr></thead><tbody>
+    ${types.map(t => `<tr><td class="l"><b>${esc(t)}</b></td>${traits.map(k => { const c = cell(t, k); return `<td class="num" style="background:${c ? col(c[2]) : "transparent"}">${c ? f(c[2], 2) + (Math.abs(c[3]) >= 2 ? " •" : "") : "–"}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
+
+  <div class="panel"><h3>8 · Situation board, ${yr(C.latest_season)}</h3>
+    <p class="note">Is a player above or below his own established level? "His norm" is what his prior seasons say he should be at this age. "Expected next" keeps ${Math.round(C.carryover * 100)}% of the gap and moves him a year along the aging curve. The data can't see whether a player is content; it can see whether he is playing like himself.</p>
+    <div class="controls" style="margin-bottom:12px"><label for="sq">Find a player or team<input id="sq" type="search" placeholder="Name or team code" value="${esc(state.sq || "")}"></label></div>
+    ${q ? `<div class="tablewrap"><table>${bhead}<tbody>${B.filter(r => r.n.toLowerCase().includes(q) || r.t.toLowerCase() === q).sort((a, b) => a.gap - b.gap).slice(0, 30).map(brow).join("") || `<tr><td class="l" colspan="7">No match among players with a three-season history.</td></tr>`}</tbody></table></div>` :
+    `<div class="cols2"><div class="tablewrap"><div class="eyebrow">Furthest below their norm (age 31 and under): bounce-back candidates</div><table>${bhead}<tbody>${B.filter(r => r.age <= 31).sort((a, b) => a.gap - b.gap).slice(0, 12).map(brow).join("")}</tbody></table></div>
+      <div class="tablewrap"><div class="eyebrow">Furthest above their norm: breakout or sell-high</div><table>${bhead}<tbody>${B.slice().sort((a, b) => b.gap - a.gap).slice(0, 12).map(brow).join("")}</tbody></table></div></div>`}
+    <p class="note">Young players above their norm are often simply improving; older players above it are the sell-high cases. Ratings here are the all-era kind (box score plus team results), each season on its own.</p></div>
+  </div>`;
+  $("#sq").oninput = e => { state.sq = e.target.value; const pos = e.target.selectionStart; study(); const el = $("#sq"); el.focus(); el.setSelectionRange(pos, pos); };
+  bindRows();
+}
+
 /* ---------- legacy: peak + career + championships, reader-weighted ---------- */
 function legacy() {
   const W = state.lw || { peak: 1, career: 1, rings: 1 };
@@ -477,7 +558,9 @@ function coachlab() {
     <div class="tiles"><div class="tile a"><small>Overall effect</small><b class="${cls(c.net)}">${f(c.net)}</b><small>±${f(c.se, 1, false)} per 100 possessions</small></div>
       <div class="tile o"><small>Offense</small><b class="${cls(c.off)}">${f(c.off)}</b></div><div class="tile d"><small>Defense</small><b class="${cls(c.def)}">${f(c.def)}</b></div>
       <div class="tile"><small>Rotation IQ</small><b class="${cls(c.rotation)}">${f(c.rotation)}</b><small>wins per 82 games</small></div>
-      <div class="tile"><small>Closing IQ</small><b class="${cls(c.closing)}">${f(c.closing, 2)}</b><small>extra talent on the floor late</small></div></div>
+      <div class="tile"><small>Closing IQ</small><b class="${cls(c.closing)}">${f(c.closing, 2)}</b><small>extra talent on the floor late</small></div>
+      <div class="tile"><small>Players' own production</small><b class="${cls(c.ind)}">${f(c.ind, 2)}</b><small>vs their own norm, ${c.dev_n} player-seasons</small></div>
+      <div class="tile"><small>Players' lift</small><b class="${cls(c.indlift)}">${f(c.indlift, 2)}</b><small>impact beyond their stats, vs own norm</small></div></div>
     <div class="cols2">
       <div class="panel stack" style="gap:10px"><h3>What he gets from each player type</h3>
         ${types.length ? types.map(t => hbar(`${t[0]}${t[7] ? "" : " *"}`, t[1], 5, t[1] >= 0 ? "var(--good)" : "var(--bad)", t[2])).join("") : `<p class="note">Not enough minutes with any one type.</p>`}

@@ -637,6 +637,27 @@ Jordan 6.20 (5.79 + 0.40, 1988-93), Robinson 6.10, Paul 5.99, Kareem 5.54, Russe
   guards and +0.12 across high-scoring guards/wings; Jordan's own 1996-98 seasons: Classic 4.6, Plus 4.7.
 - **Certainty**: a five-season peak has SE ~0.69, so the top four (0.41 apart) can't be ordered.
 
+## The study: situation, coaches, style fit (`src/fit.py`, `src/situations.py`)
+
+Everything measured against the player's own norm (aging-adjusted, other seasons), so talent is differenced out.
+
+- **Coach split** (`out/coach_split.csv`): players' own production vs lift under each coach, empirical-Bayes
+  shrunk. Coaches differ about twice as much on production (true SD 0.14) as on lift (0.06); even/odd
+  reliability r ~0.3. Production: Kerr +0.40 raw, Karl +0.31, D'Antoni +0.22, Budenholzer +0.21.
+  Lift: Skiles +0.38, Fratello +0.39, Van Gundy +0.37, Stotts +0.28, Thibodeau +0.25.
+- **Style fit** (`out/fit_style_effects.csv`): player type x coach style. With same-season style the result
+  looked strong (16 of 64 cells) but that double-counts the players' own results. With style from the
+  coach's OTHER seasons: 7 of 64 cells (about 3 by chance), out-of-time r 0.02 (fit 1996-2011, test
+  2012-24), top-vs-bottom fifth 0.06. Broad style fit is not detectable. Movers: change in fit does
+  not predict change in performance (r 0.01).
+- **Carryover** (`situations.py`, season-independent Classic ratings, 8,919 pairs since 1977): 61% of an
+  up or down year persists (r 0.55). Down years of -2.0 become -1.2; up years +2.0 become +1.3.
+  After a down year, stayers -1.22 next season vs movers -1.14: no change-of-scenery effect.
+  (Plus season ratings are shrunk toward prior seasons and would overstate carryover: 0.75.)
+- **Situation board** (`out/situation_board.csv`): each player's norm at his age, this season's gap, and
+  expected next season = norm + 0.61 x gap, one year along the aging curve. Latest season 2025-26.
+- Site: Study tab (tier chart with error bars, findings, coach scatter, honest style heatmap, situation board).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

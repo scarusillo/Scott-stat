@@ -144,6 +144,7 @@ def style_fingerprints(s, cg):
         grp = cs.groupby("season")[f]
         cs[f] = (cs[f] - grp.transform("mean")) / grp.transform("std")
     cs = cs[cs.n >= 10]
+    cs[["season", "team_id", "coach_id", "n"] + STYLE].to_csv(OUT / "team_style_seasons.csv", index=False, float_format="%.3f")
     sty = cs.groupby("coach_id").apply(lambda d: pd.Series(np.average(d[STYLE], axis=0, weights=d.n), index=STYLE),
                                        include_groups=False)
     sty["games"] = cs.groupby("coach_id").n.sum()
