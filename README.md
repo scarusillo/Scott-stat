@@ -717,6 +717,27 @@ predicted; the other quintiles match within 0.3. Player checks: Iverson's teams 
 observed (77 missed games); Doc Rivers +2.95 predicted, +3.85 observed; Kobe +2.15 / +2.74; Carmelo
 +2.08 / +2.39. Rotation players' absences are often coaching decisions, so the all-player version is biased.
 
+## Scoring: creation premium, peak by wins, Legacy scoring ingredient (`src/scoring.py`)
+
+1. **Creation premium** (fit in `absence_test.py`, applied in `classic.py`). On starters' missed games, the
+   team's loss beyond the model's prediction rises with relative usage (usage / league usage, shrunk with
+   300 prior possessions). Fitted: 2.67 points per 100 of offense per unit of relative usage above
+   1.3 (SE 1.62, t 1.65, n 1705), capped at the fitting sample's maximum usage
+   (1.91). Adopted on a one-sided 5% test because the hypothesis was directional (scorers worth
+   MORE); it is borderline. At the top of the usage range it adds about +1.6 per 100 (Kobe, Jordan,
+   Harden, Westbrook, Iverson 1.5). Doc Rivers: 0. The missed-games fit uses ratings without the premium.
+2. **Peak = wins added per season** (best five straight, each season scaled to 82 games) is now the
+   default peak ranking and the Legacy peak ingredient: impact per possession x the load carried.
+   The per-100 impact peak stays available as its own ranking.
+3. **Scoring load**, a fourth Legacy ingredient: points per 100 team possessions scored above an average
+   player in his minutes ((pts per 100 - league per player) x mpg/48), best five straight seasons, league-
+   and pace-relative, NBA and ABA; plus scoring titles (ppg leader with 70%+ of games). Volume, not
+   efficiency. Legacy rank range now spans 81 weightings.
+
+Legacy, equal weights: Jordan, LeBron, Wilt, Kareem, Shaq, Duncan, Curry, Russell, Kobe (9th), Bird.
+Iverson 36th (21st-59th across weightings), Carmelo 53rd, Pippen 27th, Doc Rivers 242nd.
+Open question: peak wins favors the 1960s (Wilt 22.7 a season, 45+ minutes a night in 8-14 team leagues).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

@@ -63,7 +63,9 @@ def main():
     comp = contributions()
     fin = pd.concat([pd.read_csv(OUT / f"classic_{y}.csv") for y in range(1977, 2026)], ignore_index=True)
     fin["season"] = fin.season_start + 1
-    comp = comp.merge(fin[["season", "player_id", "net_classic", "box_O", "box_D"]], on=["season", "player_id"])
+    comp = comp.merge(fin[["season", "player_id", "net_classic", "box_O", "box_D", "creation", "usg_rel"]], on=["season", "player_id"])
+    comp["creation"] = comp.creation.fillna(0)
+    comp["net_classic"] = comp.net_classic - comp.creation             # test the rating WITHOUT the premium
     comp["rest"] = comp.net_classic - comp[list(GROUPS)].sum(axis=1)     # team credit, game logs, play-by-play
     comp = comp[~comp.duplicated(["season", "key"], keep=False)]
 
@@ -127,6 +129,26 @@ def main():
     out["by_usage_quintile"] = a.groupby("usg_q").apply(lambda x: {
         "usg": float(x.usg.mean()), "observed": float(np.average(x.observed, weights=x.w)),
         "predicted": float(np.average(x.pred, weights=x.w)), "n": int(len(x))}, include_groups=False).to_dict()
+    # CREATION PREMIUM: on starters (28+ mpg, absences mostly injury), regress the miss (observed - predicted)
+    # on share x max(0, relative usage - r0), with a share term for any overall level miss. r0 by best fit.
+    st = a[a.mpg >= 28].dropna(subset=["usg_rel"])
+    fits = {}
+    for r0 in (1.0, 1.1, 1.2, 1.3, 1.4, 1.5):
+        Xc = np.c_[st.share * (st.usg_rel - r0).clip(lower=0), st.share]
+        Wc, yc = st.w.to_numpy(), st.resid.to_numpy()
+        Gi = np.linalg.inv(Xc.T @ (Xc * Wc[:, None]))
+        bc = Gi @ Xc.T @ (Wc * yc)
+        rc = yc - Xc @ bc
+        sec = np.sqrt(np.diag(Gi @ (Xc.T @ (Xc * (Wc ** 2 * rc ** 2)[:, None])) @ Gi))
+        fits[r0] = {"k": float(bc[0]), "se": float(sec[0]), "level": float(bc[1]), "sse": float(np.sum(Wc * rc ** 2))}
+    r0 = min(fits, key=lambda r: fits[r]["sse"])
+    cm = {"r0": r0, "r_max": float(st.usg_rel.max()), **fits[r0], "t": fits[r0]["k"] / fits[r0]["se"], "n": int(len(st)), "grid": fits,
+          "note": "points per 100 added to offense per unit of relative usage above r0 (usage ratio to league)"}
+    # directional hypothesis (scorers worth MORE than priced, from the play-by-play usage gap and the owner's
+    # claim), so a one-sided 5% test: t >= 1.645. Borderline: the premium is reported with its SE.
+    cm["adopted"] = bool(cm["t"] >= 1.645 and cm["k"] > 0)
+    (OUT / "creation_meta.json").write_text(json.dumps(cm, indent=1))
+    out["creation_premium"] = cm
     (OUT / "absence_test.json").write_text(json.dumps(out, indent=1))
     a.to_csv(OUT / "absence_players.csv", index=False, float_format="%.3f")
     print(json.dumps(out, indent=1))

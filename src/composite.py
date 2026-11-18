@@ -127,6 +127,12 @@ def classic_table():
                   ignore_index=True)
     a = a.rename(columns={"season_start": "season", "net_classic": "net"})
     a["production"] = a.box_O + a.box_D
+    # wins scaled to an 82-game season (lockouts, the bubble and the 1950s' shorter schedules don't count against a peak)
+    tsum = pd.read_csv(ROOT / "data" / "hist" / "Team Summaries.csv")
+    tsum = tsum[tsum.team != "League Average"].dropna(subset=["w", "l"])
+    gps = (tsum.w + tsum.l).groupby([tsum.season - 1, tsum.lg]).mean()
+    lg_ = a.lg.fillna("NBA") if "lg" in a else pd.Series("NBA", index=a.index)
+    a["WAR82"] = a.WAR_classic * 82 / pd.MultiIndex.from_arrays([a.season, lg_]).map(gps).to_numpy()
     a["lift"] = a.net - a.production
     # playoffs (classic_playoffs.py): season rating with playoff possessions pooled in
     po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "net_with_playoffs", "poss_total",
@@ -157,11 +163,12 @@ def classic_table():
         bp5, bp5y = runs(x.assign(net=x.production), "net", 5)
         bpo5, bpo5y = runs(x.assign(net=x.net_with_playoffs, poss=x.poss_total), "net", 5)
         xw = x.sort_values("season")
-        war5 = max((xw.WAR_classic.iloc[i:i + 5].sum() / 5 for i in range(len(xw) - 4)
-                    if xw.season.iat[i + 4] - xw.season.iat[i] == 4), default=np.nan)
+        wins5 = [(xw.WAR82.iloc[i:i + 5].sum() / 5, f"{xw.season.iat[i]}-{(xw.season.iat[i + 4] + 1) % 100:02d}")
+                 for i in range(len(xw) - 4) if xw.season.iat[i + 4] - xw.season.iat[i] == 4]
+        war5, war5y = max(wins5) if wins5 else (np.nan, None)
         xp = x[x.po_poss > 0]
         bz5, bz5y = runs(x.assign(net=x.z), "net", 5)
-        rows.append({"best5_with_playoffs": bpo5, "best5_with_playoffs_years": bpo5y, "peak_wins_per_season": war5,
+        rows.append({"best5_with_playoffs": bpo5, "best5_with_playoffs_years": bpo5y, "peak_wins_per_season": war5, "peak_wins_years": war5y,
                      "playoff_rise": np.average(xp.playoff_rise, weights=xp.po_poss) if len(xp) else np.nan,
                      "playoff_poss": float(x.po_poss.sum()),
                      "peak_individual": win[1] if win else np.nan, "peak_team_credit": (win[0] - win[1]) if win else np.nan,

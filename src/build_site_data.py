@@ -58,6 +58,7 @@ def main():
                    r(q.production), r(q.lift), r(q.WAR, 1), r(q.ppg, 1)] for q in x.itertuples()],
         })
     ch = pd.read_csv(OUT / "championships_careers.csv", index_col=0)
+    sc = pd.read_csv(OUT / "scoring_careers.csv").set_index("player_id")
     ckeep = classic[classic.poss >= MIN_CAREER_POSS]
     classic_rows = []
     for p in ckeep.itertuples():
@@ -70,12 +71,15 @@ def main():
             "lite": r(p.lite_share, 2),
             "prod5": r(p.production_peak5), "prod5_years": p.production_peak5_years if isinstance(p.production_peak5_years, str) else None,
             "ind": r(p.peak_individual), "team": r(p.peak_team_credit),
-            "best5po": r(p.best5_with_playoffs), "porise": r(p.playoff_rise), "pwar5": r(p.peak_wins_per_season, 1),
+            "best5po": r(p.best5_with_playoffs), "porise": r(p.playoff_rise), "pwar5": r(p.peak_wins_per_season, 1), "pwar5_years": p.peak_wins_years if isinstance(p.peak_wins_years, str) else None,
             "pos": (lambda z: "G" if z in ("PG", "SG") else "W" if z == "SF" else "B")(str(x.pos.mode().iat[0]).split("-")[0]) if x.pos.notna().any() else None,
             "dom5": r(p.dominance_peak5), "dom5_years": p.dominance_peak5_years if isinstance(p.dominance_peak5_years, str) else None,
             "no1": int(p.seasons_ranked_1), "top3": int(p.seasons_top3),
             "titles": int(ch.titles.get(p.player, 0)) if p.player in ch.index else 0,
             "tshare": r(ch.title_shares_league_adj.get(p.player)) if p.player in ch.index else 0,
+            "score5": r(sc.scoring5.get(p.player_id)) if p.player_id in sc.index else None,
+            "score5_years": sc.scoring5_years.get(p.player_id) if p.player_id in sc.index and isinstance(sc.scoring5_years.get(p.player_id), str) else None,
+            "stitles": int(sc.scoring_titles.get(p.player_id)) if p.player_id in sc.index else 0,
             "tshare_raw": r(ch.title_shares.get(p.player)) if p.player in ch.index else 0,
             "codds": r(ch.championships_added.get(p.player)) if p.player in ch.index else 0,
             "s": [[int(q.season_start), q.team, r(q.net_classic), r(q.O_classic), r(q.D_classic), r(q.WAR_classic, 1),

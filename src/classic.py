@@ -118,6 +118,10 @@ def features(b):
         rel["big"] = pos.isin(["PF", "C"]).astype(float)
         rel["mpg"] = d.mp / d.g.clip(lower=1) / 48 - 0.5
         rel["pa_x_tsa"] = rel.pts_added * rel.tsa / 10
+        # shot-creation load: his possession-ending plays per 100 vs the league's (ratio; tov 0 where unrecorded)
+        use = d.fga + 0.44 * d.fta + d.tov.fillna(0)
+        lg_use = use.sum() / d.poss.sum()
+        d["usg_rel"] = ((use + lg_use * PRIOR_POSS) / (d.poss + PRIOR_POSS)) / lg_use   # shrunk like every rate
         rel["pa_x_mpg"] = rel.pts_added * rel.mpg
         out.append(pd.concat([d, rel.add_prefix("f_")], axis=1))
     return pd.concat(out)
@@ -406,6 +410,17 @@ def main():
     f.loc[pb, "D_c"] = (net_new - diff) / 2
     f["net_c"] = f.O_c + f.D_c
     val["plus_blend"] = blend_ev
+    # CREATION PREMIUM (absence_test.py): the highest-usage players' teams lose more when they sit than
+    # their rating predicts. Fitted there on starters' missed games; applied here only if adopted.
+    f["creation"] = 0.0
+    cm = OUT / "creation_meta.json"
+    if cm.exists():
+        c_ = json.load(open(cm))
+        if c_.get("adopted"):
+            f["creation"] = c_["k"] * (f.usg_rel.clip(upper=c_.get("r_max", np.inf)) - c_["r0"]).clip(lower=0)  # no extrapolation
+            f["O_c"] = f.O_c + f.creation
+            f["net_c"] = f.O_c + f.D_c
+            val["creation"] = c_
     print("play-by-play blend:", blend_ev, flush=True)
     bO, bD = f.attrs.get("coef_O_1990", np.zeros(len(FEATS) + 1)), f.attrs.get("coef_D_1990", np.zeros(len(FEATS) + 1))
 
@@ -425,7 +440,7 @@ def main():
     f["se_net"] = resid_sd
     f["season_start"] = f.season - 1
     cols = ["season_start", "band", "lg", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
-            "se_net", "WAR_c", "net_c_box_team", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
+            "se_net", "WAR_c", "net_c_box_team", "creation", "usg_rel", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
     if games_used:
         cols.append("games_informed")
     for y, x in f.groupby("season_start"):
