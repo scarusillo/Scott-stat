@@ -1,10 +1,10 @@
 {
  "LeBron James": {
   "clutch_poss": 5703.553,
-  "delta": 3.081,
-  "se": 1.077,
-  "delta_O": 1.555,
-  "delta_D": 1.525,
+  "delta": 2.46,
+  "se": 0.679,
+  "delta_O": 1.232,
+  "delta_D": 1.228,
   "own": {
    "clutch": {
     "pts_per100": 49.6357241832072,
@@ -37,37 +37,37 @@
   },
   "by_era_raw": {
    "Cavs 2003-10": {
-    "offense": 1.8431094457596666,
-    "defense": 4.029309413255724,
-    "net": 5.872418859015391,
+    "offense": 4.658044001397987,
+    "defense": 7.72253524751207,
+    "net": 12.380579248910056,
     "clutch_poss": 2177.899660284893
    },
    "Heat 2010-14": {
-    "offense": 1.107817377425686,
-    "defense": 5.638250863600299,
-    "net": 6.746068241025985,
+    "offense": 0.34855030432623335,
+    "defense": 6.062302505127846,
+    "net": 6.410852809454079,
     "clutch_poss": 1070.7437505853254
    },
    "Cavs 2014-18": {
-    "offense": 5.225199499403119,
-    "defense": 3.3774234018361233,
-    "net": 8.602622901239242,
+    "offense": 4.0527618264386005,
+    "defense": 5.266114372017601,
+    "net": 9.318876198456202,
     "clutch_poss": 944.9639359266979
    },
    "Lakers 2018-25": {
-    "offense": 6.527751683965698,
-    "defense": -5.600149115798386,
-    "net": 0.9276025681673117,
+    "offense": 6.017439569360678,
+    "defense": -7.104362491257608,
+    "net": -1.0869229218969299,
     "clutch_poss": 1520.7403842784452
    }
   }
  },
  "Damian Lillard": {
   "clutch_poss": 3450.506,
-  "delta": 3.141,
-  "se": 1.053,
-  "delta_O": 2.474,
-  "delta_D": 0.667,
+  "delta": 1.878,
+  "se": 0.59,
+  "delta_O": 1.623,
+  "delta_D": 0.254,
   "own": {
    "clutch": {
     "pts_per100": 43.61678647015266,
@@ -101,10 +101,10 @@
  },
  "Dirk Nowitzki": {
   "clutch_poss": 4755.315,
-  "delta": 2.678,
-  "se": 1.071,
-  "delta_O": 0.632,
-  "delta_D": 2.046,
+  "delta": 1.976,
+  "se": 0.636,
+  "delta_O": 0.821,
+  "delta_D": 1.155,
   "own": {
    "clutch": {
     "pts_per100": 40.670285326884745,
@@ -138,10 +138,10 @@
  },
  "Kobe Bryant": {
   "clutch_poss": 4524.825,
-  "delta": 1.11,
-  "se": 1.05,
-  "delta_O": 0.742,
-  "delta_D": 0.367,
+  "delta": 0.902,
+  "se": 0.618,
+  "delta_O": 0.518,
+  "delta_D": 0.384,
   "own": {
    "clutch": {
     "pts_per100": 52.1346088234038,
@@ -175,10 +175,10 @@
  },
  "Nikola Joki\u0107": {
   "clutch_poss": 2301.141,
-  "delta": 0.565,
-  "se": 0.934,
-  "delta_O": -0.013,
-  "delta_D": 0.577,
+  "delta": 1.123,
+  "se": 0.506,
+  "delta_O": 0.342,
+  "delta_D": 0.781,
   "own": {
    "clutch": {
     "pts_per100": 44.97769398580244,
@@ -212,10 +212,10 @@
  },
  "Stephen Curry": {
   "clutch_poss": 3253.513,
-  "delta": 1.215,
-  "se": 1.016,
-  "delta_O": 1.76,
-  "delta_D": -0.545,
+  "delta": 0.571,
+  "se": 0.556,
+  "delta_O": 0.733,
+  "delta_D": -0.161,
   "own": {
    "clutch": {
     "pts_per100": 45.981073730908825,
@@ -249,10 +249,10 @@
  },
  "Tim Duncan": {
   "clutch_poss": 4536.014,
-  "delta": -0.472,
-  "se": 0.969,
-  "delta_O": -1.005,
-  "delta_D": 0.533,
+  "delta": -0.62,
+  "se": 0.577,
+  "delta_O": -0.603,
+  "delta_D": -0.017,
   "own": {
    "clutch": {
     "pts_per100": 30.996374307872227,
@@ -285,21 +285,21 @@
   }
  },
  "p_biggest_rise": {
-  "Anthony Mason": 0.148,
-  "Shawn Marion": 0.1049,
-  "Damian Lillard": 0.08125,
-  "LeBron James": 0.0723,
-  "Vlade Divac": 0.06525,
-  "Chauncey Billups": 0.0626,
-  "Devin Harris": 0.0586,
-  "Buddy Hield": 0.0359
+  "LeBron James": 0.39635,
+  "Dirk Nowitzki": 0.12875,
+  "Damian Lillard": 0.0891,
+  "Shawn Marion": 0.0804,
+  "Tyson Chandler": 0.0416,
+  "Anthony Mason": 0.0368,
+  "Tony Allen": 0.02945,
+  "Joel Embiid": 0.0131
  },
  "p_best_clutch_rating": {
-  "LeBron James": 0.56405,
-  "Chris Paul": 0.12185,
-  "Shaquille O'Neal": 0.0842,
-  "Vlade Divac": 0.06285,
-  "Dirk Nowitzki": 0.0625,
-  "Nikola Joki\u0107": 0.0366
+  "LeBron James": 0.7244,
+  "Nikola Joki\u0107": 0.25105,
+  "Dirk Nowitzki": 0.01225,
+  "Chris Paul": 0.0041,
+  "Shaquille O'Neal": 0.00405,
+  "Kevin Garnett": 0.0032
  }
 }

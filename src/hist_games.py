@@ -9,7 +9,7 @@ recorded; a blank is filled with that player's season minutes per game
 Model, per three-season window (rating assigned to the middle season):
   points scored by a team in a game  =  league + home
       + sum(O_i * share_i)  over its players   - sum(D_j * share_j) over opponents
-  share = minutes/48 x pace/100   (so O and D are points per 100 possessions)
+  share = minutes/48 (five per team sum to 5; the target is per 100 possessions, so O and D are too)
 Ridge regression toward each player's Classic rating (his box-score + team
 estimate) instead of toward 0: game results move a player off his Classic
 rating only as far as the with/without evidence supports. A star whose team
@@ -37,6 +37,24 @@ OUT = ROOT / "out"
 LAMS = (30, 100, 300, 1000, 3000)
 
 
+def season_from_id(game_id):
+    """Season END year from the NBA game id (TYY#####: T = game type, YY = season START year).
+    Dates fail for the 2020 bubble (2019-20 games played Aug-Oct 2020)."""
+    yy = pd.to_numeric(game_id, errors="coerce").fillna(0).astype("int64") // 100000 % 100
+    return np.where(yy >= 46, 1900 + yy, 2000 + yy) + 1
+
+
+def fill_team_ids(p):
+    """The source has blank playerteamId for all of 2021-22 and half of 2000-01. Rebuild it from
+    the games table and the player's home flag."""
+    g = pd.read_csv(KAG / "Games.csv", usecols=["gameId", "hometeamId", "awayteamId"], low_memory=False).drop_duplicates("gameId")
+    g = g.set_index("gameId")
+    home = pd.to_numeric(p.home, errors="coerce")
+    fill = np.where(home == 1, p.gameId.map(g.hometeamId), p.gameId.map(g.awayteamId))
+    p["playerteamId"] = pd.to_numeric(p.playerteamId, errors="coerce").fillna(pd.Series(fill, index=p.index))
+    return p
+
+
 def season_end(dt):
     return np.where(dt.dt.month >= 8, dt.dt.year + 1, dt.dt.year)
 
@@ -48,7 +66,8 @@ def load_games():
     p = pd.read_csv(KAG / "PlayerStatistics.csv", usecols=cols, low_memory=False)
     p = p[p.gameType == "Regular Season"]
     dt = pd.to_datetime(p.gameDateTimeEst, errors="coerce")
-    p["season"] = season_end(dt)
+    p["season"] = season_from_id(p.gameId)
+    p = fill_team_ids(p)
     for c in ("numMinutes", "points", "fieldGoalsAttempted", "freeThrowsAttempted", "reboundsTotal", "assists", "foulsPersonal"):
         p[c] = pd.to_numeric(p[c], errors="coerce").fillna(0)
     dnp = p.comment.astype(str).str.contains("DNP|DND|NWT|Did not|Not With", case=False, na=False)
@@ -58,7 +77,7 @@ def load_games():
     g = pd.read_csv(KAG / "Games.csv", usecols=["gameId", "gameDateTimeEst", "hometeamId", "awayteamId",
                                                    "homeScore", "awayScore", "gameType"], low_memory=False)
     g = g[g.gameType == "Regular Season"].copy()
-    g["season"] = season_end(pd.to_datetime(g.gameDateTimeEst, errors="coerce"))
+    g["season"] = season_from_id(g.gameId)
     return p, g
 
 
@@ -90,7 +109,10 @@ def build_rows(p, g, pri, pace, seasons):
     pp = pp.dropna(subset=["player_id"])
     pp["min"] = np.where(pp.numMinutes > 0, pp.numMinutes, pp.mpg)
     tot = pp.groupby(["gameId", "playerteamId"])["min"].transform("sum")
-    pp["share"] = (pp["min"] / tot.clip(lower=1) * 5 * pp.season.map(pace).fillna(100) / 100).fillna(0)
+    # share of the game on the floor (five per team sum to 5). The target is already per 100
+    # possessions, so NO pace factor here (an earlier version had one: it inflated stars in
+    # slow eras and deflated them in fast ones).
+    pp["share"] = (pp["min"] / tot.clip(lower=1) * 5).fillna(0)
     gg = g[g.season.isin(seasons) & g.gameId.isin(pp.gameId)].dropna(subset=["homeScore", "awayScore"])
     gg = gg[(gg.homeScore > 0) & (gg.awayScore > 0)]
     players = np.unique(pp.player_id)

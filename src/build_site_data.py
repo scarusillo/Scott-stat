@@ -69,6 +69,8 @@ def main():
             "best5_years": p.best5_years if isinstance(p.best5_years, str) else None, "war": r(p.career_WAR, 1),
             "lite": r(p.lite_share, 2),
             "prod5": r(p.production_peak5), "prod5_years": p.production_peak5_years if isinstance(p.production_peak5_years, str) else None,
+            "ind": r(p.peak_individual), "team": r(p.peak_team_credit),
+            "pos": (lambda z: "G" if z in ("PG", "SG") else "W" if z == "SF" else "B")(str(x.pos.mode().iat[0]).split("-")[0]) if len(x) else None,
             "dom5": r(p.dominance_peak5), "dom5_years": p.dominance_peak5_years if isinstance(p.dominance_peak5_years, str) else None,
             "no1": int(p.seasons_ranked_1), "top3": int(p.seasons_top3),
             "titles": int(ch.titles.get(p.player, 0)) if p.player in ch.index else 0,
@@ -76,9 +78,11 @@ def main():
             "tshare_raw": r(ch.title_shares.get(p.player)) if p.player in ch.index else 0,
             "codds": r(ch.championships_added.get(p.player)) if p.player in ch.index else 0,
             "s": [[int(q.season_start), q.team, r(q.net_classic), r(q.O_classic), r(q.D_classic), r(q.WAR_classic, 1),
-                   r(q.net_plus), {"full": "F", "no_turnovers": "T", "lite": "L"}.get(q.band, "")] for q in x.itertuples()],
+                   r(q.net_plus), {"full": "F", "no_turnovers": "T", "lite": "L"}.get(q.band, ""), (int(q.age) if q.age == q.age else None), r(q.box_O + q.box_D)] for q in x.itertuples()],
         })
     rot = rot.set_index("coach_id")
+    style = pd.read_csv(OUT / "coach_style.csv", index_col=0)
+    STYLE = ["pace", "three", "rim", "astd", "depth", "churn", "opp_three", "opp_rim"]
     coach_rows = []
     for c in coaches[coaches.games >= 164].itertuples():
         cells = carch[(carch.coach_id == c.coach_id) & (carch.exposure >= 20000) & carch.broad]
@@ -90,6 +94,11 @@ def main():
             "rotation": r(rot.rotation_wins_82.get(c.coach_id)), "closing": r(rot.closing.get(c.coach_id)),
             "best_types": [[t.archetype, r(t.type_net)] for t in best.head(2).itertuples()],
             "worst_types": [[t.archetype, r(t.type_net)] for t in best.tail(1).itertuples()] if len(best) > 2 else [],
+            "types": [[t.archetype, r(t.uplift), r(float(np.sqrt(t.se_type_O ** 2 + t.se_type_D ** 2 + t.se_main ** 2))),
+                       int(t.exposure), int(t.n_players) if t.n_players == t.n_players else 0, t.top_player if isinstance(t.top_player, str) else "",
+                       r(t.top_share), bool(t.broad)]
+                      for t in carch[(carch.coach_id == c.coach_id) & (carch.exposure >= 8000)].itertuples()],
+            "style": {k: r(style.at[c.coach_id, k]) for k in STYLE} if c.coach_id in style.index else None,
         })
     pairs = []
     pc = pcoach[pcoach.player_id.isin(keep.player_id)]
@@ -134,7 +143,12 @@ def main():
         f = OUT / f"{name}.json"
         if f.exists():
             val[name] = json.load(open(f))
-    data = {"meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs,
+    ag = pd.read_csv(OUT / "aging_curves.csv")
+    aging = {"curves": {g: [[int(q.age), r(q.value)] for q in x.itertuples()] for g, x in ag.groupby("group")},
+             "meta": json.load(open(OUT / "aging_meta.json"))}
+    se_ = pd.read_csv(OUT / "scheme_effects.csv")
+    schemes = [[q.outcome, q.trait, r(q.coef_per_sd), r(q.se), r(q.t), r(q.r_simple), r(q.r2_all_traits)] for q in se_.itertuples()]
+    data = {"aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs,
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),
                 "clutch_split_half": val.get("playoffs_meta", {}).get("all_clutch", {}).get("split_half"),

@@ -6,16 +6,16 @@
 /* Layout: a scorer's-table app. Sticky nav, one view at a time, tables and per-player pages. */
 :root {
   --bg: #f4f6f8; --surface: #ffffff; --ink: #131b26; --muted: #5a6677; --line: #dce2ea;
-  --accent: #c2410c; --off: #c2410c; --def: #1d5fd1; --good: #157f3b; --bad: #b42318; --band: rgba(194,65,12,.12);
+  --accent: #c2410c; --off: #c2410c; --def: #1d5fd1; --good: #157f3b; --bad: #b42318; --c3: #7a3fb5; --band: rgba(194,65,12,.12);
   --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0e131a; --surface: #151c26; --ink: #e7ecf2; --muted: #95a1b2; --line: #263142;
-  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --band: rgba(251,122,53,.16); color-scheme: dark } }
+  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --c3: #c08cf0; --band: rgba(251,122,53,.16); color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0e131a; --surface: #151c26; --ink: #e7ecf2; --muted: #95a1b2; --line: #263142;
-  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --band: rgba(251,122,53,.16); color-scheme: dark }
+  --accent: #fb7a35; --off: #fb7a35; --def: #6aa5ff; --good: #46c97a; --bad: #ff7b6e; --c3: #c08cf0; --band: rgba(251,122,53,.16); color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
@@ -63,9 +63,10 @@ td.rank { color: var(--muted); width: 1% }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: end; }
 .big { font: 700 clamp(64px, 12vw, 104px)/.9 var(--display); font-variant-numeric: tabular-nums; color: var(--accent); }
 .big small { font-size: 28px; color: var(--muted); font-weight: 500; }
+.split > *, .cols2 > *, .stack > * { min-width: 0 }
 .split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
 @media (max-width: 760px) { .split, .hero { grid-template-columns: 1fr } }
-.barline { display: grid; grid-template-columns: 120px minmax(0, 1fr) 56px; gap: 10px; align-items: center; font-size: 13px; }
+.barline { display: grid; grid-template-columns: 150px minmax(0, 1fr) 84px; gap: 10px; align-items: center; font-size: 13px; }
 .track { position: relative; height: 12px; background: var(--bg); border-radius: 3px; }
 .track .zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--muted); }
 .track .fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
@@ -83,8 +84,8 @@ svg text { fill: var(--muted); font: 11px var(--body); }
 <header><div class="wrap bar">
   <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
   <nav id="nav">
-    <a href="#leaders">Leaderboard</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#progression">Progression</a>
-    <a href="#coaches">Coaches</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
+    <a href="#leaders">Leaderboard</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#careers">Careers</a><a href="#progression">Progression</a>
+    <a href="#coaches">Coaches</a><a href="#coachlab">Coach lab</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
   </nav>
 </div></header>
 <main class="wrap" id="app"><p class="note">Loading the Scott Stat…</p></main>
@@ -113,7 +114,7 @@ function route() {
   const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ leaders, legacy, guide, compare, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
+  ({ leaders, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
   scrollTo(0, 0);
 }
 
@@ -122,7 +123,7 @@ function leaders() {
   const plus = state.tier === "plus";
   const sorts = plus ? [["scott", "Scott Stat"], ["peak5", "Peak (best 5)"], ["war", "Career wins"], ["lift", "Lift"],
     ["def", "Defense"], ["clutch", "Clutch rise"], ["po", "Playoff rise"]] :
-    [["best5", "Impact peak (best 5)"], ["prod5", "Production peak (best 5)"], ["dom5", "Era dominance (best 5)"], ["no1", "Seasons ranked #1"],
+    [["best5", "Impact peak (best 5)"], ["ind", "Individual (in peak window)"], ["team", "Team credit (in peak window)"], ["prod5", "Best individual 5 seasons"], ["dom5", "Era dominance (best 5)"], ["no1", "Seasons ranked #1"],
      ["impact", "Career impact"], ["war", "Career wins"], ["lift", "Lift"], ["def", "Defense"]];
   if (!sorts.some(s => s[0] === state.sort)) state.sort = sorts[0][0];
   const rows = (plus ? D.players : D.classic).filter(p => (p.poss ?? 1e9) >= state.minPoss || !plus)
@@ -145,7 +146,7 @@ function leaders() {
     </div>
     <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Years</th>
       ${plus ? `<th>Scott Stat</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Clutch</th><th>Playoffs</th><th>Peak 5</th><th>Wins</th>`
-        : `<th>Impact peak</th><th>Production peak</th><th>Era dominance</th><th>#1 seasons</th><th>Career</th><th>Offense</th><th>Defense</th><th>Best season</th><th>Wins</th>`}
+        : `<th>Impact peak</th><th>= Individual</th><th>+ Team credit</th><th>Era dominance</th><th>#1 seasons</th><th>Career</th><th>Offense</th><th>Defense</th><th>Best season</th><th>Wins</th>`}
     </tr></thead><tbody>${rows.map((p, i) => plus ? `<tr tabindex="0" data-go="#player-${p.id}">
       <td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}${p.partial_from ? ` <span class="flag" title="Career began ${p.partial_from}; play-by-play covers only from 1996-97">late career</span>` : ""}</td>
       <td class="num"><b>${f(p.scott, 2)}</b><span class="pm">±${f(p.se, 1, false)}</span></td>
@@ -154,13 +155,13 @@ function leaders() {
       <td class="num ${cls(p.clutch)}">${f(p.clutch)}</td><td class="num ${cls(p.po)}">${f(p.po)}</td>
       <td class="num">${f(p.peak5)}</td><td class="num">${f(p.war, 0, false)}</td></tr>`
       : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b>${p.lite > 0.5 ? ` <span class="flag" title="Most seasons before 1973-74: no steals, blocks or turnovers recorded">limited stats</span>` : ""}</td>
-      <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.prod5, 2)}</td>
+      <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.ind, 2)}</td><td class="num ${cls(p.team)}">${f(p.team, 2)}</td>
       <td class="num">${p.dom5 == null ? "–" : p.dom5.toFixed(2)}</td><td class="num">${p.no1 || ""}${p.top3 ? `<span class="pm">top 3: ${p.top3}</span>` : ""}</td><td class="num">${f(p.impact)}</td>
       <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td>
       <td class="num">${f(p.best)} <span class="pm">${p.best_year}</span></td><td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
     </tbody></table></div>
     <p class="note">${plus ? `Scott Stat = all-game impact + ${(D.meta.clutch_weight * 100).toFixed(0)}% of the clutch rise (clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of possessions but ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games) + the playoff rise weighted by the player's share of playoff possessions. Production = what his own box score explains. Lift = the rest: teammates playing better and the team defending better while he's on the floor. ± is one standard error. "Late career" marks players whose careers began before 1996-97: only their later seasons are measured here, so use the Classic tier for their full careers.`
-      : `Three ways to rank, three questions. <b>Impact peak</b>: how much better his team was with him on the floor (best five straight seasons, points per 100 possessions). <b>Production peak</b>: what his own stats were worth, era-adjusted, before team results. <b>Era dominance</b>: how far above his own league he was, in standard deviations, which is the fairest way to compare a 10-team league with a 30-team one. At the very top, gaps under about half a point of impact are within the margin of error.`}</p>
+      : `Three ways to rank, three questions. <b>Impact peak</b>: how much better his team was with him on the floor (best five straight seasons, points per 100 possessions). It splits into two parts shown side by side: <b>Individual</b>, what his own stats were worth, era-adjusted, and <b>Team credit</b>, his share of how much his team did better or worse than its players' stats predict (from team results and game-by-game results with and without him). <b>Era dominance</b>: how far above his own league he was, in standard deviations, which is the fairest way to compare a 10-team league with a 30-team one. At the very top, gaps under about half a point of impact are within the margin of error.`}</p>
   </div>`;
   $("#t-plus").onclick = () => { state.tier = "plus"; save(); leaders(); };
   $("#t-classic").onclick = () => { state.tier = "classic"; save(); leaders(); };
@@ -377,6 +378,124 @@ function legacy() {
   bindRows();
 }
 
+/* ---------- shared: multi-line chart ---------- */
+function lineChart(series, o = {}) {
+  const W = 720, Hh = o.h || 260, m = { l: 38, r: 12, t: 12, b: 30 };
+  const all = series.flatMap(s => s.pts); if (!all.length) return "";
+  const xs = all.map(p => p[0]), ys = all.map(p => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.floor(Math.min(o.ymin ?? 0, ...ys)), y1 = Math.ceil(Math.max(o.ymax ?? 0, ...ys));
+  const X = v => m.l + (v - x0) / (x1 - x0 || 1) * (W - m.l - m.r), Y = v => m.t + (y1 - v) / (y1 - y0 || 1) * (Hh - m.t - m.b);
+  const yt = []; const st = (y1 - y0) > 8 ? 2 : 1; for (let v = y0; v <= y1; v += st) yt.push(v);
+  const xt = []; const xs2 = Math.max(1, Math.ceil((x1 - x0) / 10)); for (let v = Math.ceil(x0); v <= x1; v += xs2) xt.push(v);
+  return `<div class="chips" style="margin:6px 0">${series.map(s => `<span class="chip" style="border-color:${s.color};color:var(--ink)"><span style="display:inline-block;width:14px;border-top:2px ${s.dash ? "dashed" : "solid"} ${s.color};vertical-align:middle;margin-right:5px"></span>${esc(s.name)}</span>`).join("")}</div>
+  <div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:420px" role="img" aria-label="${esc(o.label || "chart")}">
+    ${o.band ? `<rect x="${X(Math.max(x0, o.band[0]))}" y="${m.t}" width="${Math.max(0, X(Math.min(x1, o.band[1])) - X(Math.max(x0, o.band[0])))}" height="${Hh - m.t - m.b}" fill="var(--band)"/>` : ""}
+    ${yt.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" + t : t}</text>`).join("")}
+    ${xt.map(v => `<text x="${X(v)}" y="${Hh - 12}" text-anchor="middle">${v}</text>`).join("")}
+    <text x="${(W + m.l) / 2}" y="${Hh - 1}" text-anchor="middle">${esc(o.xlabel || "")}</text>
+    ${series.map(s => `<path d="M${s.pts.map(p => `${X(p[0])},${Y(p[1])}`).join("L")}" fill="none" stroke="${s.color}" stroke-width="2" ${s.dash ? 'stroke-dasharray="5 4"' : ""}/>` +
+      (s.dots === false ? "" : s.pts.map(p => `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="3.5" fill="var(--surface)" stroke="${s.color}" stroke-width="2" data-tip="${esc(`${s.name}, ${o.xname || "age"} ${p[0]}: ${f(p[1])}${p[2] ? " · " + p[2] : ""}`)}"/>`).join(""))).join("")}
+  </svg></div>`;
+}
+const PAL = ["var(--accent)", "var(--def)", "var(--c3)", "var(--good)"];
+
+/* ---------- careers: arcs by age, aging curves, individual vs team credit ---------- */
+function careers() {
+  const byName = new Map(D.classic.map(p => [p.name, p]));
+  const sel = (state.cpid || ["jordami01", "jamesle01", "jokicni01"]).map(i => D.cById.get(i)).filter(Boolean);
+  const gset = state.cg || "pos";
+  const sets = { pos: ["All players", "Guards", "Wings", "Bigs"], era: ["1951-79", "1980-99", "2000-25"],
+                 type: ["Lead creator", "Spot-up shooter", "Rim runner", "Defensive wing"] };
+  const AM = D.aging.meta, all = AM["All players"];
+  const arc = sel.map((p, i) => ({ name: p.name, color: PAL[i], pts: p.s.filter(r => r[8] != null).map(r => [r[8], r[2], `${yr(r[0])} ${r[1]}`]) }));
+  const split = p => { const mx = 8, a = Math.max(0, p.ind ?? 0) / mx * 100, b = Math.abs(p.team ?? 0) / mx * 100;
+    return `<div class="track" style="height:14px"><div class="fill" style="left:0;width:${a}%;background:var(--muted)"></div><div class="fill" style="left:${(p.team ?? 0) >= 0 ? a : a - b}%;width:${b}%;background:${(p.team ?? 0) >= 0 ? "var(--accent)" : "var(--bad)"}"></div></div>`; };
+  const peakAge = p => { const r = p.s.filter(x => x[8] != null).sort((a, b) => b[2] - a[2])[0]; return r ? r[8] : "–"; };
+  const typeRows = Object.entries(AM).filter(([k]) => !["All players", "Guards", "Wings", "Bigs", "1951-79", "1980-99", "2000-25"].includes(k));
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Careers · 1951-52 to 2025-26</div><h1>How impact changes over a career</h1>
+    <p class="lede">The typical player peaks at ${all.peak_age} and holds his prime from about ${all.prime_from} to ${all.prime_to}. Compare any players' arcs by age, and see how much of each peak was his own play and how much came from team results.</p></div>
+    <div class="controls">${[0, 1, 2].map(i => `<label for="cp${i}">Player ${i + 1}<input id="cp${i}" list="cplist" type="search" value="${esc(sel[i]?.name || "")}" placeholder="Name" style="min-width:190px"></label>`).join("")}
+      <datalist id="cplist">${D.classic.filter(p => p.seasons >= 5).map(p => `<option value="${esc(p.name)}">`).join("")}</datalist></div>
+    <div class="panel"><h3>Impact by age</h3><p class="note">Points per 100 possessions over an average player (Classic tier, so every era is on one scale). The shaded band is the typical prime, ages ${all.prime_from}–${all.prime_to}.</p>
+      ${lineChart(arc, { band: [all.prime_from, all.prime_to], xlabel: "Age", ymin: -2, ymax: 7, label: "Impact by age" })}</div>
+    <div class="panel tablewrap"><h3>Peak, split into individual and team credit</h3>
+      <table><thead><tr><th class="l">Player</th><th class="l">Best 5 seasons</th><th>Best age</th><th>Impact peak</th><th>= Individual</th><th>+ Team credit</th><th class="l" style="min-width:180px">Split</th><th>Titles</th></tr></thead><tbody>
+      ${sel.map(p => `<tr tabindex="0" data-go="#legend-${p.id}"><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.best5_years || "–"}</td><td class="num">${peakAge(p)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.ind, 2)}</td><td class="num ${cls(p.team)}">${f(p.team, 2)}</td><td class="l">${split(p)}</td><td class="num">${p.titles || ""}</td></tr>`).join("")}</tbody></table>
+      <p class="note">Grey = individual: what his own stats were worth, era-adjusted. Orange = team credit: his share of how much his team beat what its players' stats predict, from team results and from games with and without him. Reported separately because they answer different questions and the team part is the less certain one.</p></div>
+    <div class="split">
+      <div class="panel"><h3>Aging curves</h3>
+        <div class="seg" role="group" aria-label="Group">${[["pos", "By position"], ["era", "By era"], ["type", "By player type"]].map(([k, l]) => `<button data-cg="${k}" class="${gset === k ? "on" : ""}">${l}</button>`).join("")}</div>
+        ${lineChart(sets[gset].filter(g => D.aging.curves[g]).map((g, i) => ({ name: g, color: PAL[i], pts: D.aging.curves[g], dots: false })), { xlabel: "Age", ymax: 0, ymin: -3, label: "Aging curves" })}
+        <p class="note">Average change in impact from one age to the next, chained together and set to 0 at the peak. Players who decline lose their minutes and leave the sample, so the real late-career drop is a little steeper than shown.</p></div>
+      <div class="panel tablewrap"><h3>Peak and prime by player type</h3><table><thead><tr><th class="l">Type</th><th>Peak age</th><th>Prime</th><th>At 22</th></tr></thead><tbody>
+        ${typeRows.map(([k, v]) => `<tr><td class="l">${esc(k)}</td><td class="num">${v.peak_age}</td><td class="num">${v.prime_from}–${v.prime_to}</td><td class="num">${f(v.at_22)}</td></tr>`).join("")}</tbody></table>
+        <p class="note">Prime = ages within 0.15 points of the peak. "At 22" is how far below his peak the typical player of that type is at 22: lead creators and playmaking guards have the most growth ahead of them.</p></div>
+    </div></div>`;
+  [0, 1, 2].forEach(i => $("#cp" + i).onchange = e => { const names = sel.map(p => p.name); names[i] = e.target.value;
+    state.cpid = names.map(n => byName.get(n)?.id).filter(Boolean); save(); careers(); });
+  document.querySelectorAll("[data-cg]").forEach(b => b.onclick = () => { state.cg = b.dataset.cg; save(); careers(); });
+  bindRows();
+}
+
+/* ---------- coach lab ---------- */
+const TRAIT = { pace: "Pace", three: "Threes taken", rim: "Shots at the rim", astd: "Ball movement", depth: "Rotation depth", churn: "Substitutions",
+                opp_three: "Opp. threes allowed", opp_rim: "Opp. rim shots allowed" };
+const OUTC = { D: ["Defense effect", "def"], O: ["Offense effect", "off"], net: ["Overall effect", "net"], rotation_wins_82: ["Rotation IQ", "rotation"] };
+function coachlab() {
+  const list = D.coaches.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const c = list.find(x => x.id === state.cl) || list.find(x => x.name === "Gregg Popovich") || list[0];
+  const oc = state.co || "D", tr = state.ct || "opp_rim";
+  const types = c.types.slice().sort((a, b) => b[1] - a[1]);
+  const names = new Map(D.players.map(p => [p.id, p.name]));
+  const mine = D.pairs.filter(x => x[1] === c.name && x[4] >= 4000).map(x => ({ n: names.get(x[0]) || "", a: x[2], z: x[3], v: x[7], se: x[8] })).filter(x => x.n).sort((a, b) => b.v - a.v);
+  const rowsP = (arr) => arr.map(x => `<tr><td class="l">${esc(x.n)}</td><td class="l num">${x.a}–${String(x.z + 1).slice(2)}</td><td class="num ${cls(x.v)}">${f(x.v)}<span class="pm">±${f(x.se, 1, false)}</span></td></tr>`).join("");
+  const sch = D.schemes.filter(r => r[0] === oc);
+  const pts = D.coaches.filter(x => x.style && x[OUTC[oc][1]] != null);
+  const W = 720, Hh = 300, m = { l: 40, r: 12, t: 12, b: 32 };
+  const xv = pts.map(x => x.style[tr]), yv = pts.map(x => x[OUTC[oc][1]]);
+  const xa = Math.floor(Math.min(...xv)), xb = Math.ceil(Math.max(...xv)), ya = Math.floor(Math.min(...yv)), yb = Math.ceil(Math.max(...yv));
+  const X = v => m.l + (v - xa) / (xb - xa) * (W - m.l - m.r), Y = v => m.t + (yb - v) / (yb - ya) * (Hh - m.t - m.b);
+  const yt = []; for (let v = ya; v <= yb; v++) yt.push(v); const xt = []; for (let v = xa; v <= xb; v++) xt.push(v);
+  const row = sch.find(r => r[1] === tr);
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Coach lab · 1996-97 to 2024-25</div><h1>${esc(c.name)}</h1>
+    <p class="lede">${esc(c.teams)} · ${c.first}–${String(c.last + 1).slice(2)} · ${c.seasons} seasons · ${(c.win_pct * 100).toFixed(0)}% wins. What he gets from each kind of player, how his teams play, and which of his players did best under him.</p></div>
+    <div class="controls"><label for="clsel">Coach<select id="clsel">${list.map(x => `<option value="${x.id}" ${x.id === c.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label></div>
+    <div class="tiles"><div class="tile a"><small>Overall effect</small><b class="${cls(c.net)}">${f(c.net)}</b><small>±${f(c.se, 1, false)} per 100 possessions</small></div>
+      <div class="tile o"><small>Offense</small><b class="${cls(c.off)}">${f(c.off)}</b></div><div class="tile d"><small>Defense</small><b class="${cls(c.def)}">${f(c.def)}</b></div>
+      <div class="tile"><small>Rotation IQ</small><b class="${cls(c.rotation)}">${f(c.rotation)}</b><small>wins per 82 games</small></div>
+      <div class="tile"><small>Closing IQ</small><b class="${cls(c.closing)}">${f(c.closing, 2)}</b><small>extra talent on the floor late</small></div></div>
+    <div class="cols2">
+      <div class="panel stack" style="gap:10px"><h3>What he gets from each player type</h3>
+        ${types.length ? types.map(t => hbar(`${t[0]}${t[7] ? "" : " *"}`, t[1], 5, t[1] >= 0 ? "var(--good)" : "var(--bad)", t[2])).join("") : `<p class="note">Not enough minutes with any one type.</p>`}
+        <p class="note">Points per 100 possessions that players of each type played above their own career level under him. ± is one standard error. * = more than half those minutes came from one player (${types.filter(t => !t[7]).map(t => esc(t[5])).join(", ") || "none"}), so read it as that player, not the type.</p></div>
+      <div class="panel stack" style="gap:10px"><h3>How his teams play</h3>
+        ${c.style ? Object.entries(TRAIT).map(([k, l]) => hbar(l, c.style[k], 2.5, k.startsWith("opp") ? "var(--def)" : "var(--off)")).join("") : ""}
+        <p class="note">Each bar: how far his teams sit from the league average of their season, in standard deviations. Right = more than average.</p></div>
+    </div>
+    <div class="cols2">
+      <div class="panel tablewrap"><h3>Played best under him</h3>${mine.length ? `<table><tbody>${rowsP(mine.slice(0, 8))}</tbody></table>` : `<p class="note">No players with enough shared minutes and a second coach to compare against.</p>`}</div>
+      <div class="panel tablewrap"><h3>Played worst under him</h3>${mine.length > 8 ? `<table><tbody>${rowsP(mine.slice(-6).reverse())}</tbody></table>` : `<p class="note">Not enough players to list.</p>`}
+        <p class="note">Each player against his own career level, with his own career arc and the coach's general effect taken out. These are small, heavily damped numbers: a lead, not a verdict.</p></div>
+    </div>
+    <div class="panel"><h3>Which schemes go with results</h3>
+      <div class="controls"><label for="oc">Result<select id="oc">${Object.entries(OUTC).map(([k, v]) => `<option value="${k}" ${k === oc ? "selected" : ""}>${v[0]}</option>`).join("")}</select></label>
+        <label for="tr">Style trait<select id="tr">${Object.entries(TRAIT).map(([k, l]) => `<option value="${k}" ${k === tr ? "selected" : ""}>${l}</option>`).join("")}</select></label></div>
+      <div class="split" style="margin-top:12px">
+        <div><div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:420px" role="img" aria-label="Coaches: style trait against result">
+          ${yt.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" + t : t}</text>`).join("")}
+          ${xt.map(v => `<text x="${X(v)}" y="${Hh - 14}" text-anchor="middle">${v > 0 ? "+" + v : v}</text>`).join("")}
+          <text x="${(W + m.l) / 2}" y="${Hh - 1}" text-anchor="middle">${esc(TRAIT[tr])} (standard deviations from league average)</text>
+          ${pts.map(x => `<circle cx="${X(x.style[tr])}" cy="${Y(x[OUTC[oc][1]])}" r="${x.id === c.id ? 7 : 4}" fill="${x.id === c.id ? "var(--accent)" : "var(--muted)"}" fill-opacity="${x.id === c.id ? 1 : .4}" data-tip="${esc(`${x.name}: ${TRAIT[tr]} ${f(x.style[tr])}, ${OUTC[oc][0]} ${f(x[OUTC[oc][1]])}`)}"/>`).join("")}
+        </svg></div><p class="note">Every coach with two or more seasons. Orange = ${esc(c.name)}. ${row ? `Across coaches, one standard deviation more of "${esc(TRAIT[tr])}" goes with ${f(row[2], 2)} (±${row[3].toFixed(2)}) on ${OUTC[oc][0].toLowerCase()}, holding the other traits fixed.` : ""}</p></div>
+        <div class="stack" style="gap:10px"><div class="eyebrow">All traits, ${esc(OUTC[oc][0].toLowerCase())}</div>
+          ${sch.slice().sort((a, b) => b[2] - a[2]).map(r => hbar(TRAIT[r[1]] + (Math.abs(r[4]) >= 2 ? " •" : ""), r[2], 0.8, r[2] >= 0 ? "var(--good)" : "var(--bad)", r[3])).join("")}
+          <p class="note">• = clears two standard errors. Style explains about ${Math.round((sch[0]?.[6] || 0) * 100)}% of the differences between coaches on this result. These are patterns across coaches, not proof: a style can follow from the roster as much as cause the result.</p></div>
+      </div></div></div>`;
+  $("#clsel").onchange = e => { state.cl = e.target.value; save(); coachlab(); };
+  $("#oc").onchange = e => { state.co = e.target.value; save(); coachlab(); };
+  $("#tr").onchange = e => { state.ct = e.target.value; save(); coachlab(); };
+}
+
 /* ---------- guide: how to read the Scott Stat ---------- */
 function guide() {
   const top = D.classic.filter(p => p.best5 != null).sort((a, b) => b.best5 - a.best5).slice(0, 5);
@@ -470,6 +589,12 @@ function method() {
     <p>For most players, clutch is not a repeatable skill: estimated on odd and even seasons separately, the two halves barely agree. The ranking keeps it at its earned weight and shows the error range.</p></div>
   <div class="panel prose"><h3>4 · Coaches</h3><p>Players are held at their own career level and aging curve, so a coach gets credit only when players play above their norm under him. Players moving between coaches separate the coach from the player. The same machinery estimates how each player did under each coach, with or without his own career arc removed.</p></div>
   <div class="panel prose"><h3>5 · Classic, for every era</h3><p>Before 1996-97 there's no play-by-play. Classic estimates the same impact from season box scores plus team results, trained on the seasons where both exist. Two rules keep it honest across eras. It never extrapolates: every stat is capped at the range seen in the training seasons (John Stockton's late-1980s assist rate is higher than any season since 1996). And skill values are era-matched: each season is priced mostly from the play-by-play seasons nearest to it, because values drift (an assist was worth 0.33 points per 100 possessions in 1997-2004 and 0.42 in 2019-25). The weighting was chosen by predicting 1996-2002 from later seasons only, the same situation Classic faces for the 1980s. Finally, every game since 1951-52 adds a with-or-without signal: each team's margin game by game, with each player's minutes, starting from his box-score rating and moving only as far as the game evidence supports. It improved accuracy on held-out seasons (r 0.658 to 0.674) and was adopted for that reason. Tested on 2014-2025, it tracks the play-by-play number at r = ${pct(cl.test_classic?.r_net)} (Basketball-Reference's BPM: ${pct(cl.test_bref_bpm?.r_net)}). It squeezes the very top, so Plus and Classic are never mixed in one ranking.</p></div>
+  <div class="panel prose"><h3>Audit log</h3><p>The model was re-checked from the position that something in it was wrong. What that found and fixed:</p><ul>
+    <li><b>Pace was counted twice in the game-log step.</b> Stars from slow eras (2009-13) were inflated about 8% and stars from fast eras (the 1960s) deflated about 20%. Fixed: LeBron's peak 6.37 to 6.23, Wilt's 4.35 to 4.63, Russell's 3.68 to 3.92.</li>
+    <li><b>The 2020 bubble was filed under the wrong season</b> (seasons were read from dates). Now read from game ids. LeBron's 2020 title is credited.</li>
+    <li><b>The source had no team ids for 2021-22</b> and half of 2000-01. Rebuilt from the home/away flag. The 2022 Warriors' title is credited and held-out accuracy rose (r 0.674 to 0.677).</li>
+    <li><b>Clutch now uses actual points.</b> The luck adjustment had been replacing made clutch threes and free throws with expected values. LeBron's clutch rise 3.4 to 2.8.</li></ul>
+    <p>Checks that now pass every run: all 75 titles fully credited, league-average rating at zero each season, league wins added matching games played, and player ratings summing to team results (r 0.98).</p></div>
   <div class="panel prose"><h3>What it can't do yet</h3><ul><li>Prime Jordan, Magic and Bird are Classic only. A with-or-without-you signal from game logs would sharpen pre-1996 defense.</li><li>"Coach" still includes the front office and the team's system.</li><li>Single seasons are noisy. Read the ± and the eras.</li></ul></div></div>`;
 }
 

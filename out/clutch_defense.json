@@ -15,13 +15,13 @@
    "shots": 5848395
   }
  },
- "clutch_env_intercept": 109.37531532370123,
+ "clutch_env_intercept": 106.56282849530461,
  "LeBron James": {
   "clutch_def_possessions": 6753.254200984298,
-  "opp_pts_per100_actual": 108.46556020631023,
-  "opp_pts_per100_predicted_from_normal_ratings": 111.2415543221641,
-  "lineup_def_overperformance": 2.7759941158538766,
-  "credited_to_him_D": 2.295,
+  "opp_pts_per100_actual": 104.36156934256785,
+  "opp_pts_per100_predicted_from_normal_ratings": 108.50727296268599,
+  "lineup_def_overperformance": 4.145703620118141,
+  "credited_to_him_D": 1.741,
   "opp_shooting_with_him_on": {
    "clutch": {
     "opp_ts": 0.5233429463640652,
@@ -78,10 +78,10 @@
  },
  "Tim Duncan": {
   "clutch_def_possessions": 5409.635483818376,
-  "opp_pts_per100_actual": 106.03542669341854,
-  "opp_pts_per100_predicted_from_normal_ratings": 107.51548866924651,
-  "lineup_def_overperformance": 1.4800619758279652,
-  "credited_to_him_D": 0.977,
+  "opp_pts_per100_actual": 104.04774138828856,
+  "opp_pts_per100_predicted_from_normal_ratings": 104.79317494589587,
+  "lineup_def_overperformance": 0.7454335576073134,
+  "credited_to_him_D": 0.182,
   "opp_shooting_with_him_on": {
    "clutch": {
     "opp_ts": 0.5108002961371523,
@@ -135,10 +135,10 @@
  },
  "Kevin Garnett": {
   "clutch_def_possessions": 5612.8463113597245,
-  "opp_pts_per100_actual": 111.77710722653347,
-  "opp_pts_per100_predicted_from_normal_ratings": 110.86939447120425,
-  "lineup_def_overperformance": -0.9077127553292286,
-  "credited_to_him_D": -1.271,
+  "opp_pts_per100_actual": 107.59579931242895,
+  "opp_pts_per100_predicted_from_normal_ratings": 108.13724654871574,
+  "lineup_def_overperformance": 0.5414472362867855,
+  "credited_to_him_D": -0.009,
   "opp_shooting_with_him_on": {
    "clutch": {
     "opp_ts": 0.5259179191779604,
@@ -193,10 +193,10 @@
  },
  "Kobe Bryant": {
   "clutch_def_possessions": 5262.461863340908,
-  "opp_pts_per100_actual": 110.57213342771126,
-  "opp_pts_per100_predicted_from_normal_ratings": 112.93241315430612,
-  "lineup_def_overperformance": 2.360279726594854,
-  "credited_to_him_D": 0.343,
+  "opp_pts_per100_actual": 107.60288488878598,
+  "opp_pts_per100_predicted_from_normal_ratings": 110.200095058404,
+  "lineup_def_overperformance": 2.597210169618023,
+  "credited_to_him_D": 0.495,
   "opp_shooting_with_him_on": {
    "clutch": {
     "opp_ts": 0.526214424053048,
@@ -251,10 +251,10 @@
  },
  "Dirk Nowitzki": {
   "clutch_def_possessions": 5192.089947364808,
-  "opp_pts_per100_actual": 107.78715671424435,
-  "opp_pts_per100_predicted_from_normal_ratings": 113.00819502028375,
-  "lineup_def_overperformance": 5.221038306039404,
-  "credited_to_him_D": 2.155,
+  "opp_pts_per100_actual": 105.48061104626278,
+  "opp_pts_per100_predicted_from_normal_ratings": 110.27650294932629,
+  "lineup_def_overperformance": 4.795891903063506,
+  "credited_to_him_D": 1.27,
   "opp_shooting_with_him_on": {
    "clutch": {
     "opp_ts": 0.5156162224864849,
@@ -310,10 +310,10 @@
  },
  "Draymond Green": {
   "clutch_def_possessions": 2957.476071990128,
-  "opp_pts_per100_actual": 108.46191379820101,
-  "opp_pts_per100_predicted_from_normal_ratings": 109.8967379273219,
-  "lineup_def_overperformance": 1.4348241291208836,
-  "credited_to_him_D": 1.503,
+  "opp_pts_per100_actual": 103.59200024949087,
+  "opp_pts_per100_predicted_from_normal_ratings": 107.16556598316657,
+  "lineup_def_overperformance": 3.573565733675707,
+  "credited_to_him_D": 0.948,
   "opp_shooting_with_him_on": {
    "clutch": {
     "opp_ts": 0.5183237911683011,

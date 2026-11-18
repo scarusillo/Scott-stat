@@ -2,93 +2,93 @@
  "player": "LeBron James",
  "clutch_def_possessions": 6753.254200984298,
  "split": {
-  "lineup_overperformance": 2.775994115853867,
-  "credited_to_him": 2.2951599979772594,
-  "se_his_credit": 0.7413152259641774,
-  "credited_to_his_4_teammates_combined": 0.3227769233579048,
-  "not_credited_to_anyone_(shrunk_as_noise)": 0.15805719451870254,
-  "even_split_would_be": 0.5551988231707734
+  "lineup_overperformance": 4.14570362011813,
+  "credited_to_him": 1.7411109297771719,
+  "se_his_credit": 0.4841202090929252,
+  "credited_to_his_4_teammates_combined": 0.2741295812880939,
+  "not_credited_to_anyone_(shrunk_as_noise)": 2.1304631090528647,
+  "even_split_would_be": 0.829140724023626
  },
  "teammates": [
   {
    "teammate": "Zydrunas Ilgauskas",
    "shared_clutch_poss": 1282.6891062393884,
-   "overperf_with_him": 3.071500799212868,
-   "overperf_without_him": 7.704778253267999,
+   "overperf_with_him": 4.578984451745396,
+   "overperf_without_him": 5.5669244108507465,
    "poss_without_him": 676.7474514867481,
-   "own_credit_D": 0.8264224677973264
+   "own_credit_D": 0.5024871766124201
   },
   {
    "teammate": "Dwyane Wade",
    "shared_clutch_poss": 1227.971101004195,
-   "overperf_with_him": 7.589389414148482,
-   "overperf_without_him": 1.0682120747432686,
+   "overperf_with_him": 11.687011725600788,
+   "overperf_without_him": 1.5309279900851038,
    "poss_without_him": 3210.223595304632,
-   "own_credit_D": 0.23618406768982456
+   "own_credit_D": 0.9613046463323367
   },
   {
    "teammate": "Chris Bosh",
    "shared_clutch_poss": 1222.4512091161243,
-   "overperf_with_him": 8.513289583103203,
-   "overperf_without_him": 1.5149549022151878,
+   "overperf_with_him": 9.54595780470141,
+   "overperf_without_him": -0.27200994485292984,
    "poss_without_him": 2342.976243458729,
-   "own_credit_D": 1.6027595187290629
+   "own_credit_D": 0.5878208582459545
   },
   {
    "teammate": "Anderson Varejao",
    "shared_clutch_poss": 1086.3816923207735,
-   "overperf_with_him": 5.220933539844694,
-   "overperf_without_him": 1.8391025558127623,
+   "overperf_with_him": 8.636918067560611,
+   "overperf_without_him": 2.0578147942778235,
    "poss_without_him": 595.2188005627472,
-   "own_credit_D": 1.028327182557657
+   "own_credit_D": 0.7536293338093811
   },
   {
    "teammate": "Anthony Davis",
    "shared_clutch_poss": 963.3239405216669,
-   "overperf_with_him": -4.499623199832553,
-   "overperf_without_him": -3.110950494247735,
+   "overperf_with_him": -7.963308300273569,
+   "overperf_without_him": -2.7062710563387977,
    "poss_without_him": 2035.66711488297,
-   "own_credit_D": -0.9718203095921805
+   "own_credit_D": -0.8455395060972724
   },
   {
    "teammate": "JR Smith",
    "shared_clutch_poss": 777.1006903163034,
-   "overperf_with_him": 7.1853068472608115,
-   "overperf_without_him": -1.2742700606552013,
+   "overperf_with_him": 11.914664638913678,
+   "overperf_without_him": -2.354858261821444,
    "poss_without_him": 1690.6996468920934,
-   "own_credit_D": 0.17529079216420204
+   "own_credit_D": 0.3176581412937817
   },
   {
    "teammate": "Mario Chalmers",
    "shared_clutch_poss": 756.2892482347453,
-   "overperf_with_him": 6.8692735180429425,
-   "overperf_without_him": 4.66489905140542,
+   "overperf_with_him": 3.9544289249777917,
+   "overperf_without_him": 3.8293077642499798,
    "poss_without_him": 865.4585397458075,
-   "own_credit_D": 1.1602857938867803
+   "own_credit_D": 0.28325059503617456
   },
   {
    "teammate": "Kevin Love",
    "shared_clutch_poss": 698.9886706603477,
-   "overperf_with_him": 7.491262039227037,
-   "overperf_without_him": -8.690921809590812,
+   "overperf_with_him": 7.983967589493922,
+   "overperf_without_him": -11.448128604399141,
    "poss_without_him": 1531.9268157766776,
-   "own_credit_D": -1.1753057363598602
+   "own_credit_D": -0.8766854498969024
   },
   {
    "teammate": "Drew Gooden",
    "shared_clutch_poss": 688.7534350044749,
-   "overperf_with_him": 7.387446329751531,
-   "overperf_without_him": -1.9174596998928692,
+   "overperf_with_him": 10.48418633152233,
+   "overperf_without_him": -5.5063226277349555,
    "poss_without_him": 950.4066100567638,
-   "own_credit_D": 0.29111797000189954
+   "own_credit_D": 0.014701311715629729
   },
   {
    "teammate": "Eric Snow",
    "shared_clutch_poss": 683.0187131883122,
-   "overperf_with_him": 0.18508178330168507,
-   "overperf_without_him": 2.0616609413261493,
+   "overperf_with_him": 2.6572350522011723,
+   "overperf_without_him": 2.936308636488276,
    "poss_without_him": 2037.385966860475,
-   "own_credit_D": -0.045207100027428
+   "own_credit_D": 0.3050422364219343
   }
  ],
  "luck": {
@@ -116,52 +116,52 @@
   {
    "coach": "Mike Brown",
    "poss": 1671.28,
-   "def_overperf": 3.15
+   "def_overperf": 7.65
   },
   {
    "coach": "Erik Spoelstra",
    "poss": 1071.3,
-   "def_overperf": 5.55
+   "def_overperf": 5.94
   },
   {
    "coach": "Frank Vogel",
    "poss": 667.0,
-   "def_overperf": -3.2
+   "def_overperf": -6.77
   },
   {
    "coach": "Tyronn Lue",
    "poss": 597.04,
-   "def_overperf": 2.14
+   "def_overperf": 5.43
   },
   {
    "coach": "Paul Silas",
    "poss": 470.26,
-   "def_overperf": 7.26
+   "def_overperf": 7.96
   },
   {
    "coach": "Darvin Ham",
    "poss": 433.31,
-   "def_overperf": -8.17
+   "def_overperf": -9.51
   },
   {
    "coach": "David Blatt",
    "poss": 346.37,
-   "def_overperf": 5.27
+   "def_overperf": 4.62
   },
   {
    "coach": "Luke Walton",
    "poss": 207.63,
-   "def_overperf": -6.18
+   "def_overperf": -4.85
   },
   {
    "coach": "JJ Redick",
    "poss": 194.57,
-   "def_overperf": -8.15
+   "def_overperf": -6.21
   },
   {
    "coach": "Brendan Malone",
    "poss": 33.99,
-   "def_overperf": -3.33
+   "def_overperf": -0.15
   }
  ]
 }

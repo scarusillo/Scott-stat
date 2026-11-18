@@ -578,6 +578,33 @@ each standardized over players with 8+ seasons, weighted by the reader. With any
 championships, Jordan is #1; with championships left out, LeBron is #1 (peak + longevity).
 At equal weights the two are close (the order depends on the comparison pool).
 
+## Audit (adversarial pass, two loops)
+
+Bugs found and fixed:
+1. **Pace double-counted in `hist_games.py`**: the target was per 100 possessions and each player's
+   share was also multiplied by pace/100. Inflated stars in slow eras (~8% at pace 92), deflated
+   them in fast ones (~20% at pace 125). The 2013-25 holdout couldn't see it (pace ~100).
+   LeBron peak 6.37 -> 6.23, Curry 6.09 -> 6.03, Jordan 6.06 -> 6.04, Wilt 4.35 -> 4.63, Russell 3.68 -> 3.92.
+2. **Seasons from dates** misfiled the 2020 bubble (regular season Aug 2020, playoffs Aug-Oct).
+   Now `season_from_id` (game id TYY#####). LeBron title shares 1.04 -> 1.34.
+3. **Kaggle `playerteamId` blank for all of 2021-22 and half of 2000-01**; rebuilt from
+   Games.csv + the home flag (`fill_team_ids`). Holdout r 0.674 -> 0.677; 2022 title now credited.
+4. **Clutch on luck-adjusted points** replaced made clutch threes/FTs with expectations and picked a
+   looser penalty. Clutch now uses raw points (LeBron +3.4 -> +2.8); all-game and playoff ratings
+   stay luck-adjusted.
+Invariants now checked: 75/75 titles sum to 1.0; league possession-weighted Classic mean within
+±0.08 each season; league WAR/games 0.60-0.64; team sum of player ratings vs team net rating r 0.97-0.99.
+
+**Individual vs team credit** is now reported separately everywhere in Classic
+(`peak_individual`, `peak_team_credit`): Jordan 6.02 + 0.02, LeBron 5.37 + 0.86, Curry 5.30 + 0.74,
+Jokić 6.18 + 0.33, Russell 2.50 + 1.43, Duncan 3.40 + 1.18.
+
+**Aging** (`src/aging.py`): delta method on Classic, 14,253 season pairs. Peak 25-26 for every
+position and type; prime ~24-28; spot-up shooters hold to ~30. **Schemes** (`src/schemes.py`,
+111 coaches): defense effect vs opponent rim attempts allowed -0.39/SD (t -3.7), substitution churn
++0.43 (t 4.7); offense vs rotation depth -0.31 (t -3.2). Style explains ~33% of coach defense
+effects, ~18% of offense. Associations, not experiments. Site: Careers and Coach lab tabs.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

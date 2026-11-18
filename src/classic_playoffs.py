@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 import classic as K
-from hist_games import season_end
+from hist_games import fill_team_ids, season_from_id
 
 ROOT = Path(__file__).resolve().parents[1]
 KAG = ROOT / "data" / "kaggle_dl"
@@ -45,12 +45,13 @@ def league_rates(b):
 
 
 def playoff_rows(b, lg, pace):
-    cols = ["gameId", "gameDateTimeEst", "firstName", "lastName", "playerteamId", "numMinutes", "points", "assists",
+    cols = ["gameId", "gameDateTimeEst", "firstName", "lastName", "playerteamId", "home", "numMinutes", "points", "assists",
             "blocks", "steals", "fieldGoalsAttempted", "threePointersAttempted", "freeThrowsAttempted",
             "reboundsDefensive", "reboundsOffensive", "reboundsTotal", "foulsPersonal", "turnovers", "gameType", "comment"]
     p = pd.read_csv(KAG / "PlayerStatistics.csv", usecols=cols, low_memory=False)
     p = p[p.gameType == "Playoffs"].copy()
-    p["season"] = season_end(pd.to_datetime(p.gameDateTimeEst, errors="coerce"))
+    p["season"] = season_from_id(p.gameId)
+    p = fill_team_ids(p)
     num = ["numMinutes", "points", "assists", "blocks", "steals", "fieldGoalsAttempted", "threePointersAttempted",
            "freeThrowsAttempted", "reboundsDefensive", "reboundsOffensive", "reboundsTotal", "foulsPersonal", "turnovers"]
     for c in num:
@@ -96,7 +97,7 @@ def team_playoff_gap(po, pace):
     """Team playoff net per 100 vs expectation against its opponents, minus 5x its box estimate."""
     t = pd.read_csv(KAG / "TeamStatistics.csv", usecols=["gameId", "gameDateTimeEst", "teamId", "opponentTeamId",
                                                            "teamScore", "opponentScore", "gameType"], low_memory=False)
-    t["season"] = season_end(pd.to_datetime(t.gameDateTimeEst, errors="coerce"))
+    t["season"] = season_from_id(t.gameId)
     t = t.dropna(subset=["teamScore", "opponentScore"])
     t = t[(t.teamScore > 0) & (t.opponentScore > 0)]
     t["net100"] = 100 * (t.teamScore - t.opponentScore) / t.season.map(pace).fillna(100)

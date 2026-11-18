@@ -1,0 +1,122 @@
+{
+ "All players": {
+  "peak_age": 25,
+  "prime_from": 24,
+  "prime_to": 27,
+  "pairs": 14253,
+  "at_22": -0.6893225556923719,
+  "at_34": -1.6564567372494778
+ },
+ "Bigs": {
+  "peak_age": 25,
+  "prime_from": 24,
+  "prime_to": 27,
+  "pairs": 5674,
+  "at_22": -0.5473898089724987,
+  "at_34": -1.6837160594259255
+ },
+ "Guards": {
+  "peak_age": 26,
+  "prime_from": 25,
+  "prime_to": 28,
+  "pairs": 5761,
+  "at_22": -0.9410556026275345,
+  "at_34": -1.6301216554294289
+ },
+ "Wings": {
+  "peak_age": 26,
+  "prime_from": 24,
+  "prime_to": 27,
+  "pairs": 2818,
+  "at_22": -0.5244791430971512,
+  "at_34": -1.6939338378955415
+ },
+ "1951-79": {
+  "peak_age": 25,
+  "prime_from": 24,
+  "prime_to": 26,
+  "pairs": 3023,
+  "at_22": -0.6807769689799384,
+  "at_34": -1.7524492860702185
+ },
+ "1980-99": {
+  "peak_age": 26,
+  "prime_from": 25,
+  "prime_to": 27,
+  "pairs": 4399,
+  "at_22": -0.9019267257754526,
+  "at_34": -1.6565142699478952
+ },
+ "2000-25": {
+  "peak_age": 26,
+  "prime_from": 24,
+  "prime_to": 28,
+  "pairs": 6831,
+  "at_22": -0.6049169486564716,
+  "at_34": -1.618332040774405
+ },
+ "Defensive wing": {
+  "peak_age": 26,
+  "prime_from": 23,
+  "prime_to": 27,
+  "pairs": 777,
+  "at_22": -0.3990298494866583,
+  "at_34": null
+ },
+ "Frontcourt finisher": {
+  "peak_age": 26,
+  "prime_from": 23,
+  "prime_to": 28,
+  "pairs": 1087,
+  "at_22": -0.34706599548007233,
+  "at_34": null
+ },
+ "Interior scorer": {
+  "peak_age": 26,
+  "prime_from": 25,
+  "prime_to": 28,
+  "pairs": 621,
+  "at_22": -0.6535798737070212,
+  "at_34": null
+ },
+ "Lead creator": {
+  "peak_age": 25,
+  "prime_from": 25,
+  "prime_to": 28,
+  "pairs": 910,
+  "at_22": -1.0359378033293676,
+  "at_34": null
+ },
+ "Playmaking guard": {
+  "peak_age": 26,
+  "prime_from": 25,
+  "prime_to": 26,
+  "pairs": 935,
+  "at_22": -0.9640130486581198,
+  "at_34": null
+ },
+ "Rim runner": {
+  "peak_age": 26,
+  "prime_from": 25,
+  "prime_to": 28,
+  "pairs": 802,
+  "at_22": -0.5958199642104636,
+  "at_34": null
+ },
+ "Scoring wing": {
+  "peak_age": 27,
+  "prime_from": 25,
+  "prime_to": 28,
+  "pairs": 1187,
+  "at_22": -0.8164691649708695,
+  "at_34": null
+ },
+ "Spot-up shooter": {
+  "peak_age": 25,
+  "prime_from": 24,
+  "prime_to": 30,
+  "pairs": 1421,
+  "at_22": -0.44023374259767906,
+  "at_34": -1.1353786960042425
+ }
+}

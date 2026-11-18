@@ -138,9 +138,19 @@ def classic_table():
         b3, at3 = runs(x, "net", 3)
         b5, at5 = runs(x, "net", 5)
         top = x.loc[x.net.idxmax()]
+        # the impact peak window, split: what his own stats explain vs credit from team results
+        xs = x.sort_values("season")
+        win = None
+        for i in range(len(xs) - 4):
+            w5 = xs.iloc[i:i + 5]
+            if w5.season.iat[-1] - w5.season.iat[0] == 4:
+                v = np.average(w5.net, weights=w5.poss)
+                if win is None or v > win[0]:
+                    win = (v, np.average(w5.production, weights=w5.poss))
         bp5, bp5y = runs(x.assign(net=x.production), "net", 5)
         bz5, bz5y = runs(x.assign(net=x.z), "net", 5)
-        rows.append({"production_peak5": bp5, "production_peak5_years": bp5y, "dominance_peak5": bz5,
+        rows.append({"peak_individual": win[1] if win else np.nan, "peak_team_credit": (win[0] - win[1]) if win else np.nan,
+                     "production_peak5": bp5, "production_peak5_years": bp5y, "dominance_peak5": bz5,
                      "dominance_peak5_years": bz5y, "seasons_ranked_1": int((x.rank_in_season == 1).sum()),
                      "seasons_top3": int((x.rank_in_season <= 3).sum()),
                      "player_id": pid, "player": x.player.iloc[-1], "first": int(x.season.min()),

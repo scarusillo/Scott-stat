@@ -52,6 +52,10 @@ def clutch_stints(tags=("",), clutch_only=True):
             frac = np.ones(len(s))
             keep = pd.Series(True, index=s.index)
         s = s[keep].copy()
+        if clutch_only and "pts_h_raw" in s:
+            # clutch is judged on what actually happened: a made game-winner counts as made.
+            # (All-game and playoff ratings stay luck-adjusted; they are large samples.)
+            s["pts_h"], s["pts_a"] = s.pts_h_raw, s.pts_a_raw
         s["frac"] = np.asarray(frac)[keep.to_numpy()]
         s["playoffs"] = tag == "po_"
         w = pd.read_csv(OUT / f"war_{y}.csv").set_index("player_id")
