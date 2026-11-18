@@ -53,12 +53,12 @@ def load():
     return c
 
 
-def design(c):
+def design(c, col="player_id"):
     nba = c[(c.lg == "NBA") & c.team_net.notna()]
     tkey = nba.season.astype(str) + "|" + nba.team
     teams = pd.Index(tkey.unique())
-    players = pd.Index(nba.player_id.unique())
-    X = sp.csr_matrix((nba.share.to_numpy(), (teams.get_indexer(tkey), players.get_indexer(nba.player_id))),
+    players = pd.Index(nba[col].unique())
+    X = sp.csr_matrix((nba.share.to_numpy(), (teams.get_indexer(tkey), players.get_indexer(nba[col]))),
                       shape=(len(teams), len(players)))
     tm = nba.assign(e=nba["prod"] * nba.share, k=tkey).groupby("k").agg(e=("e", "sum"), y=("team_net", "first"),
                                                                      g=("games", "first"), s=("season", "first"))
@@ -76,7 +76,12 @@ def fit(X, y, w, lam):
 
 def main():
     c = load()
+    # PRIME vs the rest: each player's ten best seasons by his own box production (not by team results) get
+    # their own WINNING number, so late-career seasons (Jordan's Wizards years) don't dilute his prime
+    c["prime"] = c.groupby("player_id")["prod"].rank(ascending=False, method="first") <= 10
+    c["pid_phase"] = c.player_id + np.where(c.prime, "|P", "|R")
     X, y, w, seas, players, teams = design(c)
+    Xp, _, _, _, phases, _ = design(c, "pid_phase")
     rng = np.random.default_rng(0)
     fold = rng.integers(0, 5, len(y))
     cv = {}
@@ -92,6 +97,16 @@ def main():
     print("CV share of unexplained team strength recovered:", {k: round(v, 3) for k, v in cv.items()}, "-> lambda", lam)
     b, mu = fit(X, y, w, lam)
     win = pd.Series(b, index=players, name="winning")
+    cvp = 0.0
+    for k in range(5):
+        tr = fold != k
+        bp_, mup = fit(Xp[tr], y[tr], w[tr], lam)
+        cvp += float(np.sum(w[~tr] * (y[~tr] - mup - Xp[~tr] @ bp_) ** 2))
+    cv_phase = 1 - cvp / float(np.sum(w * (y - np.average(y, weights=w)) ** 2))
+    print("CV with prime/rest split:", round(cv_phase, 3), "vs one number per career:", round(cv[lam], 3))
+    bp, _ = fit(Xp, y, w, lam)
+    ph = pd.Series(bp, index=phases)
+    win_prime = ph[ph.index.str.endswith("|P")].rename(lambda i: i[:-2]).rename("winning_prime")
 
     # validation vs play-by-play, each season left out of the fit
     rows = []
@@ -154,7 +169,11 @@ def main():
         "team_credit_career": np.average(g.O_box + g.D_box - g["prod"], weights=g.poss),
         "pace": np.average(g.pace_.fillna(100), weights=g.poss),
         "prime_poss": g.poss.nlargest(10).sum()}), include_groups=False)
-    car = car.join(win).join(elev)
+    car = car.join(win).join(win_prime).join(elev)
+    car["winning_prime"] = car.winning_prime.fillna(car.winning)
+    pp = c[c.prime].groupby("player_id").poss.mean()
+    car["prime_poss_per_season"] = pp
+    car["winning_prime_per_season"] = car.winning_prime * car.prime_poss_per_season / 100
     car["winning"] = car.winning.fillna(0)
     # career wins his teams won beyond what the box scores predicted, credited to him (win curve at his pace)
     import classic as K
@@ -163,8 +182,11 @@ def main():
     # the Legacy ingredient: the same, over his ten heaviest seasons (career length is already counted
     # by career value, so it isn't counted twice)
     car["winning_prime_wins"] = car.winning * car.prime_poss / 100 * kfun(car.pace)
+    # the per-season version (no career length at all): wins per prime season beyond the box score
+    # (career WINNING, which predicts held-out team results better than a prime-only estimate)
+    car["winning_wins_per_season"] = car.winning * car.prime_poss_per_season / 100 * kfun(car.pace)
     car.to_csv(OUT / "winning_careers.csv", float_format="%.3f")
-    meta = {"lambda": lam, "cv": cv, "validation_vs_plus_leave_season_out": val, "n_team_seasons": int(len(y))}
+    meta = {"lambda": lam, "cv": cv, "cv_prime_split": cv_phase, "validation_vs_plus_leave_season_out": val, "n_team_seasons": int(len(y))}
     (OUT / "winning_meta.json").write_text(json.dumps(meta, indent=1, default=float))
     pd.set_option("display.width", 200)
     print(car[car.poss >= 30000].sort_values("winning", ascending=False).head(25).round(2).to_string())

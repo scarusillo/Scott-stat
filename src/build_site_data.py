@@ -82,7 +82,7 @@ def main():
             "score5_years": sc.scoring5_years.get(p.player_id) if p.player_id in sc.index and isinstance(sc.scoring5_years.get(p.player_id), str) else None,
             "stitles": int(sc.scoring_titles.get(p.player_id)) if p.player_id in sc.index else 0,
             "create5": r(sc.create5.get(p.player_id)) if p.player_id in sc.index else None,
-            "winwins": r(wn.winning_prime_wins.get(p.player_id), 1) if p.player_id in wn.index else None,
+            "winwins": r(wn.winning_wins_per_season.get(p.player_id), 2) if p.player_id in wn.index else None,
             "winwins_career": r(wn.winning_wins.get(p.player_id), 1) if p.player_id in wn.index else None,
             "winning": r(wn.winning.get(p.player_id)) if p.player_id in wn.index else None,
             "elev": r(wn.elevation.get(p.player_id)) if p.player_id in wn.index and pd.notna(wn.elevation.get(p.player_id)) else None,

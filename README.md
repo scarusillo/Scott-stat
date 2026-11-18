@@ -824,6 +824,21 @@ teammates' track records; stable cores -- Duncan/Parker/Ginobili -- were triple-
 Legacy now: LeBron, Jordan, Russell, Duncan, Kareem, Magic, Bird, Wilt, Curry, Garnett; Shaq 11, Kobe 17;
 Moses 38, Lillard 44, Tatum 49, McGrady 70, Carter 84, Carmelo 170, Cousins 222.
 
+## Legacy without longevity: who was best on the court, and who won the most?
+
+Owner's rule: longevity is not a factor; compare players at their best. Default Legacy ingredients are now all
+per-season / prime measures: peak (wins added per season, best five straight) 1, championships (title shares,
+league-size adjusted) 1, scoring & creation (best five) 0.5, winning (wins per prime season beyond the box score,
+career WINNING x his average possessions in his ten best seasons) 0.5. Career value is an optional dial, default 0.
+(A prime-only WINNING estimate was tested and predicts held-out team results slightly worse, 0.402 vs 0.418, so
+the career estimate is used; Jordan's prime-only value is lower, not higher.)
+Jordan vs LeBron, each at his best five: wins/season 18.0 vs 16.9; impact per 100 +7.14 vs +7.44; title shares
+3.32 vs 3.19 (6 vs 4 titles); #1 seasons 7 vs 6; scoring & creation 19.9 vs 19.1; era dominance 3.97 vs 4.49 SDs;
+winning beyond box +1.66 vs +2.17; playoff rise about 0 vs +0.74; team wins in those seasons 56 vs 62.
+Legacy default: Jordan 114, LeBron 111, Russell, Duncan, Magic, Bird, Curry, Kareem, Shaq, Wilt. Jordan is first
+with titles doubled, winning at full weight, or titles removed; Russell first with scoring & creation removed.
+Kobe 16, SGA 20, Tatum 34, Moses 40, Lillard 44, McGrady 62, Iverson 68, Carter 123, Carmelo 185, Cousins 184.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
