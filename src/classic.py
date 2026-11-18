@@ -245,6 +245,22 @@ def score(d, mask, col_O, col_D):
             "r_D": float(r(x[col_D], x.D)), "rmse_net": float(np.sqrt(np.average((net - x.net) ** 2, weights=w)))}
 
 
+def win_curve(ts):
+    """Wins per point of margin as a smooth function of pace, pooled over every NBA season:
+        win% = 0.5 + k0 x MOV x (100 / league pace)^gamma
+    Per-season fits from 8-30 teams are noisy (8-10 teams in the 1950s-60s); the pooled curve isn't.
+    Fitted gamma ~0.34: a point per game is worth somewhat less in a faster game (era_wins_test.py).
+    Returns a function pace -> k."""
+    from scipy.optimize import least_squares
+    t = ts[(ts.lg == "NBA") & (ts.team != "League Average")].dropna(subset=["mov", "w", "l", "pace"])
+    t = t[(t.w + t.l) > 0]
+    wp = t.w / (t.w + t.l)
+    lp = t.groupby("season").pace.transform("mean")
+    fit = least_squares(lambda p: wp - 0.5 - p[0] * t.mov * (100 / lp) ** p[1], [0.03, 0.5])
+    k0, gamma = float(fit.x[0]), float(fit.x[1])
+    return lambda pace: k0 * (100 / pace) ** gamma, {"k0": k0, "gamma": gamma}
+
+
 def aba_translation(f):
     """How far below NBA level an ABA rating sits, from players who changed leagues between consecutive
     seasons (mostly the 68 absorbed in the 1976 merger). Their change in rating, minus the normal
@@ -426,14 +442,15 @@ def main():
 
     # wins: same replacement-level logic as wins.py, from each season's team results
     tsn = ts[ts.season >= FIRST_END]
+    kfun, val["win_curve"] = win_curve(ts)
     for (season, lg), x in f.groupby(["season", "lg"]):
         # replacement level from the NBA's win curve that season (ABA ratings are already at NBA level)
         t = tsn[(tsn.season == season) & (tsn.lg == "NBA")].dropna(subset=["mov", "w", "l", "pace"])
         t = t[(t.w + t.l) > 0]
         if len(t) < 5:
             continue
-        k = np.polyfit(t.mov, t.w / (t.w + t.l), 1)[0]
         pace = np.average(t.pace, weights=t.w + t.l)
+        k = kfun(pace)
         repl = (REPL_WINPCT - 0.5) / k / (pace / 100) / 5
         idx = x.index
         f.loc[idx, "WAR_c"] = (f.loc[idx, "net_c"] - repl) * f.loc[idx, "poss"] / 100 * k

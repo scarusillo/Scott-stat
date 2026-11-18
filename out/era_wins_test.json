@@ -1,0 +1,168 @@
+{
+ "top10_by_decade": {
+  "1950": {
+   "wins82": 8.897,
+   "rating": 2.479,
+   "mpg": 37.418,
+   "pace": 107.225
+  },
+  "1960": {
+   "wins82": 10.905,
+   "rating": 2.847,
+   "mpg": 40.935,
+   "pace": 120.446
+  },
+  "1970": {
+   "wins82": 10.392,
+   "rating": 3.193,
+   "mpg": 38.846,
+   "pace": 107.774
+  },
+  "1980": {
+   "wins82": 11.079,
+   "rating": 3.938,
+   "mpg": 36.719,
+   "pace": 101.079
+  },
+  "1990": {
+   "wins82": 12.06,
+   "rating": 4.57,
+   "mpg": 37.596,
+   "pace": 93.349
+  },
+  "2000": {
+   "wins82": 11.328,
+   "rating": 4.311,
+   "mpg": 37.654,
+   "pace": 91.321
+  },
+  "2010": {
+   "wins82": 11.297,
+   "rating": 4.721,
+   "mpg": 35.189,
+   "pace": 95.307
+  },
+  "2020": {
+   "wins82": 10.263,
+   "rating": 4.599,
+   "mpg": 34.289,
+   "pace": 99.077
+  }
+ },
+ "sum_of_player_wins_over_team_wins": {
+  "1950": 1.037,
+  "1960": 1.058,
+  "1970": 1.04,
+  "1980": 1.025,
+  "1990": 1.034,
+  "2000": 1.044,
+  "2010": 1.037,
+  "2020": 1.048
+ },
+ "pace_gamma": {
+  "gamma": 0.3372211822775297,
+  "se": 0.09547906219818512,
+  "note": "0 = a point per game is worth the same at any pace; 1 = a point per 100 possessions"
+ },
+ "win_slope_by_era": {
+  "1952-69": {
+   "pace": 112.890395480226,
+   "per_point_per_game": 0.03256942898078604,
+   "per_point_per_100": 0.036701553016122074
+  },
+  "1970-89": {
+   "pace": 104.74385542168675,
+   "per_point_per_game": 0.031430442499853925,
+   "per_point_per_100": 0.032925488428122256
+  },
+  "1990-2026": {
+   "pace": 94.51734052111411,
+   "per_point_per_game": 0.03087608353525334,
+   "per_point_per_100": 0.02944396799833472
+  }
+ },
+ "replacement_by_decade": {
+  "1950": {
+   "teams": 8.8,
+   "repl_model": -1.83,
+   "repl_measured": -1.52
+  },
+  "1960": {
+   "teams": 10.3,
+   "repl_model": -1.55,
+   "repl_measured": -1.64
+  },
+  "1970": {
+   "teams": 19.2,
+   "repl_model": -1.78,
+   "repl_measured": -1.6
+  },
+  "1980": {
+   "teams": 23.6,
+   "repl_model": -1.81,
+   "repl_measured": -1.57
+  },
+  "1990": {
+   "teams": 28.0,
+   "repl_model": -2.02,
+   "repl_measured": -1.54
+  },
+  "2000": {
+   "teams": 29.6,
+   "repl_model": -1.97,
+   "repl_measured": -1.55
+  },
+  "2010": {
+   "teams": 30.0,
+   "repl_model": -1.99,
+   "repl_measured": -1.33
+  },
+  "2020": {
+   "teams": 30.0,
+   "repl_model": -2.22,
+   "repl_measured": -1.2
+  }
+ },
+ "best_seasons": {
+  "Wilt Chamberlain": {
+   "season": 1962,
+   "mpg": 48.52,
+   "poss": 10602.71,
+   "pace": 126.23,
+   "net_classic": 6.36,
+   "WAR82": 24.95
+  },
+  "Bill Russell": {
+   "season": 1964,
+   "mpg": 44.64,
+   "poss": 9067.71,
+   "pace": 116.84,
+   "net_classic": 4.75,
+   "WAR82": 17.73
+  },
+  "Kareem Abdul-Jabbar": {
+   "season": 1972,
+   "mpg": 44.23,
+   "poss": 8300.62,
+   "pace": 112.01,
+   "net_classic": 7.11,
+   "WAR82": 22.03
+  },
+  "Michael Jordan": {
+   "season": 1988,
+   "mpg": 40.38,
+   "poss": 6587.51,
+   "pace": 99.58,
+   "net_classic": 7.9,
+   "WAR82": 20.09
+  },
+  "LeBron James": {
+   "season": 2010,
+   "mpg": 39.03,
+   "poss": 5647.76,
+   "pace": 92.74,
+   "net_classic": 8.6,
+   "WAR82": 19.08
+  }
+ }
+}

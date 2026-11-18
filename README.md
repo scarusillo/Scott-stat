@@ -738,6 +738,23 @@ Legacy, equal weights: Jordan, LeBron, Wilt, Kareem, Shaq, Duncan, Curry, Russel
 Iverson 36th (21st-59th across weightings), Carmelo 53rd, Pippen 27th, Doc Rivers 242nd.
 Open question: peak wins favors the 1960s (Wilt 22.7 a season, 45+ minutes a night in 8-14 team leagues).
 
+## 1960s peak-wins check (`src/era_wins_test.py`, `out/era_wins_test.json`)
+
+Wilt Chamberlain topped peak wins per season at 22.7. Checks on the rating-to-wins conversion:
+- Era level: top-10 seasons average 11.7 wins (82-game scaled) in the 1960s vs 12.1 in the 1990s and
+  11.7 in the 2000s. The era isn't inflated; a few players are.
+- Accounting: the sum of player wins comes to 1.03-1.06 x the teams' actual wins above replacement in every decade.
+- Replacement level: fringe players (outside teams x 9 by minutes) measure about -1.5 per 100 in every era
+  (1960s -1.64). The model's 1960s replacement level (-1.55) matches; no inflation there.
+- Pace: the pooled win curve, win% = 0.5 + k0 x MOV x (100/pace)^gamma, gives gamma 0.34 (SE 0.10): a
+  point per game is worth somewhat less in a faster game. Per-season fits (from 8-10 teams in the 1960s)
+  were noisy and missed this. **Adopted the pooled curve** in Classic and championships: 1960s wins fall
+  7-10% (Wilt 22.7 -> 20.4, Russell 18.9 -> 17.2), and the 2020s rise, where per-season fits were also noisy (Jokic 13.6 -> 14.9).
+- What remains is real load: Wilt's 1961-62 was 48.5 minutes a night and 10,600 possessions, 61% more
+  than Jordan's heaviest season. Peak wins rewards minutes played by design.
+Era-relative by design: no adjustment for the absolute talent level of an 8-10 team league (no overlap
+with modern players to measure it from).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

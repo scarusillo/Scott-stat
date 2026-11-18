@@ -76,10 +76,12 @@ def main():
     top_srs_won = fit.loc[fit.groupby("season").srs.idxmax(), "champion"].mean()
 
     # replacement level per season (same as Classic): a team of freely available players wins 20%
+    import classic as K                              # same smooth win curve as Classic
+    kfun, _ = K.win_curve(pd.read_csv(HIST / "Team Summaries.csv"))
     rows = []
     for season, t in ts.groupby("season"):
         t = t.dropna(subset=["mov", "w", "l", "pace"])
-        k = np.polyfit(t.mov, t.w / (t.w + t.l), 1)[0]
+        k = kfun(t.pace.mean())
         rows.append({"season": season, "repl": (REPL_WINPCT - 0.5) / k / (t.pace.mean() / 100) / 5})
     repl = pd.DataFrame(rows).set_index("season").repl
 
