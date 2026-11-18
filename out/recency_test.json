@@ -2,160 +2,160 @@
  "like_for_like": [
   {
    "era": "1951-64",
-   "n": 22,
-   "individual": 2.75,
-   "team_credit": 0.86,
-   "impact": 3.61,
-   "team_margin": 5.34
+   "n": 21,
+   "individual": 3.0,
+   "team_credit": 0.81,
+   "impact": 3.82,
+   "team_margin": 5.33
   },
   {
    "era": "1965-76",
-   "n": 24,
-   "individual": 3.08,
-   "team_credit": 0.64,
-   "impact": 3.72,
-   "team_margin": 6.03
+   "n": 21,
+   "individual": 3.42,
+   "team_credit": 0.52,
+   "impact": 3.94,
+   "team_margin": 6.04
   },
   {
    "era": "1977-84",
-   "n": 29,
-   "individual": 3.28,
-   "team_credit": 0.4,
-   "impact": 3.68,
-   "team_margin": 6.08
+   "n": 27,
+   "individual": 3.5,
+   "team_credit": 0.33,
+   "impact": 3.82,
+   "team_margin": 5.99
   },
   {
    "era": "1985-95",
-   "n": 50,
-   "individual": 3.99,
-   "team_credit": 0.48,
-   "impact": 4.48,
-   "team_margin": 6.0
+   "n": 53,
+   "individual": 4.27,
+   "team_credit": 0.34,
+   "impact": 4.61,
+   "team_margin": 6.02
   },
   {
    "era": "1996-2004",
-   "n": 38,
-   "individual": 3.48,
-   "team_credit": 0.73,
-   "impact": 4.21,
-   "team_margin": 6.46
+   "n": 41,
+   "individual": 3.64,
+   "team_credit": 0.32,
+   "impact": 3.96,
+   "team_margin": 6.26
   },
   {
    "era": "2005-14",
-   "n": 44,
-   "individual": 3.58,
-   "team_credit": 0.66,
-   "impact": 4.23,
-   "team_margin": 6.52
+   "n": 46,
+   "individual": 3.89,
+   "team_credit": 0.26,
+   "impact": 4.15,
+   "team_margin": 6.44
   },
   {
    "era": "2015-25",
-   "n": 44,
-   "individual": 3.82,
-   "team_credit": 0.7,
-   "impact": 4.52,
-   "team_margin": 5.96
+   "n": 43,
+   "individual": 4.16,
+   "team_credit": 0.13,
+   "impact": 4.29,
+   "team_margin": 5.91
   }
  ],
  "scale": [
   {
    "era": "1951-64",
-   "best_player": 3.98,
-   "top3": 3.55,
-   "top10": 2.49,
+   "best_player": 4.19,
+   "top3": 3.77,
+   "top10": 2.64,
    "player_seasons": 841.0,
    "share_of_top100": 0.0,
    "share_of_all": 0.08
   },
   {
    "era": "1965-76",
-   "best_player": 5.14,
-   "top3": 4.11,
-   "top10": 2.94,
-   "player_seasons": 1325.0,
-   "share_of_top100": 0.1,
-   "share_of_all": 0.13
+   "best_player": 5.63,
+   "top3": 4.69,
+   "top10": 3.34,
+   "player_seasons": 1982.0,
+   "share_of_top100": 0.12,
+   "share_of_all": 0.18
   },
   {
    "era": "1977-84",
-   "best_player": 4.66,
-   "top3": 4.1,
-   "top10": 3.21,
+   "best_player": 4.89,
+   "top3": 4.2,
+   "top10": 3.3,
    "player_seasons": 1295.0,
    "share_of_top100": 0.03,
    "share_of_all": 0.12
   },
   {
    "era": "1985-95",
-   "best_player": 6.15,
-   "top3": 5.54,
-   "top10": 4.35,
+   "best_player": 6.59,
+   "top3": 5.87,
+   "top10": 4.55,
    "player_seasons": 1863.0,
-   "share_of_top100": 0.31,
-   "share_of_all": 0.18
-  },
-  {
-   "era": "1996-2004",
-   "best_player": 5.31,
-   "top3": 4.81,
-   "top10": 4.02,
-   "player_seasons": 1439.0,
-   "share_of_top100": 0.11,
-   "share_of_all": 0.14
-  },
-  {
-   "era": "2005-14",
-   "best_player": 6.05,
-   "top3": 5.39,
-   "top10": 4.09,
-   "player_seasons": 1766.0,
-   "share_of_top100": 0.18,
+   "share_of_top100": 0.29,
    "share_of_all": 0.17
   },
   {
+   "era": "1996-2004",
+   "best_player": 5.51,
+   "top3": 4.97,
+   "top10": 4.1,
+   "player_seasons": 1439.0,
+   "share_of_top100": 0.08,
+   "share_of_all": 0.13
+  },
+  {
+   "era": "2005-14",
+   "best_player": 6.44,
+   "top3": 5.71,
+   "top10": 4.27,
+   "player_seasons": 1766.0,
+   "share_of_top100": 0.18,
+   "share_of_all": 0.16
+  },
+  {
    "era": "2015-25",
-   "best_player": 6.32,
-   "top3": 5.55,
-   "top10": 4.35,
+   "best_player": 6.8,
+   "top3": 5.98,
+   "top10": 4.59,
    "player_seasons": 2022.0,
-   "share_of_top100": 0.27,
-   "share_of_all": 0.19
+   "share_of_top100": 0.3,
+   "share_of_all": 0.18
   }
  ],
  "plus_minus_classic_for_stars": [
   {
    "pos": "C",
-   "mean": 0.21,
-   "count": 26
+   "mean": 0.53,
+   "count": 31
   },
   {
    "pos": "PF",
-   "mean": 0.85,
-   "count": 28
+   "mean": 0.59,
+   "count": 38
   },
   {
    "pos": "PG",
-   "mean": 0.15,
-   "count": 48
+   "mean": 0.23,
+   "count": 54
   },
   {
    "pos": "SF",
-   "mean": 0.04,
-   "count": 28
+   "mean": 0.2,
+   "count": 32
   },
   {
    "pos": "SG",
-   "mean": 0.12,
-   "count": 9
+   "mean": 0.27,
+   "count": 14
   }
  ],
  "peak_se": 0.69,
  "p_best_peak": {
-  "Nikola Joki\u0107": 0.295,
-  "LeBron James": 0.286,
-  "Stephen Curry": 0.126,
-  "Michael Jordan": 0.122,
-  "David Robinson": 0.099,
-  "Chris Paul": 0.073
+  "Nikola Joki\u0107": 0.297,
+  "LeBron James": 0.258,
+  "Stephen Curry": 0.172,
+  "Michael Jordan": 0.17,
+  "Chris Paul": 0.052,
+  "David Robinson": 0.051
  }
 }

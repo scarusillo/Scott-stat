@@ -34,7 +34,7 @@ def prepared():
     dup = p.duplicated(["season", "key"], keep=False)
     d = d.merge(p[~dup].drop(columns="name"), on=["season", "key"], how="left")
     ref = d[d.nba_id.notna() & (d.plus_poss >= 1000)]
-    for f_ in K.BOX + ["reb"]:
+    for f_ in K.CLIP:
         d["f_" + f_] = d["f_" + f_].clip(ref["f_" + f_].min(), ref["f_" + f_].max())
     return d, per_team, ts
 

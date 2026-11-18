@@ -99,6 +99,8 @@ def playoff_rows(b, lg, pace, regf=None):
         rel["guard"] = pos.isin(["PG", "SG"]).astype(float)
         rel["big"] = pos.isin(["PF", "C"]).astype(float)
         rel["mpg"] = d.mp / d.games.clip(lower=1) / 48 - 0.5
+        rel["pa_x_tsa"] = rel.pts_added * rel.tsa / 10
+        rel["pa_x_mpg"] = rel.pts_added * rel.mpg
         rows.append(pd.concat([d, rel.add_prefix("f_")], axis=1))
     return pd.concat(rows, ignore_index=True)
 
@@ -135,7 +137,7 @@ def main():
     pace = ts.groupby("season").pace.mean()
     lg = league_rates(b)
     po = playoff_rows(b, lg, pace, d[["season", "player_id"] + [c for c in d.columns if c.startswith("f_")]])
-    caps = {f_: (ref["f_" + f_].min(), ref["f_" + f_].max()) for f_ in K.BOX + ["reb"]}
+    caps = {f_: (ref["f_" + f_].min(), ref["f_" + f_].max()) for f_ in K.CLIP}
     for frame in (d, po):
         for f_, (lo, hi) in caps.items():
             frame["f_" + f_] = frame["f_" + f_].clip(lo, hi)

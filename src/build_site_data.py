@@ -71,7 +71,7 @@ def main():
             "prod5": r(p.production_peak5), "prod5_years": p.production_peak5_years if isinstance(p.production_peak5_years, str) else None,
             "ind": r(p.peak_individual), "team": r(p.peak_team_credit),
             "best5po": r(p.best5_with_playoffs), "porise": r(p.playoff_rise), "pwar5": r(p.peak_wins_per_season, 1),
-            "pos": (lambda z: "G" if z in ("PG", "SG") else "W" if z == "SF" else "B")(str(x.pos.mode().iat[0]).split("-")[0]) if len(x) else None,
+            "pos": (lambda z: "G" if z in ("PG", "SG") else "W" if z == "SF" else "B")(str(x.pos.mode().iat[0]).split("-")[0]) if x.pos.notna().any() else None,
             "dom5": r(p.dominance_peak5), "dom5_years": p.dominance_peak5_years if isinstance(p.dominance_peak5_years, str) else None,
             "no1": int(p.seasons_ranked_1), "top3": int(p.seasons_top3),
             "titles": int(ch.titles.get(p.player, 0)) if p.player in ch.index else 0,

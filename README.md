@@ -674,6 +674,36 @@ Legacy at equal weights: LeBron 119, Jordan 115, Russell 101, Duncan 93, Kareem 
 Shaq 86, Hakeem 77, Wilt 76, Bird 75, Pippen 71 (12th, range 11-19), ... Wade 25th, Ginobili 26th.
 Jordan is first when championships are weighted up or career length dropped.
 
+## Peak-list audit: Doc Rivers above Julius Erving, Kirilenko 31st, Kobe below Pippen
+
+Four fixes, each tested before adoption:
+1. **Usage interaction (Classic box model).** Out of sample, high-usage stars were under-rated by the box
+   model (+0.2 to +0.6 points per 100 vs play-by-play) relative to low-usage stars. Added two features:
+   efficiency x shot volume (`pa_x_tsa`) and efficiency x minutes (`pa_x_mpg`). Forward test r 0.667 -> 0.679,
+   RMSE 1.592 -> 1.573; backcast RMSE 1.586 -> 1.579; the high- vs low-usage star gap closed.
+2. **ABA seasons (1967-68 to 1975-76) were missing**, so Julius Erving's three ABA MVP seasons (ages 23-25)
+   didn't count. ABA seasons are rated against the ABA, then moved down to NBA level by a translation from
+   players who switched leagues in consecutive seasons, aging-adjusted: late ABA (1973-74 on, 78 movers,
+   mostly the 1976 merger) 0.27 per 100 per player (SE 0.15); early ABA 0.87 (SE 0.23). ABA titles count,
+   split by the same title-odds rule on regular-season minutes, at league-size weight. Game-log ratings
+   (NBA-only priors) are not applied to ABA seasons. Erving: 1973-76 ABA seasons +5.2, +5.2, +5.4.
+3. **Play-by-play blended in from 1996-97 on.** Classic is a box-score estimate; where play-by-play exists it
+   is now blended in by precision (about 55-60% weight on a full season's play-by-play), then
+   quantile-matched to Classic's own distribution of ratings within each season and playing-time band, so
+   the top tail is unchanged (season top-5 average 5.06 before, 5.07 after). Play-by-play decides who ranks
+   where inside a season; it cannot stretch the modern scale. Fixes e.g. 2008-09/2009-10 Lakers, where the
+   box model had Gasol above Kobe and play-by-play has Kobe clearly ahead.
+4. **Mid-season trades to a champion were dropped from title shares** (Drexler 1995, Rasheed Wallace 2004,
+   Marc Gasol 2019 and others). Each champion stint now gets its own row.
+
+Peak ranks now: Erving 26th, Doc Rivers 39th, Drexler 41st, Wade 42nd, Kidd 43rd, Ewing 45th,
+Kirilenko 46th, Kobe 54th, Marion 68th. Legacy (equal weights): Pippen 15th, Erving 18th, Kobe 21st.
+Doc Rivers' peak is passing (+2.45 per 100 from assist rate 7.4 per 100 above league) and steals (+1.42);
+scoring adds nothing (league-average efficiency, below-average volume). Drexler's high volume came at
+near-league-average efficiency (+0.9 points per 100 shots above league), so it adds +1.27. The two are
+statistically tied (peak SE about 0.7). Peak is a per-possession rate; Drexler's minutes and longevity show
+up in career wins (119 vs 69) and Legacy (33rd vs 77th).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

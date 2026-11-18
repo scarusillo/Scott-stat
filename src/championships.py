@@ -35,6 +35,10 @@ OUT = ROOT / "out"
 HIST = ROOT / "data" / "hist"
 KAG = ROOT / "data" / "kaggle_dl"
 REPL_WINPCT = 0.20
+# ABA champions (season END year -> team). No ABA playoff box scores exist in the data, so an ABA title is
+# split by regular-season contribution, then league-size adjusted like every other title (10-11 teams).
+ABA_CHAMPS = {1968: "PTP", 1969: "OAK", 1970: "INA", 1971: "UTS", 1972: "INA", 1973: "INA", 1974: "NYA",
+              1975: "KEN", 1976: "NYA"}
 
 
 def champions():
@@ -97,12 +101,31 @@ def main():
     pl["p_without"] = e_without / (other + e_without)
     pl["champ_value"] = pl.p_title - pl.p_without
     pl["won_title"] = pd.MultiIndex.from_arrays([pl.season, pl.team]).map(tsi.champion).fillna(False)
+    # players traded TO a champion mid-season (Drexler 1995, Rasheed Wallace 2004): their main team is the
+    # one they left, so add a row for the champion stint (same rating, that stint's possessions)
+    tot_ = pd.read_csv(HIST / "Player Totals.csv")
+    tot_ = tot_[(tot_.lg == "NBA") & ~tot_.team.str.match(r"^\dTM$|^TOT$")]
+    champ_teams = ts[ts.champion].set_index("season").abbreviation
+    st = tot_[tot_.team.to_numpy() == tot_.season.map(champ_teams).to_numpy()]
+    have = pd.MultiIndex.from_arrays([pl.season, pl.player_id, pl.team])
+    st = st[~pd.MultiIndex.from_arrays([st.season, st.player_id, st.team]).isin(have)]
+    src = pl.drop_duplicates(["season", "player_id"]).set_index(["season", "player_id"])
+    st = st[pd.MultiIndex.from_arrays([st.season, st.player_id]).isin(src.index)]
+    if len(st):
+        add = src.loc[list(zip(st.season, st.player_id))].reset_index()
+        add["team"] = st.team.to_numpy()
+        add["poss"] = st.mp.to_numpy() * pd.MultiIndex.from_arrays([add.season, add.team]).map(tsi.pace).to_numpy() / 48
+        add["won_title"], add["champ_value"] = True, 0.0
+        pl.loc[pl.player_id.isin(st.player_id) & pl.season.isin(st.season), "po_poss_moved"] = True
+        pl = pd.concat([pl, add], ignore_index=True)
     # TITLE SHARES: each real championship (1.0) split among the champion's players by their
     # contribution in THOSE playoffs: (rating - replacement) x playoff possessions, positive part.
     # League-size version: a title among N teams counts N/30 (one of 30 is harder than one of 8).
     po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "po_poss"]]
     pl = pl.merge(po, on=["season_start", "player_id"], how="left")
     pl["po_poss"] = pl.po_poss.fillna(0)
+    if "po_poss_moved" in pl:
+        pl.loc[pl.po_poss_moved.fillna(False).astype(bool) & ~pl.won_title.astype(bool), "po_poss"] = 0.0
     # Split by each player's effect on the team's TITLE ODDS, from the model above: odds scale with
     # exp(b x team strength), so a player who adds d points per game multiplies them by exp(b x d).
     # Weight = that multiplier minus 1. A star's share is far larger than a second option's, the way
@@ -117,6 +140,22 @@ def main():
     pl.loc[pl.won_title, "title_share"] = (pl.loc[pl.won_title, "po_contrib"] / tot.where(tot > 0)).fillna(0)
     n_teams = ts.groupby("season").size()
     pl["title_share_adj"] = pl.title_share * pl.season.map(n_teams) / 30
+    # ABA titles: same split rule (effect on title odds), regular-season possessions in place of playoff ones
+    allp = pd.concat([pd.read_csv(OUT / f"classic_{y}.csv") for y in range(1966, 1976)], ignore_index=True)
+    ab = allp[allp.get("lg", pd.Series("NBA", index=allp.index)) == "ABA"].copy()
+    if len(ab):
+        ab["season"] = ab.season_start + 1
+        tsa = pd.read_csv(HIST / "Team Summaries.csv")
+        tsa = tsa[(tsa.lg == "ABA") & (tsa.team != "League Average")]
+        ab = ab[pd.MultiIndex.from_arrays([ab.season, ab.team]).isin(list(ABA_CHAMPS.items()))].copy()
+        ab["pace"] = pd.MultiIndex.from_arrays([ab.season, ab.team]).map(tsa.set_index(["season", "abbreviation"]).pace)
+        tp = ab.groupby("season").poss.transform("sum") / 5
+        d_ab = (ab.net_classic - ab.season.map(repl)) * (ab.poss / tp) * ab.pace / 100
+        ab["po_contrib"] = np.expm1(b * d_ab.fillna(0).clip(lower=0))
+        ab["title_share"] = ab.po_contrib / ab.groupby("season").po_contrib.transform("sum")
+        ab["title_share_adj"] = ab.title_share * ab.season.map(tsa.groupby("season").size()) / 30
+        ab["won_title"], ab["champ_value"], ab["po_poss"] = True, 0.0, 0.0
+        pl = pd.concat([pl, ab], ignore_index=True)
     cols = ["season_start", "player_id", "player", "team", "net_classic", "poss", "srs", "delta_srs", "p_title",
             "p_without", "champ_value", "won_title", "po_poss", "title_share", "title_share_adj"]
     pl[cols].to_csv(OUT / "championships_seasons.csv", index=False, float_format="%.4f")

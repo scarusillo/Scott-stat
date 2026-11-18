@@ -39,7 +39,11 @@ HIST = ROOT / "data" / "hist"
 OUT = ROOT / "out"
 FIRST_END = 1952             # 1951-52: first season with individual minutes
 BOX = ["pts_added", "tsa", "ast", "tov", "oreb", "dreb", "stl", "blk", "pf", "fg3a"]
-EXTRA = ["guard", "big", "mpg"]
+# scoring efficiency x load: a +3 efficiency on 30 shots per 100 is worth more than on 12, and on 38 minutes more
+# than on 24 (without these, held-out high-usage stars were under-rated by ~0.3-0.6; see README "usage fix")
+INTER = ["pa_x_tsa", "pa_x_mpg"]
+EXTRA = ["guard", "big", "mpg"] + INTER
+CLIP = BOX + ["reb"] + INTER   # every rate clipped to the training range before pricing
 FEATS = BOX + EXTRA
 # What the box score recorded, by era (season END years). Each band gets its own
 # model, trained on the play-by-play seasons using only the stats that band has.
@@ -68,11 +72,20 @@ def norm(name):
     return re.sub(r"\s+", " ", s).strip()
 
 
-def load_box():
+def load_box(aba=False):
+    """Season box totals. aba=True also loads the ABA (1967-68 to 1975-76), rated against its own league
+    and translated to NBA level afterwards (aba_translation). A player who played in both leagues in one
+    season keeps only the league where he played more minutes."""
+    lgs = ["NBA", "ABA"] if aba else ["NBA"]
     t = pd.read_csv(HIST / "Player Totals.csv")
-    t = t[(t.lg == "NBA") & (t.season >= FIRST_END)]
+    t = t[t.lg.isin(lgs) & (t.season >= FIRST_END)]
+    if aba:
+        single = ~t.team.str.match(r"^\dTM$|^TOT$")
+        mp_lg = t[single].groupby(["season", "player_id", "lg"]).mp.sum().reset_index()
+        main_lg = mp_lg.sort_values("mp").groupby(["season", "player_id"]).lg.last()
+        t = t[t.lg.to_numpy() == main_lg.reindex(pd.MultiIndex.from_frame(t[["season", "player_id"]])).to_numpy()]
     ts = pd.read_csv(HIST / "Team Summaries.csv")
-    ts = ts[(ts.lg == "NBA") & (ts.team != "League Average")]
+    ts = ts[ts.lg.isin(lgs) & (ts.team != "League Average")]
     pace = ts.set_index(["season", "abbreviation"]).pace
     multi = t.team.str.match(r"^\dTM$|^TOT$")
     per_team = t[~multi].copy()
@@ -80,7 +93,7 @@ def load_box():
     stats = ["g", "mp", "fga", "fta", "pts", "x3pa", "orb", "drb", "trb", "ast", "stl", "blk", "tov", "pf", "poss"]
     agg = per_team.groupby(["season", "player_id"])[stats].sum()
     info = t.sort_values("g").groupby(["season", "player_id"]).agg(player=("player", "last"), pos=("pos", "last"),
-                                                                    age=("age", "last"))
+                                                                    age=("age", "last"), lg=("lg", "last"))
     team_main = per_team.sort_values("mp").groupby(["season", "player_id"]).team.last()
     b = agg.join(info).join(team_main.rename("team")).reset_index()
     b["x3pa"] = b.x3pa.fillna(0)
@@ -89,7 +102,7 @@ def load_box():
 
 def features(b):
     out = []
-    for season, d in b.groupby("season"):
+    for _, d in b.groupby(["season", "lg"] if "lg" in b else "season"):
         d = d[d.poss > 0].copy()
         tsa = d.fga + 0.44 * d.fta
         raw = pd.DataFrame({"pts": d.pts, "tsa": tsa, "ast": d.ast, "tov": d.tov, "oreb": d.orb, "dreb": d.drb,
@@ -104,6 +117,8 @@ def features(b):
         rel["guard"] = pos.isin(["PG", "SG"]).astype(float)
         rel["big"] = pos.isin(["PF", "C"]).astype(float)
         rel["mpg"] = d.mp / d.g.clip(lower=1) / 48 - 0.5
+        rel["pa_x_tsa"] = rel.pts_added * rel.tsa / 10
+        rel["pa_x_mpg"] = rel.pts_added * rel.mpg
         out.append(pd.concat([d, rel.add_prefix("f_")], axis=1))
     return pd.concat(out)
 
@@ -113,7 +128,7 @@ def plus_targets():
     for y in range(1996, 2025):
         w = pd.read_csv(OUT / f"war_{y}.csv")
         w["season"] = y + 1                         # Basketball-Reference labels seasons by END year
-        rows.append(w[["season", "player_id", "name", "O", "D", "net", "poss"]])
+        rows.append(w[["season", "player_id", "name", "O", "D", "net", "poss", "se_O", "se_D"]])
     p = pd.concat(rows).rename(columns={"player_id": "nba_id", "poss": "plus_poss"})
     p["key"] = p.name.map(norm)
     return p
@@ -179,9 +194,10 @@ def team_adjust(d, per_team, ts, alpha, credit=None):
     tm = pt.assign(o=pt.box_O * pt.poss, dd=pt.box_D * pt.poss, mm=pt.mpg * pt.poss).groupby(
         ["season", "team"])[["o", "dd", "mm", "poss"]].sum()
     tsi = ts.set_index(["season", "abbreviation"])
-    lg_ortg = ts.groupby("season").o_rtg.mean()
-    team_O = tsi.o_rtg.reindex(tm.index) - lg_ortg.reindex(tm.index.get_level_values(0)).to_numpy()
-    team_D = -(tsi.d_rtg.reindex(tm.index) - lg_ortg.reindex(tm.index.get_level_values(0)).to_numpy())
+    # each team against its OWN league's average (the ABA had its own)
+    lg_ortg = ts.groupby(["season", "lg"]).o_rtg.transform("mean").set_axis(tsi.index).reindex(tm.index).to_numpy()
+    team_O = tsi.o_rtg.reindex(tm.index) - lg_ortg
+    team_D = -(tsi.d_rtg.reindex(tm.index) - lg_ortg)
     # sum of five players' estimates per 100 team possessions = 5 * possession-weighted mean
     tm["gap_O"] = team_O.to_numpy() - 5 * tm.o / tm.poss
     tm["gap_D"] = team_D.to_numpy() - 5 * tm.dd / tm.poss
@@ -225,8 +241,43 @@ def score(d, mask, col_O, col_D):
             "r_D": float(r(x[col_D], x.D)), "rmse_net": float(np.sqrt(np.average((net - x.net) ** 2, weights=w)))}
 
 
+def aba_translation(f):
+    """How far below NBA level an ABA rating sits, from players who changed leagues between consecutive
+    seasons (mostly the 68 absorbed in the 1976 merger). Their change in rating, minus the normal
+    one-year change for NBA players of the same age, is the league gap. Fitted separately for the
+    late ABA (1973-74 on, when it signed NBA-level stars) and the early ABA, which had far fewer
+    movers and is pooled across years. Returns {season: gap per 100} and the evidence."""
+    x = f[f.poss >= 800][["season", "player_id", "lg", "age", "net_c", "poss"]]
+    nxt = x.assign(season=x.season - 1).rename(columns={"lg": "lg2", "net_c": "net2", "poss": "poss2"})[
+        ["season", "player_id", "lg2", "net2", "poss2"]]
+    pr = x.merge(nxt, on=["season", "player_id"])
+    pr["chg"] = pr.net2 - pr.net_c
+    pr["w"] = 1 / (1 / pr.poss + 1 / pr.poss2)
+    pr["age_b"] = pr.age.clip(20, 36).round()
+    nba = pr[(pr.lg == "NBA") & (pr.lg2 == "NBA") & pr.season.between(1960, 1990)]
+    norm_chg = nba.groupby("age_b").apply(lambda g: np.average(g.chg, weights=g.w), include_groups=False)
+    pr["excess"] = pr.chg - pr.age_b.map(norm_chg)
+    # ABA -> NBA: excess = -(gap); NBA -> ABA: excess = +gap
+    mv = pr[(pr.lg != pr.lg2)].copy()
+    mv["aba_season"] = np.where(mv.lg == "ABA", mv.season, mv.season + 1)
+    mv["gap_obs"] = np.where(mv.lg == "ABA", -mv.excess, mv.excess)
+    out, ev = {}, {}
+    for lab, m in (("late", mv.aba_season >= 1974), ("early", mv.aba_season < 1974)):
+        g = mv[m]
+        gap = float(np.average(g.gap_obs, weights=g.w))
+        se = float(np.sqrt(np.average((g.gap_obs - gap) ** 2, weights=g.w) / max(len(g) - 1, 1)))
+        ev[lab] = {"gap": gap, "se": se, "n_movers": int(len(g)),
+                   "aba_to_nba": int((g.lg == "ABA").sum()), "nba_to_aba": int((g.lg == "NBA").sum())}
+    # the early ABA can only be weaker than the late ABA (it hadn't yet signed the NBA-level stars)
+    ev["early"]["gap_used"] = max(ev["early"]["gap"], ev["late"]["gap"])
+    ev["late"]["gap_used"] = ev["late"]["gap"]
+    for season in range(1968, 1977):
+        out[season] = ev["late" if season >= 1974 else "early"]["gap_used"]
+    return out, ev
+
+
 def main():
-    b, per_team, ts = load_box()
+    b, per_team, ts = load_box(aba=True)
     d = features(b)
     d["key"] = d.player.map(norm)
     p = plus_targets()
@@ -239,7 +290,7 @@ def main():
 
     # 1) never extrapolate: clip every box rate to the range seen in the training era
     ref = d[d.nba_id.notna() & (d.plus_poss >= 1000)]
-    for f_ in BOX + ["reb"]:
+    for f_ in CLIP:
         lo, hi = ref["f_" + f_].min(), ref["f_" + f_].max()
         d["f_" + f_] = d["f_" + f_].clip(lo, hi)
     base = d.nba_id.notna() & (d.plus_poss >= 250)
@@ -296,19 +347,73 @@ def main():
     if gm_path.exists() and gm_meta.exists() and json.load(open(gm_meta)).get("adopted"):
         gr = pd.read_csv(gm_path)[["season", "player_id", "O_g", "D_g"]].drop_duplicates(["season", "player_id"])
         f = f.merge(gr, on=["season", "player_id"], how="left")
+        # game-log ratings were fit with NBA-only priors (hist_games.py), so ABA seasons keep box + team
+        f.loc[f.lg != "NBA", ["O_g", "D_g"]] = np.nan
         f["O_c"] = f.O_g.fillna(f.O_c)
         f["D_c"] = f.D_g.fillna(f.D_c)
         f["games_informed"] = f.O_g.notna()
         games_used = True
     f["net_c"] = f.O_c + f.D_c
+    # ABA seasons: rated against their own league above, then moved down to NBA level
+    aba = f.lg == "ABA"
+    gaps, aba_ev = aba_translation(f)
+    sh = f.season.map(gaps).where(aba, 0).fillna(0) / 2
+    for c in ("O_c", "box_O", "O_box"):
+        f[c] = f[c] - sh
+    for c in ("D_c", "box_D", "D_box"):
+        f[c] = f[c] - sh
+    f["net_c"] = f.O_c + f.D_c
+    val["aba_translation"] = aba_ev
+    print("ABA translation:", aba_ev, flush=True)
+    f["net_c_box_team"] = f.net_c
     m = f.nba_id.notna() & (f.plus_poss >= 1000)
     resid_sd = float(np.sqrt(np.average((f.net_c[m] - f.net[m]) ** 2, weights=f.plus_poss[m])))
+    # BEST AVAILABLE EVIDENCE: from 1996-97 on, blend in the play-by-play rating, weighted by how precise
+    # each is (Plus: its own standard error; Classic: its error against Plus minus Plus's own noise).
+    # Then, within each season, map the blend back onto Classic's own distribution of values (quantile
+    # matching), so a season with play-by-play has exactly the spread and top tail it had without it: the
+    # play-by-play changes WHO ranks where inside a season, never how far the best stand above the field. (Without this, the
+    # all-era model rated Pau Gasol above Kobe Bryant in 2008-09 and 2009-10; play-by-play has Kobe
+    # +4.2 / +3.8 vs Gasol +1.6 / +3.0.)
+    pb = f.nba_id.notna() & f.O.notna() & f.se_O.notna() & (f.season >= 1997)
+    blend_ev, bl = {}, {}
+    for s_ in ("O", "D"):
+        mm = pb & (f.plus_poss >= 1000)
+        var_c = np.average((f.loc[mm, f"{s_}_c"] - f.loc[mm, s_]) ** 2, weights=f.plus_poss[mm]) \
+            - np.average(f.loc[mm, f"se_{s_}"] ** 2, weights=f.plus_poss[mm])
+        var_c = max(var_c, 0.25)
+        w = (1 / f.loc[pb, f"se_{s_}"] ** 2) / (1 / f.loc[pb, f"se_{s_}"] ** 2 + 1 / var_c)
+        bl[s_] = w * f.loc[pb, s_] + (1 - w) * f.loc[pb, f"{s_}_c"]
+        blend_ev[s_] = {"classic_error_sd": float(np.sqrt(var_c)), "mean_weight_on_plus": float(w.mean())}
+    # quantile matching on the OVERALL rating (possession-weighted, within playing-time bands): a player at the
+    # q-th percentile of the blend gets the q-th percentile Classic rating of his band and season, so the
+    # distribution (top tail included) is exactly Classic's. Offense/defense keep the blend's split.
+    net_bl = bl["O"] + bl["D"]
+    net_new = net_bl.copy()
+    band = pd.cut(f.poss, [-1, 1500, 3000, np.inf], labels=False)
+    for _, idx in f[pb].groupby([f.season[pb], band[pb]]).groups.items():
+        ww = f.loc[idx, "poss"].to_numpy()
+        cv = f.loc[idx, "net_c"].to_numpy()
+        oc = np.argsort(cv)
+        qc = (np.cumsum(ww[oc]) - ww[oc] / 2) / ww.sum()
+        bv = net_bl[idx].to_numpy()
+        ob = np.argsort(bv)
+        qb = np.empty(len(bv))
+        qb[ob] = (np.cumsum(ww[ob]) - ww[ob] / 2) / ww.sum()
+        net_new[idx] = np.interp(qb, qc, cv[oc])
+    diff = bl["O"] - bl["D"]
+    f.loc[pb, "O_c"] = (net_new + diff) / 2
+    f.loc[pb, "D_c"] = (net_new - diff) / 2
+    f["net_c"] = f.O_c + f.D_c
+    val["plus_blend"] = blend_ev
+    print("play-by-play blend:", blend_ev, flush=True)
     bO, bD = f.attrs.get("coef_O_1990", np.zeros(len(FEATS) + 1)), f.attrs.get("coef_D_1990", np.zeros(len(FEATS) + 1))
 
     # wins: same replacement-level logic as wins.py, from each season's team results
     tsn = ts[ts.season >= FIRST_END]
-    for season, x in f.groupby("season"):
-        t = tsn[(tsn.season == season)].dropna(subset=["mov", "w", "l", "pace"])
+    for (season, lg), x in f.groupby(["season", "lg"]):
+        # replacement level from the NBA's win curve that season (ABA ratings are already at NBA level)
+        t = tsn[(tsn.season == season) & (tsn.lg == "NBA")].dropna(subset=["mov", "w", "l", "pace"])
         t = t[(t.w + t.l) > 0]
         if len(t) < 5:
             continue
@@ -319,12 +424,12 @@ def main():
         f.loc[idx, "WAR_c"] = (f.loc[idx, "net_c"] - repl) * f.loc[idx, "poss"] / 100 * k
     f["se_net"] = resid_sd
     f["season_start"] = f.season - 1
-    cols = ["season_start", "band", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
-            "se_net", "WAR_c", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
+    cols = ["season_start", "band", "lg", "player_id", "player", "team", "age", "pos", "g", "mp", "poss", "O_c", "D_c", "net_c",
+            "se_net", "WAR_c", "net_c_box_team", "box_O", "box_D", "gap_O", "gap_D", "O_box", "D_box", "nba_id", "O", "D", "net"]
     if games_used:
         cols.append("games_informed")
     for y, x in f.groupby("season_start"):
-        x[cols].rename(columns={"O_c": "O_classic", "D_c": "D_classic", "net_c": "net_classic", "WAR_c": "WAR_classic",
+        x[cols].rename(columns={"O_c": "O_classic", "D_c": "D_classic", "net_c": "net_classic", "WAR_c": "WAR_classic", "net_c_box_team": "net_classic_box_team",
                                 "O": "O_plus", "D": "D_plus", "net": "net_plus"}).sort_values(
             "WAR_classic", ascending=False).to_csv(OUT / f"classic_{y}.csv", index=False, float_format="%.3f")
     meta = {"validation": val, "coef_O_1989_90": dict(zip(["intercept"] + FEATS, bO)),
