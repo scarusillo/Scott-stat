@@ -1,0 +1,236 @@
+{
+ "peaks": {
+  "Michael Jordan": {
+   "era_matched_box": 6.021501348712103,
+   "era_matched_box_plus_team": 6.2698746974515895,
+   "era_matched_final": 6.059371671200191,
+   "one_yardstick_box": 5.874893828888157,
+   "one_yardstick_box_plus_team": 6.096562153949174,
+   "one_yardstick_final": 5.886059127697776,
+   "skills": {
+    "pts_added": 2.1,
+    "tsa": 1.16,
+    "ast": 1.0,
+    "tov": -0.39,
+    "oreb": -0.08,
+    "dreb": 0.13,
+    "stl": 1.57,
+    "blk": 0.11,
+    "pf": -0.11,
+    "fg3a": 0.04,
+    "guard": -0.1,
+    "big": -0.0,
+    "mpg": 0.65
+   },
+   "league_relative_3pa_rate": 0.51,
+   "band": "full"
+  },
+  "LeBron James": {
+   "era_matched_box": 5.3704015733068955,
+   "era_matched_box_plus_team": 6.098200008892449,
+   "era_matched_final": 6.369000692472608,
+   "one_yardstick_box": 5.213685341232509,
+   "one_yardstick_box_plus_team": 5.940103644622581,
+   "one_yardstick_final": 6.21090432820274,
+   "skills": {
+    "pts_added": 1.75,
+    "tsa": 0.88,
+    "ast": 2.01,
+    "tov": -1.16,
+    "oreb": -0.13,
+    "dreb": 0.41,
+    "stl": 0.69,
+    "blk": 0.08,
+    "pf": -0.17,
+    "fg3a": 0.15,
+    "guard": -0.0,
+    "big": -0.05,
+    "mpg": 0.82
+   },
+   "league_relative_3pa_rate": 1.33,
+   "band": "full"
+  },
+  "Stephen Curry": {
+   "era_matched_box": 5.2948184947749395,
+   "era_matched_box_plus_team": 5.789547476537853,
+   "era_matched_final": 6.094588203225027,
+   "one_yardstick_box": 5.0806459600575185,
+   "one_yardstick_box_plus_team": 5.58470420231415,
+   "one_yardstick_final": 5.889744929001323,
+   "skills": {
+    "pts_added": 2.35,
+    "tsa": 0.56,
+    "ast": 1.79,
+    "tov": -1.15,
+    "oreb": -0.23,
+    "dreb": -0.1,
+    "stl": 0.97,
+    "blk": -0.26,
+    "pf": -0.1,
+    "fg3a": 1.25,
+    "guard": -0.52,
+    "big": -0.0,
+    "mpg": 0.65
+   },
+   "league_relative_3pa_rate": 8.71,
+   "band": "full"
+  },
+  "Nikola Joki\u0107": {
+   "era_matched_box": 6.177705533451638,
+   "era_matched_box_plus_team": 6.408887404399588,
+   "era_matched_final": 6.501913268118949,
+   "one_yardstick_box": 6.209024315679126,
+   "one_yardstick_box_plus_team": 6.475829353783173,
+   "one_yardstick_final": 6.568855217502533,
+   "skills": {
+    "pts_added": 2.14,
+    "tsa": 0.54,
+    "ast": 3.12,
+    "tov": -1.67,
+    "oreb": 0.47,
+    "dreb": 0.64,
+    "stl": 0.5,
+    "blk": 0.05,
+    "pf": -0.03,
+    "fg3a": -0.27,
+    "guard": -0.0,
+    "big": -0.1,
+    "mpg": 0.72
+   },
+   "league_relative_3pa_rate": -1.98,
+   "band": "full"
+  },
+  "Magic Johnson": {
+   "era_matched_box": 4.591910729365007,
+   "era_matched_box_plus_team": 5.051305943204298,
+   "era_matched_final": 5.162070717772539,
+   "one_yardstick_box": 4.749481798424506,
+   "one_yardstick_box_plus_team": 5.193091541000295,
+   "one_yardstick_final": 5.303856315568537,
+   "skills": {
+    "pts_added": 1.58,
+    "tsa": 0.26,
+    "ast": 3.54,
+    "tov": -1.33,
+    "oreb": -0.09,
+    "dreb": 0.32,
+    "stl": 0.35,
+    "blk": -0.33,
+    "pf": -0.23,
+    "fg3a": 0.12,
+    "guard": -0.1,
+    "big": -0.0,
+    "mpg": 0.56
+   },
+   "league_relative_3pa_rate": 1.49,
+   "band": "full"
+  },
+  "Larry Bird": {
+   "era_matched_box": 4.551048461169111,
+   "era_matched_box_plus_team": 4.956042977283708,
+   "era_matched_final": 4.859090574199803,
+   "one_yardstick_box": 4.538203436657557,
+   "one_yardstick_box_plus_team": 4.951331511955934,
+   "one_yardstick_final": 4.854379108872029,
+   "skills": {
+    "pts_added": 1.23,
+    "tsa": 0.69,
+    "ast": 1.03,
+    "tov": -0.3,
+    "oreb": -0.04,
+    "dreb": 1.0,
+    "stl": 0.45,
+    "blk": 0.02,
+    "pf": -0.23,
+    "fg3a": 0.16,
+    "guard": -0.0,
+    "big": -0.05,
+    "mpg": 0.65
+   },
+   "league_relative_3pa_rate": 1.89,
+   "band": "full"
+  },
+  "Kareem Abdul-Jabbar": {
+   "era_matched_box": 5.337351917024229,
+   "era_matched_box_plus_team": 5.417458103090834,
+   "era_matched_final": 5.402599244335668,
+   "one_yardstick_box": 4.897609278711444,
+   "one_yardstick_box_plus_team": 4.963074093870365,
+   "one_yardstick_final": 4.948215235115199,
+   "skills": {
+    "pts_added": 1.69,
+    "tsa": 0.07,
+    "ast": 0.09,
+    "oreb": 0.06,
+    "dreb": 1.54,
+    "stl": -0.15,
+    "blk": 1.49,
+    "pf": 0.02,
+    "fg3a": 0.0,
+    "guard": -0.0,
+    "big": -0.16,
+    "mpg": 0.75
+   },
+   "league_relative_3pa_rate": 0.0,
+   "band": "no_turnovers"
+  },
+  "Wilt Chamberlain": {
+   "era_matched_box": 4.804890969525881,
+   "era_matched_box_plus_team": 4.876942805052913,
+   "era_matched_final": 4.345851914353663,
+   "one_yardstick_box": 4.411684041626595,
+   "one_yardstick_box_plus_team": 4.429472783432522,
+   "one_yardstick_final": 3.8983818927332714,
+   "skills": {
+    "pts_added": 1.67,
+    "tsa": 0.12,
+    "ast": 0.14,
+    "reb": 2.3,
+    "pf": -0.06,
+    "guard": 0.0,
+    "big": -0.48,
+    "mpg": 1.19
+   },
+   "league_relative_3pa_rate": 0.0,
+   "band": "lite"
+  },
+  "Bill Russell": {
+   "era_matched_box": 2.495832762029701,
+   "era_matched_box_plus_team": 3.5311393432596616,
+   "era_matched_final": 3.67915771725806,
+   "one_yardstick_box": 2.2807057388673577,
+   "one_yardstick_box_plus_team": 3.2698747517603057,
+   "one_yardstick_final": 3.417893125758705,
+   "skills": {
+    "pts_added": -0.18,
+    "tsa": -0.08,
+    "ast": 0.01,
+    "reb": 2.24,
+    "pf": -0.05,
+    "guard": 0.0,
+    "big": -0.48,
+    "mpg": 1.1
+   },
+   "league_relative_3pa_rate": 0.0,
+   "band": "lite"
+  }
+ },
+ "compression": {
+  "full": {
+   "sd_pred": 1.635613209282933,
+   "sd_plus": 2.139880061608862,
+   "slope_plus_on_pred": 0.8631797283025745,
+   "top50_plus_mean": 6.428599999999999,
+   "top50_pred_mean": 4.095863791757834,
+   "top50_by_pred_plus_mean": 5.46178
+  },
+  "lite": {
+   "sd_pred": 1.5183492952680377,
+   "sd_plus": 2.139880061608862,
+   "slope_plus_on_pred": 0.8427410802427351,
+   "top50_plus_mean": 6.428599999999999,
+   "top50_pred_mean": 3.705214603058943,
+   "top50_by_pred_plus_mean": 5.27134
+  }
+ }
+}

@@ -512,6 +512,31 @@ rose +0.3, most in 2009-11, windows that include Cleveland's 61 -> 19 win collap
 Jokić's 6.41 -> 6.50 and earlier jump past Jordan come from adding his 2025-26 season (+6.9,
 Classic only so far; his best five moved from 2020-25 to 2021-26).
 
+## Era audit (`src/era_audit.py`, `out/era_audit.json`)
+
+**Pace** is removed by construction: every stat is per 100 possessions vs that season's league.
+**Threes**: 3PA enters relative to the league that season; Jordan's three-point term is ~0
+(Curry's +1.25). Era-matched pricing *helps* Jordan: production 6.02 vs 5.87 under one yardstick.
+
+| Peak 5 | Production | + team results | + game logs |
+|---|---|---|---|
+| Jokić | 6.18 | 6.41 | 6.50 |
+| Jordan | **6.02** | 6.27 | 6.06 |
+| LeBron | 5.37 | 6.10 | 6.37 |
+| Curry | 5.29 | 5.79 | 6.09 |
+| Wilt | 4.80 | 4.88 | 4.35 |
+| Russell | 2.50 | 3.53 | 3.68 |
+
+LeBron passes Jordan only on the team-results steps (team share +0.73 vs +0.25; game logs
++0.27 vs -0.21). **Fewer recorded stats** (1951-73 set) lower top players' estimates by about
+0.4 (top-50 2014-25 seasons: 3.71 lite vs 4.10 full) and widen their error. Russell's
+scoring efficiency was below his era's average; Wilt's game logs move him -0.5.
+
+**Three Classic views** (`scott_careers_classic.csv`, site leaderboard): impact peak (`best5`),
+production peak (`production_peak5`, own box only), era dominance (`dominance_peak5`: SDs above
+that season's league, plus `seasons_ranked_1` / `seasons_top3`). Most #1 seasons:
+Kareem 11, Wilt 8, Jokić 6, Jordan 6, Robinson 6, LeBron 5.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

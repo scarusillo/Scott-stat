@@ -67,6 +67,9 @@ def main():
             "best": r(p.best_season), "best_year": p.best_season_year, "best5": r(p.best5),
             "best5_years": p.best5_years if isinstance(p.best5_years, str) else None, "war": r(p.career_WAR, 1),
             "lite": r(p.lite_share, 2),
+            "prod5": r(p.production_peak5), "prod5_years": p.production_peak5_years if isinstance(p.production_peak5_years, str) else None,
+            "dom5": r(p.dominance_peak5), "dom5_years": p.dominance_peak5_years if isinstance(p.dominance_peak5_years, str) else None,
+            "no1": int(p.seasons_ranked_1), "top3": int(p.seasons_top3),
             "s": [[int(q.season_start), q.team, r(q.net_classic), r(q.O_classic), r(q.D_classic), r(q.WAR_classic, 1),
                    r(q.net_plus), {"full": "F", "no_turnovers": "T", "lite": "L"}.get(q.band, "")] for q in x.itertuples()],
         })

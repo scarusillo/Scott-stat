@@ -128,13 +128,22 @@ def classic_table():
     a = a.rename(columns={"season_start": "season", "net_classic": "net"})
     a["production"] = a.box_O + a.box_D
     a["lift"] = a.net - a.production
+    # era dominance: how far above his own league (players with 1,500+ possessions that season)
+    q = a[a.poss >= 1500]
+    a["z"] = (a.net - a.season.map(q.groupby("season").net.mean())) / a.season.map(q.groupby("season").net.std())
+    a["rank_in_season"] = q.groupby("season").net.rank(ascending=False).reindex(a.index)
     rows = []
     for pid, x in a[a.poss >= MIN_SEASON_POSS].groupby("player_id"):
         w = x.poss
         b3, at3 = runs(x, "net", 3)
         b5, at5 = runs(x, "net", 5)
         top = x.loc[x.net.idxmax()]
-        rows.append({"player_id": pid, "player": x.player.iloc[-1], "first": int(x.season.min()),
+        bp5, bp5y = runs(x.assign(net=x.production), "net", 5)
+        bz5, bz5y = runs(x.assign(net=x.z), "net", 5)
+        rows.append({"production_peak5": bp5, "production_peak5_years": bp5y, "dominance_peak5": bz5,
+                     "dominance_peak5_years": bz5y, "seasons_ranked_1": int((x.rank_in_season == 1).sum()),
+                     "seasons_top3": int((x.rank_in_season <= 3).sum()),
+                     "player_id": pid, "player": x.player.iloc[-1], "first": int(x.season.min()),
                      "last": int(x.season.max()), "seasons": len(x), "poss": float(w.sum()),
                      "impact": np.average(x.net, weights=w), "production": np.average(x.production, weights=w),
                      "lift": np.average(x.lift, weights=w), "offense": np.average(x.O_classic, weights=w),

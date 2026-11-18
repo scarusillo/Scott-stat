@@ -122,7 +122,8 @@ function leaders() {
   const plus = state.tier === "plus";
   const sorts = plus ? [["scott", "Scott Stat"], ["peak5", "Peak (best 5)"], ["war", "Career wins"], ["lift", "Lift"],
     ["def", "Defense"], ["clutch", "Clutch rise"], ["po", "Playoff rise"]] :
-    [["best5", "Peak (best 5)"], ["impact", "Career impact"], ["war", "Career wins"], ["lift", "Lift"], ["def", "Defense"]];
+    [["best5", "Impact peak (best 5)"], ["prod5", "Production peak (best 5)"], ["dom5", "Era dominance (best 5)"], ["no1", "Seasons ranked #1"],
+     ["impact", "Career impact"], ["war", "Career wins"], ["lift", "Lift"], ["def", "Defense"]];
   if (!sorts.some(s => s[0] === state.sort)) state.sort = sorts[0][0];
   const rows = (plus ? D.players : D.classic).filter(p => (p.poss ?? 1e9) >= state.minPoss || !plus)
     .filter(p => !state.q || p.name.toLowerCase().includes(state.q.toLowerCase()))
@@ -144,7 +145,7 @@ function leaders() {
     </div>
     <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Years</th>
       ${plus ? `<th>Scott Stat</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Clutch</th><th>Playoffs</th><th>Peak 5</th><th>Wins</th>`
-        : `<th>Peak 5</th><th>Career</th><th>Offense</th><th>Defense</th><th>Production</th><th>Lift</th><th>Best season</th><th>Wins</th>`}
+        : `<th>Impact peak</th><th>Production peak</th><th>Era dominance</th><th>#1 seasons</th><th>Career</th><th>Offense</th><th>Defense</th><th>Best season</th><th>Wins</th>`}
     </tr></thead><tbody>${rows.map((p, i) => plus ? `<tr tabindex="0" data-go="#player-${p.id}">
       <td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b></td><td class="l num">${p.first}–${String(p.last + 1).slice(2)}${p.partial_from ? ` <span class="flag" title="Career began ${p.partial_from}; play-by-play covers only from 1996-97">late career</span>` : ""}</td>
       <td class="num"><b>${f(p.scott, 2)}</b><span class="pm">±${f(p.se, 1, false)}</span></td>
@@ -153,12 +154,13 @@ function leaders() {
       <td class="num ${cls(p.clutch)}">${f(p.clutch)}</td><td class="num ${cls(p.po)}">${f(p.po)}</td>
       <td class="num">${f(p.peak5)}</td><td class="num">${f(p.war, 0, false)}</td></tr>`
       : `<tr tabindex="0" data-go="#legend-${p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(p.name)}</b>${p.lite > 0.5 ? ` <span class="flag" title="Most seasons before 1973-74: no steals, blocks or turnovers recorded">limited stats</span>` : ""}</td>
-      <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.impact)}</td>
-      <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td><td class="num">${f(p.prod)}</td>
-      <td class="num ${cls(p.lift)}">${f(p.lift)}</td><td class="num">${f(p.best)} <span class="pm">${p.best_year}</span></td><td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
+      <td class="l num">${p.first}–${String(p.last + 1).slice(2)}</td><td class="num"><b>${f(p.best5, 2)}</b></td><td class="num">${f(p.prod5, 2)}</td>
+      <td class="num">${p.dom5 == null ? "–" : p.dom5.toFixed(2)}</td><td class="num">${p.no1 || ""}${p.top3 ? `<span class="pm">top 3: ${p.top3}</span>` : ""}</td><td class="num">${f(p.impact)}</td>
+      <td class="num ${cls(p.off)}">${f(p.off)}</td><td class="num ${cls(p.def)}">${f(p.def)}</td>
+      <td class="num">${f(p.best)} <span class="pm">${p.best_year}</span></td><td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
     </tbody></table></div>
     <p class="note">${plus ? `Scott Stat = all-game impact + ${(D.meta.clutch_weight * 100).toFixed(0)}% of the clutch rise (clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of possessions but ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games) + the playoff rise weighted by the player's share of playoff possessions. Production = what his own box score explains. Lift = the rest: teammates playing better and the team defending better while he's on the floor. ± is one standard error. "Late career" marks players whose careers began before 1996-97: only their later seasons are measured here, so use the Classic tier for their full careers.`
-      : `Classic ranks by the best five consecutive seasons. Players whose careers began before 1977-78 show only their later seasons.`}</p>
+      : `Three ways to rank, three questions. <b>Impact peak</b>: how much better his team was with him on the floor (best five straight seasons, points per 100 possessions). <b>Production peak</b>: what his own stats were worth, era-adjusted, before team results. <b>Era dominance</b>: how far above his own league he was, in standard deviations, which is the fairest way to compare a 10-team league with a 30-team one. At the very top, gaps under about half a point of impact are within the margin of error.`}</p>
   </div>`;
   $("#t-plus").onclick = () => { state.tier = "plus"; save(); leaders(); };
   $("#t-classic").onclick = () => { state.tier = "classic"; save(); leaders(); };
@@ -261,7 +263,9 @@ function classicView(id) {
     <div class="hero"><div><div class="eyebrow">Classic tier · ${p.first}-${String(p.last + 1).slice(2)} · ${p.seasons} seasons</div><h1>${esc(p.name)}</h1>
       <p class="lede">Classic estimates impact from season box scores and team results, calibrated on the play-by-play era. Peak ${f(p.best5)} over ${p.best5_years || "–"}; best single season ${f(p.best)} in ${p.best_year}.${p.lite > 0 ? ` <b>${Math.round(p.lite * 100)}% of these seasons are before 1973-74,</b> when steals, blocks and turnovers weren't recorded. His defense shows up through rebounding, his share of his team's defense, and how his team did in games with and without him.` : ""}${p.id === "russebi01" ? ` <b>Russell, checked game by game:</b> Boston was +7.0 per game in his 963 games and +1.5 in the 52 he missed, then fell from +6.0 to −1.9 the season after he retired. Since he played about 44 of 48 minutes, that gap is mostly Russell against a backup, which works out to roughly +3.5 per 100 possessions over an average player: close to what the box score and team results already gave him.` : ""}</p></div>
       <div style="text-align:right"><div class="eyebrow">Peak (best 5)</div><div class="big">${f(p.best5, 1)}</div></div></div>
-    <div class="tiles"><div class="tile o"><small>Offense</small><b>${f(p.off)}</b></div><div class="tile d"><small>Defense</small><b>${f(p.def)}</b></div>
+    <div class="tiles"><div class="tile a"><small>Production peak</small><b>${f(p.prod5)}</b><small>${p.prod5_years || "–"}</small></div>
+      <div class="tile a"><small>Era dominance</small><b>${p.dom5 == null ? "–" : p.dom5.toFixed(2)}</b><small>#1 in ${p.no1} season${p.no1 === 1 ? "" : "s"}, top 3 in ${p.top3}</small></div>
+      <div class="tile o"><small>Offense</small><b>${f(p.off)}</b></div><div class="tile d"><small>Defense</small><b>${f(p.def)}</b></div>
       <div class="tile"><small>Own production</small><b>${f(p.prod)}</b></div><div class="tile a"><small>Lift (team-level)</small><b>${f(p.lift)}</b></div>
       <div class="tile"><small>Career impact</small><b>${f(p.impact)}</b></div><div class="tile"><small>Career wins</small><b>${f(p.war, 0, false)}</b></div></div>
     <div class="panel"><h3>Impact by season</h3><p class="note">Solid = Classic. Dashed = Plus (play-by-play) where it exists, for comparison. Classic compresses the very top: the best seasons read lower than Plus.</p>${seasonChart(ss, { plus: true })}</div></div>`;
