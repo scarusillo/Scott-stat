@@ -658,6 +658,22 @@ Everything measured against the player's own norm (aging-adjusted, other seasons
   expected next season = norm + 0.61 x gap, one year along the aging curve. Latest season 2025-26.
 - Site: Study tab (tier chart with error bars, findings, coach scatter, honest style heatmap, situation board).
 
+## Legacy fix: second options were over-ranked (Pippen 7th, Ginobili 19th, Parish)
+
+Checked first whether team credit over-rates No. 2s on great teams: it does not (Classic minus Plus
+by within-team rank on +4 teams: best -0.13, 2nd -0.08, 3rd +0.06, 4th-5th +0.03). Two real causes:
+1. **Legacy used z-scores.** Most players have zero title shares, so the championship ingredient had a
+   tiny SD and counted about 3x the others at "equal" weights. Now each ingredient is scored as a
+   percentage of the all-time top-10 level.
+2. **Titles were split by value above replacement**, giving a No. 2 about 80% of the star's share. Now split
+   by each player's effect on the team's title odds, exp(b x points per game added in those playoffs) - 1,
+   from the fitted title model (b = 0.60). 1995-96 Bulls: Jordan 0.60, Pippen 0.25, Rodman 0.05.
+Title shares (league-size adjusted): Jordan 3.22, Russell 2.74, LeBron 2.59, Duncan 2.25, Magic 2.08,
+Shaq 2.03, Curry 1.88, Pippen 1.45, Bird 1.40, Hakeem 1.38, Kareem 1.18, Kobe 1.08.
+Legacy at equal weights: LeBron 119, Jordan 115, Russell 101, Duncan 93, Kareem 90, Curry 88, Magic 88,
+Shaq 86, Hakeem 77, Wilt 76, Bird 75, Pippen 71 (12th, range 11-19), ... Wade 25th, Ginobili 26th.
+Jordan is first when championships are weighted up or career length dropped.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

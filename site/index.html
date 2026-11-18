@@ -437,8 +437,10 @@ function study() {
 function legacy() {
   const W = state.lw || { peak: 1, career: 1, rings: 1 };
   const pool = D.classic.filter(p => p.seasons >= 8 && p.best5 != null);
-  const stat = k => { const v = pool.map(p => p[k] ?? 0), m = v.reduce((a, b) => a + b, 0) / v.length;
-    const sd = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length); return p => ((p[k] ?? 0) - m) / sd; };
+  // each ingredient as a percentage of the all-time top-10 level, so equal weights are equal at the top
+  // (z-scores let championships count ~3x: most players have none, so anyone with several looked extreme)
+  const stat = k => { const top = pool.map(p => p[k] ?? 0).sort((a, b) => b - a).slice(0, 10), ref = top.reduce((a, b) => a + b, 0) / top.length;
+    return p => 100 * Math.max(0, p[k] ?? 0) / ref; };
   const zp = stat("best5"), zc = stat("war"), zr = stat("tshare");
   const tot = W.peak + W.career + W.rings || 1;
   const rows = pool.map(p => ({ p, score: (W.peak * zp(p) + W.career * zc(p) + W.rings * zr(p)) / tot }))
@@ -456,16 +458,16 @@ function legacy() {
       <div class="panel prose"><h3>The three ingredients</h3><ul>
         <li><b>Peak:</b> best five straight seasons of impact (Classic, points per 100 possessions).</li>
         <li><b>Career value:</b> total wins added above a replacement player, every season.</li>
-        <li><b>Championships:</b> every title split among that team's players by how much each contributed in those playoffs, then adjusted for league size (a title among 30 teams counts more than one among 8). A ring Jordan carried counts more than one where a player was the third option.</li></ul></div>
+        <li><b>Championships:</b> every title split among that team's players by how much each raised the team's title odds, then adjusted for league size (a title among 30 teams counts more than one among 8). The best player on a champion typically gets 60-75% of that title; a second option about 20-25%.</li></ul></div>
       <div class="panel stack" style="gap:14px"><h3>Weights</h3>
         ${[["peak", "Peak"], ["career", "Career value"], ["rings", "Championships"]].map(([k, l]) => `<label for="w-${k}" class="row" style="justify-content:space-between"><span>${l}</span>
           <input id="w-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}" style="flex:1;max-width:220px"><span class="num" style="width:2ch">${W[k]}</span></label>`).join("")}
         <div class="row">${presets.map(([l, w], i) => `<button data-preset="${i}">${l}</button>`).join("")}</div>
-        <p class="note">Each ingredient is put on the same footing (how far above the field it is) before weighting.</p></div>
+        <p class="note">Each ingredient is scored as a percentage of the all-time top-10 level (100 = a typical top-10 mark), so equal weights count equally at the top.</p></div>
     </div>
     <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Rank range</th><th>Peak (best 5)</th><th>Career wins</th><th>Titles</th><th>Title shares</th></tr></thead><tbody>
       ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.p.name)}</b></td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
-        <td class="num"><b>${r.score.toFixed(2)}</b></td><td class="num">${(x => x[0] === x[1] ? x[0] : x[0] + "–" + x[1])(range.get(r.p.id))}</td><td class="num">${f(r.p.best5)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td></tr>`).join("")}
+        <td class="num"><b>${r.score.toFixed(0)}</b></td><td class="num">${(x => x[0] === x[1] ? x[0] : x[0] + "–" + x[1])(range.get(r.p.id))}</td><td class="num">${f(r.p.best5)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td></tr>`).join("")}
     </tbody></table></div>
     <p class="note">Rank range is each player's best and worst rank across 27 weightings (each ingredient at half, equal or double weight). A narrow range means the ranking doesn't depend on the weights. Players with fewer than eight qualifying seasons (Jokić, so far) aren't ranked here yet.</p></div>`;
   for (const k of ["peak", "career", "rings"]) $("#w-" + k).oninput = e => { state.lw = { ...W, [k]: +e.target.value }; save(); legacy(); $("#w-" + k).focus(); };

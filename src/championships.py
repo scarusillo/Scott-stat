@@ -15,8 +15,9 @@ Instead, every season since 1951-52:
      title odds). Uses regular-season strength only, so it misses teams that
      won from modest regular seasons (Hakeem's Rockets).
   4. Title shares: every actual title (1.0) split among the champion's players
-     by contribution in those playoffs ((rating - replacement) x playoff
-     possessions). Also a league-size version: a title among N teams counts N/30.
+     by how much each multiplied the team's title odds (exp(b x his points per
+     game added in those playoffs) - 1). Also a league-size version: a title
+     among N teams counts N/30.
 Ratings: Classic (box + team + game logs, regular season), every era.
 
 Usage: python src/championships.py  -> out/championships_seasons.csv, out/championships_careers.csv,
@@ -102,7 +103,15 @@ def main():
     po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "po_poss"]]
     pl = pl.merge(po, on=["season_start", "player_id"], how="left")
     pl["po_poss"] = pl.po_poss.fillna(0)
-    pl["po_contrib"] = ((pl.net_classic - pl.season.map(repl)) * pl.po_poss).clip(lower=0)
+    # Split by each player's effect on the team's TITLE ODDS, from the model above: odds scale with
+    # exp(b x team strength), so a player who adds d points per game multiplies them by exp(b x d).
+    # Weight = that multiplier minus 1. A star's share is far larger than a second option's, the way
+    # title odds actually behave. (An earlier version split by value above replacement, which gave a
+    # No. 2 about 80% of the star's share.) d uses his share of the team's playoff possessions.
+    team_po = pl.groupby(["season", "team"]).po_poss.transform("sum") / 5
+    d_po = (pl.net_classic - pl.season.map(repl)) * (pl.po_poss / team_po.where(team_po > 0)) * pl.pace / 100
+    pl["po_contrib"] = np.expm1(b * d_po.fillna(0).clip(lower=0))
+    pl["po_contrib_even"] = ((pl.net_classic - pl.season.map(repl)) * pl.po_poss).clip(lower=0)
     tot = pl[pl.won_title].groupby(["season", "team"]).po_contrib.transform("sum")
     pl["title_share"] = 0.0
     pl.loc[pl.won_title, "title_share"] = (pl.loc[pl.won_title, "po_contrib"] / tot.where(tot > 0)).fillna(0)
