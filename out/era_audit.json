@@ -2,11 +2,11 @@
  "peaks": {
   "Michael Jordan": {
    "era_matched_box": 6.021501348712103,
-   "era_matched_box_plus_team": 6.2698746974515895,
-   "era_matched_final": 6.059371671200191,
+   "era_matched_box_plus_team": 6.421609109638741,
+   "era_matched_final": 6.184767665815179,
    "one_yardstick_box": 5.874893828888157,
-   "one_yardstick_box_plus_team": 6.096562153949174,
-   "one_yardstick_final": 5.886059127697776,
+   "one_yardstick_box_plus_team": 6.232638577678742,
+   "one_yardstick_final": 5.995797133855178,
    "skills": {
     "pts_added": 2.1,
     "tsa": 1.16,
@@ -27,11 +27,11 @@
   },
   "LeBron James": {
    "era_matched_box": 5.3704015733068955,
-   "era_matched_box_plus_team": 6.098200008892449,
-   "era_matched_final": 6.369000692472608,
+   "era_matched_box_plus_team": 6.478017500709174,
+   "era_matched_final": 6.599280729090816,
    "one_yardstick_box": 5.213685341232509,
-   "one_yardstick_box_plus_team": 5.940103644622581,
-   "one_yardstick_final": 6.21090432820274,
+   "one_yardstick_box_plus_team": 6.322766594543238,
+   "one_yardstick_final": 6.444029822924881,
    "skills": {
     "pts_added": 1.75,
     "tsa": 0.88,
@@ -52,11 +52,11 @@
   },
   "Stephen Curry": {
    "era_matched_box": 5.2948184947749395,
-   "era_matched_box_plus_team": 5.789547476537853,
-   "era_matched_final": 6.094588203225027,
+   "era_matched_box_plus_team": 5.988131145422912,
+   "era_matched_final": 6.213267912386476,
    "one_yardstick_box": 5.0806459600575185,
-   "one_yardstick_box_plus_team": 5.58470420231415,
-   "one_yardstick_final": 5.889744929001323,
+   "one_yardstick_box_plus_team": 5.787600165426134,
+   "one_yardstick_final": 6.012736932389699,
    "skills": {
     "pts_added": 2.35,
     "tsa": 0.56,
@@ -77,11 +77,11 @@
   },
   "Nikola Joki\u0107": {
    "era_matched_box": 6.177705533451638,
-   "era_matched_box_plus_team": 6.408887404399588,
-   "era_matched_final": 6.501913268118949,
+   "era_matched_box_plus_team": 6.524777540164335,
+   "era_matched_final": 6.612656310711314,
    "one_yardstick_box": 6.209024315679126,
-   "one_yardstick_box_plus_team": 6.475829353783173,
-   "one_yardstick_final": 6.568855217502533,
+   "one_yardstick_box_plus_team": 6.606158402248348,
+   "one_yardstick_final": 6.694037172795327,
    "skills": {
     "pts_added": 2.14,
     "tsa": 0.54,
@@ -102,11 +102,11 @@
   },
   "Magic Johnson": {
    "era_matched_box": 4.591910729365007,
-   "era_matched_box_plus_team": 5.051305943204298,
-   "era_matched_final": 5.162070717772539,
+   "era_matched_box_plus_team": 5.239499621305426,
+   "era_matched_final": 5.335029259111434,
    "one_yardstick_box": 4.749481798424506,
-   "one_yardstick_box_plus_team": 5.193091541000295,
-   "one_yardstick_final": 5.303856315568537,
+   "one_yardstick_box_plus_team": 5.3732962425340105,
+   "one_yardstick_final": 5.468825880340017,
    "skills": {
     "pts_added": 1.58,
     "tsa": 0.26,
@@ -127,11 +127,11 @@
   },
   "Larry Bird": {
    "era_matched_box": 4.551048461169111,
-   "era_matched_box_plus_team": 4.956042977283708,
-   "era_matched_final": 4.859090574199803,
+   "era_matched_box_plus_team": 5.151852647860055,
+   "era_matched_final": 5.071434072806205,
    "one_yardstick_box": 4.538203436657557,
-   "one_yardstick_box_plus_team": 4.951331511955934,
-   "one_yardstick_final": 4.854379108872029,
+   "one_yardstick_box_plus_team": 5.149114265391087,
+   "one_yardstick_final": 5.068695690337238,
    "skills": {
     "pts_added": 1.23,
     "tsa": 0.69,
@@ -152,11 +152,11 @@
   },
   "Kareem Abdul-Jabbar": {
    "era_matched_box": 5.337351917024229,
-   "era_matched_box_plus_team": 5.417458103090834,
-   "era_matched_final": 5.402599244335668,
+   "era_matched_box_plus_team": 5.488045065069936,
+   "era_matched_final": 5.541399397503886,
    "one_yardstick_box": 4.897609278711444,
-   "one_yardstick_box_plus_team": 4.963074093870365,
-   "one_yardstick_final": 4.948215235115199,
+   "one_yardstick_box_plus_team": 5.025535399898704,
+   "one_yardstick_final": 5.078889732332655,
    "skills": {
     "pts_added": 1.69,
     "tsa": 0.07,
@@ -176,11 +176,11 @@
   },
   "Wilt Chamberlain": {
    "era_matched_box": 4.804890969525881,
-   "era_matched_box_plus_team": 4.876942805052913,
-   "era_matched_final": 4.345851914353663,
+   "era_matched_box_plus_team": 4.874849924555002,
+   "era_matched_final": 4.600758693719604,
    "one_yardstick_box": 4.411684041626595,
-   "one_yardstick_box_plus_team": 4.429472783432522,
-   "one_yardstick_final": 3.8983818927332714,
+   "one_yardstick_box_plus_team": 4.3919853560532225,
+   "one_yardstick_final": 4.117894125217825,
    "skills": {
     "pts_added": 1.67,
     "tsa": 0.12,
@@ -196,11 +196,11 @@
   },
   "Bill Russell": {
    "era_matched_box": 2.495832762029701,
-   "era_matched_box_plus_team": 3.5311393432596616,
-   "era_matched_final": 3.67915771725806,
+   "era_matched_box_plus_team": 4.068062780751321,
+   "era_matched_final": 4.451180164317558,
    "one_yardstick_box": 2.2807057388673577,
-   "one_yardstick_box_plus_team": 3.2698747517603057,
-   "one_yardstick_final": 3.417893125758705,
+   "one_yardstick_box_plus_team": 3.785099959098437,
+   "one_yardstick_final": 4.168217342664673,
    "skills": {
     "pts_added": -0.18,
     "tsa": -0.08,

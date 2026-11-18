@@ -70,6 +70,7 @@ def main():
             "lite": r(p.lite_share, 2),
             "prod5": r(p.production_peak5), "prod5_years": p.production_peak5_years if isinstance(p.production_peak5_years, str) else None,
             "ind": r(p.peak_individual), "team": r(p.peak_team_credit),
+            "best5po": r(p.best5_with_playoffs), "porise": r(p.playoff_rise), "pwar5": r(p.peak_wins_per_season, 1),
             "pos": (lambda z: "G" if z in ("PG", "SG") else "W" if z == "SF" else "B")(str(x.pos.mode().iat[0]).split("-")[0]) if len(x) else None,
             "dom5": r(p.dominance_peak5), "dom5_years": p.dominance_peak5_years if isinstance(p.dominance_peak5_years, str) else None,
             "no1": int(p.seasons_ranked_1), "top3": int(p.seasons_top3),
@@ -107,12 +108,15 @@ def main():
                       r(q.total_uplift_raw), r(q.raw_se), r(q.total_uplift_trend_adjusted), r(q.trend_adjusted_se)])
     # every player-season of the last three seasons, for the GM finder
     recent = []
+    val = pd.read_csv(OUT / "value_seasons.csv").set_index(["season", "player_id"])
     rs = seasons[(seasons.season >= seasons.season.max() - 2) & (seasons.poss >= 1500)]
     arch_ix = arch.set_index(["season", "player_id"]).archetype
     for q in rs.itertuples():
         recent.append([int(q.player_id), q.name, int(q.season), q.team if isinstance(q.team, str) else "", r(q.net),
                        r(q.se_net), r(q.O), r(q.D), r(q.production), r(q.lift), r(q.ppg, 1), int(q.poss),
-                       arch_ix.get((q.season, q.player_id))])
+                       arch_ix.get((q.season, q.player_id)),
+                       r(val.salary.get((q.season, q.player_id), np.nan) / 1e6, 1), r(val.surplus.get((q.season, q.player_id), np.nan) / 1e6, 1),
+                       r(q.WAR, 1)])
     # progression, coach arrivals, scenarios
     chg = pd.read_csv(OUT / "progression_changes.csv")
     arcs = pd.read_csv(OUT / "progression_arcs.csv")
@@ -148,7 +152,9 @@ def main():
              "meta": json.load(open(OUT / "aging_meta.json"))}
     se_ = pd.read_csv(OUT / "scheme_effects.csv")
     schemes = [[q.outcome, q.trait, r(q.coef_per_sd), r(q.se), r(q.t), r(q.r_simple), r(q.r2_all_traits)] for q in se_.itertuples()]
-    data = {"aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs,
+    vmeta = json.load(open(OUT / "value_meta.json"))
+    data = {"value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
+                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs,
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),
                 "clutch_split_half": val.get("playoffs_meta", {}).get("all_clutch", {}).get("split_half"),

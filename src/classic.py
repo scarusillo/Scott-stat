@@ -165,12 +165,19 @@ def era_fit(d, train, tau, force_band=None):
     return d
 
 
-def team_adjust(d, per_team, ts, alpha):
-    """Share alpha x (team actual - sum of box estimates) per possession played."""
+def team_adjust(d, per_team, ts, alpha, credit=None):
+    """Team credit: the gap between a team's actual offense/defense and the sum of its players'
+    box estimates, shared out per possession played.
+    credit=None: alpha x an even share (the original).
+    credit={"aO","aD","bO","bD"}: share = a x even share + b x even share x (his minutes per game
+    minus his team's average, per 10 minutes): players who carry more minutes carry more of the
+    gap. Chosen on held-out seasons (team_credit_test.py)."""
     d = d.copy()
-    pt = per_team[["season", "player_id", "team", "poss"]].merge(d[["season", "player_id", "box_O", "box_D"]],
-                                                                 on=["season", "player_id"])
-    tm = pt.assign(o=pt.box_O * pt.poss, dd=pt.box_D * pt.poss).groupby(["season", "team"])[["o", "dd", "poss"]].sum()
+    pt = per_team[["season", "player_id", "team", "poss", "mp", "g"]].merge(
+        d[["season", "player_id", "box_O", "box_D"]], on=["season", "player_id"])
+    pt["mpg"] = pt.mp / pt.g.clip(lower=1)
+    tm = pt.assign(o=pt.box_O * pt.poss, dd=pt.box_D * pt.poss, mm=pt.mpg * pt.poss).groupby(
+        ["season", "team"])[["o", "dd", "mm", "poss"]].sum()
     tsi = ts.set_index(["season", "abbreviation"])
     lg_ortg = ts.groupby("season").o_rtg.mean()
     team_O = tsi.o_rtg.reindex(tm.index) - lg_ortg.reindex(tm.index.get_level_values(0)).to_numpy()
@@ -178,13 +185,35 @@ def team_adjust(d, per_team, ts, alpha):
     # sum of five players' estimates per 100 team possessions = 5 * possession-weighted mean
     tm["gap_O"] = team_O.to_numpy() - 5 * tm.o / tm.poss
     tm["gap_D"] = team_D.to_numpy() - 5 * tm.dd / tm.poss
-    pt = pt.join(tm[["gap_O", "gap_D"]], on=["season", "team"])
-    adj = pt.assign(aO=pt.gap_O * pt.poss, aD=pt.gap_D * pt.poss).groupby(["season", "player_id"])[["aO", "aD", "poss"]].sum()
-    adj = (adj[["aO", "aD"]].div(adj.poss, axis=0) / 5).rename(columns={"aO": "gap_O", "aD": "gap_D"})
+    tm["m_mpg"] = tm.mm / tm.poss
+    pt = pt.join(tm[["gap_O", "gap_D", "m_mpg"]], on=["season", "team"])
+    rel = (pt.mpg - pt.m_mpg) / 10
+    adj = pt.assign(aO=pt.gap_O * pt.poss, aD=pt.gap_D * pt.poss, mO=pt.gap_O * rel * pt.poss,
+                    mD=pt.gap_D * rel * pt.poss).groupby(["season", "player_id"])[["aO", "aD", "mO", "mD", "poss"]].sum()
+    adj = (adj[["aO", "aD", "mO", "mD"]].div(adj.poss, axis=0) / 5).rename(
+        columns={"aO": "gap_O", "aD": "gap_D", "mO": "gapm_O", "mD": "gapm_D"})
     d = d.join(adj, on=["season", "player_id"])
-    d["O_c"] = d.box_O + alpha * d.gap_O.fillna(0)
-    d["D_c"] = d.box_D + alpha * d.gap_D.fillna(0)
+    if credit is None:
+        d["O_c"] = d.box_O + alpha * d.gap_O.fillna(0)
+        d["D_c"] = d.box_D + alpha * d.gap_D.fillna(0)
+    else:
+        d["O_c"] = d.box_O + credit["aO"] * d.gap_O.fillna(0) + credit["bO"] * d.gapm_O.fillna(0)
+        d["D_c"] = d.box_D + credit["aD"] * d.gap_D.fillna(0) + credit["bD"] * d.gapm_D.fillna(0)
     return d
+
+
+def fit_credit(d, per_team, ts, train):
+    """Least-squares shares (even + minutes-scaled), offense and defense separately, on training rows."""
+    f = team_adjust(d, per_team, ts, 1.0)
+    out = {}
+    for s_ in ("O", "D"):
+        m = train & f[f"gap_{s_}"].notna()
+        X = f.loc[m, [f"gap_{s_}", f"gapm_{s_}"]].to_numpy()
+        y = (f.loc[m, s_] - f.loc[m, f"box_{s_}"]).to_numpy()
+        w = np.sqrt(f.loc[m, "plus_poss"].to_numpy())
+        b = np.linalg.lstsq(X * w[:, None], y * w, rcond=None)[0]
+        out["a" + s_], out["b" + s_] = float(b[0]), float(b[1])
+    return out
 
 
 def score(d, mask, col_O, col_D):
@@ -231,33 +260,34 @@ def main():
     fwd_tr = base & (d.season <= 2013)
     test = d.nba_id.notna() & (d.season >= 2014)
     dfit = era_fit(d, fwd_tr, tau)
-    best = None
-    for a in (0.0, 0.25, 0.5, 0.75, 1.0):
-        sc = score(team_adjust(dfit, per_team, ts, a), fwd_tr, "O_c", "D_c")
-        if best is None or sc["rmse_net"] < best[1]["rmse_net"]:
-            best = (a, sc)
-    alpha = best[0]
-    dt = team_adjust(dfit, per_team, ts, alpha)
-    du = team_adjust(era_fit(d, fwd_tr, float("inf")), per_team, ts, alpha)
+    alpha = 0.75                                   # even-share weight kept for reference comparisons
+    credit_fwd = fit_credit(dfit, per_team, ts, fwd_tr)
+    dt = team_adjust(dfit, per_team, ts, alpha, credit_fwd)
+    d_even = team_adjust(dfit, per_team, ts, alpha)
+    du = team_adjust(era_fit(d, fwd_tr, float("inf")), per_team, ts, alpha, credit_fwd)
     adv = pd.read_csv(HIST / "Advanced.csv")
     adv = adv[(adv.lg == "NBA") & ~adv.team.str.match(r"^\dTM$|^TOT$")]
     bpm = adv.assign(w=adv.mp).groupby(["season", "player_id"]).apply(
         lambda x: pd.Series({"obpm": np.average(x.obpm, weights=x.w.clip(lower=1)),
                              "dbpm": np.average(x.dbpm, weights=x.w.clip(lower=1))}), include_groups=False)
     dt = dt.join(bpm, on=["season", "player_id"])
-    val = {"alpha": alpha, "tau": tau, "backcast": backcast,
+    val = {"alpha": alpha, "tau": tau, "backcast": backcast, "credit_fwd": credit_fwd,
+           "test_classic_even_split": score(d_even, test, "O_c", "D_c"),
            "test_box_only": score(dt, test, "box_O", "box_D"),
            "test_classic": score(dt, test, "O_c", "D_c"),
            "test_classic_uniform_era": score(du, test, "O_c", "D_c"),
            "test_bref_bpm": score(dt, test & dt.obpm.notna(), "obpm", "dbpm")}
     # how much accuracy each older era's stat set costs: same test, that band's stats only
     for band in ("no_turnovers", "lite"):
-        xb = team_adjust(era_fit(d, fwd_tr, tau, force_band=band), per_team, ts, alpha)
+        xb = team_adjust(era_fit(d, fwd_tr, tau, force_band=band), per_team, ts, alpha, credit_fwd)
         val[f"test_{band}_stats_only"] = score(xb, test, "O_c", "D_c")
     print(json.dumps({k: v for k, v in val.items() if k != "backcast"}, indent=1), flush=True)
 
     # final: every season rated with era-matched prices learned from ALL overlap seasons
-    f = team_adjust(era_fit(d, base, tau), per_team, ts, alpha)
+    dfin = era_fit(d, base, tau)
+    credit = fit_credit(dfin, per_team, ts, base)
+    val["credit"] = credit
+    f = team_adjust(dfin, per_team, ts, alpha, credit)
     f["O_box"], f["D_box"] = f.O_c, f.D_c
     # game logs (hist_games.py): the with/without signal from every game, used only if it
     # beat box-only Classic on the held-out seasons

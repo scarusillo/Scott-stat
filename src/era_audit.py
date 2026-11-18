@@ -43,10 +43,11 @@ def main():
     d, per_team, ts = prepared()
     meta = json.load(open(OUT / "classic_meta.json"))
     tau, alpha = meta["validation"]["tau"], meta["validation"]["alpha"]
+    credit = meta["validation"].get("credit")
     base = d.nba_id.notna() & (d.plus_poss >= 250)
     out = {}
-    versions = {"era_matched": K.team_adjust(K.era_fit(d, base, tau), per_team, ts, alpha),
-                "one_yardstick": K.team_adjust(K.era_fit(d, base, float("inf")), per_team, ts, alpha)}
+    versions = {"era_matched": K.team_adjust(K.era_fit(d, base, tau), per_team, ts, alpha, credit),
+                "one_yardstick": K.team_adjust(K.era_fit(d, base, float("inf")), per_team, ts, alpha, credit)}
     games = pd.read_csv(OUT / "games_ratings.csv")
     games["shift"] = (games.O_g + games.D_g) - (games.O_0 + games.D_0)
     shift = games.set_index(["season", "player_id"])["shift"]

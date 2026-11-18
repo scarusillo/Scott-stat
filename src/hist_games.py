@@ -96,7 +96,8 @@ def classic_priors(oos=False):
     base = d.nba_id.notna() & (d.plus_poss >= 250)
     meta = json.load(open(OUT / "classic_meta.json"))
     tr = base & (d.season <= 2013) if oos else base
-    f = K.team_adjust(K.era_fit(d, tr, meta["validation"]["tau"]), per_team, ts, meta["validation"]["alpha"])
+    v = meta["validation"]
+    f = K.team_adjust(K.era_fit(d, tr, v["tau"]), per_team, ts, v["alpha"], v.get("credit_fwd" if oos else "credit"))
     f["O_c"], f["D_c"] = f.O_c.astype(float), f.D_c.astype(float)
     f["mpg"] = f.mp / f.g.clip(lower=1)
     lg_pace = ts.groupby("season").pace.mean()

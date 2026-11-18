@@ -128,6 +128,13 @@ def classic_table():
     a = a.rename(columns={"season_start": "season", "net_classic": "net"})
     a["production"] = a.box_O + a.box_D
     a["lift"] = a.net - a.production
+    # playoffs (classic_playoffs.py): season rating with playoff possessions pooled in
+    po = pd.read_csv(OUT / "classic_playoffs.csv")[["season_start", "player_id", "net_with_playoffs", "poss_total",
+                                                     "playoff_rise", "po_poss"]].rename(columns={"season_start": "season"})
+    a = a.merge(po, on=["season", "player_id"], how="left")
+    a["net_with_playoffs"] = a.net_with_playoffs.fillna(a.net)
+    a["poss_total"] = a.poss_total.fillna(a.poss)
+    a["po_poss"] = a.po_poss.fillna(0)
     # era dominance: how far above his own league (players with 1,500+ possessions that season)
     q = a[a.poss >= 1500]
     a["z"] = (a.net - a.season.map(q.groupby("season").net.mean())) / a.season.map(q.groupby("season").net.std())
@@ -148,8 +155,16 @@ def classic_table():
                 if win is None or v > win[0]:
                     win = (v, np.average(w5.production, weights=w5.poss))
         bp5, bp5y = runs(x.assign(net=x.production), "net", 5)
+        bpo5, bpo5y = runs(x.assign(net=x.net_with_playoffs, poss=x.poss_total), "net", 5)
+        xw = x.sort_values("season")
+        war5 = max((xw.WAR_classic.iloc[i:i + 5].sum() / 5 for i in range(len(xw) - 4)
+                    if xw.season.iat[i + 4] - xw.season.iat[i] == 4), default=np.nan)
+        xp = x[x.po_poss > 0]
         bz5, bz5y = runs(x.assign(net=x.z), "net", 5)
-        rows.append({"peak_individual": win[1] if win else np.nan, "peak_team_credit": (win[0] - win[1]) if win else np.nan,
+        rows.append({"best5_with_playoffs": bpo5, "best5_with_playoffs_years": bpo5y, "peak_wins_per_season": war5,
+                     "playoff_rise": np.average(xp.playoff_rise, weights=xp.po_poss) if len(xp) else np.nan,
+                     "playoff_poss": float(x.po_poss.sum()),
+                     "peak_individual": win[1] if win else np.nan, "peak_team_credit": (win[0] - win[1]) if win else np.nan,
                      "production_peak5": bp5, "production_peak5_years": bp5y, "dominance_peak5": bz5,
                      "dominance_peak5_years": bz5y, "seasons_ranked_1": int((x.rank_in_season == 1).sum()),
                      "seasons_top3": int((x.rank_in_season <= 3).sum()),

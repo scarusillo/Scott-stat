@@ -605,6 +605,27 @@ position and type; prime ~24-28; spot-up shooters hold to ~30. **Schemes** (`src
 +0.43 (t 4.7); offense vs rotation depth -0.31 (t -3.2). Style explains ~33% of coach defense
 effects, ~18% of offense. Associations, not experiments. Site: Careers and Coach lab tabs.
 
+## Six skeptic objections, each tested
+
+1. **Even split of team credit** (`src/team_credit_test.py`). Stars were not shortchanged (holdout bias
+   +0.09 for box net >= 4). Scaling the share with minutes per game vs team average helped
+   (r 0.660 -> 0.666, RMSE 1.600 -> 1.592) and is adopted (`fit_credit` in classic.py:
+   aO 0.72, bO 0.47, aD 0.73, bD 0.31). With game logs on top: holdout r 0.685.
+2. **Top-end compression**: mostly selection on a noisy target. Binned by Classic rating, seasons at
+   +4 and above read ~0.4 low vs Plus (top 50 by Classic: 5.83 vs 6.21), not 2.
+3. **Playoffs** (`classic_playoffs.py`): small playoff samples now shrink toward the player's own
+   regular-season rates (shrinking toward league had dragged every star down and faked
+   repeatability). Playoff rise even/odd r 0.21-0.42; r 0.25 with Plus elevation. Reported as
+   `best5_with_playoffs` and `playoff_rise`, not folded into the headline. Hakeem +1.1, LeBron +0.4,
+   Jordan -0.2, Curry -0.5, Bird -0.8.
+4. **Availability**: `peak_wins_per_season` (best five consecutive seasons of WAR / 5).
+5. **Contract value** (`src/value.py`, Kaggle salaries 2009-10..2024-25): price of a win per season
+   ($6.5M in 2024-25), worth, surplus. Salary vs PPG r 0.61, vs wins added r 0.42.
+6. **Legacy weights**: rank range across 27 weightings on the site. LeBron 1-2, Jordan 1-3.
+
+Current Classic peaks: Jokić 6.61 (6.18 + 0.43), LeBron 6.60 (5.37 + 1.23), Curry 6.21 (5.29 + 0.92),
+Jordan 6.20 (5.79 + 0.40, 1988-93), Robinson 6.10, Paul 5.99, Kareem 5.54, Russell 4.45 (2.50 + 1.96).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

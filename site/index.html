@@ -123,7 +123,7 @@ function leaders() {
   const plus = state.tier === "plus";
   const sorts = plus ? [["scott", "Scott Stat"], ["peak5", "Peak (best 5)"], ["war", "Career wins"], ["lift", "Lift"],
     ["def", "Defense"], ["clutch", "Clutch rise"], ["po", "Playoff rise"]] :
-    [["best5", "Impact peak (best 5)"], ["ind", "Individual (in peak window)"], ["team", "Team credit (in peak window)"], ["prod5", "Best individual 5 seasons"], ["dom5", "Era dominance (best 5)"], ["no1", "Seasons ranked #1"],
+    [["best5", "Impact peak (best 5)"], ["ind", "Individual (in peak window)"], ["team", "Team credit (in peak window)"], ["best5po", "Impact peak incl. playoffs"], ["pwar5", "Peak wins per season"], ["prod5", "Best individual 5 seasons"], ["dom5", "Era dominance (best 5)"], ["no1", "Seasons ranked #1"],
      ["impact", "Career impact"], ["war", "Career wins"], ["lift", "Lift"], ["def", "Defense"]];
   if (!sorts.some(s => s[0] === state.sort)) state.sort = sorts[0][0];
   const rows = (plus ? D.players : D.classic).filter(p => (p.poss ?? 1e9) >= state.minPoss || !plus)
@@ -264,7 +264,10 @@ function classicView(id) {
     <div class="hero"><div><div class="eyebrow">Classic tier · ${p.first}-${String(p.last + 1).slice(2)} · ${p.seasons} seasons</div><h1>${esc(p.name)}</h1>
       <p class="lede">Classic estimates impact from season box scores and team results, calibrated on the play-by-play era. Peak ${f(p.best5)} over ${p.best5_years || "–"}; best single season ${f(p.best)} in ${p.best_year}.${p.lite > 0 ? ` <b>${Math.round(p.lite * 100)}% of these seasons are before 1973-74,</b> when steals, blocks and turnovers weren't recorded. His defense shows up through rebounding, his share of his team's defense, and how his team did in games with and without him.` : ""}${p.id === "russebi01" ? ` <b>Russell, checked game by game:</b> Boston was +7.0 per game in his 963 games and +1.5 in the 52 he missed, then fell from +6.0 to −1.9 the season after he retired. Since he played about 44 of 48 minutes, that gap is mostly Russell against a backup, which works out to roughly +3.5 per 100 possessions over an average player: close to what the box score and team results already gave him.` : ""}</p></div>
       <div style="text-align:right"><div class="eyebrow">Peak (best 5)</div><div class="big">${f(p.best5, 1)}</div></div></div>
-    <div class="tiles"><div class="tile a"><small>Production peak</small><b>${f(p.prod5)}</b><small>${p.prod5_years || "–"}</small></div>
+    <div class="tiles"><div class="tile a"><small>Peak = individual + team credit</small><b>${f(p.ind)} <span style="font-size:20px;color:var(--muted)">${(p.team ?? 0) >= 0 ? "+" : "−"} ${Math.abs(p.team ?? 0).toFixed(1)}</span></b><small>his own stats, then his share of team results</small></div>
+      <div class="tile"><small>Peak incl. playoffs</small><b>${f(p.best5po)}</b><small>playoff rise ${f(p.porise)}</small></div>
+      <div class="tile"><small>Peak wins per season</small><b>${f(p.pwar5, 1, false)}</b><small>best 5 seasons, games missed count</small></div>
+      <div class="tile"><small>Titles</small><b>${p.titles || 0}</b><small>title shares ${(p.tshare ?? 0).toFixed(2)}</small></div>
       <div class="tile a"><small>Era dominance</small><b>${p.dom5 == null ? "–" : p.dom5.toFixed(2)}</b><small>#1 in ${p.no1} season${p.no1 === 1 ? "" : "s"}, top 3 in ${p.top3}</small></div>
       <div class="tile o"><small>Offense</small><b>${f(p.off)}</b></div><div class="tile d"><small>Defense</small><b>${f(p.def)}</b></div>
       <div class="tile"><small>Own production</small><b>${f(p.prod)}</b></div><div class="tile a"><small>Lift (team-level)</small><b>${f(p.lift)}</b></div>
@@ -335,6 +338,12 @@ function finder() {
       <text x="${(W + m.l) / 2}" y="${Hh - 2}" text-anchor="middle">Points per game</text>
       ${rows.map(r => `<circle cx="${X(r[10] ?? 0)}" cy="${Y(r[4])}" r="4" fill="${(r[9] ?? 0) > 1.5 ? "var(--accent)" : "var(--muted)"}" fill-opacity="${(r[9] ?? 0) > 1.5 ? .9 : .35}" data-tip="${esc(`${r[1]} (${r[3]}): impact ${f(r[4])}, ${r[10]} ppg, lift ${f(r[9])}`)}"/>`).join("")}
     </svg></div><p class="note">Orange = lift above +1.5: impact well beyond what the player's own stats explain.</p></div>
+    <div class="panel tablewrap"><h3>Best value per dollar, ${yr(state.fseason)}</h3>
+      <p class="note">A win cost about $${D.value.price[state.fseason] ?? "–"}M that season (league payroll divided by wins added). Worth = his wins at that price; surplus = worth minus salary. Across 2009-25, salary tracks points per game (r = ${D.value.r_ppg}) more closely than wins added (r = ${D.value.r_wins}): teams pay for scoring.</p>
+      <table><thead><tr><th class="l">Player</th><th class="l">Team</th><th class="l">Type</th><th>Wins added</th><th>Salary</th><th>Surplus</th></tr></thead><tbody>
+      ${rows.filter(r => r[14] != null).sort((a, b) => b[14] - a[14]).slice(0, 12).map(r => `<tr><td class="l"><b>${esc(r[1])}</b></td><td class="l">${esc(r[3])}</td><td class="l">${esc(r[12] || "")}</td><td class="num">${f(r[15], 1, false)}</td><td class="num">$${r[13]}M</td><td class="num pos"><b>+$${r[14]}M</b></td></tr>`).join("")}
+      ${rows.filter(r => r[14] != null).sort((a, b) => a[14] - b[14]).slice(0, 5).map(r => `<tr><td class="l">${esc(r[1])}</td><td class="l">${esc(r[3])}</td><td class="l">${esc(r[12] || "")}</td><td class="num">${f(r[15], 1, false)}</td><td class="num">$${r[13]}M</td><td class="num neg">−$${Math.abs(r[14])}M</td></tr>`).join("")}</tbody></table>
+      <p class="note">Top 12 and bottom 5. Rookie-scale and capped contracts are underpaid by rule, so compare within contract types. Salary data is missing for a few players each season.</p></div>
     <div class="panel tablewrap"><h3>Biggest lift, ${yr(state.fseason)}</h3><table><thead><tr><th class="l">Player</th><th class="l">Team</th><th class="l">Type</th><th>PPG</th><th>Impact</th><th>Production</th><th>Lift</th><th>Offense</th><th>Defense</th></tr></thead>
     <tbody>${hidden.map(r => `<tr ${D.byId.has(String(r[0])) ? `tabindex="0" data-go="#player-${r[0]}"` : ""}><td class="l"><b>${esc(r[1])}</b></td><td class="l">${esc(r[3])}</td><td class="l">${esc(r[12] || "")}</td><td class="num">${f(r[10], 1, false)}</td>
       <td class="num ${cls(r[4])}">${f(r[4])}<span class="pm">±${f(r[5], 1, false)}</span></td><td class="num">${f(r[8])}</td><td class="num ${cls(r[9])}"><b>${f(r[9])}</b></td><td class="num ${cls(r[6])}">${f(r[6])}</td><td class="num ${cls(r[7])}">${f(r[7])}</td></tr>`).join("")}</tbody></table></div></div>`;
@@ -353,6 +362,11 @@ function legacy() {
   const tot = W.peak + W.career + W.rings || 1;
   const rows = pool.map(p => ({ p, score: (W.peak * zp(p) + W.career * zc(p) + W.rings * zr(p)) / tot }))
     .sort((a, b) => b.score - a.score).slice(0, 40);
+  // how much does the choice of weights matter? rank under 27 weightings (each ingredient at half, equal or double)
+  const Z = pool.map(p => [p.id, zp(p), zc(p), zr(p)]), range = new Map(pool.map(p => [p.id, [999, 0]]));
+  for (const a of [0.5, 1, 2]) for (const b of [0.5, 1, 2]) for (const c of [0.5, 1, 2])
+    Z.map(z => [z[0], a * z[1] + b * z[2] + c * z[3]]).sort((x, y) => y[1] - x[1])
+      .forEach(([id], i) => { const r = range.get(id); r[0] = Math.min(r[0], i + 1); r[1] = Math.max(r[1], i + 1); });
   const presets = [["Equal", { peak: 1, career: 1, rings: 1 }], ["Peak + titles", { peak: 1, career: 0, rings: 1 }],
                    ["Titles count double", { peak: 1, career: 1, rings: 2 }], ["Peak + career, no titles", { peak: 1, career: 1, rings: 0 }]];
   $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">All-time · 1951-52 to 2025-26</div><h1>Greatest of all time, your weights</h1>
@@ -368,11 +382,11 @@ function legacy() {
         <div class="row">${presets.map(([l, w], i) => `<button data-preset="${i}">${l}</button>`).join("")}</div>
         <p class="note">Each ingredient is put on the same footing (how far above the field it is) before weighting.</p></div>
     </div>
-    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Peak (best 5)</th><th>Career wins</th><th>Titles</th><th>Title shares</th></tr></thead><tbody>
+    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Player</th><th class="l">Career</th><th>Score</th><th>Rank range</th><th>Peak (best 5)</th><th>Career wins</th><th>Titles</th><th>Title shares</th></tr></thead><tbody>
       ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.p.name)}</b></td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
-        <td class="num"><b>${r.score.toFixed(2)}</b></td><td class="num">${f(r.p.best5)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td></tr>`).join("")}
+        <td class="num"><b>${r.score.toFixed(2)}</b></td><td class="num">${(x => x[0] === x[1] ? x[0] : x[0] + "–" + x[1])(range.get(r.p.id))}</td><td class="num">${f(r.p.best5)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td></tr>`).join("")}
     </tbody></table></div>
-    <p class="note">What the weights decide: at equal weights Michael Jordan and LeBron James are a dead heat (the same score to two decimals). Weight championships more heavily, or drop career length, and Jordan is first. Weight career value or peak more heavily, or drop championships, and LeBron is first. Players with fewer than eight qualifying seasons (Jokić, so far) aren't ranked here yet.</p></div>`;
+    <p class="note">Rank range is each player's best and worst rank across 27 weightings (each ingredient at half, equal or double weight). A narrow range means the ranking doesn't depend on the weights. Players with fewer than eight qualifying seasons (Jokić, so far) aren't ranked here yet.</p></div>`;
   for (const k of ["peak", "career", "rings"]) $("#w-" + k).oninput = e => { state.lw = { ...W, [k]: +e.target.value }; save(); legacy(); $("#w-" + k).focus(); };
   document.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { state.lw = presets[+b.dataset.preset][1]; save(); legacy(); });
   bindRows();
@@ -594,6 +608,13 @@ function method() {
     <li><b>The 2020 bubble was filed under the wrong season</b> (seasons were read from dates). Now read from game ids. LeBron's 2020 title is credited.</li>
     <li><b>The source had no team ids for 2021-22</b> and half of 2000-01. Rebuilt from the home/away flag. The 2022 Warriors' title is credited and held-out accuracy rose (r 0.674 to 0.677).</li>
     <li><b>Clutch now uses actual points.</b> The luck adjustment had been replacing made clutch threes and free throws with expected values. LeBron's clutch rise 3.4 to 2.8.</li></ul>
+    <p>Then six objections a skeptical analyst would raise, each tested:</p><ul>
+    <li><b>Team credit split evenly.</b> Tested unequal splits on held-out seasons. Stars were not being shortchanged (their ratings were unbiased), but scaling a player's share with his minutes improved accuracy, so that is now the rule (r 0.660 to 0.666; with game logs 0.685).</li>
+    <li><b>"Classic squeezes the top."</b> Mostly a mirage from picking seasons by their play-by-play rating. Grouped by Classic rating, seasons at +4 and above read about 0.4 low, not 2.</li>
+    <li><b>No playoffs in the all-era tier.</b> Added as its own number. Short playoff runs are pulled toward the player's own regular-season level; playoff rise repeats across a career (r 0.2 to 0.4).</li>
+    <li><b>No availability.</b> Added peak wins per season, where missed games count.</li>
+    <li><b>No contract value.</b> Added wins per dollar for 2009-25 on the GM finder.</li>
+    <li><b>Legacy weights are a choice.</b> Every player now shows his rank range across 27 weightings.</li></ul>
     <p>Checks that now pass every run: all 75 titles fully credited, league-average rating at zero each season, league wins added matching games played, and player ratings summing to team results (r 0.98).</p></div>
   <div class="panel prose"><h3>What it can't do yet</h3><ul><li>Prime Jordan, Magic and Bird are Classic only. A with-or-without-you signal from game logs would sharpen pre-1996 defense.</li><li>"Coach" still includes the front office and the team's system.</li><li>Single seasons are noisy. Read the ± and the eras.</li></ul></div></div>`;
 }

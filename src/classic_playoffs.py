@@ -44,7 +44,10 @@ def league_rates(b):
     return out
 
 
-def playoff_rows(b, lg, pace):
+def playoff_rows(b, lg, pace, regf=None):
+    """regf: regular-season features (season, player_id, f_*). Small playoff samples are shrunk
+    toward the player's OWN regular-season rates (not the league's), so a short series leaves his
+    rating where it was instead of dragging every star toward average."""
     cols = ["gameId", "gameDateTimeEst", "firstName", "lastName", "playerteamId", "home", "numMinutes", "points", "assists",
             "blocks", "steals", "fieldGoalsAttempted", "threePointersAttempted", "freeThrowsAttempted",
             "reboundsDefensive", "reboundsOffensive", "reboundsTotal", "foulsPersonal", "turnovers", "gameType", "comment"]
@@ -81,7 +84,14 @@ def playoff_rows(b, lg, pace):
         pps = raw0.pts.sum() / raw0.tsa.sum()
         raw = pd.DataFrame({"pts": d.pts, "tsa": d.fga + 0.44 * d.fta, "ast": d.ast, "tov": d.tov, "oreb": d.oreb,
                             "dreb": d.dreb, "stl": d.stl, "blk": d.blk, "pf": d.pf, "fg3a": d.fg3a, "reb": d.reb}, index=d.index)
-        r = raw.add(L * K.PRIOR_POSS / 100).div(d.poss + K.PRIOR_POSS, axis=0) * 100
+        prior = pd.DataFrame(np.tile(L.to_numpy(), (len(d), 1)), index=d.index, columns=L.index)
+        if regf is not None:
+            rf = regf[regf.season == season].drop_duplicates("player_id").set_index("player_id")
+            own = rf.reindex(d.player_id.to_numpy())
+            for c in ("tsa", "ast", "tov", "oreb", "dreb", "stl", "blk", "pf", "fg3a", "reb"):
+                prior[c] = (L[c] + own["f_" + c].fillna(0).to_numpy()).clip(min=0)
+            prior["pts"] = pps * prior.tsa + own.f_pts_added.fillna(0).to_numpy()
+        r = raw.add(prior * K.PRIOR_POSS / 100).div(d.poss + K.PRIOR_POSS, axis=0) * 100
         r["pts_added"] = r.pts - pps * r.tsa
         rel = r.drop(columns="pts") - L.drop("pts")
         rel["pts_added"] = r.pts_added
@@ -124,7 +134,7 @@ def main():
     ref = d[d.nba_id.notna() & (d.plus_poss >= 1000)]
     pace = ts.groupby("season").pace.mean()
     lg = league_rates(b)
-    po = playoff_rows(b, lg, pace)
+    po = playoff_rows(b, lg, pace, d[["season", "player_id"] + [c for c in d.columns if c.startswith("f_")]])
     caps = {f_: (ref["f_" + f_].min(), ref["f_" + f_].max()) for f_ in K.BOX + ["reb"]}
     for frame in (d, po):
         for f_, (lo, hi) in caps.items():
