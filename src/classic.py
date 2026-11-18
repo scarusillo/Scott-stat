@@ -262,38 +262,53 @@ def win_curve(ts):
 
 
 def aba_translation(f):
-    """How far below NBA level an ABA rating sits, from players who changed leagues between consecutive
-    seasons (mostly the 68 absorbed in the 1976 merger). Their change in rating, minus the normal
-    one-year change for NBA players of the same age, is the league gap. Fitted separately for the
-    late ABA (1973-74 on, when it signed NBA-level stars) and the early ABA, which had far fewer
-    movers and is pooled across years. Returns {season: gap per 100} and the evidence."""
+    """ABA -> NBA translation, from players who changed leagues between consecutive seasons (both
+    directions; mostly the 1976 merger). A flat shift is NOT enough: the ABA stretched its stars (an ABA
+    +5 was about +2.8 the next season in the NBA, an NBA +5 about +4.4). So the translation is
+        NBA-equivalent = a + s x ABA rating
+    one compression s for the whole ABA, separate shifts a for the early (to 1972-73) and late ABA. Fitted so that
+    each mover's next season matches what the NBA's own year-to-year model (rating, age, age^2;
+    1965-1990 NBA pairs) predicts from his translated rating:
+        ABA -> NBA: next NBA rating  ~ P(a + s x ABA rating, age)
+        NBA -> ABA: a + s x next ABA rating ~ P(NBA rating, age)
+    Returns a function (season, rating) -> NBA-equivalent rating, and the evidence."""
+    from scipy.optimize import least_squares
     x = f[f.poss >= 800][["season", "player_id", "lg", "age", "net_c", "poss"]]
     nxt = x.assign(season=x.season - 1).rename(columns={"lg": "lg2", "net_c": "net2", "poss": "poss2"})[
         ["season", "player_id", "lg2", "net2", "poss2"]]
-    pr = x.merge(nxt, on=["season", "player_id"])
-    pr["chg"] = pr.net2 - pr.net_c
+    pr = x.merge(nxt, on=["season", "player_id"]).dropna(subset=["age"])
     pr["w"] = 1 / (1 / pr.poss + 1 / pr.poss2)
-    pr["age_b"] = pr.age.clip(20, 36).round()
-    nba = pr[(pr.lg == "NBA") & (pr.lg2 == "NBA") & pr.season.between(1960, 1990)]
-    norm_chg = nba.groupby("age_b").apply(lambda g: np.average(g.chg, weights=g.w), include_groups=False)
-    pr["excess"] = pr.chg - pr.age_b.map(norm_chg)
-    # ABA -> NBA: excess = -(gap); NBA -> ABA: excess = +gap
-    mv = pr[(pr.lg != pr.lg2)].copy()
-    mv["aba_season"] = np.where(mv.lg == "ABA", mv.season, mv.season + 1)
-    mv["gap_obs"] = np.where(mv.lg == "ABA", -mv.excess, mv.excess)
-    out, ev = {}, {}
-    for lab, m in (("late", mv.aba_season >= 1974), ("early", mv.aba_season < 1974)):
-        g = mv[m]
-        gap = float(np.average(g.gap_obs, weights=g.w))
-        se = float(np.sqrt(np.average((g.gap_obs - gap) ** 2, weights=g.w) / max(len(g) - 1, 1)))
-        ev[lab] = {"gap": gap, "se": se, "n_movers": int(len(g)),
-                   "aba_to_nba": int((g.lg == "ABA").sum()), "nba_to_aba": int((g.lg == "NBA").sum())}
-    # the early ABA can only be weaker than the late ABA (it hadn't yet signed the NBA-level stars)
-    ev["early"]["gap_used"] = max(ev["early"]["gap"], ev["late"]["gap"])
-    ev["late"]["gap_used"] = ev["late"]["gap"]
-    for season in range(1968, 1977):
-        out[season] = ev["late" if season >= 1974 else "early"]["gap_used"]
-    return out, ev
+    pr["a1"], pr["a2"] = pr.age - 27, (pr.age - 27) ** 2
+    nba = pr[(pr.lg == "NBA") & (pr.lg2 == "NBA") & pr.season.between(1965, 1990)]
+    X = np.c_[np.ones(len(nba)), nba.net_c, nba.a1, nba.a2]
+    W = nba.w.to_numpy()
+    bn = np.linalg.solve(X.T @ (X * W[:, None]), X.T @ (W * nba.net2.to_numpy()))
+    P = lambda r, g: bn[0] + bn[1] * r + bn[2] * g.a1.to_numpy() + bn[3] * g.a2.to_numpy()
+    an = pr[(pr.lg == "ABA") & (pr.lg2 == "NBA")]
+    na = pr[(pr.lg == "NBA") & (pr.lg2 == "ABA")]
+    late = lambda g, col: (g[col] >= 1974).to_numpy()
+    def res(p):
+        a_l, a_e, s_ = p
+        a_an = np.where(late(an, "season"), a_l, a_e)
+        a_na = np.where(late(na.assign(s2=na.season + 1), "s2"), a_l, a_e)
+        r1 = (an.net2.to_numpy() - P(a_an + s_ * an.net_c.to_numpy(), an)) * np.sqrt(an.w.to_numpy())
+        r2 = (a_na + s_ * na.net2.to_numpy() - P(na.net_c.to_numpy(), na)) * np.sqrt(na.w.to_numpy())
+        return np.r_[r1, r2]
+    fit = least_squares(res, [0.0, 0.0, 1.0])
+    J = fit.jac
+    cov = np.linalg.inv(J.T @ J) * (fit.fun ** 2).sum() / max(len(fit.fun) - 3, 1)
+    a_l, a_e, s_ = fit.x
+    se = np.sqrt(np.diag(cov))
+    ev = {"shift_late": float(a_l), "shift_early": float(a_e), "compression": float(s_),
+          "se": {"shift_late": float(se[0]), "shift_early": float(se[1]), "compression": float(se[2])},
+          "n_aba_to_nba": int(len(an)), "n_nba_to_aba": int(len(na)),
+          "nba_year_to_year_slope": float(bn[1]),
+          "examples": {str(r): float(a_l + s_ * r) for r in (0, 2, 4, 6)}}
+    # the early ABA can only be weaker than the late ABA
+    a_e_used = min(a_e, a_l)
+    ev["shift_early_used"] = float(a_e_used)
+    tr = lambda season, r: np.where(season >= 1974, a_l, a_e_used) + s_ * r
+    return tr, ev
 
 
 def main():
@@ -376,12 +391,12 @@ def main():
     f["net_c"] = f.O_c + f.D_c
     # ABA seasons: rated against their own league above, then moved down to NBA level
     aba = f.lg == "ABA"
-    gaps, aba_ev = aba_translation(f)
-    sh = f.season.map(gaps).where(aba, 0).fillna(0) / 2
-    for c in ("O_c", "box_O", "O_box"):
-        f[c] = f[c] - sh
-    for c in ("D_c", "box_D", "D_box"):
-        f[c] = f[c] - sh
+    tr_aba, aba_ev = aba_translation(f)
+    sA = aba_ev["compression"]
+    shift = pd.Series(np.where(f.season >= 1974, aba_ev["shift_late"], aba_ev["shift_early_used"]), index=f.index)
+    # offense and defense each compressed by s, the shift split evenly: net -> shift + s x net
+    for c in ("O_c", "box_O", "O_box", "D_c", "box_D", "D_box"):
+        f.loc[aba, c] = sA * f.loc[aba, c] + shift[aba] / 2
     f["net_c"] = f.O_c + f.D_c
     val["aba_translation"] = aba_ev
     print("ABA translation:", aba_ev, flush=True)

@@ -10,11 +10,11 @@
   },
   {
    "era": "1965-76",
-   "n": 21,
-   "individual": 3.42,
-   "team_credit": 0.54,
-   "impact": 3.95,
-   "team_margin": 6.04
+   "n": 22,
+   "individual": 3.36,
+   "team_credit": 0.56,
+   "impact": 3.92,
+   "team_margin": 5.98
   },
   {
    "era": "1977-84",
@@ -69,11 +69,11 @@
   },
   {
    "era": "1965-76",
-   "best_player": 5.75,
-   "top3": 4.77,
-   "top10": 3.41,
+   "best_player": 5.64,
+   "top3": 4.5,
+   "top10": 3.21,
    "player_seasons": 1982.0,
-   "share_of_top100": 0.09,
+   "share_of_top100": 0.08,
    "share_of_all": 0.18
   },
   {
@@ -91,7 +91,7 @@
    "top3": 6.21,
    "top10": 4.74,
    "player_seasons": 1863.0,
-   "share_of_top100": 0.24,
+   "share_of_top100": 0.25,
    "share_of_all": 0.17
   },
   {

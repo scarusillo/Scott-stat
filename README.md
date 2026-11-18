@@ -755,6 +755,31 @@ Wilt Chamberlain topped peak wins per season at 22.7. Checks on the rating-to-wi
 Era-relative by design: no adjustment for the absolute talent level of an 8-10 team league (no overlap
 with modern players to measure it from).
 
+## Moses Malone vs Artis Gilmore; ABA stars; creation (`src/roster_test.py`)
+
+1. **ABA ratings were stretched, not just shifted.** Players moving ABA -> NBA: next-season NBA rating on ABA
+   rating has slope 0.60 vs 0.89 for NBA -> NBA (difference -0.30, 90% CI -0.40 to -0.18): an ABA +5 was
+   about +2.8 the next NBA season, an NBA +5 about +4.4. Translation is now NBA-equivalent = a + s x ABA,
+   fitted on 80 ABA->NBA and 35 NBA->ABA movers against the NBA's own
+   year-to-year model (rating, age): compression s = 0.68 (SE 0.06),
+   shift -0.17 late ABA / -0.73 early. An ABA +6 -> NBA +3.9
+   (flat shift gave +5.7). Erving's ABA peak drops accordingly.
+2. **Moses Malone.** Box decomposition (1978-83): O +2.5, D 0.0; defense is pulled down by offensive
+   rebounding (crashing costs transition defense in play-by-play), few steals, fouls. Play-by-play-era
+   players of his profile (top-15% offensive rebounding bigs, high volume) are not under-rated by the box
+   model (-0.27). NBA-only: Moses 101 wins added vs Gilmore 80 (B-Ref win shares 167 vs 108); Gilmore's
+   edge overall is his 5 ABA seasons (54 wins). After the translation fix they are statistically even.
+3. **Roster-change test** (independent of how ratings are built): each team's next season predicted from
+   its new roster's prior-season ratings, aged one year. r 0.85 over
+   1358 team-seasons; actual changes are 1.19x the predicted
+   (ratings slightly compressed, for stayers and movers alike, so rank order is unaffected). Teams that
+   lose a +3 star do -1.0 per 100 worse than predicted.
+4. **Scoring & creation** replaces pure scoring as the fourth Legacy ingredient: points + 1.1 x assists
+   per 100 above the league's per player, x mpg/48. Pure scoring load stays on the leaderboard. Magic
+   8th, Stockton 20th, Paul 23rd; Iverson 36th, Kobe 10th, Doc Rivers 134th.
+5. Checked and left alone: Pistons title split (deep team: Isiah 24%, Laimbeer 24%); 1980s Celtics
+   (McHale and Parish ratings track B-Ref BPM).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

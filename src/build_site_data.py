@@ -80,6 +80,7 @@ def main():
             "score5": r(sc.scoring5.get(p.player_id)) if p.player_id in sc.index else None,
             "score5_years": sc.scoring5_years.get(p.player_id) if p.player_id in sc.index and isinstance(sc.scoring5_years.get(p.player_id), str) else None,
             "stitles": int(sc.scoring_titles.get(p.player_id)) if p.player_id in sc.index else 0,
+            "create5": r(sc.create5.get(p.player_id)) if p.player_id in sc.index else None,
             "tshare_raw": r(ch.title_shares.get(p.player)) if p.player in ch.index else 0,
             "codds": r(ch.championships_added.get(p.player)) if p.player in ch.index else 0,
             "s": [[int(q.season_start), q.team, r(q.net_classic), r(q.O_classic), r(q.D_classic), r(q.WAR_classic, 1),

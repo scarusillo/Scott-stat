@@ -1,0 +1,563 @@
+{
+ "rookie_rating": -0.8711498325726272,
+ "actual_on_predicted": {
+  "intercept": -0.00032474727168033086,
+  "slope": 1.19332750388533,
+  "r": 0.8525996160973637,
+  "n": 1358
+ },
+ "split": {
+  "stayers_slope": 1.1713158276074693,
+  "se_stay": 0.024717308342462194,
+  "movers_slope": 1.2711613996750903,
+  "se_move": 0.05578150668226384
+ },
+ "stars_moving": {
+  "n": 54,
+  "mean_resid_team_left": -0.9916394039679063,
+  "mean_resid_team_joined": -0.3208961974418872,
+  "note": "positive left / negative joined would mean the star was over-rated; the reverse, under-rated"
+ },
+ "star_moves": [
+  {
+   "season": 2010,
+   "player_id": "jamesle01",
+   "player": "LeBron James",
+   "team": "CLE",
+   "net_classic": 8.6,
+   "new_team": "MIA",
+   "resid_left": -5.85,
+   "resid_joined": -4.2
+  },
+  {
+   "season": 2020,
+   "player_id": "hardeja01",
+   "player": "James Harden",
+   "team": "HOU",
+   "net_classic": 6.76,
+   "new_team": "BRK",
+   "resid_left": -4.02,
+   "resid_joined": 2.9
+  },
+  {
+   "season": 2017,
+   "player_id": "paulch01",
+   "player": "Chris Paul",
+   "team": "LAC",
+   "net_classic": 6.38,
+   "new_team": "HOU",
+   "resid_left": -0.98,
+   "resid_joined": 0.44
+  },
+  {
+   "season": 2014,
+   "player_id": "jamesle01",
+   "player": "LeBron James",
+   "team": "MIA",
+   "net_classic": 6.33,
+   "new_team": "CLE",
+   "resid_left": -2.89,
+   "resid_joined": -2.97
+  },
+  {
+   "season": 2018,
+   "player_id": "jamesle01",
+   "player": "LeBron James",
+   "team": "CLE",
+   "net_classic": 5.42,
+   "new_team": "LAL",
+   "resid_left": -4.02,
+   "resid_joined": -1.97
+  },
+  {
+   "season": 2024,
+   "player_id": "doncilu01",
+   "player": "Luka Don\u010di\u0107",
+   "team": "DAL",
+   "net_classic": 5.25,
+   "new_team": "LAL",
+   "resid_left": -1.1,
+   "resid_joined": -0.5
+  },
+  {
+   "season": 2019,
+   "player_id": "georgpa01",
+   "player": "Paul George",
+   "team": "OKC",
+   "net_classic": 5.06,
+   "new_team": "LAC",
+   "resid_left": 2.47,
+   "resid_joined": 1.88
+  },
+  {
+   "season": 2016,
+   "player_id": "duranke01",
+   "player": "Kevin Durant",
+   "team": "OKC",
+   "net_classic": 5.05,
+   "new_team": "GSW",
+   "resid_left": -1.17,
+   "resid_joined": -3.33
+  },
+  {
+   "season": 2020,
+   "player_id": "paulch01",
+   "player": "Chris Paul",
+   "team": "OKC",
+   "net_classic": 4.92,
+   "new_team": "PHO",
+   "resid_left": -5.95,
+   "resid_joined": 2.13
+  },
+  {
+   "season": 2011,
+   "player_id": "paulch01",
+   "player": "Chris Paul",
+   "team": "NOH",
+   "net_classic": 4.84,
+   "new_team": "LAC",
+   "resid_left": 1.67,
+   "resid_joined": 0.8
+  },
+  {
+   "season": 2023,
+   "player_id": "holidjr01",
+   "player": "Jrue Holiday",
+   "team": "MIL",
+   "net_classic": 4.56,
+   "new_team": "BOS",
+   "resid_left": -3.21,
+   "resid_joined": 2.99
+  },
+  {
+   "season": 2023,
+   "player_id": "lillada01",
+   "player": "Damian Lillard",
+   "team": "POR",
+   "net_classic": 4.5,
+   "new_team": "MIL",
+   "resid_left": -4.65,
+   "resid_joined": -3.21
+  },
+  {
+   "season": 2007,
+   "player_id": "garneke01",
+   "player": "Kevin Garnett",
+   "team": "MIN",
+   "net_classic": 4.47,
+   "new_team": "BOS",
+   "resid_left": 0.16,
+   "resid_joined": 2.25
+  },
+  {
+   "season": 2004,
+   "player_id": "onealsh01",
+   "player": "Shaquille O'Neal",
+   "team": "LAL",
+   "net_classic": 4.41,
+   "new_team": "MIA",
+   "resid_left": -0.81,
+   "resid_joined": 4.5
+  },
+  {
+   "season": 2022,
+   "player_id": "goberru01",
+   "player": "Rudy Gobert",
+   "team": "UTA",
+   "net_classic": 4.29,
+   "new_team": "MIN",
+   "resid_left": 0.11,
+   "resid_joined": -3.69
+  },
+  {
+   "season": 2017,
+   "player_id": "butleji01",
+   "player": "Jimmy Butler",
+   "team": "CHI",
+   "net_classic": 4.17,
+   "new_team": "MIN",
+   "resid_left": -1.33,
+   "resid_joined": -1.96
+  },
+  {
+   "season": 1992,
+   "player_id": "barklch01",
+   "player": "Charles Barkley",
+   "team": "PHI",
+   "net_classic": 4.06,
+   "new_team": "PHO",
+   "resid_left": -4.11,
+   "resid_joined": 0.63
+  },
+  {
+   "season": 1996,
+   "player_id": "onealsh01",
+   "player": "Shaquille O'Neal",
+   "team": "ORL",
+   "net_classic": 4.06,
+   "new_team": "LAL",
+   "resid_left": 0.44,
+   "resid_joined": -0.35
+  },
+  {
+   "season": 2000,
+   "player_id": "jonesed02",
+   "player": "Eddie Jones",
+   "team": "CHH",
+   "net_classic": 4.04,
+   "new_team": "MIA",
+   "resid_left": 1.85,
+   "resid_joined": -1.18
+  },
+  {
+   "season": 2023,
+   "player_id": "duranke01",
+   "player": "Kevin Durant",
+   "team": "BRK",
+   "net_classic": 3.97,
+   "new_team": "PHO",
+   "resid_left": -2.84,
+   "resid_joined": -1.14
+  },
+  {
+   "season": 2015,
+   "player_id": "aldrila01",
+   "player": "LaMarcus Aldridge",
+   "team": "POR",
+   "net_classic": 3.96,
+   "new_team": "SAS",
+   "resid_left": 0.88,
+   "resid_joined": 2.21
+  },
+  {
+   "season": 1982,
+   "player_id": "gilmoar01",
+   "player": "Artis Gilmore",
+   "team": "CHI",
+   "net_classic": 3.87,
+   "new_team": "SAS",
+   "resid_left": -1.69,
+   "resid_joined": -1.99
+  },
+  {
+   "season": 2018,
+   "player_id": "butleji01",
+   "player": "Jimmy Butler",
+   "team": "MIN",
+   "net_classic": 3.79,
+   "new_team": "PHI",
+   "resid_left": -1.97,
+   "resid_joined": -2.21
+  },
+  {
+   "season": 2004,
+   "player_id": "mcgratr01",
+   "player": "Tracy McGrady",
+   "team": "ORL",
+   "net_classic": 3.78,
+   "new_team": "HOU",
+   "resid_left": -2.87,
+   "resid_joined": 2.73
+  },
+  {
+   "season": 2019,
+   "player_id": "conlemi01",
+   "player": "Mike Conley",
+   "team": "MEM",
+   "net_classic": 3.68,
+   "new_team": "UTA",
+   "resid_left": 2.81,
+   "resid_joined": -2.9
+  },
+  {
+   "season": 2008,
+   "player_id": "billuch01",
+   "player": "Chauncey Billups",
+   "team": "DET",
+   "net_classic": 3.67,
+   "new_team": "DEN",
+   "resid_left": -3.2,
+   "resid_joined": -0.24
+  },
+  {
+   "season": 2017,
+   "player_id": "haywago01",
+   "player": "Gordon Hayward",
+   "team": "UTA",
+   "net_classic": 3.67,
+   "new_team": "BOS",
+   "resid_left": 2.89,
+   "resid_joined": 4.29
+  },
+  {
+   "season": 2019,
+   "player_id": "davisan02",
+   "player": "Anthony Davis",
+   "team": "NOP",
+   "net_classic": 3.65,
+   "new_team": "LAL",
+   "resid_left": -1.42,
+   "resid_joined": 1.88
+  },
+  {
+   "season": 2024,
+   "player_id": "georgpa01",
+   "player": "Paul George",
+   "team": "LAC",
+   "net_classic": 3.63,
+   "new_team": "PHI",
+   "resid_left": 3.62,
+   "resid_joined": -5.42
+  },
+  {
+   "season": 1982,
+   "player_id": "malonmo01",
+   "player": "Moses Malone",
+   "team": "HOU",
+   "net_classic": 3.62,
+   "new_team": "PHI",
+   "resid_left": -4.04,
+   "resid_joined": -1.33
+  },
+  {
+   "season": 2017,
+   "player_id": "thomais02",
+   "player": "Isaiah Thomas",
+   "team": "BOS",
+   "net_classic": 3.61,
+   "new_team": "LAL",
+   "resid_left": 4.29,
+   "resid_joined": 1.97
+  },
+  {
+   "season": 1998,
+   "player_id": "pippesc01",
+   "player": "Scottie Pippen",
+   "team": "CHI",
+   "net_classic": 3.58,
+   "new_team": "HOU",
+   "resid_left": -7.46,
+   "resid_joined": -0.82
+  },
+  {
+   "season": 2004,
+   "player_id": "davisba01",
+   "player": "Baron Davis",
+   "team": "NOH",
+   "net_classic": 3.57,
+   "new_team": "GSW",
+   "resid_left": -2.75,
+   "resid_joined": -1.7
+  },
+  {
+   "season": 1996,
+   "player_id": "barklch01",
+   "player": "Charles Barkley",
+   "team": "PHO",
+   "net_classic": 3.44,
+   "new_team": "HOU",
+   "resid_left": -0.21,
+   "resid_joined": 0.13
+  },
+  {
+   "season": 2019,
+   "player_id": "leonaka01",
+   "player": "Kawhi Leonard",
+   "team": "TOR",
+   "net_classic": 3.41,
+   "new_team": "LAC",
+   "resid_left": 4.31,
+   "resid_joined": 1.88
+  },
+  {
+   "season": 2000,
+   "player_id": "hillgr01",
+   "player": "Grant Hill",
+   "team": "DET",
+   "net_classic": 3.4,
+   "new_team": "ORL",
+   "resid_left": -0.36,
+   "resid_joined": -0.8
+  },
+  {
+   "season": 2012,
+   "player_id": "lowryky01",
+   "player": "Kyle Lowry",
+   "team": "HOU",
+   "net_classic": 3.37,
+   "new_team": "TOR",
+   "resid_left": 1.41,
+   "resid_joined": -1.06
+  },
+  {
+   "season": 2014,
+   "player_id": "loveke01",
+   "player": "Kevin Love",
+   "team": "MIN",
+   "net_classic": 3.37,
+   "new_team": "CLE",
+   "resid_left": -3.58,
+   "resid_joined": -2.97
+  },
+  {
+   "season": 1989,
+   "player_id": "harpero01",
+   "player": "Ron Harper",
+   "team": "CLE",
+   "net_classic": 3.34,
+   "new_team": "LAC",
+   "resid_left": -3.41,
+   "resid_joined": 2.14
+  },
+  {
+   "season": 2017,
+   "player_id": "couside01",
+   "player": "DeMarcus Cousins",
+   "team": "SAC",
+   "net_classic": 3.31,
+   "new_team": "NOP",
+   "resid_left": -2.5,
+   "resid_joined": -1.12
+  },
+  {
+   "season": 2004,
+   "player_id": "wallara01",
+   "player": "Rasheed Wallace",
+   "team": "POR",
+   "net_classic": 3.28,
+   "new_team": "DET",
+   "resid_left": -0.78,
+   "resid_joined": -1.18
+  },
+  {
+   "season": 2025,
+   "player_id": "davisan02",
+   "player": "Anthony Davis",
+   "team": "LAL",
+   "net_classic": 3.27,
+   "new_team": "DAL",
+   "resid_left": 0.36,
+   "resid_joined": -1.57
+  },
+  {
+   "season": 2001,
+   "player_id": "mutomdi01",
+   "player": "Dikembe Mutombo",
+   "team": "ATL",
+   "net_classic": 3.26,
+   "new_team": "PHI",
+   "resid_left": 1.08,
+   "resid_joined": -0.47
+  },
+  {
+   "season": 2019,
+   "player_id": "walkeke02",
+   "player": "Kemba Walker",
+   "team": "CHO",
+   "net_classic": 3.21,
+   "new_team": "BOS",
+   "resid_left": -0.72,
+   "resid_joined": 2.73
+  },
+  {
+   "season": 1995,
+   "player_id": "drexlcl01",
+   "player": "Clyde Drexler",
+   "team": "POR",
+   "net_classic": 3.16,
+   "new_team": "HOU",
+   "resid_left": 1.34,
+   "resid_joined": -1.36
+  },
+  {
+   "season": 2012,
+   "player_id": "howardw01",
+   "player": "Dwight Howard",
+   "team": "ORL",
+   "net_classic": 3.13,
+   "new_team": "LAL",
+   "resid_left": -4.94,
+   "resid_joined": -2.96
+  },
+  {
+   "season": 2019,
+   "player_id": "westbru01",
+   "player": "Russell Westbrook",
+   "team": "OKC",
+   "net_classic": 3.13,
+   "new_team": "HOU",
+   "resid_left": 2.47,
+   "resid_joined": -2.19
+  },
+  {
+   "season": 2006,
+   "player_id": "jonesed02",
+   "player": "Eddie Jones",
+   "team": "MEM",
+   "net_classic": 3.13,
+   "new_team": "MIA",
+   "resid_left": 0.99,
+   "resid_joined": -3.29
+  },
+  {
+   "season": 2006,
+   "player_id": "battish01",
+   "player": "Shane Battier",
+   "team": "MEM",
+   "net_classic": 3.12,
+   "new_team": "HOU",
+   "resid_left": 0.99,
+   "resid_joined": -0.98
+  },
+  {
+   "season": 2013,
+   "player_id": "garneke01",
+   "player": "Kevin Garnett",
+   "team": "BOS",
+   "net_classic": 3.11,
+   "new_team": "BRK",
+   "resid_left": -0.51,
+   "resid_joined": -1.82
+  },
+  {
+   "season": 2024,
+   "player_id": "harteis01",
+   "player": "Isaiah Hartenstein",
+   "team": "NYK",
+   "net_classic": 3.1,
+   "new_team": "OKC",
+   "resid_left": -2.21,
+   "resid_joined": 2.2
+  },
+  {
+   "season": 2019,
+   "player_id": "irvinky01",
+   "player": "Kyrie Irving",
+   "team": "BOS",
+   "net_classic": 3.06,
+   "new_team": "BRK",
+   "resid_left": 2.73,
+   "resid_joined": 1.12
+  },
+  {
+   "season": 2002,
+   "player_id": "mutomdi01",
+   "player": "Dikembe Mutombo",
+   "team": "PHI",
+   "net_classic": 3.01,
+   "new_team": "NJN",
+   "resid_left": 0.45,
+   "resid_joined": -0.0
+  },
+  {
+   "season": 1998,
+   "player_id": "jonesed02",
+   "player": "Eddie Jones",
+   "team": "LAL",
+   "net_classic": 3.0,
+   "new_team": "CHH",
+   "resid_left": -3.3,
+   "resid_joined": 3.75
+  }
+ ]
+}
