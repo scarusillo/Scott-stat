@@ -372,7 +372,7 @@ function legacy() {
       ${rows.map((r, i) => `<tr tabindex="0" data-go="#legend-${r.p.id}"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.p.name)}</b></td><td class="l num">${r.p.first}–${String(r.p.last + 1).slice(2)}</td>
         <td class="num"><b>${r.score.toFixed(2)}</b></td><td class="num">${f(r.p.best5)}</td><td class="num">${f(r.p.war, 0, false)}</td><td class="num">${r.p.titles || ""}</td><td class="num">${(r.p.tshare ?? 0).toFixed(2)}</td></tr>`).join("")}
     </tbody></table></div>
-    <p class="note">What the weights decide: with any real weight on championships, Michael Jordan is first. Leave championships out and LeBron James is first, on peak plus longevity. At equal weights the two are close enough that the order can flip. Players with fewer than eight qualifying seasons (Jokić, so far) aren't ranked here yet.</p></div>`;
+    <p class="note">What the weights decide: at equal weights Michael Jordan and LeBron James are a dead heat (the same score to two decimals). Weight championships more heavily, or drop career length, and Jordan is first. Weight career value or peak more heavily, or drop championships, and LeBron is first. Players with fewer than eight qualifying seasons (Jokić, so far) aren't ranked here yet.</p></div>`;
   for (const k of ["peak", "career", "rings"]) $("#w-" + k).oninput = e => { state.lw = { ...W, [k]: +e.target.value }; save(); legacy(); $("#w-" + k).focus(); };
   document.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { state.lw = presets[+b.dataset.preset][1]; save(); legacy(); });
   bindRows();

@@ -574,9 +574,9 @@ give the season, so the Oct-2020 bubble Finals land in 2019-20):
   Pippen 1.31, Duncan 1.28, Magic 1.19, Shaq 1.16, Kobe 1.04, LeBron 1.04, Kareem 0.93.
 
 **Legacy view (site)**: peak (Classic best 5) + career wins added + title shares (adjusted),
-each standardized over players with 8+ seasons, weighted by the reader. With any weight on
-championships, Jordan is #1; with championships left out, LeBron is #1 (peak + longevity).
-At equal weights the two are close (the order depends on the comparison pool).
+each standardized over players with 8+ seasons, weighted by the reader. After the audit fixes
+(LeBron's 2020 title credited): equal weights are a dead heat (6.26 each); championships x2 or
+peak + championships -> Jordan; peak x2, career-heavy, or no championships -> LeBron.
 
 ## Audit (adversarial pass, two loops)
 
