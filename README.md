@@ -626,6 +626,17 @@ effects, ~18% of offense. Associations, not experiments. Site: Careers and Coach
 Current Classic peaks: Jokić 6.61 (6.18 + 0.43), LeBron 6.60 (5.37 + 1.23), Curry 6.21 (5.29 + 0.92),
 Jordan 6.20 (5.79 + 0.40, 1988-93), Robinson 6.10, Paul 5.99, Kareem 5.54, Russell 4.45 (2.50 + 1.96).
 
+## Recency-bias checks (`src/recency_test.py`, `out/recency_test.json`)
+
+- **Like-for-like team credit** (top-10 individual players on +4 to +9 teams): 1985-95 stars get more
+  individual (3.99 vs ~3.5) and less team credit (0.48 vs ~0.70) than later stars, and their total
+  impact (4.47) is as high or higher than 1996-2014 (4.2). The split differs by era; the total is not tilted.
+- **Scale**: 1985-95 holds 31% of the 100 best seasons on 18% of player-seasons, the most of any era
+  (2015-25: 27% on 19%). Pre-1977 eras are under-represented (fewer recorded stats).
+- **Jordan-type players**: for star seasons with play-by-play, Plus minus Classic is +0.12 for shooting
+  guards and +0.12 across high-scoring guards/wings; Jordan's own 1996-98 seasons: Classic 4.6, Plus 4.7.
+- **Certainty**: a five-season peak has SE ~0.69, so the top four (0.41 apart) can't be ordered.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
