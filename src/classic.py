@@ -480,13 +480,18 @@ def main():
     f["winning_adj"] = 0.0
     wm, wc = OUT / "winning_meta.json", OUT / "winning_careers.csv"
     if wm.exists() and wc.exists():
-        beta_w = json.load(open(wm))["validation_vs_plus_leave_season_out"]["add_to_rating"]["beta"]
+        atr = json.load(open(wm))["validation_vs_plus_leave_season_out"]["add_to_rating"]
         wv = pd.read_csv(wc).set_index("player_id").winning
+        if "by_minutes" in atr:     # weight rises with minutes: a reserve's team-results credit is confirmed less
+            bm = atr["by_minutes"]
+            beta_w = (bm["b0"] + bm["b1_per_10_mpg"] * ((f.mp / f.g.clip(lower=1)).clip(15, 40) - 30) / 10).clip(lower=0)
+        else:
+            beta_w = atr["beta"]
         f["winning_adj"] = beta_w * f.player_id.map(wv).fillna(0)
         f["O_c"] = f.O_c + f.winning_adj / 2
         f["D_c"] = f.D_c + f.winning_adj / 2
         f["net_c"] = f.O_c + f.D_c
-        val["winning_beta"] = beta_w
+        val["winning_beta"] = atr
     print("play-by-play blend:", blend_ev, flush=True)
     bO, bD = f.attrs.get("coef_O_1990", np.zeros(len(FEATS) + 1)), f.attrs.get("coef_D_1990", np.zeros(len(FEATS) + 1))
 

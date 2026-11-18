@@ -117,7 +117,7 @@ def main():
         x = c[(c.season == s) & c.net_plus.notna() & (c.poss >= 1000)]
         rows.append(pd.DataFrame({"plus": x.net_plus, "box": x["prod"], "model": x.net_classic_box_team,
                                   "winning": x["prod"] + x.player_id.map(ws).fillna(0).to_numpy(),
-                                  "team_credit": x.O_box + x.D_box, "w": x.poss}))
+                                  "team_credit": x.O_box + x.D_box, "w": x.poss, "mpg": x.mp / x.g.clip(lower=1)}))
     v = pd.concat(rows)
     r = lambda col: float(np.corrcoef(v[col], v.plus)[0, 1])
     rmse = lambda col: float(np.sqrt(np.average((v[col] - v.plus) ** 2, weights=v.w)))
@@ -138,6 +138,20 @@ def main():
     val["add_to_rating"] = {"beta": beta_on(np.ones(len(v), bool)), "beta_odd": beta_on(odd), "beta_even": beta_on(~odd),
                             "rmse_model": rmse("model"),
                             "rmse_model_plus_winning_cross_fit": float(np.sqrt(np.average((pred - v.plus) ** 2, weights=v.w)))}
+    # MINUTES-DEPENDENT weight: play-by-play confirms a reserve's WINNING much less than a starter's (with fewer
+    # minutes, more of a great team's success lands on him than the floor data supports). Fit
+    # beta(mpg) = b0 + b1 x (mpg - 30) / 10, mpg clipped to 15-40, and cross-fit on odd/even seasons.
+    v["m"] = (v.mpg.clip(15, 40) - 30) / 10
+    def beta_mpg(m):
+        Zm = np.c_[v.wn[m], v.wn[m] * v.m[m]] * np.sqrt(v.w[m].to_numpy())[:, None]
+        return np.linalg.lstsq(Zm, (v.plus - v.model)[m] * np.sqrt(v.w[m]), rcond=None)[0]
+    bo, be = beta_mpg(odd), beta_mpg(~odd)
+    bb = np.where(odd[:, None], be[None, :], bo[None, :])
+    pred2 = v.model + (bb[:, 0] + bb[:, 1] * v.m).clip(lower=0) * v.wn
+    ball = beta_mpg(np.ones(len(v), bool))
+    val["add_to_rating"]["by_minutes"] = {"b0": float(ball[0]), "b1_per_10_mpg": float(ball[1]),
+                                          "beta_at": {str(mm): float(max(ball[0] + ball[1] * (mm - 30) / 10, 0)) for mm in (20, 25, 30, 35, 38)},
+                                          "rmse_cross_fit": float(np.sqrt(np.average((pred2 - v.plus) ** 2, weights=v.w)))}
     print(json.dumps(val, indent=1))
 
     # teammate elevation (descriptive): teammates' box production with him vs their age-adjusted production elsewhere
@@ -168,7 +182,9 @@ def main():
         "team_wpct": np.average(g.team_wpct.fillna(0.5), weights=g.poss),
         "team_credit_career": np.average(g.O_box + g.D_box - g["prod"], weights=g.poss),
         "pace": np.average(g.pace_.fillna(100), weights=g.poss),
-        "prime_poss": g.poss.nlargest(10).sum()}), include_groups=False)
+        "prime_poss": g.poss.nlargest(10).sum(),
+        "prime_mpg": (g.loc[g.poss.nlargest(10).index].mp.sum() / g.loc[g.poss.nlargest(10).index].g.clip(lower=1).sum())}),
+        include_groups=False)
     car = car.join(win).join(win_prime).join(elev)
     car["winning_prime"] = car.winning_prime.fillna(car.winning)
     pp = c[c.prime].groupby("player_id").poss.mean()
@@ -184,7 +200,11 @@ def main():
     car["winning_prime_wins"] = car.winning * car.prime_poss / 100 * kfun(car.pace)
     # the per-season version (no career length at all): wins per prime season beyond the box score
     # (career WINNING, which predicts held-out team results better than a prime-only estimate)
-    car["winning_wins_per_season"] = car.winning * car.prime_poss_per_season / 100 * kfun(car.pace)
+    bm = val["add_to_rating"]["by_minutes"]
+    beta_prime = (bm["b0"] + bm["b1_per_10_mpg"] * (car.prime_mpg.clip(15, 40) - 30) / 10).clip(lower=0)
+    car["winning_confirmed_factor"] = beta_prime / val["add_to_rating"]["beta"]
+    # Legacy: per prime season, calibrated by minutes (the share play-by-play confirms, relative to the average)
+    car["winning_wins_per_season"] = car.winning * car.winning_confirmed_factor * car.prime_poss_per_season / 100 * kfun(car.pace)
     car.to_csv(OUT / "winning_careers.csv", float_format="%.3f")
     meta = {"lambda": lam, "cv": cv, "cv_prime_split": cv_phase, "validation_vs_plus_leave_season_out": val, "n_team_seasons": int(len(y))}
     (OUT / "winning_meta.json").write_text(json.dumps(meta, indent=1, default=float))

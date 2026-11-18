@@ -839,6 +839,18 @@ Legacy default: Jordan 114, LeBron 111, Russell, Duncan, Magic, Bird, Curry, Kar
 with titles doubled, winning at full weight, or titles removed; Russell first with scoring & creation removed.
 Kobe 16, SGA 20, Tatum 34, Moses 40, Lillard 44, McGrady 62, Iverson 68, Carter 123, Carmelo 185, Cousins 184.
 
+## Winning credit for reserves (Ginobili check)
+
+Is WINNING over-credited to players on great teams? Calibration against play-by-play (leave-season-out), share
+of WINNING confirmed: all 0.18; career team win% 60%+ 0.16, 50-60% 0.24, under 50% 0.16 (great teams are not the
+issue); starters 30+ mpg 0.23, reserves under 28 mpg 0.13 (the issue: with fewer minutes, more of a great team's
+success lands on a reserve than the floor data supports). Fix: weight by minutes, beta(mpg) = 0.191 + 0.066 x
+(mpg - 30)/10 (0.12 at 20 mpg, 0.19 at 30, 0.24 at 38), used in the rating adjustment and, relative to the
+average, in the Legacy winning ingredient (prime minutes). Held-out error 1.5225 -> 1.5221.
+Ginobili's per-possession impact holds up: play-by-play +3.72 vs model +3.04 over 16 seasons. Tony Parker's
+does not (+0.76 on the floor), which is why Ginobili gets more of the 2005 and 2007 titles.
+Legacy default after the fix: Erving 25, Kawhi 28, Ginobili 29 (was 25), Chris Paul 31 -- within 2 points.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
