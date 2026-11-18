@@ -894,6 +894,27 @@ the play-by-play blend, ABA compression (CI excludes a flat shift). Classic beat
 Now: peak wins Jordan 18.7, LeBron 18.4, Wilt 17.6, Kareem 17.1, Robinson 16.7, Jokic 16.2, Curry 15.7, Russell 15.3.
 Legacy: Jordan 117, LeBron 116, Russell, Duncan, Magic, Bird, Curry, Shaq, Kareem, Jokic; Wilt 12, Kobe 15.
 
+## Website (GitHub Pages) and the new views
+
+`site/` is the whole site (one page + `data.json`). `scripts/build_pages.py` wraps it into a full HTML document
+in `_site/`; `.github/workflows/pages.yml` builds and deploys it on every push to `main` that touches `site/`.
+One-time setup: repository Settings -> Pages -> Source: "GitHub Actions". (Pages on a private repository
+needs a paid GitHub plan; otherwise make the repo public or use the private Claude artifact link.)
+
+New views:
+- **Coach lab -> Who grew under him**: every player with 2,000+ possessions under the coach, against his own
+  career trend (player_coach.py, trend-adjusted), filterable by position (G/W/B) and play style (archetype in
+  those seasons). **Find the coach for a player**: coaches ranked by possession-weighted growth of players of a
+  chosen position and style (3+ such players).
+- **Synergy** (`src/synergy.py`): every pair and trio of teammates, 1996-97 on; actual luck-adjusted margin
+  while they share the floor minus what all ten players' season ratings predict; shrinkage K = 10,000
+  possessions chosen by predicting each pair's other-half seasons; split-half r 0.12 (real but noisy per pair).
+  Top by total effect: Curry-Draymond, Durant-Westbrook, Duncan-Ginobili, Giannis-Middleton, Curry-Klay,
+  Shaq-Kobe. LeBron-Mo Williams +1.5 per 100 over ~10,000 possessions; LeBron-Wade ~0.
+- **Lineup lab**: drag five players (or tap); best-five-season ratings plus the possession-weighted AVERAGE of
+  measured pair synergies (a pair's number already includes its five's effect, so summing would count it
+  up to ten times).
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

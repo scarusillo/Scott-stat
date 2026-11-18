@@ -118,9 +118,30 @@ def main():
         })
     pairs = []
     pc = pcoach[pcoach.player_id.isin(keep.player_id)]
+    # play style under that coach (most common archetype in those seasons) and position (G / W / B)
+    ar_ = arch[["season", "player_id", "archetype", "poss"]]
+    cls_ = pd.concat([pd.read_csv(OUT / f"classic_{y}.csv", usecols=["nba_id", "pos", "poss"]) for y in range(1996, 2026)])
+    cls_ = cls_.dropna(subset=["nba_id"])
+    pos_ = cls_.assign(p=cls_.pos.astype(str).str.split("-").str[0]).groupby(["nba_id", "p"]).poss.sum().reset_index() \
+        .sort_values("poss").groupby("nba_id").p.last()
+    gwb = lambda z: "G" if z in ("PG", "SG") else "W" if z == "SF" else "B" if z in ("PF", "C") else ""
     for q in pc.itertuples():
+        a_ = ar_[(ar_.player_id == q.player_id) & ar_.season.between(q.first_season, q.last_season)]
+        style_ = a_.groupby("archetype").poss.sum().idxmax() if len(a_) else ""
         pairs.append([int(q.player_id), q.coach, int(q.first_season), int(q.last_season), int(q.shared_poss),
-                      r(q.total_uplift_raw), r(q.raw_se), r(q.total_uplift_trend_adjusted), r(q.trend_adjusted_se)])
+                      r(q.total_uplift_raw), r(q.raw_se), r(q.total_uplift_trend_adjusted), r(q.trend_adjusted_se),
+                      style_, gwb(pos_.get(float(q.player_id), ""))])
+    # synergy (synergy.py): duos and trios
+    sp = pd.read_csv(OUT / "synergy_pairs.csv")
+    st = pd.read_csv(OUT / "synergy_trios.csv")
+    st["extra"] = st.synergy * st.poss / 100
+    st = st[st.poss >= 3000].sort_values("extra", ascending=False).head(800)
+    smeta = json.load(open(OUT / "synergy_meta.json"))
+    syn = {"pairs": [[int(q.id1), int(q.id2), q.p1, q.p2, q.teams, int(q.first), int(q.last), int(q.poss), r(q.synergy), r(q.net_together)]
+                     for q in sp.itertuples()],
+           "trios": [[q.p1, q.p2, q.p3, q.teams, int(q.first), int(q.last), int(q.poss), r(q.synergy), r(q.net_together)]
+                     for q in st.itertuples()],
+           "reliability": r(smeta["reliability"]["split_half_r"]), "k": int(smeta["reliability"]["K_chosen"])}
     # every player-season of the last three seasons, for the GM finder
     recent = []
     val = pd.read_csv(OUT / "value_seasons.csv").set_index(["season", "player_id"])
@@ -179,7 +200,7 @@ def main():
              "board": [[q.player_id, q.player, q.team, int(q.age), q.pos, r(q.rating, 1), r(q.norm_now, 1), r(q.gap, 1),
                         r(q.expected_next, 1)] for q in sb.itertuples()]}
     data = {"study": study, "value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
-                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs,
+                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn,
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),
                 "clutch_split_half": val.get("playoffs_meta", {}).get("all_clutch", {}).get("split_half"),

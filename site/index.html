@@ -78,6 +78,26 @@ td.rank { color: var(--muted); width: 1% }
 svg text { fill: var(--muted); font: 11px var(--body); }
 .tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); padding: 6px 8px; border-radius: 6px; font-size: 12px; z-index: 20; }
 .flag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 1px 6px; border-radius: 4px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.dot-g { fill: var(--off) } .dot-w { fill: var(--def) } .dot-b { fill: var(--c3) }
+.key { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.key i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.lab { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 20px; }
+@media (max-width: 860px) { .lab { grid-template-columns: 1fr } }
+.pool { display: flex; flex-wrap: wrap; gap: 6px; max-height: 420px; overflow-y: auto; padding: 2px; align-content: flex-start; align-items: flex-start; }
+.pchip { font-size: 13px; padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); cursor: grab; user-select: none; display: inline-flex; gap: 6px; align-items: center; }
+.pchip:hover { border-color: var(--accent) } .pchip:active { cursor: grabbing }
+.pchip b { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--muted); font-size: 12px; }
+.slots { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 560px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.slot { min-height: 96px; border: 2px dashed var(--line); border-radius: 10px; padding: 10px; display: grid; align-content: space-between; gap: 6px; background: var(--bg); }
+.slot.over { border-color: var(--accent); background: var(--band); }
+.slot.full { border-style: solid; background: var(--surface); }
+.slot .nm { font: 600 18px/1.05 var(--display); text-transform: uppercase; letter-spacing: .02em; }
+.slot .rt { font: 600 22px/1 var(--display); font-variant-numeric: tabular-nums; }
+.slot button { padding: 2px 8px; font-size: 12px; justify-self: start; cursor: pointer; }
+.grid5 { display: grid; gap: 2px; font-size: 12px; }
+.grid5 div { padding: 6px 4px; text-align: center; border-radius: 4px; font-variant-numeric: tabular-nums; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (prefers-reduced-motion: no-preference) { .fade { animation: fade .25s ease-out } @keyframes fade { from { opacity: .4 } to { opacity: 1 } } }
 </style>
 
@@ -85,7 +105,7 @@ svg text { fill: var(--muted); font: 11px var(--body); }
   <a class="brand" href="#leaders">The Scott <span>Stat</span></a>
   <nav id="nav">
     <a href="#leaders">Leaderboard</a><a href="#study">Study</a><a href="#legacy">Legacy</a><a href="#guide">Guide</a><a href="#compare">Compare</a><a href="#careers">Careers</a><a href="#progression">Progression</a>
-    <a href="#coaches">Coaches</a><a href="#coachlab">Coach lab</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
+    <a href="#coaches">Coaches</a><a href="#coachlab">Coach lab</a><a href="#synergy">Synergy</a><a href="#lineup">Lineup lab</a><a href="#scenarios">Scenarios</a><a href="#finder">GM finder</a><a href="#method">Method</a><a href="#launch">Launch plan</a>
   </nav>
 </div></header>
 <main class="wrap" id="app"><p class="note">Loading the Scott Stat…</p></main>
@@ -114,7 +134,7 @@ function route() {
   const app = $("#app"); app.classList.remove("fade"); void app.offsetWidth; app.classList.add("fade");
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch }[h] || leaders)();
+  ({ leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup }[h] || leaders)();
   scrollTo(0, 0);
 }
 
@@ -578,11 +598,8 @@ function coachlab() {
         ${c.style ? Object.entries(TRAIT).map(([k, l]) => hbar(l, c.style[k], 2.5, k.startsWith("opp") ? "var(--def)" : "var(--off)")).join("") : ""}
         <p class="note">Each bar: how far his teams sit from the league average of their season, in standard deviations. Right = more than average.</p></div>
     </div>
-    <div class="cols2">
-      <div class="panel tablewrap"><h3>Played best under him</h3>${mine.length ? `<table><tbody>${rowsP(mine.slice(0, 8))}</tbody></table>` : `<p class="note">No players with enough shared minutes and a second coach to compare against.</p>`}</div>
-      <div class="panel tablewrap"><h3>Played worst under him</h3>${mine.length > 8 ? `<table><tbody>${rowsP(mine.slice(-6).reverse())}</tbody></table>` : `<p class="note">Not enough players to list.</p>`}
-        <p class="note">Each player against his own career level, with his own career arc and the coach's general effect taken out. These are small, heavily damped numbers: a lead, not a verdict.</p></div>
-    </div>
+    <div class="panel stack" id="growth" style="gap:14px"></div>
+    <div class="panel stack" id="cfind" style="gap:14px"></div>
     <div class="panel"><h3>Which schemes go with results</h3>
       <div class="controls"><label for="oc">Result<select id="oc">${Object.entries(OUTC).map(([k, v]) => `<option value="${k}" ${k === oc ? "selected" : ""}>${v[0]}</option>`).join("")}</select></label>
         <label for="tr">Style trait<select id="tr">${Object.entries(TRAIT).map(([k, l]) => `<option value="${k}" ${k === tr ? "selected" : ""}>${l}</option>`).join("")}</select></label></div>
@@ -597,9 +614,208 @@ function coachlab() {
           ${sch.slice().sort((a, b) => b[2] - a[2]).map(r => hbar(TRAIT[r[1]] + (Math.abs(r[4]) >= 2 ? " •" : ""), r[2], 0.8, r[2] >= 0 ? "var(--good)" : "var(--bad)", r[3])).join("")}
           <p class="note">• = clears two standard errors. Style explains about ${Math.round((sch[0]?.[6] || 0) * 100)}% of the differences between coaches on this result. These are patterns across coaches, not proof: a style can follow from the roster as much as cause the result.</p></div>
       </div></div></div>`;
+  renderGrowth(c); renderCoachFinder();
   $("#clsel").onchange = e => { state.cl = e.target.value; save(); coachlab(); };
   $("#oc").onchange = e => { state.co = e.target.value; save(); coachlab(); };
   $("#tr").onchange = e => { state.ct = e.target.value; save(); coachlab(); };
+}
+
+
+/* ---------- coach lab: who grew under him ---------- */
+const STYLES = ["Lead creator", "Playmaking guard", "Scoring wing", "Spot-up shooter", "Defensive wing", "Interior scorer", "Frontcourt finisher", "Rim runner"];
+const POSN = { G: "Guards", W: "Wings", B: "Bigs" };
+function pcRows(filter) {
+  const names = new Map(D.players.map(p => [p.id, p.name]));
+  return D.pairs.filter(filter).map(x => ({ id: x[0], n: names.get(x[0]) || "", coach: x[1], a: x[2], z: x[3], poss: x[4], raw: x[5], v: x[7], se: x[8], sty: x[9] || "", pos: x[10] || "" }))
+    .filter(x => x.n);
+}
+function renderGrowth(c) {
+  const g = state.g || { pos: "", sty: "", min: 2000 };
+  const all = pcRows(x => x[1] === c.name && x[4] >= g.min);
+  const rows = all.filter(x => (!g.pos || x.pos === g.pos) && (!g.sty || x.sty === g.sty)).sort((a, b) => b.v - a.v);
+  const shown = rows.length > 40 ? rows.slice(0, 20).concat(rows.slice(-20)) : rows;
+  const W = 720, rh = 22, m = { l: 210, r: 70, t: 24, b: 26 }, H = m.t + m.b + shown.length * rh;
+  const lim = Math.max(1, Math.ceil(Math.max(...shown.map(x => Math.abs(x.v) + x.se), 0.5)));
+  const X = v => m.l + (v + lim) / (2 * lim) * (W - m.l - m.r);
+  const ticks = []; for (let v = -lim; v <= lim; v += lim <= 2 ? 0.5 : 1) ticks.push(v);
+  const avg = rows.length ? rows.reduce((s, x) => s + x.v * x.poss, 0) / rows.reduce((s, x) => s + x.poss, 0) : null;
+  $("#growth").innerHTML = `<div><h3>Who grew under ${esc(c.name)}</h3>
+    <p class="note">Every player with ${g.min.toLocaleString()}+ possessions under him, against his own career trend: how much better (or worse) he played under this coach than his age and his own arc predict, in points per 100 possessions. ± is one standard error; these are damped, so a ±0.3 player is a lead, not a verdict.</p></div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Position">${[["", "All"], ["G", "Guards"], ["W", "Wings"], ["B", "Bigs"]].map(([k, l]) => `<button data-gpos="${k}" aria-pressed="${g.pos === k}">${l}</button>`).join("")}</div>
+      <label for="gsty">Play style<select id="gsty"><option value="">Every style</option>${STYLES.map(t => `<option ${t === g.sty ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+      <label for="gmin">Shared possessions<select id="gmin">${[1000, 2000, 4000, 8000].map(v => `<option value="${v}" ${v === g.min ? "selected" : ""}>${v.toLocaleString()}+</option>`).join("")}</select></label>
+      <span class="key"><i style="background:var(--off)"></i>Guard</span><span class="key"><i style="background:var(--def)"></i>Wing</span><span class="key"><i style="background:var(--c3)"></i>Big</span>
+    </div>
+    ${rows.length ? `<div class="tiles"><div class="tile a"><small>Players shown</small><b>${rows.length}</b><small>of ${all.length} under him</small></div>
+      <div class="tile"><small>Average growth</small><b class="${cls(avg)}">${f(avg, 2)}</b><small>possession-weighted, per 100</small></div>
+      <div class="tile"><small>Grew most</small><b style="font-size:22px">${esc(rows[0].n)}</b><small>${f(rows[0].v, 2)} · ${esc(rows[0].sty)}</small></div>
+      <div class="tile"><small>Grew least</small><b style="font-size:22px">${esc(rows[rows.length - 1].n)}</b><small>${f(rows[rows.length - 1].v, 2)} · ${esc(rows[rows.length - 1].sty)}</small></div></div>
+    <div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:560px" role="img" aria-label="Player growth under ${esc(c.name)}">
+      ${ticks.map(t => `<line x1="${X(t)}" x2="${X(t)}" y1="${m.t - 6}" y2="${H - m.b}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${X(t)}" y="${H - 8}" text-anchor="middle">${t > 0 ? "+" + t : t}</text>`).join("")}
+      <text x="${X(lim)}" y="12" text-anchor="end">grew more →</text><text x="${X(-lim)}" y="12">← grew less</text>
+      ${shown.map((x, i) => { const y = m.t + i * rh + rh / 2;
+        return `<g data-tip="${esc(`${x.n} · ${x.sty || "–"} · ${yr(x.a)}${x.z > x.a ? " to " + yr(x.z) : ""} · ${x.poss.toLocaleString()} possessions · ${f(x.v, 2)} ±${x.se.toFixed(2)} vs own trend (raw ${f(x.raw, 2)})`)}">
+          <rect x="0" y="${y - rh / 2}" width="${W}" height="${rh}" fill="transparent"/>
+          <text x="${m.l - 10}" y="${y + 4}" text-anchor="end" style="fill:var(--ink);font-size:12px">${esc(x.n)}</text>
+          <line x1="${X(Math.max(-lim, x.v - x.se))}" x2="${X(Math.min(lim, x.v + x.se))}" y1="${y}" y2="${y}" stroke="var(--muted)" stroke-width="1.5"/>
+          <circle cx="${X(x.v)}" cy="${y}" r="5.5" class="dot-${(x.pos || "w").toLowerCase()}" stroke="var(--surface)" stroke-width="2"/>
+          <text x="${W - m.r + 8}" y="${y + 4}" class="num">${f(x.v, 2)}</text></g>`; }).join("")}
+    </svg></div>${rows.length > 40 ? `<p class="note">Showing the 20 who grew most and the 20 who grew least of ${rows.length}.</p>` : ""}`
+    : `<p class="note">No players match these filters. Try every style, or fewer shared possessions.</p>`}`;
+  const set = k => v => { state.g = { ...g, [k]: v }; save(); renderGrowth(c); };
+  document.querySelectorAll("[data-gpos]").forEach(b => b.onclick = () => set("pos")(b.dataset.gpos));
+  $("#gsty").onchange = e => set("sty")(e.target.value);
+  $("#gmin").onchange = e => set("min")(+e.target.value);
+}
+function renderCoachFinder() {
+  const q = state.cf || { pos: "G", sty: "" };
+  const rows = pcRows(x => x[4] >= 2000 && (!q.pos || x[10] === q.pos) && (!q.sty || x[9] === q.sty));
+  const by = new Map();
+  rows.forEach(x => { const a = by.get(x.coach) || []; a.push(x); by.set(x.coach, a); });
+  const out = [...by.entries()].filter(([, a]) => a.length >= 3).map(([coach, a]) => {
+    const w = a.reduce((s, x) => s + x.poss, 0), v = a.reduce((s, x) => s + x.v * x.poss, 0) / w;
+    const se = Math.sqrt(a.reduce((s, x) => s + (x.poss * x.se) ** 2, 0)) / w;
+    const best = a.slice().sort((p, r) => r.v - p.v)[0];
+    return { coach, v, se, n: a.length, best };
+  }).sort((a, b) => b.v - a.v);
+  const label = `${q.sty || "players"}${q.pos ? " · " + POSN[q.pos].toLowerCase() : ""}`;
+  $("#cfind").innerHTML = `<div><h3>Find the coach for a player</h3><p class="note">Pick a position and a play style: coaches ranked by how much players of that kind grew under them, against their own career trends (possession-weighted, at least three such players with 2,000+ possessions each).</p></div>
+    <div class="controls"><div class="seg" role="group" aria-label="Position">${[["", "Any"], ["G", "Guards"], ["W", "Wings"], ["B", "Bigs"]].map(([k, l]) => `<button data-cfpos="${k}" aria-pressed="${q.pos === k}">${l}</button>`).join("")}</div>
+      <label for="cfsty">Play style<select id="cfsty"><option value="">Every style</option>${STYLES.map(t => `<option ${t === q.sty ? "selected" : ""}>${t}</option>`).join("")}</select></label></div>
+    ${out.length ? `<div class="tablewrap"><table><thead><tr><th></th><th class="l">Coach</th><th>Growth</th><th>Players</th><th class="l">Grew most</th></tr></thead><tbody>
+      ${out.slice(0, 15).map((r, i) => `<tr data-coach="${esc(r.coach)}" tabindex="0"><td class="rank num">${i + 1}</td><td class="l"><b>${esc(r.coach)}</b></td><td class="num ${cls(r.v)}"><b>${f(r.v, 2)}</b><span class="pm">±${r.se.toFixed(2)}</span></td>
+        <td class="num">${r.n}</td><td class="l">${esc(r.best.n)} <span class="pm">${f(r.best.v, 2)}</span></td></tr>`).join("")}</tbody></table></div>
+      <p class="note">${esc(label[0].toUpperCase() + label.slice(1))}: ${out.length} coaches qualify. Click a coach to open his lab.</p>`
+      : `<p class="note">No coach has three or more ${esc(label)} with enough minutes. Widen the filters.</p>`}`;
+  const set = k => v => { state.cf = { ...q, [k]: v }; save(); renderCoachFinder(); };
+  document.querySelectorAll("[data-cfpos]").forEach(b => b.onclick = () => set("pos")(b.dataset.cfpos));
+  $("#cfsty").onchange = e => set("sty")(e.target.value);
+  document.querySelectorAll("tr[data-coach]").forEach(tr => { const go = () => { const c = D.coaches.find(x => x.name === tr.dataset.coach); if (c) { state.cl = c.id; save(); coachlab(); scrollTo(0, 0); } };
+    tr.onclick = go; tr.onkeydown = e => { if (e.key === "Enter") go(); }; });
+}
+
+/* ---------- synergy ---------- */
+function synKey(a, b) { return a < b ? a + "-" + b : b + "-" + a; }
+function synergy() {
+  const S = state.syn || { mode: "duo", q: "", min: 3000, team: "", gems: false, sort: "total" };
+  const pk = id => D.byId.get(String(id))?.peak5 ?? 0;
+  const gem = (a, b) => Math.max(pk(a), pk(b)) < 1.5 || (Math.max(pk(a), pk(b)) >= 3 && Math.min(pk(a), pk(b)) < 1.5);
+  const teams = [...new Set(D.syn.pairs.flatMap(p => p[4].split("/")))].sort();
+  const K = D.syn.k;
+  let rows, isTrio = S.mode === "trio";
+  if (!isTrio) {
+    rows = D.syn.pairs.map(p => ({ ids: [p[0], p[1]], names: [p[2], p[3]], team: p[4], a: p[5], z: p[6], poss: p[7], syn: p[8], net: p[9] }));
+  } else {
+    rows = D.syn.trios.map(p => ({ ids: [], names: [p[0], p[1], p[2]], team: p[3], a: p[4], z: p[5], poss: p[6], syn: p[7], net: p[8] }));
+  }
+  rows.forEach(r => { r.total = r.syn * r.poss / 100; r.se = 13 / Math.sqrt(r.poss + K); });
+  const ql = S.q.trim().toLowerCase();
+  rows = rows.filter(r => r.poss >= S.min && (!S.team || r.team.split("/").includes(S.team)) && (!ql || r.names.some(n => n.toLowerCase().includes(ql)))
+    && (!S.gems || isTrio || gem(r.ids[0], r.ids[1])));
+  rows.sort((a, b) => S.sort === "rate" ? b.syn - a.syn : b.total - a.total);
+  const top = rows.slice(0, 50), worst = rows.slice().sort((a, b) => S.sort === "rate" ? a.syn - b.syn : a.total - b.total).slice(0, 10);
+  // scatter: possessions together (log) vs synergy
+  const W = 720, Hh = 300, m = { l: 44, r: 14, t: 14, b: 36 };
+  const pts = rows.slice(0, 1500);
+  const xs = pts.map(r => Math.log10(r.poss)), x0 = Math.log10(S.min), x1 = Math.max(x0 + 0.5, ...xs);
+  const ylim = Math.max(1, Math.ceil(Math.max(...pts.map(r => Math.abs(r.syn)), 1)));
+  const X = v => m.l + (Math.log10(v) - x0) / (x1 - x0) * (W - m.l - m.r), Y = v => m.t + (ylim - v) / (2 * ylim) * (Hh - m.t - m.b);
+  const xt = [1000, 2000, 5000, 10000, 20000, 50000].filter(v => Math.log10(v) >= x0 - 1e-9 && Math.log10(v) <= x1 + 1e-9);
+  const yt = []; for (let v = -ylim; v <= ylim; v += ylim > 2 ? 1 : 0.5) yt.push(v);
+  const hi = new Set(top.slice(0, 12));
+  const tr = r => `<tr><td class="l"><b>${r.names.map(esc).join(" + ")}</b></td><td class="l">${esc(r.team)}</td><td class="l num">${yr(r.a)}${r.z > r.a ? "–" + String(r.z + 1).slice(2) : ""}</td>
+    <td class="num">${Math.round(r.poss).toLocaleString()}</td><td class="num ${cls(r.net)}">${f(r.net)}</td><td class="num ${cls(r.syn)}"><b>${f(r.syn, 2)}</b><span class="pm">±${r.se.toFixed(2)}</span></td><td class="num ${cls(r.total)}">${f(r.total, 0)}</td></tr>`;
+  const head = `<thead><tr><th class="l">${isTrio ? "Trio" : "Duo"}</th><th class="l">Team</th><th class="l">Seasons</th><th>Possessions together</th><th>Net together</th><th>Synergy</th><th>Extra points</th></tr></thead>`;
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Synergy · play-by-play, 1996-97 to 2024-25</div><h1>Better together</h1>
+    <p class="lede">When two teammates share the floor, does their team do better than their individual ratings say it should? Synergy is the answer, in points per 100 possessions. Their ratings already come from the same games, so a pair that only ever plays together scores near zero; synergy shows up when their time together beats what their time apart implies.</p></div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Duos or trios"><button data-smode="duo" aria-pressed="${!isTrio}">Duos</button><button data-smode="trio" aria-pressed="${isTrio}">Trios</button></div>
+      <label for="sq">Find a player<input id="sq" type="search" placeholder="Name" value="${esc(S.q)}"></label>
+      <label for="smin">Together at least<select id="smin">${[1500, 3000, 6000, 12000, 25000].map(v => `<option value="${v}" ${v === S.min ? "selected" : ""}>${v.toLocaleString()} poss.</option>`).join("")}</select></label>
+      <label for="steam">Team<select id="steam"><option value="">Every team</option>${teams.map(t => `<option ${t === S.team ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+      <label for="ssort">Rank by<select id="ssort"><option value="total" ${S.sort === "total" ? "selected" : ""}>Extra points (synergy × time together)</option><option value="rate" ${S.sort === "rate" ? "selected" : ""}>Synergy per 100 possessions</option></select></label>
+      ${isTrio ? "" : `<div class="seg" role="group" aria-label="Hidden gems"><button data-sgems aria-pressed="${S.gems}">Hidden gems only</button></div>`}
+    </div>
+    ${!isTrio ? `<div class="panel"><div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${Hh}" width="100%" style="min-width:460px" role="img" aria-label="Synergy against possessions together">
+      ${yt.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="${t === 0 ? 1.5 : 1}"/><text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" + t : t}</text>`).join("")}
+      ${xt.map(v => `<text x="${X(v)}" y="${Hh - 18}" text-anchor="middle">${v >= 1000 ? v / 1000 + "k" : v}</text>`).join("")}
+      <text x="${(W + m.l) / 2}" y="${Hh - 2}" text-anchor="middle">Possessions together (log scale) · each dot is a duo</text>
+      ${pts.slice().reverse().map(r => `<circle cx="${X(r.poss)}" cy="${Y(r.syn)}" r="${hi.has(r) ? 6 : 3.5}" fill="${hi.has(r) ? "var(--accent)" : "var(--muted)"}" fill-opacity="${hi.has(r) ? 1 : .35}" stroke="var(--surface)" stroke-width="${hi.has(r) ? 2 : 0}" data-tip="${esc(`${r.names.join(" + ")} (${r.team}, ${yr(r.a)}${r.z > r.a ? " to " + yr(r.z) : ""}): ${f(r.syn, 2)} per 100 over ${Math.round(r.poss).toLocaleString()} possessions`)}"/>`).join("")}
+    </svg></div><p class="note">Orange: the top 12 in the current list. Up = better together than apart; right = more time together. ${rows.length.toLocaleString()} ${isTrio ? "trios" : "duos"} match.</p></div>` : ""}
+    <div class="panel tablewrap"><h3>${ql ? `Best partners: ${esc(S.q)}` : isTrio ? "Best trios" : S.gems ? "Hidden gems: a star and a role player" : "Best duos"}</h3><table>${head}<tbody>${top.map(tr).join("")}</tbody></table></div>
+    <div class="panel tablewrap"><h3>${ql ? `Worst partners: ${esc(S.q)}` : "Worst together"}</h3><table>${head}<tbody>${worst.map(tr).join("")}</tbody></table></div>
+    <p class="note">Synergy = actual margin per 100 possessions while they share the floor (luck-adjusted) minus what all ten players' season ratings predict, shrunk toward zero by ${K.toLocaleString()} possessions (the amount that best predicts each pair's other seasons). It repeats only weakly from one half of a pair's seasons to the other (r = ${D.syn.reliability}), so a single pair's number has a wide margin: trust long partnerships and big samples. Extra points = synergy × possessions together ÷ 100. Hidden gems keeps a star (best-five-season rating +3 or better) paired with a role player (under +1.5), and pairs of two role players: the combinations nobody would guess.</p></div>`;
+  const set = (k, v) => { state.syn = { ...S, [k]: v }; save(); synergy(); };
+  document.querySelectorAll("[data-smode]").forEach(b => b.onclick = () => set("mode", b.dataset.smode));
+  const sq = $("#sq"); sq.oninput = () => { clearTimeout(sq.t); sq.t = setTimeout(() => { set("q", sq.value); const n = $("#sq"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  $("#smin").onchange = e => set("min", +e.target.value);
+  $("#steam").onchange = e => set("team", e.target.value);
+  $("#ssort").onchange = e => set("sort", e.target.value);
+  const gb = document.querySelector("[data-sgems]"); if (gb) gb.onclick = () => set("gems", !S.gems);
+}
+
+/* ---------- lineup lab (drag and drop) ---------- */
+function lineup() {
+  if (!D.synMap) { D.synMap = new Map(D.syn.pairs.map(p => [synKey(p[0], p[1]), p])); }
+  const pool = D.players.filter(p => p.poss >= 15000 && p.peak5 != null).sort((a, b) => b.peak5 - a.peak5);
+  const byName = n => D.players.find(p => p.name === n)?.id;
+  if (!state.lu) state.lu = ["Stephen Curry", "Klay Thompson", "Kevin Durant", "Andre Iguodala", "Draymond Green"].map(byName).map(x => x ?? null);
+  const L = state.lu.map(id => id == null ? null : D.byId.get(String(id)));
+  const q = (state.luq || "").toLowerCase();
+  const chips = pool.filter(p => !q || p.name.toLowerCase().includes(q)).slice(0, 160);
+  const filled = L.filter(Boolean);
+  const indiv = filled.reduce((s, p) => s + p.peak5, 0);
+  const pairsIn = [];
+  for (let i = 0; i < 5; i++) for (let j = i + 1; j < 5; j++) if (L[i] && L[j]) {
+    const s_ = D.synMap.get(synKey(L[i].id, L[j].id)); pairsIn.push({ i, j, s: s_ ? s_[8] : null, poss: s_ ? s_[7] : 0 });
+  }
+  // a pair's synergy already includes the effect of the five it played in, so the ten pairs of one five
+  // share most of it: the five's synergy is the AVERAGE of its measured pairs (weighted by time together),
+  // not the sum (summing would count the same five-man effect up to ten times)
+  const meas = pairsIn.filter(p => p.s != null), mw = meas.reduce((s, p) => s + p.poss, 0);
+  const synSum = mw ? meas.reduce((s, p) => s + p.s * p.poss, 0) / mw : 0;
+  const total = indiv + synSum;
+  const verdict = total >= 20 ? "an all-time lineup" : total >= 14 ? "a championship-level lineup" : total >= 8 ? "a contender's lineup" : total >= 3 ? "a good lineup" : "an average-or-worse lineup";
+  const last = i => esc((L[i]?.name || "Empty").split(" ").slice(-1)[0]);
+  const cell = (i, j) => { if (i === j) return `<div style="background:var(--bg);color:var(--muted)">–</div>`;
+    const pr = pairsIn.find(p => (p.i === Math.min(i, j) && p.j === Math.max(i, j)));
+    if (!pr) return `<div style="background:var(--bg)"></div>`;
+    if (pr.s == null) return `<div style="color:var(--muted)" data-tip="Never shared enough floor time to measure">·</div>`;
+    const a = Math.min(1, Math.abs(pr.s) / 2), col = pr.s >= 0 ? "21,127,59" : "180,35,24";
+    return `<div class="num" style="background:rgba(${col},${(0.12 + 0.5 * a).toFixed(2)})" data-tip="${esc(`${L[Math.min(i, j)].name} + ${L[Math.max(i, j)].name}: ${f(pr.s, 2)} per 100 over ${Math.round(pr.poss).toLocaleString()} possessions together`)}">${f(pr.s, 1)}</div>`; };
+  $("#app").innerHTML = `<div class="stack"><div><div class="eyebrow">Lineup lab · play-by-play era</div><h1>Build a five</h1>
+    <p class="lede">Drag players into the five spots (or tap a name to add it). Each player brings his best-five-season rating; pairs that actually shared the floor add their measured synergy (averaged across the pairs, weighted by time together). The total is how many points per 100 possessions this five would beat an average lineup by.</p></div>
+    <div class="lab">
+      <div class="panel stack" style="gap:12px;align-content:start"><div class="controls"><label for="luq">Find a player<input id="luq" type="search" placeholder="Name" value="${esc(state.luq || "")}"></label></div>
+        <div class="pool" id="pool">${chips.map(p => `<span class="pchip" draggable="true" data-id="${p.id}" tabindex="0" role="button" aria-label="Add ${esc(p.name)}">${esc(p.name)}<b>${f(p.peak5)}</b></span>`).join("")}</div>
+        <p class="note">${pool.length} players with 15,000+ possessions, best first. Number = best five seasons, points per 100 possessions.</p></div>
+      <div class="stack" style="gap:16px">
+        <div class="slots">${L.map((p, i) => `<div class="slot ${p ? "full" : ""}" data-slot="${i}">${p ? `<div class="nm">${esc(p.name)}</div><div class="rt ${cls(p.peak5)}">${f(p.peak5)}</div><button data-clear="${i}" aria-label="Remove ${esc(p.name)}">Remove</button>` : `<div class="note">Drop a player here</div>`}</div>`).join("")}</div>
+        <div class="panel"><div class="hero"><div><div class="eyebrow">This five, per 100 possessions vs an average lineup</div>
+          <p class="note" style="margin:6px 0 0">${filled.length < 5 ? `Add ${5 - filled.length} more to complete the five.` : `That's ${verdict}.`} Individual ratings ${f(indiv)} · synergy ${f(synSum, 2)} (average of ${meas.length} of ${pairsIn.length} pairs measured).</p></div>
+          <div class="big ${cls(total)}" style="color:inherit">${f(total)}</div></div></div>
+        <div class="panel stack" style="gap:8px"><h3>Pair synergy</h3>
+          <div style="overflow-x:auto"><div class="grid5" style="grid-template-columns:minmax(76px,1fr) repeat(5,minmax(56px,1fr));min-width:400px"><div></div>${[0, 1, 2, 3, 4].map(j => `<div style="color:var(--muted);font-weight:600">${last(j)}</div>`).join("")}${[0, 1, 2, 3, 4].map(i => `<div style="color:var(--muted);font-weight:600;text-align:right">${last(i)}</div>` + [0, 1, 2, 3, 4].map(j => cell(i, j)).join("")).join("")}</div></div>
+          <p class="note">Green: better together than their ratings say; red: worse. A dot means the two never shared enough floor time to measure. Players from different eras can't have synergy, so mixing eras adds only their individual ratings.</p></div>
+        <div class="row"><button id="luex1">Load: 2016-17 Warriors</button><button id="luex2">Load: 2000-01 Lakers</button><button id="luex3">Load: 2013-14 Spurs</button><button id="luclr">Clear</button></div>
+      </div></div></div>`;
+  const put = (id, slot) => { const arr = state.lu.slice(); const at = arr.indexOf(id); if (at >= 0) arr[at] = null;
+    const k = slot ?? arr.indexOf(null); if (k < 0) return; arr[k] = id; state.lu = arr; save(); lineup(); };
+  document.querySelectorAll(".pchip").forEach(ch => { const id = +ch.dataset.id;
+    ch.ondragstart = e => { e.dataTransfer.setData("text/plain", String(id)); e.dataTransfer.effectAllowed = "copy"; };
+    ch.onclick = () => put(id); ch.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); put(id); } }; });
+  document.querySelectorAll(".slot").forEach(sl => { const i = +sl.dataset.slot;
+    sl.ondragover = e => { e.preventDefault(); sl.classList.add("over"); };
+    sl.ondragleave = () => sl.classList.remove("over");
+    sl.ondrop = e => { e.preventDefault(); const id = +e.dataTransfer.getData("text/plain"); if (id) put(id, i); }; });
+  document.querySelectorAll("[data-clear]").forEach(b => b.onclick = () => { const arr = state.lu.slice(); arr[+b.dataset.clear] = null; state.lu = arr; save(); lineup(); });
+  const load = names => { state.lu = names.map(byName).map(x => x ?? null); save(); lineup(); };
+  $("#luex1").onclick = () => load(["Stephen Curry", "Klay Thompson", "Kevin Durant", "Andre Iguodala", "Draymond Green"]);
+  $("#luex2").onclick = () => load(["Derek Fisher", "Kobe Bryant", "Rick Fox", "Horace Grant", "Shaquille O'Neal"]);
+  $("#luex3").onclick = () => load(["Tony Parker", "Danny Green", "Kawhi Leonard", "Tim Duncan", "Manu Ginobili"]);
+  $("#luclr").onclick = () => { state.lu = [null, null, null, null, null]; save(); lineup(); };
+  const lq = $("#luq"); lq.oninput = () => { clearTimeout(lq.t); lq.t = setTimeout(() => { state.luq = lq.value; save(); lineup(); const n = $("#luq"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 200); };
 }
 
 /* ---------- guide: how to read the Scott Stat ---------- */
