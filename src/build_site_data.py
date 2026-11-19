@@ -131,6 +131,13 @@ def main():
         pairs.append([int(q.player_id), q.coach, int(q.first_season), int(q.last_season), int(q.shared_poss),
                       r(q.total_uplift_raw), r(q.raw_se), r(q.total_uplift_trend_adjusted), r(q.trend_adjusted_se),
                       style_, gwb(pos_.get(float(q.player_id), ""))])
+    # all-era coach legacy (coach_legacy.py)
+    cl_ = pd.read_csv(OUT / "coach_legacy.csv")
+    cl_ = cl_[cl_.seasons >= 3]
+    clegacy = [{"id": q.coach_id, "name": q.coach, "teams": q.teams, "first": int(q.first), "last": int(q.last), "seasons": r(q.seasons, 1),
+                "w": int(q.w), "l": int(q.l), "pct": r(q.win_pct, 3), "impact": r(q.impact), "se": r(q.impact_se), "added": r(q.wins_added, 1),
+                "above": r(q.wins_above_500, 1), "pw": int(q.playoff_wins), "pl": int(q.pl), "titles": int(q.titles), "tadj": r(q.titles_adj)}
+               for q in cl_.itertuples()]
     # synergy (synergy.py): duos and trios
     sp = pd.read_csv(OUT / "synergy_pairs.csv")
     st = pd.read_csv(OUT / "synergy_trios.csv")
@@ -200,7 +207,7 @@ def main():
              "board": [[q.player_id, q.player, q.team, int(q.age), q.pos, r(q.rating, 1), r(q.norm_now, 1), r(q.gap, 1),
                         r(q.expected_next, 1)] for q in sb.itertuples()]}
     data = {"study": study, "value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
-                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn, "cmp": json.load(open(OUT / "compare_metrics.json")),
+                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn, "cmp": json.load(open(OUT / "compare_metrics.json")), "clegacy": clegacy, "cl_meta": json.load(open(OUT / "coach_legacy_meta.json")),
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),
                 "clutch_split_half": val.get("playoffs_meta", {}).get("all_clutch", {}).get("split_half"),

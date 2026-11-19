@@ -934,6 +934,22 @@ Every metric as published (B-Ref PER, WS/48, BPM, VORP; raw plus-minus and on/of
 4. Year to year: Scott Stat 0.83, PER 0.82, BPM 0.78, VORP 0.78, Win Shares / 48 0.71, Raw plus-minus 0.50, On/off 0.37.
 The Scott Stat leads every test. EPM/LEBRON/RAPTOR are not scored (not public for every season).
 
+## Coaches, every era (`src/coach_legacy.py`)
+
+Problem: the coach rankings sorted by the play-by-play-era coach effect (coach_effects.py), which (1) ignored its own
+standard errors (estimates SD 1.45 vs average error 0.85; its penalty barely changed held-out fit) and (2) held every
+player at his own career level, so stars who spent whole careers under one coach (Duncan under Popovich, Curry under
+Kerr) absorbed the coach's credit while coaches of journeyman rosters (Fratello, Skiles) were measured on everyone.
+Result: Fratello and Skiles 1-2.
+Fix: one fit over every NBA team-season since 1951-52 (1664): team strength minus box-score production =
+player WINNING + coach effect (weight = share of the season's games coached), ridge penalties by 5-fold CV. Coaches add
+real signal: held-out share of unexplained team strength 0.406 without coaches -> 0.441 with.
+Standard errors by bootstrap over seasons. Coach records (W-L, playoff W-L, titles) from every tenure since 1949-50.
+Coach legacy (reader-weighted, each ingredient vs the all-time top-10 level): coaching impact as wins added over a career
+1, regular-season wins above .500 1, playoff wins 0.5, titles (league-size adjusted) 1.
+Default: Phil Jackson, Popovich, Riley, Auerbach, Kerr, Spoelstra, Sloan, Daly, Larry Brown, Doc Rivers; Karl 13th,
+Fratello 30th, Skiles 33rd. Impact alone: Jackson, Fitzsimmons, Larry Brown, Daly, Adelman, Thibodeau.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
