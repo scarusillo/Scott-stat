@@ -726,11 +726,11 @@ observed (77 missed games); Doc Rivers +2.95 predicted, +3.85 observed; Kobe +2.
    (1.91). Adopted on a one-sided 5% test because the hypothesis was directional (scorers worth
    MORE); it is borderline. At the top of the usage range it adds about +1.6 per 100 (Kobe, Jordan,
    Harden, Westbrook, Iverson 1.5). Doc Rivers: 0. The missed-games fit uses ratings without the premium.
-2. **Peak = wins added per season** (best five straight, each season scaled to 82 games) is now the
+2. **Peak = wins added per season** (best five-season stretch, each season scaled to 82 games; short or missed seasons count as low years) is now the
    default peak ranking and the Legacy peak ingredient: impact per possession x the load carried.
    The per-100 impact peak stays available as its own ranking.
 3. **Scoring load**, a fourth Legacy ingredient: points per 100 team possessions scored above an average
-   player in his minutes ((pts per 100 - league per player) x mpg/48), best five straight seasons, league-
+   player in his minutes ((pts per 100 - league per player) x mpg/48), best five seasons, league-
    and pace-relative, NBA and ABA; plus scoring titles (ppg leader with 70%+ of games). Volume, not
    efficiency. Legacy rank range now spans 81 weightings.
 
@@ -827,7 +827,7 @@ Moses 38, Lillard 44, Tatum 49, McGrady 70, Carter 84, Carmelo 170, Cousins 222.
 ## Legacy without longevity: who was best on the court, and who won the most?
 
 Owner's rule: longevity is not a factor; compare players at their best. Default Legacy ingredients are now all
-per-season / prime measures: peak (wins added per season, best five straight) 1, championships (title shares,
+per-season / prime measures: peak (wins added per season, best five-season stretch) 1, championships (title shares,
 league-size adjusted) 1, scoring & creation (best five) 0.5, winning (wins per prime season beyond the box score,
 career WINNING x his average possessions in his ten best seasons) 0.5. Career value is an optional dial, default 0.
 (A prime-only WINNING estimate was tested and predicts held-out team results slightly worse, 0.402 vs 0.418, so
@@ -975,6 +975,43 @@ Most stars LOWER teammates' own production (they take the shots): LeBron -1.3, J
 Curry about neutral (-0.2); Nash +1.7 and Jokic +0.7 raise it. So Kerr's growth is Kerr (survives the adjustment, holds with
 Curry out, absent for Curry under Mark Jackson); Phil Jackson's growth comes from the Lakers years, and his case rests on
 team impact. New default top 10: Jackson, Kerr, Spoelstra, Fitzsimmons, Popovich, Sloan, Riley, D'Antoni, Thibodeau, Doc Rivers.
+
+## Schemes: who thrives in which system (`src/scheme_fit.py`, site: Coaches -> Schemes)
+
+Every team-season since 1996-97 (862) gets an offensive and a defensive fingerprint, z-scored within its
+season, and k-means sorts them into families named by prototype matching (one name per family):
+
+- **Offense (5):** Pace and space, Spread half-court, Grind it out, Motion / inside-out, Isolation /
+  pick-and-roll. Built from pace, 3PA rate, rim-attempt rate and assisted share of makes.
+- **Defense (4):** Gamble and pressure, Disciplined / no-foul, Run them off the line, Aggressive wall.
+  Built from opponent 3PA and rim rates allowed, turnovers forced, opponent FT rate and defensive rebounding.
+- **Stability:** 70% of offenses and 79% of defenses land in the same family
+  across 20 random restarts.
+
+Player-season deviation from his own career level (leave-that-season-out, after the aging curve), with offense
+matched to the offensive family and defense to the defensive one:
+
+- **Player type x scheme:** cells are relative to the scheme's average AND the type's average, then shrunk.
+  Odd vs even seasons: offense r 0.37 (40 cells); defense r
+  0.17 (weak, shown as a hint). Examples:
+  - Rim runners: -0.21 in pace and space, +0.11 in pick-and-roll offenses.
+  - Playmaking guards: +0.21 in motion, -0.18 in isolation offenses.
+  - Defensive wings: +0.20 in pace and space.
+- **Player x scheme fit:** his deviation inside the family minus outside it. Shrinkage was chosen to predict
+  held-out seasons (K = 15000 possessions). The fit cuts held-out error by
+  3.4% on offense (r 0.18, 7392 seasons) and
+  1.3% on defense (r 0.12). That's a tiebreaker-sized signal.
+  Face validity: Nash and Amar'e in pace and space; Dwight Howard in the 2007-12 Orlando spread.
+
+**Not measurable here:** man vs zone, drop vs switch, and play types. Public play-by-play has no coverage
+labels; those need NBA.com play-type and matchup tables (2015-16 on) or Synergy. The defensive families are
+shot-profile proxies.
+
+**Bug fix (same pass):** peak windows (best five seasons, peak wins per season) required 1,000+ possessions in
+each of five straight seasons. One short season per five-year stretch erased a player's peak and removed him
+from the all-time ranking (Derrick Rose, Bill Walton and 84 others with 6+ seasons). Peaks now use every
+season: per-100 windows weight by possessions, and wins windows count a short season's few wins and a missed
+season as 0.
 
 ## Known limits
 

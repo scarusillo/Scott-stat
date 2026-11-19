@@ -227,6 +227,23 @@ def main():
                 "box_fit": val.get("breakdown_coefs", {}).get("fit"),
                 "firings": val.get("firings_meta", {}).get("both_known"),
             }}
+    # schemes: scheme families, player type x scheme, player x scheme fits (scheme_fit.py)
+    sf = json.load(open(OUT / "scheme_fit.json"))
+    cg = pd.read_parquet(ROOT / "data" / "coaches" / "coach_games.parquet")
+    cname = dict(zip(cg.coach_id, cg.coach))
+    tab = dict(zip(cg.team_id, cg.franchise))
+    pf = pd.DataFrame(sf["player_fits"])
+    pf = pf[pf.poss_in >= 5000]
+    data["sfit"] = {
+        "offense": sf["offense"], "defense": sf["defense"], "stability": sf["stability"], "n": sf["n_player_seasons"],
+        "cells": {k: [[c["type"], c["scheme"], r(c["fit"], 2), round(c["poss"])] for c in v] for k, v in sf["type_scheme"].items()},
+        "cell_rel": {k: {"r": r(v["split_half_r"], 2), "cells": v["cells"]} for k, v in sf["type_scheme_reliability"].items()},
+        "test": {k: {"r": r(v["r"], 2), "cut": r(v["error_cut_pct"], 1), "n": v["n"], "K": v["K"]} for k, v in sf["player_fit_test"].items()},
+        "players": [[q.side, q.name, q.scheme, r(q.fit, 2), r(q.raw, 2), r(q.se, 2), round(q.poss_in), q.years_in,
+                     "/".join(sorted({tab.get(t, "") for t in q.teams_in})), q.type] for q in pf.itertuples()],
+        "coaches": [[c["coach_id"], cname.get(c["coach_id"], c["coach_id"]), c["off"], r(c["off_share"], 2), c["dfn"], r(c["def_share"], 2), int(c["seasons"])]
+                    for c in sf["coach_families"]],
+    }
     SITE.mkdir(exist_ok=True)
     (SITE / "data.json").write_text(json.dumps(data, separators=(",", ":"), default=lambda o: None))
     print(f"players {len(players)}, classic {len(classic_rows)}, coaches {len(coach_rows)}, pairs {len(pairs)}, "

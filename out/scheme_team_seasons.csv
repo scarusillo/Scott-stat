@@ -1,0 +1,863 @@
+season,team_id,pace,three,rim,astd,opp_three,opp_rim,coach_id,franchise,abbr,opp_tov,opp_ftr,drb,srs,team_name,off_family,def_family
+1996,1610612737,-1.117,1.997,-0.343,-1.373,0.235,-0.225,wilkens-lenny,ATL,ATL,0.208,-1.617,0.016,5.520,Atlanta Hawks,Spread half-court,Run them off the line
+1996,1610612738,1.748,-0.488,3.034,-0.650,-0.467,3.761,carr-l-m,BOS,BOS,0.940,0.228,-0.344,-6.620,Boston Celtics,Isolation / pick-and-roll,Gamble and pressure
+1996,1610612739,-2.648,0.116,-0.781,0.512,0.300,-0.830,fratello-mike,CLE,CLE,1.854,1.575,1.406,2.320,Cleveland Cavaliers,Grind it out,Aggressive wall
+1996,1610612741,-0.065,-0.188,-0.844,0.977,-0.019,-0.223,jackson-phil,CHI,CHI,0.025,-1.440,0.067,10.700,Chicago Bulls,Grind it out,Run them off the line
+1996,1610612742,-0.472,-0.156,-0.426,-0.495,0.527,-0.857,cleamons-jim,DAL,DAL,0.117,-0.269,-0.962,-6.470,Dallas Mavericks,Grind it out,Aggressive wall
+1996,1610612743,0.632,1.091,-1.386,0.754,-1.781,0.037,motta-dick,DEN,DEN,-2.718,-1.085,0.067,-6.400,Denver Nuggets,Pace and space,Run them off the line
+1996,1610612744,0.593,-0.070,-0.711,-0.101,0.912,-0.417,adelman-rick,GSW,GSW,-0.341,-0.092,-0.859,-4.900,Golden State Warriors,Grind it out,Run them off the line
+1996,1610612745,0.258,1.812,-0.551,1.192,0.698,-0.950,tomjanovich-rudy,HOU,HOU,-1.347,-1.653,1.148,3.850,Houston Rockets,Pace and space,Disciplined / no-foul
+1996,1610612746,0.274,-0.270,0.142,-1.318,-0.190,0.785,fitch-bill,LAC,LAC,0.665,1.150,-0.550,-2.660,Los Angeles Clippers,Isolation / pick-and-roll,Gamble and pressure
+1996,1610612747,0.247,0.391,0.977,-0.026,-0.222,-0.297,harris-del,LAL,LAL,0.300,-0.198,-0.344,3.660,Los Angeles Lakers,Pace and space,Run them off the line
+1996,1610612748,-0.782,2.196,-0.980,0.064,-1.438,-0.647,riley-pat,MIA,MIA,0.757,0.405,0.737,5.560,Miami Heat,Spread half-court,Aggressive wall
+1996,1610612749,-0.357,-1.595,-0.186,-1.633,-2.065,0.675,ford-chris,MIL,MIL,-0.615,0.582,0.376,-1.380,Milwaukee Bucks,Isolation / pick-and-roll,Run them off the line
+1996,1610612750,0.077,-1.009,-0.560,0.610,-0.765,0.309,saunders-flip,MIN,MIN,-0.158,0.547,-0.447,-1.820,Minnesota Timberwolves,Grind it out,Run them off the line
+1996,1610612751,0.833,-0.440,0.058,-0.837,-0.145,0.496,calipari-john,BKN,NJN,-0.615,0.263,-0.087,-3.890,New Jersey Nets,Isolation / pick-and-roll,Run them off the line
+1996,1610612752,0.020,-0.070,0.061,0.366,0.308,-0.713,gundy-van-jeff,NYK,NYK,0.574,1.504,2.178,3.310,New York Knicks,Grind it out,Aggressive wall
+1996,1610612753,-0.680,1.115,-0.308,-0.402,-0.309,0.423,hill-brian,ORL,ORL,0.482,-0.908,-0.962,-0.070,Orlando Magic,Spread half-court,Run them off the line
+1996,1610612754,-0.523,-0.736,-0.022,0.040,0.699,-0.632,brown-larry,IND,IND,0.208,0.760,0.634,1.490,Indiana Pacers,Grind it out,Aggressive wall
+1996,1610612755,1.918,-0.298,1.271,-1.121,0.244,1.335,davis-johnny,PHI,PHI,-0.889,-0.517,-1.374,-5.890,Philadelphia 76ers,Isolation / pick-and-roll,Run them off the line
+1996,1610612756,0.906,0.114,-0.143,1.089,-0.029,-0.533,ainge-danny,PHX,PHO,-0.341,-0.766,0.119,0.210,Phoenix Suns,Pace and space,Disciplined / no-foul
+1996,1610612757,0.088,0.156,0.337,-0.998,-0.654,-0.233,carlesimo-j-p,POR,POR,-0.432,1.114,1.663,3.560,Portland Trail Blazers,Isolation / pick-and-roll,Disciplined / no-foul
+1996,1610612758,0.189,-1.254,-0.670,-0.295,-0.980,-0.591,jean-st-garry,SAC,SAC,-0.432,0.972,-0.344,-3.640,Sacramento Kings,Grind it out,Run them off the line
+1996,1610612759,-1.062,-0.653,1.321,-0.566,0.532,0.301,popovich-gregg,SAS,SAS,-0.706,-0.021,-1.116,-7.930,San Antonio Spurs,Motion / inside-out,Run them off the line
+1996,1610612760,-0.094,0.898,1.147,0.757,2.465,-0.766,karl-george,OKC,SEA,2.677,0.192,-0.035,6.910,Seattle SuperSonics,Pace and space,Aggressive wall
+1996,1610612761,0.038,0.861,0.303,-0.481,0.454,0.331,walker-darrell,TOR,TOR,0.482,0.760,-0.293,-2.560,Toronto Raptors,Spread half-court,Gamble and pressure
+1996,1610612762,-0.216,-1.620,0.845,2.121,1.294,-1.210,sloan-jerry,UTA,UTA,0.665,1.895,1.251,7.970,Utah Jazz,Motion / inside-out,Aggressive wall
+1996,1610612763,-0.669,-0.326,-0.223,1.137,-0.177,0.836,winters-brian,MEM,VAN,-0.341,-0.446,-2.609,-10.170,Vancouver Grizzlies,Grind it out,Gamble and pressure
+1996,1610612764,0.565,-1.522,0.545,-0.287,-0.584,-0.044,lynam-jim,WAS,WSB,0.482,-0.376,0.582,1.770,Washington Bullets,Isolation / pick-and-roll,Run them off the line
+1996,1610612765,-2.017,0.890,-0.848,-1.467,0.827,-1.281,collins-doug,DET,DET,-0.158,-1.404,0.634,5.450,Detroit Pistons,Spread half-court,Disciplined / no-foul
+1996,1610612766,-0.565,0.190,1.913,1.511,-0.341,2.238,cowens-dave,CHA,CHH,-1.347,-1.156,-0.550,2.130,Charlotte Hornets,Motion / inside-out,Run them off the line
+1997,1610612737,-1.250,-0.007,0.394,-1.437,-0.470,-0.704,wilkens-lenny,ATL,ATL,-1.073,-1.605,0.214,3.850,Atlanta Hawks,Isolation / pick-and-roll,Disciplined / no-foul
+1997,1610612738,1.671,0.460,0.436,-0.116,-0.133,2.851,pitino-rick,BOS,BOS,3.201,3.214,-0.745,-1.960,Boston Celtics,Pace and space,Gamble and pressure
+1997,1610612739,-0.227,-0.795,0.604,1.426,0.054,-0.197,fratello-mike,CLE,CLE,1.633,0.659,1.049,3.060,Cleveland Cavaliers,Motion / inside-out,Aggressive wall
+1997,1610612741,-0.706,-0.468,-0.118,0.642,-0.097,0.197,jackson-phil,CHI,CHI,0.138,-0.764,0.840,7.240,Chicago Bulls,Grind it out,Run them off the line
+1997,1610612742,-0.246,0.362,-1.751,-1.676,0.455,0.367,nelson-don,DAL,DAL,-0.361,-1.572,-1.454,-6.330,Dallas Mavericks,Spread half-court,Run them off the line
+1997,1610612743,-0.353,-0.518,-0.942,-0.673,1.026,0.086,hanzlik-bill,DEN,DEN,-0.147,1.338,-0.954,-11.740,Denver Nuggets,Grind it out,Gamble and pressure
+1997,1610612744,0.763,-1.468,-1.414,-0.174,-1.136,-0.543,carlesimo-j-p,GSW,GSW,-1.073,0.109,0.006,-9.200,Golden State Warriors,Grind it out,Run them off the line
+1997,1610612745,0.345,2.365,-0.524,0.055,0.485,-0.719,tomjanovich-rudy,HOU,HOU,-0.860,-1.152,0.298,-1.230,Houston Rockets,Spread half-court,Disciplined / no-foul
+1997,1610612746,1.006,1.456,0.085,-1.888,-1.658,0.599,fitch-bill,LAC,LAC,-1.145,-0.020,-1.037,-7.530,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+1997,1610612747,1.578,1.387,2.832,0.676,-0.095,-0.820,harris-del,LAL,LAL,-0.290,0.045,0.089,6.880,Los Angeles Lakers,Pace and space,Disciplined / no-foul
+1997,1610612748,-1.262,2.051,-0.709,0.193,-0.980,-0.813,riley-pat,MIA,MIA,-0.219,0.433,0.423,5.090,Miami Heat,Spread half-court,Disciplined / no-foul
+1997,1610612749,-0.019,-1.245,-1.422,-0.957,-0.844,1.081,ford-chris,MIL,MIL,0.707,1.241,0.214,-1.330,Milwaukee Bucks,Grind it out,Gamble and pressure
+1997,1610612750,1.138,-0.807,-0.563,1.042,1.171,0.178,saunders-flip,MIN,MIN,-0.717,-0.117,-0.036,0.170,Minnesota Timberwolves,Pace and space,Run them off the line
+1997,1610612751,0.611,-0.621,0.237,-1.258,0.124,1.873,calipari-john,BKN,NJN,1.562,0.465,-0.912,1.880,New Jersey Nets,Isolation / pick-and-roll,Gamble and pressure
+1997,1610612752,-1.210,0.402,-0.285,0.351,0.769,-1.096,gundy-van-jeff,NYK,NYK,0.138,1.241,2.258,2.740,New York Knicks,Spread half-court,Aggressive wall
+1997,1610612753,-1.720,-0.491,-0.112,0.070,-0.677,0.444,daly-chuck,ORL,ORL,0.209,-1.346,-0.703,-0.530,Orlando Magic,Grind it out,Run them off the line
+1997,1610612754,-1.103,0.110,-1.450,0.856,-1.730,-0.798,bird-larry,IND,IND,-0.076,-0.246,-0.328,6.250,Indiana Pacers,Grind it out,Run them off the line
+1997,1610612755,0.367,-0.841,0.740,0.028,0.937,-0.486,brown-larry,PHI,PHI,0.422,0.400,-0.537,-1.890,Philadelphia 76ers,Isolation / pick-and-roll,Aggressive wall
+1997,1610612756,0.332,0.493,-0.288,1.526,0.389,-0.195,ainge-danny,PHX,PHO,0.565,-0.538,0.590,4.440,Phoenix Suns,Pace and space,Aggressive wall
+1997,1610612757,-0.185,0.077,0.426,0.088,0.552,-0.229,dunleavy-mike,POR,POR,-0.788,0.174,1.174,0.830,Portland Trail Blazers,Motion / inside-out,Disciplined / no-foul
+1997,1610612758,0.982,-0.987,-0.294,0.283,-1.122,0.114,jordan-eddie,SAC,SAC,-0.361,-0.440,-0.829,-5.830,Sacramento Kings,Isolation / pick-and-roll,Run them off the line
+1997,1610612759,-0.969,-0.509,1.152,0.587,-0.373,-1.584,popovich-gregg,SAS,SAS,-1.643,-0.829,1.508,3.300,San Antonio Spurs,Motion / inside-out,Disciplined / no-foul
+1997,1610612760,-0.465,2.039,-0.071,0.946,2.737,-0.203,karl-george,OKC,SEA,0.992,-0.667,-1.037,6.330,Seattle SuperSonics,Spread half-court,Aggressive wall
+1997,1610612761,1.254,-0.024,0.915,-0.424,-0.584,1.573,walker-darrell,TOR,TOR,0.280,-0.279,-2.372,-8.330,Toronto Raptors,Isolation / pick-and-roll,Gamble and pressure
+1997,1610612762,-0.600,-1.252,1.583,1.854,1.142,-0.990,sloan-jerry,UTA,UTA,-0.717,0.885,1.007,5.730,Utah Jazz,Motion / inside-out,Aggressive wall
+1997,1610612763,1.034,-0.584,0.311,0.975,0.322,-0.349,hill-brian,MEM,VAN,-1.073,-0.117,-0.703,-7.470,Vancouver Grizzlies,Pace and space,Run them off the line
+1997,1610612764,0.715,-0.531,-0.308,0.194,-0.676,0.913,bickerstaff-bernie,WAS,WAS,0.422,0.142,0.381,1.110,Washington Wizards,Isolation / pick-and-roll,Run them off the line
+1997,1610612765,-1.125,-0.322,0.274,-1.115,0.884,-1.188,collins-doug,DET,DET,0.209,-0.020,0.673,1.950,Detroit Pistons,Isolation / pick-and-roll,Aggressive wall
+1997,1610612766,-0.348,-0.435,0.665,1.018,0.466,-0.001,cowens-dave,CHA,CHH,0.066,-0.635,0.924,2.450,Charlotte Hornets,Motion / inside-out,Disciplined / no-foul
+1998,1610612737,-1.527,0.046,-0.643,-1.831,-0.286,-1.552,wilkens-lenny,ATL,ATL,-1.042,-1.218,1.693,2.820,Atlanta Hawks,Spread half-court,Disciplined / no-foul
+1998,1610612738,1.029,0.321,0.496,-0.319,-1.497,2.021,pitino-rick,BOS,BOS,0.830,1.436,-0.283,-1.750,Boston Celtics,Pace and space,Gamble and pressure
+1998,1610612739,-1.334,-0.522,1.306,1.655,0.986,0.426,fratello-mike,CLE,CLE,1.341,0.812,-0.575,-0.940,Cleveland Cavaliers,Motion / inside-out,Gamble and pressure
+1998,1610612741,-0.637,-0.276,-0.321,0.949,-0.435,0.987,floyd-tim,CHI,CHI,0.575,0.000,1.401,-8.580,Chicago Bulls,Grind it out,Aggressive wall
+1998,1610612742,-0.021,-0.589,-0.656,-1.485,0.090,0.838,nelson-don,DAL,DAL,-1.127,-0.906,-0.502,-2.500,Dallas Mavericks,Isolation / pick-and-roll,Run them off the line
+1998,1610612743,0.608,1.606,-0.213,-0.581,-0.610,0.688,antoni-d-mike,DEN,DEN,-1.212,0.219,-0.429,-6.670,Denver Nuggets,Spread half-court,Run them off the line
+1998,1610612744,0.106,-0.906,-1.411,-0.164,-1.188,-0.393,carlesimo-j-p,GSW,GSW,-0.531,1.530,0.449,-2.630,Golden State Warriors,Grind it out,Run them off the line
+1998,1610612745,-0.208,1.868,-0.078,-0.102,-0.759,-1.124,tomjanovich-rudy,HOU,HOU,-1.893,-1.655,0.083,1.390,Houston Rockets,Spread half-court,Disciplined / no-foul
+1998,1610612746,0.122,-0.100,0.631,-2.343,-0.330,1.793,ford-chris,LAC,LAC,0.150,1.187,-2.112,-8.940,Los Angeles Clippers,Isolation / pick-and-roll,Gamble and pressure
+1998,1610612747,1.038,0.075,1.007,-0.294,-0.329,-0.759,rambis-kurt,LAL,LAL,-1.127,0.812,0.303,2.680,Los Angeles Lakers,Isolation / pick-and-roll,Disciplined / no-foul
+1998,1610612748,-1.957,1.457,-0.750,0.401,-0.533,-1.090,riley-pat,MIA,MIA,-0.871,-0.468,0.888,5.110,Miami Heat,Spread half-court,Disciplined / no-foul
+1998,1610612749,-0.926,-0.188,-0.963,-0.379,3.037,0.447,karl-george,MIL,MIL,1.171,1.062,-1.600,1.660,Milwaukee Bucks,Grind it out,Gamble and pressure
+1998,1610612750,0.879,-1.969,-1.550,0.983,0.143,0.276,saunders-flip,MIN,MIN,1.001,1.093,0.303,-0.170,Minnesota Timberwolves,Grind it out,Aggressive wall
+1998,1610612751,1.294,-0.183,0.416,-1.136,-0.250,1.738,casey-don,BKN,NJN,0.490,-0.094,-0.063,-3.200,New Jersey Nets,Isolation / pick-and-roll,Gamble and pressure
+1998,1610612752,-1.166,-0.262,0.391,-0.187,0.386,-1.526,gundy-van-jeff,NYK,NYK,0.235,0.531,0.888,1.450,New York Knicks,Grind it out,Aggressive wall
+1998,1610612753,-0.376,0.023,-0.222,0.435,0.329,0.119,daly-chuck,ORL,ORL,1.766,-1.874,0.742,3.110,Orlando Magic,Grind it out,Aggressive wall
+1998,1610612754,-1.170,0.951,-2.009,-0.506,-0.450,-1.373,bird-larry,IND,IND,-1.637,-0.156,0.083,3.860,Indiana Pacers,Spread half-court,Disciplined / no-foul
+1998,1610612755,0.083,-1.951,-0.023,-0.806,1.302,-1.053,brown-larry,PHI,PHI,2.107,0.250,0.010,2.560,Philadelphia 76ers,Isolation / pick-and-roll,Aggressive wall
+1998,1610612756,0.390,0.138,-0.739,1.570,1.452,-0.300,ainge-danny,PHX,PHO,0.660,-0.781,0.010,2.150,Phoenix Suns,Pace and space,Aggressive wall
+1998,1610612757,-0.042,0.022,-0.194,0.104,0.451,0.325,dunleavy-mike,POR,POR,0.235,-0.250,1.474,5.670,Portland Trail Blazers,Grind it out,Aggressive wall
+1998,1610612758,2.929,1.294,0.822,-0.360,-1.469,-0.608,adelman-rick,SAC,SAC,-0.786,-2.030,-1.527,-0.890,Sacramento Kings,Pace and space,Run them off the line
+1998,1610612759,-0.219,-0.861,0.903,0.440,-1.959,-0.955,popovich-gregg,SAS,SAS,-0.701,-1.343,-0.209,7.120,San Antonio Spurs,Motion / inside-out,Disciplined / no-foul
+1998,1610612760,0.225,1.474,0.173,0.191,1.261,-0.005,westphal-paul,OKC,SEA,-0.446,-0.874,-0.868,-1.430,Seattle SuperSonics,Pace and space,Run them off the line
+1998,1610612761,-0.059,-0.040,0.039,0.283,0.511,-0.693,carter-butch,TOR,TOR,0.150,0.531,0.303,-1.320,Toronto Raptors,Grind it out,Aggressive wall
+1998,1610612762,-1.057,-1.619,1.810,1.931,0.260,-1.038,sloan-jerry,UTA,UTA,-0.191,0.031,0.449,5.540,Utah Jazz,Motion / inside-out,Disciplined / no-foul
+1998,1610612763,-0.133,-1.335,0.624,-0.405,-0.098,1.078,hill-brian,MEM,VAN,0.065,0.625,-2.112,-8.940,Vancouver Grizzlies,Isolation / pick-and-roll,Gamble and pressure
+1998,1610612764,0.226,-0.620,-0.881,-0.120,-0.400,-0.031,bickerstaff-bernie,WAS,WAS,0.405,0.999,-0.209,-1.750,Washington Wizards,Grind it out,Gamble and pressure
+1998,1610612765,-1.268,0.330,0.351,-0.012,1.134,-0.647,gentry-alvin,DET,DET,0.660,0.562,1.620,3.970,Detroit Pistons,Spread half-court,Aggressive wall
+1998,1610612766,0.453,0.735,-0.860,0.998,-0.594,0.101,silas-paul,CHA,CHH,-0.276,-0.031,-0.209,0.630,Charlotte Hornets,Pace and space,Run them off the line
+1999,1610612737,-0.450,-1.231,-0.995,-1.727,-1.434,0.041,wilkens-lenny,ATL,ATL,-2.566,-1.256,-0.045,-5.410,Atlanta Hawks,Isolation / pick-and-roll,Run them off the line
+1999,1610612738,0.588,0.492,1.146,-0.648,-0.590,1.231,pitino-rick,BOS,BOS,1.397,2.618,1.468,-1.000,Boston Celtics,Isolation / pick-and-roll,Aggressive wall
+1999,1610612739,1.060,-0.783,1.023,0.985,0.892,-0.381,wittman-randy,CLE,CLE,0.780,1.527,0.063,-3.640,Cleveland Cavaliers,Motion / inside-out,Aggressive wall
+1999,1610612741,-1.620,0.024,0.472,0.703,-0.276,1.130,floyd-tim,CHI,CHI,0.252,0.294,-0.639,-9.230,Chicago Bulls,Motion / inside-out,Gamble and pressure
+1999,1610612742,0.721,0.617,-1.442,-0.719,0.522,0.029,nelson-don,DAL,DAL,-0.012,-0.763,-2.693,-0.290,Dallas Mavericks,Spread half-court,Gamble and pressure
+1999,1610612743,0.556,0.974,0.481,0.450,-0.366,-0.175,issel-dan,DEN,DEN,-1.069,0.118,0.280,-1.760,Denver Nuggets,Pace and space,Run them off the line
+1999,1610612744,1.042,-0.413,-0.624,0.306,0.238,1.192,jean-st-garry,GSW,GSW,0.340,0.963,-1.071,-7.630,Golden State Warriors,Pace and space,Gamble and pressure
+1999,1610612745,0.307,2.128,1.583,-0.228,-1.637,-0.042,tomjanovich-rudy,HOU,HOU,-1.509,-1.080,0.280,-0.570,Houston Rockets,Pace and space,Run them off the line
+1999,1610612746,0.383,0.593,-0.592,-1.768,-0.623,1.489,ford-chris,LAC,LAC,-0.981,-0.410,-0.801,-10.730,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+1999,1610612747,0.064,-0.333,0.421,0.195,-0.018,-1.918,jackson-phil,LAL,LAL,-0.717,-0.340,1.090,8.410,Los Angeles Lakers,Motion / inside-out,Disciplined / no-foul
+1999,1610612748,-1.550,0.552,-1.120,0.932,0.237,-1.381,riley-pat,MIA,MIA,-0.805,-0.094,0.982,2.750,Miami Heat,Grind it out,Disciplined / no-foul
+1999,1610612749,-0.229,-0.227,-1.575,-0.381,2.212,0.298,karl-george,MIL,MIL,0.340,0.787,-0.801,-0.060,Milwaukee Bucks,Grind it out,Aggressive wall
+1999,1610612750,-0.634,-1.670,-1.959,1.614,-0.333,0.079,saunders-flip,MIN,MIN,-0.188,0.646,1.036,2.670,Minnesota Timberwolves,Grind it out,Aggressive wall
+1999,1610612751,-0.077,0.907,0.397,-0.717,-1.030,1.577,casey-don,BKN,NJN,0.868,-0.305,-2.098,-1.180,New Jersey Nets,Spread half-court,Gamble and pressure
+1999,1610612752,-1.860,-0.493,-0.250,-1.085,1.149,-1.357,gundy-van-jeff,NYK,NYK,-0.540,0.681,1.090,1.300,New York Knicks,Grind it out,Aggressive wall
+1999,1610612753,1.602,-1.129,0.717,-1.262,0.959,-0.016,rivers-doc,ORL,ORL,1.485,-0.199,-0.639,0.430,Orlando Magic,Isolation / pick-and-roll,Aggressive wall
+1999,1610612754,-0.026,1.599,-1.926,0.137,-1.433,-0.487,bird-larry,IND,IND,-1.421,-1.221,0.225,4.150,Indiana Pacers,Spread half-court,Disciplined / no-foul
+1999,1610612755,-0.115,-1.919,0.254,0.090,0.609,-0.899,brown-larry,PHI,PHI,1.749,-0.094,-0.639,1.020,Philadelphia 76ers,Motion / inside-out,Aggressive wall
+1999,1610612756,0.360,0.507,0.719,1.512,0.239,-0.480,skiles-scott,PHX,PHO,1.309,0.470,-0.315,5.240,Phoenix Suns,Pace and space,Aggressive wall
+1999,1610612757,-1.629,0.281,0.753,0.690,0.861,-0.161,dunleavy-mike,POR,POR,-0.364,-0.516,0.712,6.360,Portland Trail Blazers,Motion / inside-out,Disciplined / no-foul
+1999,1610612758,2.431,1.686,0.043,-0.128,-0.738,-1.573,adelman-rick,SAC,SAC,0.780,-1.185,-0.747,3.040,Sacramento Kings,Pace and space,Disciplined / no-foul
+1999,1610612759,-1.053,-0.748,0.339,0.271,-0.880,-1.621,popovich-gregg,SAS,SAS,-0.629,-1.538,1.036,5.920,San Antonio Spurs,Motion / inside-out,Disciplined / no-foul
+1999,1610612760,-0.068,1.809,-0.049,0.033,1.096,-0.330,westphal-paul,OKC,SEA,-0.188,-1.361,-0.801,1.170,Seattle SuperSonics,Spread half-court,Run them off the line
+1999,1610612761,-0.280,0.134,-1.165,1.013,-0.932,0.421,carter-butch,TOR,TOR,-0.012,0.540,0.388,-0.460,Toronto Raptors,Grind it out,Run them off the line
+1999,1610612762,-1.674,-0.843,0.353,1.725,0.483,-1.631,sloan-jerry,UTA,UTA,0.692,0.857,1.144,4.520,Utah Jazz,Motion / inside-out,Aggressive wall
+1999,1610612763,-0.924,-0.703,-0.121,-0.287,-0.235,1.115,hollins-lionel,MEM,VAN,-0.100,-0.023,-0.261,-5.100,Vancouver Grizzlies,Grind it out,Run them off the line
+1999,1610612764,-0.207,-0.898,-0.289,-0.284,-0.436,0.280,heard-gar,WAS,WAS,-0.276,1.456,0.334,-3.470,Washington Wizards,Grind it out,Gamble and pressure
+1999,1610612765,1.075,0.517,1.717,-0.834,0.972,-0.223,gentry-alvin,DET,DET,1.044,0.611,0.280,1.130,Detroit Pistons,Isolation / pick-and-roll,Aggressive wall
+1999,1610612766,0.404,-0.328,0.033,1.729,-0.508,0.483,silas-paul,CHA,CHH,0.340,-1.185,1.144,2.330,Charlotte Hornets,Motion / inside-out,Run them off the line
+2000,1610612737,0.530,-0.901,-0.885,-1.496,-0.460,-0.048,kruger-lon,ATL,ATL,-0.287,0.616,-0.693,-5.550,Atlanta Hawks,Isolation / pick-and-roll,Run them off the line
+2000,1610612738,0.527,2.106,1.169,0.154,0.776,0.782,brien-o-jim,BOS,BOS,1.682,0.860,0.666,-2.400,Boston Celtics,Pace and space,Aggressive wall
+2000,1610612739,-0.151,-1.963,0.465,-0.399,0.323,0.280,wittman-randy,CLE,CLE,-0.019,0.581,-0.478,-4.480,Cleveland Cavaliers,Isolation / pick-and-roll,Gamble and pressure
+2000,1610612741,-1.009,-0.673,-0.326,1.263,-1.083,2.072,floyd-tim,CHI,CHI,0.160,0.790,-1.051,-9.090,Chicago Bulls,Grind it out,Gamble and pressure
+2000,1610612742,0.753,0.783,-0.680,-1.004,-0.026,1.507,nelson-don,DAL,DAL,0.071,0.442,-0.765,4.610,Dallas Mavericks,Spread half-court,Gamble and pressure
+2000,1610612743,0.665,0.982,0.523,1.176,-0.152,-0.110,issel-dan,DEN,DEN,-1.808,-0.288,0.022,-1.830,Denver Nuggets,Pace and space,Run them off the line
+2000,1610612744,1.492,-1.054,-0.938,-0.001,0.059,1.492,cowens-dave,GSW,GSW,0.787,-0.149,-1.480,-8.110,Golden State Warriors,Isolation / pick-and-roll,Gamble and pressure
+2000,1610612745,-0.510,1.187,0.767,-1.361,-1.262,-0.660,tomjanovich-rudy,HOU,HOU,-1.361,-0.879,0.094,2.710,Houston Rockets,Spread half-court,Disciplined / no-foul
+2000,1610612746,-1.011,-0.226,-0.057,-1.378,-0.876,-0.290,gentry-alvin,LAC,LAC,-1.898,-0.496,-0.478,-2.230,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+2000,1610612747,0.065,0.460,0.274,-0.035,0.042,-1.014,jackson-phil,LAL,LAL,-1.719,0.095,0.523,3.740,Los Angeles Lakers,Pace and space,Disciplined / no-foul
+2000,1610612748,-2.078,1.299,-1.236,-0.085,0.172,-1.062,riley-pat,MIA,MIA,1.055,-0.601,0.666,1.730,Miami Heat,Spread half-court,Aggressive wall
+2000,1610612749,0.501,1.211,-1.911,-0.365,1.051,0.997,karl-george,MIL,MIL,0.250,0.755,-0.478,3.140,Milwaukee Bucks,Spread half-court,Gamble and pressure
+2000,1610612750,0.080,-1.142,-1.429,1.185,-1.264,1.310,saunders-flip,MIN,MIN,0.071,0.234,0.094,1.810,Minnesota Timberwolves,Grind it out,Run them off the line
+2000,1610612751,0.250,-0.220,1.029,-0.726,0.857,0.554,scott-byron,BKN,NJN,0.697,0.929,-1.265,-5.300,New Jersey Nets,Isolation / pick-and-roll,Gamble and pressure
+2000,1610612752,-2.387,0.199,-0.356,-1.279,2.229,-1.671,gundy-van-jeff,NYK,NYK,0.518,0.303,1.810,1.980,New York Knicks,Spread half-court,Aggressive wall
+2000,1610612753,0.634,0.599,0.064,-0.233,-0.559,0.152,rivers-doc,ORL,ORL,1.324,2.042,-1.408,0.390,Orlando Magic,Pace and space,Gamble and pressure
+2000,1610612754,-0.839,0.186,-1.238,0.327,-0.173,-1.270,thomas-isiah,IND,IND,-1.182,0.129,-0.264,-0.770,Indiana Pacers,Grind it out,Disciplined / no-foul
+2000,1610612755,-0.142,-1.347,-0.069,-0.578,0.978,-1.447,brown-larry,PHI,PHI,0.339,-1.574,0.523,3.640,Philadelphia 76ers,Isolation / pick-and-roll,Disciplined / no-foul
+2000,1610612756,0.810,-0.465,-0.548,0.857,-1.593,0.522,skiles-scott,PHX,PHO,1.950,0.720,1.381,2.630,Phoenix Suns,Pace and space,Aggressive wall
+2000,1610612757,-1.140,-0.221,0.842,1.000,0.040,0.139,dunleavy-mike,POR,POR,0.160,-0.288,0.451,4.520,Portland Trail Blazers,Motion / inside-out,Run them off the line
+2000,1610612758,1.322,0.573,0.822,-0.392,-0.787,-1.044,adelman-rick,SAC,SAC,0.339,-1.748,-0.765,6.070,Sacramento Kings,Pace and space,Run them off the line
+2000,1610612759,-0.813,0.041,-0.380,0.172,-1.106,-1.533,popovich-gregg,SAS,SAS,-1.092,-1.713,1.381,7.920,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2000,1610612760,-0.024,0.063,1.425,-0.391,1.784,0.134,mcmillan-nate,OKC,SEA,-0.197,-1.122,-1.408,0.550,Seattle SuperSonics,Isolation / pick-and-roll,Run them off the line
+2000,1610612761,-0.324,-0.164,-0.737,1.090,-1.089,-0.625,wilkens-lenny,TOR,TOR,-0.734,-0.670,1.023,1.690,Toronto Raptors,Grind it out,Disciplined / no-foul
+2000,1610612762,-0.785,-1.022,2.174,2.338,1.596,-1.391,sloan-jerry,UTA,UTA,1.324,2.424,1.023,5.000,Utah Jazz,Motion / inside-out,Aggressive wall
+2000,1610612763,0.183,-0.764,-1.355,1.184,-0.806,0.574,lowe-sidney,MEM,VAN,-0.287,-1.296,-1.408,-4.940,Vancouver Grizzlies,Grind it out,Run them off the line
+2000,1610612764,0.602,-1.115,-0.388,-0.615,-0.304,0.787,hamilton-leonard,WAS,WAS,-0.019,0.164,0.022,-6.750,Washington Wizards,Isolation / pick-and-roll,Run them off the line
+2000,1610612765,1.549,-0.324,0.480,-1.137,0.548,-0.511,irvine-george,DET,DET,-0.108,0.060,0.308,-2.080,Detroit Pistons,Isolation / pick-and-roll,Aggressive wall
+2000,1610612766,-0.766,-0.591,-0.257,1.563,-0.286,0.120,silas-paul,CHA,CHH,-0.019,-0.322,1.953,1.450,Charlotte Hornets,Motion / inside-out,Disciplined / no-foul
+2001,1610612737,0.802,0.143,0.840,-1.057,1.036,1.263,kruger-lon,ATL,ATL,0.473,-0.130,-0.162,-4.410,Atlanta Hawks,Isolation / pick-and-roll,Gamble and pressure
+2001,1610612738,0.856,2.499,0.223,-0.100,2.846,-1.915,brien-o-jim,BOS,BOS,1.454,1.065,1.164,1.750,Boston Celtics,Pace and space,Aggressive wall
+2001,1610612739,-0.278,-0.416,-0.793,0.982,-0.062,1.143,ii-lucas-john,CLE,CLE,-1.292,0.224,1.098,-3.520,Cleveland Cavaliers,Grind it out,Run them off the line
+2001,1610612741,-0.212,-0.860,0.112,1.196,-0.014,0.397,cartwright-bill,CHI,CHI,0.081,0.799,0.169,-8.520,Chicago Bulls,Motion / inside-out,Gamble and pressure
+2001,1610612742,1.136,1.395,-0.094,-1.188,0.444,2.035,nelson-don,DAL,DAL,-0.703,0.799,-0.295,4.410,Dallas Mavericks,Pace and space,Gamble and pressure
+2001,1610612743,-0.320,0.255,0.088,0.465,-0.117,0.490,evans-mike,DEN,DEN,-0.017,1.065,-0.826,-5.190,Denver Nuggets,Grind it out,Gamble and pressure
+2001,1610612744,2.012,-0.717,0.300,-1.079,-0.879,0.910,winters-brian,GSW,GSW,-0.703,0.490,-1.157,-4.800,Golden State Warriors,Isolation / pick-and-roll,Run them off the line
+2001,1610612745,-1.287,1.047,0.068,-2.439,-1.842,0.689,tomjanovich-rudy,HOU,HOU,-2.076,-1.899,-0.892,-4.310,Houston Rockets,Spread half-court,Run them off the line
+2001,1610612746,-0.395,-0.080,-0.751,-0.867,-0.872,-0.249,gentry-alvin,LAC,LAC,-1.488,-1.191,-0.826,-0.090,Los Angeles Clippers,Grind it out,Run them off the line
+2001,1610612747,0.670,0.767,-0.080,-0.282,0.252,-1.189,jackson-phil,LAL,LAL,-0.605,0.534,0.567,7.150,Los Angeles Lakers,Pace and space,Disciplined / no-foul
+2001,1610612748,-1.764,-0.751,-1.393,-0.379,-0.299,-1.315,riley-pat,MIA,MIA,-0.017,1.241,1.894,-1.840,Miami Heat,Grind it out,Aggressive wall
+2001,1610612749,-0.265,1.451,-1.376,0.003,1.172,-0.412,karl-george,MIL,MIL,-1.586,-0.174,-0.162,-0.620,Milwaukee Bucks,Spread half-court,Run them off the line
+2001,1610612750,-0.192,-0.507,-1.501,0.587,1.018,-0.028,saunders-flip,MIN,MIN,-0.899,-0.130,1.695,3.580,Minnesota Timberwolves,Grind it out,Disciplined / no-foul
+2001,1610612751,0.538,0.007,0.778,1.347,-0.301,-0.248,scott-byron,BKN,NJN,1.258,-0.351,0.302,3.670,New Jersey Nets,Pace and space,Aggressive wall
+2001,1610612752,-0.646,0.686,-1.299,0.091,0.559,0.090,chaney-don,NYK,NYK,-0.703,0.666,0.501,-4.150,New York Knicks,Spread half-court,Aggressive wall
+2001,1610612753,1.229,1.443,-0.043,-0.658,-0.647,0.921,rivers-doc,ORL,ORL,0.768,-0.262,-1.290,1.250,Orlando Magic,Pace and space,Gamble and pressure
+2001,1610612754,0.692,0.155,-0.950,0.995,-0.259,-0.375,thomas-isiah,IND,IND,-0.409,0.268,-0.096,-0.070,Indiana Pacers,Pace and space,Run them off the line
+2001,1610612755,-0.684,-1.421,0.300,-0.664,1.320,-1.440,brown-larry,PHI,PHI,0.571,-0.572,0.634,1.270,Philadelphia 76ers,Isolation / pick-and-roll,Aggressive wall
+2001,1610612756,0.381,-0.369,1.006,-0.377,-0.023,0.409,skiles-scott,PHX,PHO,0.768,0.268,-0.627,-0.300,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2001,1610612757,-0.811,0.510,0.440,0.973,0.926,-0.515,cheeks-maurice,POR,POR,0.571,-0.837,1.430,3.210,Portland Trail Blazers,Motion / inside-out,Aggressive wall
+2001,1610612758,2.413,-0.193,0.748,-0.220,-1.154,-1.539,adelman-rick,SAC,SAC,-0.017,-1.589,0.368,7.610,Sacramento Kings,Pace and space,Disciplined / no-foul
+2001,1610612759,-0.383,0.333,0.952,-1.243,-1.053,-0.370,popovich-gregg,SAS,SAS,0.081,-1.412,0.501,6.280,San Antonio Spurs,Isolation / pick-and-roll,Disciplined / no-foul
+2001,1610612760,-0.858,0.411,-0.049,0.226,1.593,-0.182,mcmillan-nate,OKC,SEA,0.866,-0.660,-2.020,3.240,Seattle SuperSonics,Spread half-court,Gamble and pressure
+2001,1610612761,-1.025,-0.224,-0.386,0.063,-0.653,-0.638,wilkens-lenny,TOR,TOR,1.062,0.711,-0.693,-0.710,Toronto Raptors,Grind it out,Gamble and pressure
+2001,1610612762,-0.133,-0.937,2.375,2.571,0.812,-0.887,sloan-jerry,UTA,UTA,2.238,2.878,0.368,1.210,Utah Jazz,Motion / inside-out,Aggressive wall
+2001,1610612763,0.314,-0.148,-0.132,0.541,-1.077,1.471,lowe-sidney,MEM,MEM,0.081,-1.058,-2.086,-6.740,Memphis Grizzlies,Pace and space,Run them off the line
+2001,1610612764,-1.022,-1.249,-1.737,-0.676,0.090,-1.140,collins-doug,WAS,WAS,-0.605,-0.307,0.169,-1.580,Washington Wizards,Grind it out,Disciplined / no-foul
+2001,1610612765,-0.363,1.420,-0.023,0.377,-1.715,0.383,carlisle-rick,DET,DET,1.160,-0.660,-0.428,1.690,Detroit Pistons,Spread half-court,Run them off the line
+2001,1610612766,-0.538,-0.532,0.503,0.021,-0.355,1.509,silas-paul,CHA,CHH,-0.311,0.224,0.700,0.570,Charlotte Hornets,Motion / inside-out,Run them off the line
+2002,1610612737,0.144,-0.050,-0.723,-0.303,-0.044,0.507,stotts-terry,ATL,ATL,-1.717,-0.329,-0.753,-3.870,Atlanta Hawks,Grind it out,Run them off the line
+2002,1610612738,-0.291,3.323,-0.388,-0.403,1.880,-1.243,brien-o-jim,BOS,BOS,0.965,0.542,0.608,-0.750,Boston Celtics,Spread half-court,Aggressive wall
+2002,1610612739,1.305,-1.021,0.796,0.008,-0.263,0.478,ii-lucas-john,CLE,CLE,-0.913,0.977,1.061,-9.590,Cleveland Cavaliers,Isolation / pick-and-roll,Run them off the line
+2002,1610612740,-0.813,-0.441,-0.359,0.524,-1.440,2.006,silas-paul,NOP,NOH,-0.018,-0.155,0.997,1.520,New Orleans Hornets,Grind it out,Run them off the line
+2002,1610612741,1.068,-0.678,0.999,-0.089,0.741,1.294,cartwright-bill,CHI,CHI,-0.644,1.455,-1.336,-5.310,Chicago Bulls,Isolation / pick-and-roll,Gamble and pressure
+2002,1610612742,0.470,1.304,-0.905,-0.458,1.499,0.335,nelson-don,DAL,DAL,0.697,-0.372,-0.429,7.900,Dallas Mavericks,Spread half-court,Aggressive wall
+2002,1610612743,-0.182,-1.185,0.088,1.175,0.268,-1.009,bzdelik-jeff,DEN,DEN,2.217,2.630,1.126,-7.410,Denver Nuggets,Motion / inside-out,Aggressive wall
+2002,1610612744,1.615,-0.035,-0.400,-1.009,-0.852,0.349,musselman-eric,GSW,GSW,-1.628,-0.416,-2.373,-0.600,Golden State Warriors,Isolation / pick-and-roll,Run them off the line
+2002,1610612745,-1.030,0.377,0.428,-1.740,-0.729,-1.594,tomjanovich-rudy,HOU,HOU,-1.270,-0.894,0.543,1.890,Houston Rockets,Isolation / pick-and-roll,Disciplined / no-foul
+2002,1610612746,0.059,0.038,0.913,-0.818,0.119,-0.765,gentry-alvin,LAC,LAC,-0.823,-0.329,-0.883,-3.450,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+2002,1610612747,0.524,0.440,-0.157,0.461,0.074,-1.081,jackson-phil,LAL,LAL,-0.555,0.498,0.737,2.710,Los Angeles Lakers,Pace and space,Disciplined / no-foul
+2002,1610612748,-1.680,-0.241,-1.150,-1.031,0.198,-1.065,riley-pat,MIA,MIA,0.071,1.194,1.515,-5.130,Miami Heat,Grind it out,Aggressive wall
+2002,1610612749,-0.416,1.087,-0.584,-0.016,0.580,0.450,karl-george,MIL,MIL,-0.466,0.324,-1.077,-0.240,Milwaukee Bucks,Spread half-court,Gamble and pressure
+2002,1610612750,0.212,-1.348,-1.258,1.342,0.877,-0.644,saunders-flip,MIN,MIN,-1.181,-1.155,0.867,2.460,Minnesota Timberwolves,Grind it out,Disciplined / no-foul
+2002,1610612751,0.109,-0.473,1.295,1.260,0.105,-0.987,scott-byron,BKN,NJN,1.501,-0.198,0.997,4.420,New Jersey Nets,Motion / inside-out,Aggressive wall
+2002,1610612752,-0.278,1.230,-2.223,0.185,-0.922,0.617,chaney-don,NYK,NYK,-0.287,1.368,0.154,-1.610,New York Knicks,Spread half-court,Gamble and pressure
+2002,1610612753,0.775,1.217,-0.060,-0.771,0.139,0.528,rivers-doc,ORL,ORL,0.965,0.890,-0.299,-0.390,Orlando Magic,Pace and space,Gamble and pressure
+2002,1610612754,0.111,-0.229,0.103,1.431,-0.116,0.206,thomas-isiah,IND,IND,0.250,-0.068,0.478,2.790,Indiana Pacers,Motion / inside-out,Run them off the line
+2002,1610612755,0.340,-1.348,1.919,-0.101,1.012,0.165,brown-larry,PHI,PHI,1.948,0.585,0.737,1.760,Philadelphia 76ers,Motion / inside-out,Aggressive wall
+2002,1610612756,0.016,-0.213,1.073,-0.687,1.190,0.983,johnson-frank,PHX,PHO,0.697,-0.329,-0.818,1.570,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2002,1610612757,-1.043,-0.040,0.791,0.589,0.788,-0.071,cheeks-maurice,POR,POR,0.786,-1.547,0.478,2.970,Portland Trail Blazers,Motion / inside-out,Aggressive wall
+2002,1610612758,1.837,0.104,-0.123,0.707,-0.886,-1.931,adelman-rick,SAC,SAC,-0.376,-1.112,-0.623,6.680,Sacramento Kings,Pace and space,Disciplined / no-foul
+2002,1610612759,-0.453,0.479,1.298,-0.926,-1.326,-0.388,popovich-gregg,SAS,SAS,0.160,-1.329,-0.170,5.650,San Antonio Spurs,Isolation / pick-and-roll,Run them off the line
+2002,1610612760,-1.561,0.360,-1.016,0.391,1.668,-0.704,mcmillan-nate,OKC,SEA,0.250,-0.851,0.154,0.370,Seattle SuperSonics,Grind it out,Aggressive wall
+2002,1610612761,-0.769,-0.012,-0.796,-1.091,-1.599,0.892,wilkens-lenny,TOR,TOR,-0.823,-0.155,-0.559,-6.100,Toronto Raptors,Grind it out,Run them off the line
+2002,1610612762,-0.854,-1.661,1.410,3.209,0.820,-0.217,sloan-jerry,UTA,UTA,1.054,1.151,-0.883,2.760,Utah Jazz,Motion / inside-out,Gamble and pressure
+2002,1610612763,0.481,0.303,0.013,0.615,-0.507,1.551,brown-hubie,MEM,MEM,-0.555,-1.416,-1.855,-2.600,Memphis Grizzlies,Pace and space,Run them off the line
+2002,1610612764,-1.368,-1.155,-1.540,-0.677,0.522,-1.379,collins-doug,WAS,WAS,-0.197,-0.764,0.025,-1.470,Washington Wizards,Grind it out,Disciplined / no-foul
+2002,1610612765,-2.011,1.272,-0.688,0.017,-2.460,0.198,carlisle-rick,DET,DET,-0.108,-0.198,1.580,2.970,Detroit Pistons,Spread half-court,Disciplined / no-foul
+2003,1610612737,0.415,0.164,0.228,-0.538,0.443,0.599,stotts-terry,ATL,ATL,-1.040,0.219,-0.461,-5.000,Atlanta Hawks,Isolation / pick-and-roll,Run them off the line
+2003,1610612738,1.040,1.744,0.065,-0.312,1.867,-0.413,brien-o-jim,BOS,BOS,1.403,0.459,-1.002,-1.990,Boston Celtics,Pace and space,Aggressive wall
+2003,1610612739,0.023,-1.870,0.860,0.308,-0.841,0.353,silas-paul,CLE,CLE,-1.792,-0.301,0.892,-3.070,Cleveland Cavaliers,Motion / inside-out,Run them off the line
+2003,1610612740,-0.522,1.788,-0.190,0.315,0.533,0.547,floyd-tim,NOP,NOH,0.745,-0.420,-0.028,-0.720,New Orleans Hornets,Spread half-court,Aggressive wall
+2003,1610612741,0.618,0.018,-0.434,0.865,-0.131,0.326,skiles-scott,CHI,CHI,-0.100,0.979,0.026,-6.690,Chicago Bulls,Pace and space,Gamble and pressure
+2003,1610612742,1.082,0.445,-0.198,-0.343,1.130,0.817,nelson-don,DAL,DAL,-0.288,-0.580,0.134,4.860,Dallas Mavericks,Pace and space,Run them off the line
+2003,1610612743,1.112,-1.083,1.190,-0.144,-1.431,0.774,bzdelik-jeff,DEN,DEN,1.309,-0.301,-1.111,1.650,Denver Nuggets,Isolation / pick-and-roll,Gamble and pressure
+2003,1610612744,-0.272,0.330,-0.389,-0.488,-1.010,-0.808,musselman-eric,GSW,GSW,-0.852,-0.700,0.405,-0.070,Golden State Warriors,Spread half-court,Disciplined / no-foul
+2003,1610612745,-1.197,1.137,-0.733,-0.675,0.062,-1.678,gundy-van-jeff,HOU,HOU,-1.040,0.179,1.704,2.280,Houston Rockets,Spread half-court,Disciplined / no-foul
+2003,1610612746,0.255,-0.843,1.208,-0.439,-0.085,0.553,sr-dunleavy-mike,LAC,LAC,-1.228,0.099,-0.732,-3.740,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+2003,1610612747,0.623,-0.487,0.925,0.883,-0.086,-0.710,jackson-phil,LAL,LAL,0.087,-0.261,1.055,4.350,Los Angeles Lakers,Motion / inside-out,Disciplined / no-foul
+2003,1610612748,-1.039,0.715,-0.151,-0.750,0.549,-1.340,gundy-van-stan,MIA,MIA,0.275,1.259,1.109,-0.130,Miami Heat,Spread half-court,Aggressive wall
+2003,1610612749,0.507,-0.342,0.710,0.578,0.109,0.855,porter-terry,MIL,MIL,-0.852,-0.620,0.243,0.420,Milwaukee Bucks,Motion / inside-out,Run them off the line
+2003,1610612750,-0.680,-1.325,-2.507,0.411,-0.516,-0.620,saunders-flip,MIN,MIN,-1.228,-0.540,0.622,5.860,Minnesota Timberwolves,Grind it out,Disciplined / no-foul
+2003,1610612751,-0.396,-0.239,0.743,2.541,-0.058,-0.563,scott-byron,BKN,NJN,1.403,-0.301,1.380,1.880,New Jersey Nets,Motion / inside-out,Aggressive wall
+2003,1610612752,-0.291,-0.408,-1.231,-0.395,-0.069,-0.572,wilkens-lenny,NYK,NYK,-0.946,1.219,0.784,-1.970,New York Knicks,Grind it out,Disciplined / no-foul
+2003,1610612753,0.086,-0.025,-1.270,-1.408,0.070,1.008,davis-johnny,ORL,ORL,-1.416,-0.580,-1.436,-7.250,Orlando Magic,Isolation / pick-and-roll,Run them off the line
+2003,1610612754,-1.274,0.451,0.068,0.908,-1.184,-0.018,carlisle-rick,IND,IND,1.403,-0.420,1.380,4.930,Indiana Pacers,Motion / inside-out,Aggressive wall
+2003,1610612755,-0.945,-0.747,0.390,0.138,0.838,0.110,ayers-randy,PHI,PHI,0.463,0.099,-0.353,-2.950,Philadelphia 76ers,Motion / inside-out,Aggressive wall
+2003,1610612756,0.780,-0.148,0.796,-1.617,0.739,0.489,antoni-d-mike,PHX,PHO,0.463,0.459,-0.786,-2.940,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2003,1610612757,-1.762,-0.399,0.123,0.105,-0.198,0.596,cheeks-maurice,POR,POR,-0.852,-1.700,-0.732,-0.580,Portland Trail Blazers,Grind it out,Run them off the line
+2003,1610612758,0.969,1.041,-0.505,2.057,-0.740,-0.783,adelman-rick,SAC,SAC,-0.476,-1.420,-0.840,5.410,Sacramento Kings,Pace and space,Run them off the line
+2003,1610612759,-0.563,-0.222,0.188,-0.370,-1.881,-0.488,popovich-gregg,SAS,SAS,0.557,-0.540,1.759,7.510,San Antonio Spurs,Isolation / pick-and-roll,Disciplined / no-foul
+2003,1610612760,-0.259,2.956,-1.294,0.018,0.936,0.234,mcmillan-nate,OKC,SEA,-0.288,0.339,-1.544,0.020,Seattle SuperSonics,Spread half-court,Gamble and pressure
+2003,1610612761,-1.463,0.511,-1.621,-0.292,-2.281,0.122,neill-o-kevin,TOR,TOR,-0.100,0.499,-0.678,-3.420,Toronto Raptors,Spread half-court,Run them off the line
+2003,1610612762,-1.478,-1.584,1.526,0.365,0.707,-1.124,sloan-jerry,UTA,UTA,1.121,3.618,0.568,-0.530,Utah Jazz,Motion / inside-out,Aggressive wall
+2003,1610612763,0.342,0.331,1.335,0.953,-1.063,1.677,brown-hubie,MEM,MEM,1.403,0.899,-1.598,2.950,Memphis Grizzlies,Motion / inside-out,Gamble and pressure
+2003,1610612764,0.825,0.217,0.245,-1.134,-0.278,0.278,jordan-eddie,WAS,WAS,0.651,-0.580,-1.002,-6.120,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2003,1610612765,-1.035,-0.870,1.218,0.328,-0.290,-0.361,brown-larry,DET,DET,1.215,-1.060,0.243,5.040,Detroit Pistons,Motion / inside-out,Aggressive wall
+2004,1610612737,0.362,-0.927,1.450,-1.115,-0.146,1.251,woodson-mike,ATL,ATL,0.313,1.381,0.489,-9.620,Atlanta Hawks,Isolation / pick-and-roll,Gamble and pressure
+2004,1610612738,0.962,0.040,1.480,0.025,0.488,1.404,rivers-doc,BOS,BOS,0.488,0.896,-0.775,0.350,Boston Celtics,Pace and space,Gamble and pressure
+2004,1610612739,-0.586,-1.150,0.214,0.647,-1.058,0.454,silas-paul,CLE,CLE,0.400,0.055,0.110,0.270,Cleveland Cavaliers,Motion / inside-out,Run them off the line
+2004,1610612740,-1.382,0.202,-0.379,1.027,0.888,-0.145,scott-byron,NOP,NOH,0.225,0.475,-0.396,-6.300,New Orleans Hornets,Grind it out,Aggressive wall
+2004,1610612741,0.522,0.548,-0.404,0.465,-0.276,-0.865,skiles-scott,CHI,CHI,0.663,0.508,0.805,0.650,Chicago Bulls,Pace and space,Aggressive wall
+2004,1610612742,0.758,-0.007,-0.539,-1.666,0.353,0.072,nelson-don,DAL,DAL,0.576,-0.236,-0.712,5.860,Dallas Mavericks,Isolation / pick-and-roll,Gamble and pressure
+2004,1610612743,0.990,-1.004,1.374,1.264,0.359,-0.589,karl-george,DEN,DEN,1.277,0.023,0.236,2.230,Denver Nuggets,Motion / inside-out,Aggressive wall
+2004,1610612744,0.968,1.260,-1.094,0.117,-0.687,0.006,montgomery-mike,GSW,GSW,0.225,-0.624,-1.028,-1.740,Golden State Warriors,Pace and space,Run them off the line
+2004,1610612745,-0.903,0.926,-1.663,0.393,0.658,-2.455,gundy-van-jeff,HOU,HOU,-0.652,-0.042,2.006,4.270,Houston Rockets,Spread half-court,Disciplined / no-foul
+2004,1610612746,-0.644,-1.765,-0.401,1.423,0.140,-0.032,sr-dunleavy-mike,LAC,LAC,-0.564,-0.365,-0.017,-0.470,Los Angeles Clippers,Motion / inside-out,Run them off the line
+2004,1610612747,0.012,1.699,0.399,-0.394,1.189,-0.729,tomjanovich-rudy,LAL,LAL,-2.317,-0.915,-0.143,-2.320,Los Angeles Lakers,Spread half-court,Disciplined / no-foul
+2004,1610612748,-0.246,0.152,0.759,-0.372,-0.339,-2.646,gundy-van-stan,MIA,MIA,-1.090,-0.139,1.753,5.770,Miami Heat,Isolation / pick-and-roll,Disciplined / no-foul
+2004,1610612749,-0.053,-1.045,0.662,-0.323,0.315,1.045,porter-terry,MIL,MIL,-1.090,-0.430,0.426,-3.090,Milwaukee Bucks,Isolation / pick-and-roll,Run them off the line
+2004,1610612750,-0.817,-0.382,-2.287,0.915,-0.291,0.168,saunders-flip,MIN,MIN,-2.142,-1.238,0.046,1.730,Minnesota Timberwolves,Grind it out,Run them off the line
+2004,1610612751,-0.835,-0.073,-1.083,1.261,0.874,-1.142,frank-lawrence,BKN,NJN,1.365,1.025,1.184,-1.820,New Jersey Nets,Grind it out,Aggressive wall
+2004,1610612752,-0.053,-0.068,-0.345,-0.854,0.085,0.429,williams-herb,NYK,NYK,0.137,0.605,-0.080,-2.720,New York Knicks,Isolation / pick-and-roll,Gamble and pressure
+2004,1610612753,1.600,-1.109,0.390,-1.785,-0.327,0.457,davis-johnny,ORL,ORL,-0.389,0.281,-0.017,-2.520,Orlando Magic,Isolation / pick-and-roll,Run them off the line
+2004,1610612754,-1.437,1.316,-0.808,-0.877,-1.256,-0.034,carlisle-rick,IND,IND,-0.038,0.475,-0.017,0.490,Indiana Pacers,Spread half-court,Run them off the line
+2004,1610612755,1.772,0.505,0.155,-0.319,1.943,-0.990,brien-o-jim,PHI,PHI,1.540,0.669,0.868,-1.070,Philadelphia 76ers,Pace and space,Aggressive wall
+2004,1610612756,2.063,2.016,-0.195,-0.454,0.077,0.227,antoni-d-mike,PHX,PHO,-1.441,-2.273,-1.913,7.080,Phoenix Suns,Pace and space,Run them off the line
+2004,1610612757,-0.501,-0.210,0.689,0.030,-0.446,0.914,cheeks-maurice,POR,POR,-0.915,-1.368,-2.293,-3.450,Portland Trail Blazers,Motion / inside-out,Run them off the line
+2004,1610612758,0.938,0.186,-1.314,0.819,-0.273,-0.607,adelman-rick,SAC,SAC,-0.301,-1.044,-1.471,2.560,Sacramento Kings,Pace and space,Run them off the line
+2004,1610612759,-0.871,0.509,0.024,0.308,-2.795,-0.101,popovich-gregg,SAS,SAS,0.926,-0.333,1.437,7.840,San Antonio Spurs,Spread half-court,Disciplined / no-foul
+2004,1610612760,-1.292,1.844,-0.808,-1.930,0.525,-0.007,mcmillan-nate,OKC,SEA,-0.652,0.087,-0.017,2.590,Seattle SuperSonics,Spread half-court,Run them off the line
+2004,1610612761,0.693,1.276,-1.138,-0.687,-0.662,0.004,mitchell-sam,TOR,TOR,-0.213,-0.204,-0.143,-1.810,Toronto Raptors,Spread half-court,Run them off the line
+2004,1610612762,-0.925,-1.441,0.438,1.311,1.037,-0.032,sloan-jerry,UTA,UTA,0.488,3.029,0.615,-3.740,Utah Jazz,Motion / inside-out,Aggressive wall
+2004,1610612763,-1.068,0.984,1.122,0.514,0.080,0.308,fratello-mike,MEM,MEM,1.540,0.766,-0.902,2.640,Memphis Grizzlies,Motion / inside-out,Gamble and pressure
+2004,1610612764,1.035,0.609,-0.737,-1.655,0.788,-0.366,jordan-eddie,WAS,WAS,0.839,-0.527,-0.839,-0.710,Washington Wizards,Isolation / pick-and-roll,Aggressive wall
+2004,1610612765,-1.559,-0.556,0.327,0.839,-0.449,0.224,brown-larry,DET,DET,-0.126,-1.271,1.058,3.310,Detroit Pistons,Motion / inside-out,Disciplined / no-foul
+2004,1610612766,0.514,-1.303,-0.707,0.317,-0.390,1.598,bickerstaff-bernie,CHA,CHA,0.926,0.734,-0.270,-6.150,Charlotte Bobcats,Grind it out,Gamble and pressure
+2005,1610612737,0.088,-0.587,0.893,-0.498,-0.634,1.831,woodson-mike,ATL,ATL,0.451,0.996,-1.557,-4.690,Atlanta Hawks,Isolation / pick-and-roll,Gamble and pressure
+2005,1610612738,0.701,-0.010,1.061,0.185,-0.286,1.088,rivers-doc,BOS,BOS,0.098,1.259,0.052,-1.590,Boston Celtics,Pace and space,Gamble and pressure
+2005,1610612739,-0.414,0.525,1.366,-0.845,-0.176,-0.144,brown-mike,CLE,CLE,-1.078,-0.848,1.466,2.170,Cleveland Cavaliers,Isolation / pick-and-roll,Disciplined / no-foul
+2005,1610612740,-0.484,-1.476,0.294,-0.842,1.486,-0.625,scott-byron,NOP,NOK,0.686,-0.208,0.345,-2.510,New Orleans/Oklahoma City Hornets,Isolation / pick-and-roll,Aggressive wall
+2005,1610612741,0.862,0.311,-0.458,0.621,0.750,-1.068,skiles-scott,CHI,CHI,0.216,1.748,0.978,0.510,Chicago Bulls,Pace and space,Aggressive wall
+2005,1610612742,-1.110,-0.662,-0.751,-1.686,-1.087,-0.303,johnson-avery,DAL,DAL,-0.020,0.319,-0.241,5.960,Dallas Mavericks,Grind it out,Run them off the line
+2005,1610612743,1.387,-0.953,1.603,1.160,0.708,-0.289,karl-george,DEN,DEN,1.156,-0.810,-0.338,0.360,Denver Nuggets,Motion / inside-out,Aggressive wall
+2005,1610612744,1.274,1.455,-0.339,0.069,-0.117,-0.270,montgomery-mike,GSW,GSW,0.451,-0.208,-0.533,-1.110,Golden State Warriors,Pace and space,Run them off the line
+2005,1610612745,-1.212,0.477,-0.804,0.230,1.309,-2.637,gundy-van-jeff,HOU,HOU,-0.725,-0.058,0.930,-1.300,Houston Rockets,Spread half-court,Disciplined / no-foul
+2005,1610612746,0.511,-1.648,-1.833,-0.062,0.152,0.135,sr-dunleavy-mike,LAC,LAC,-1.783,-0.321,1.564,1.750,Los Angeles Clippers,Grind it out,Disciplined / no-foul
+2005,1610612747,0.206,0.775,-0.164,0.141,0.110,0.307,jackson-phil,LAL,LAL,-0.372,-0.246,0.442,2.530,Los Angeles Lakers,Pace and space,Run them off the line
+2005,1610612748,0.357,0.493,1.005,-0.386,0.257,-1.784,riley-pat,MIA,MIA,-1.548,0.093,1.807,3.590,Miami Heat,Isolation / pick-and-roll,Disciplined / no-foul
+2005,1610612749,0.319,-0.032,0.826,0.481,0.660,0.456,stotts-terry,MIL,MIL,0.098,0.507,0.930,-1.070,Milwaukee Bucks,Motion / inside-out,Aggressive wall
+2005,1610612750,-0.991,-1.245,-0.868,0.475,-0.544,0.956,casey-dwane,MIN,MIN,-0.372,-0.472,-0.679,-1.750,Minnesota Timberwolves,Grind it out,Run them off the line
+2005,1610612751,-0.297,0.544,-0.528,2.396,0.554,-0.515,frank-lawrence,BKN,NJN,0.333,0.657,1.759,1.110,New Jersey Nets,Pace and space,Aggressive wall
+2005,1610612752,0.145,-1.385,2.112,-1.216,1.430,-0.401,brown-larry,NYK,NYK,-0.372,1.711,0.052,-6.300,New York Knicks,Isolation / pick-and-roll,Aggressive wall
+2005,1610612753,-1.121,-1.663,1.345,-1.368,0.054,0.202,hill-brian,ORL,ORL,-0.843,0.582,-0.094,-1.260,Orlando Magic,Isolation / pick-and-roll,Run them off the line
+2005,1610612754,-0.359,0.893,-0.466,0.275,-1.588,0.119,carlisle-rick,IND,IND,-0.843,-0.622,-0.046,1.620,Indiana Pacers,Spread half-court,Run them off the line
+2005,1610612755,0.955,-1.044,0.481,-0.516,0.429,1.113,cheeks-maurice,PHI,PHI,0.686,-0.321,-0.679,-2.100,Philadelphia 76ers,Isolation / pick-and-roll,Gamble and pressure
+2005,1610612756,2.248,1.940,-1.541,1.415,-0.124,-0.840,antoni-d-mike,PHX,PHO,-0.607,-1.826,-0.289,5.480,Phoenix Suns,Pace and space,Disciplined / no-foul
+2005,1610612757,-1.301,-0.871,-0.046,-0.904,-0.003,0.544,mcmillan-nate,POR,POR,-1.313,-0.660,-2.191,-8.910,Portland Trail Blazers,Grind it out,Run them off the line
+2005,1610612758,0.645,0.269,-0.934,1.016,-0.328,-1.019,adelman-rick,SAC,SAC,-0.020,-1.450,-0.241,1.610,Sacramento Kings,Pace and space,Disciplined / no-foul
+2005,1610612759,-0.968,0.224,-0.006,0.006,-2.799,0.638,popovich-gregg,SAS,SAS,-0.255,-1.074,0.735,6.690,San Antonio Spurs,Grind it out,Run them off the line
+2005,1610612760,0.547,0.847,-0.729,-0.507,0.769,0.546,hill-bob,OKC,SEA,-0.137,0.431,-1.801,-2.880,Seattle SuperSonics,Spread half-court,Gamble and pressure
+2005,1610612761,0.207,0.876,-1.328,-1.022,0.416,0.654,mitchell-sam,TOR,TOR,-0.255,0.544,0.296,-3.030,Toronto Raptors,Spread half-court,Run them off the line
+2005,1610612762,-1.016,-1.243,1.006,1.655,0.462,-0.739,sloan-jerry,UTA,UTA,0.333,2.050,0.247,-2.490,Utah Jazz,Motion / inside-out,Aggressive wall
+2005,1610612763,-1.945,1.177,0.322,0.096,-0.232,0.083,fratello-mike,MEM,MEM,1.156,-0.434,-0.338,3.740,Memphis Grizzlies,Spread half-court,Gamble and pressure
+2005,1610612764,0.837,0.097,-0.219,-1.405,0.469,-0.056,jordan-eddie,WAS,WAS,1.626,0.281,-0.874,1.570,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2005,1610612765,-1.707,0.369,-1.125,1.998,-2.022,1.053,saunders-flip,DET,DET,-0.020,-2.165,-0.728,6.240,Detroit Pistons,Grind it out,Run them off the line
+2005,1610612766,1.249,-0.456,0.452,0.148,-0.067,1.816,bickerstaff-bernie,CHA,CHA,3.272,0.544,-0.972,-3.900,Charlotte Bobcats,Pace and space,Gamble and pressure
+2006,1610612737,-0.742,-1.205,0.983,-0.720,-0.841,2.041,woodson-mike,ATL,ATL,0.363,0.800,-0.984,-4.860,Atlanta Hawks,Isolation / pick-and-roll,Gamble and pressure
+2006,1610612738,-0.001,-0.333,0.186,-0.327,-1.026,1.651,rivers-doc,BOS,BOS,0.363,1.250,0.438,-3.700,Boston Celtics,Isolation / pick-and-roll,Gamble and pressure
+2006,1610612739,-0.516,-0.014,0.369,-0.241,-0.867,-0.353,brown-mike,CLE,CLE,0.632,-0.136,1.418,3.330,Cleveland Cavaliers,Isolation / pick-and-roll,Disciplined / no-foul
+2006,1610612740,-0.600,-0.578,-0.101,-1.746,1.299,-0.693,scott-byron,NOP,NOK,-1.384,-1.298,0.879,-1.190,New Orleans/Oklahoma City Hornets,Isolation / pick-and-roll,Disciplined / no-foul
+2006,1610612741,0.682,-0.642,-0.435,0.507,0.189,-0.380,skiles-scott,CHI,CHI,2.647,0.201,0.683,4.520,Chicago Bulls,Grind it out,Aggressive wall
+2006,1610612742,-0.902,0.174,-1.343,-1.080,-1.996,-0.429,johnson-avery,DAL,DAL,-0.040,0.688,1.026,7.280,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2006,1610612743,2.107,0.002,1.202,0.651,0.405,-0.047,karl-george,DEN,DEN,0.363,-1.635,-0.543,1.690,Denver Nuggets,Pace and space,Run them off the line
+2006,1610612744,2.839,1.690,1.106,0.414,1.435,0.152,nelson-don,GSW,GSW,2.513,0.651,-1.621,0.000,Golden State Warriors,Pace and space,Gamble and pressure
+2006,1610612745,-0.517,1.957,-1.151,0.103,-0.254,-2.078,gundy-van-jeff,HOU,HOU,-0.846,-0.623,2.007,5.040,Houston Rockets,Spread half-court,Disciplined / no-foul
+2006,1610612746,-0.421,-1.702,-1.696,0.784,-0.233,-0.617,sr-dunleavy-mike,LAC,LAC,-1.250,0.089,0.879,-0.070,Los Angeles Clippers,Grind it out,Disciplined / no-foul
+2006,1610612747,0.656,1.178,0.269,0.366,0.236,0.754,jackson-phil,LAL,LAL,-0.981,0.576,-0.297,0.240,Los Angeles Lakers,Pace and space,Run them off the line
+2006,1610612748,-0.924,0.850,-0.329,-0.178,0.774,-1.720,riley-pat,MIA,MIA,-0.578,-0.548,0.193,-1.210,Miami Heat,Spread half-court,Disciplined / no-foul
+2006,1610612749,0.193,0.199,1.253,-0.397,0.873,1.046,stotts-terry,MIL,MIL,0.363,-0.473,-2.356,-4.430,Milwaukee Bucks,Isolation / pick-and-roll,Gamble and pressure
+2006,1610612750,-0.297,-1.098,-1.488,0.912,0.444,0.087,wittman-randy,MIN,MIN,-1.250,-0.773,-0.395,-3.160,Minnesota Timberwolves,Grind it out,Run them off the line
+2006,1610612751,-0.152,1.297,0.162,2.438,0.561,-1.056,frank-lawrence,BKN,NJN,-0.712,0.726,0.732,-1.000,New Jersey Nets,Pace and space,Disciplined / no-foul
+2006,1610612752,-0.403,0.110,2.108,-1.468,0.919,-0.943,thomas-isiah,NYK,NYK,-1.653,-0.024,0.536,-3.060,New York Knicks,Isolation / pick-and-roll,Disciplined / no-foul
+2006,1610612753,-0.924,-1.330,1.257,-1.395,-0.079,-1.055,hill-brian,ORL,ORL,0.497,1.475,0.389,0.350,Orlando Magic,Isolation / pick-and-roll,Aggressive wall
+2006,1610612754,0.182,0.022,-0.901,0.065,-1.417,-0.233,carlisle-rick,IND,IND,0.766,0.913,-0.101,-2.620,Indiana Pacers,Grind it out,Gamble and pressure
+2006,1610612755,-0.463,-2.081,0.258,-0.356,0.172,0.566,cheeks-maurice,PHI,PHI,0.632,-0.960,-1.033,-3.260,Philadelphia 76ers,Isolation / pick-and-roll,Gamble and pressure
+2006,1610612756,1.332,1.890,-0.030,1.173,-0.796,-1.144,antoni-d-mike,PHX,PHO,-0.846,-1.522,-0.493,7.280,Phoenix Suns,Pace and space,Disciplined / no-foul
+2006,1610612757,-1.468,-0.457,-0.687,-1.502,-0.356,1.007,mcmillan-nate,POR,POR,-0.981,0.763,0.046,-3.780,Portland Trail Blazers,Grind it out,Run them off the line
+2006,1610612758,1.186,0.514,-0.613,-0.439,0.751,-0.982,musselman-eric,SAC,SAC,0.900,-0.249,-0.199,-1.350,Sacramento Kings,Pace and space,Aggressive wall
+2006,1610612759,-0.985,0.887,-0.423,0.599,-2.040,-0.245,popovich-gregg,SAS,SAS,-0.309,-1.710,1.369,8.350,San Antonio Spurs,Spread half-court,Disciplined / no-foul
+2006,1610612760,-0.049,0.207,-0.379,-0.703,0.314,0.336,hill-bob,OKC,SEA,-0.175,-0.136,-0.984,-2.450,Seattle SuperSonics,Isolation / pick-and-roll,Run them off the line
+2006,1610612761,0.360,0.305,-1.492,0.493,0.647,-0.745,mitchell-sam,TOR,TOR,0.094,-1.035,0.781,0.610,Toronto Raptors,Grind it out,Disciplined / no-foul
+2006,1610612762,-0.056,-1.190,1.145,2.062,0.792,-0.088,sloan-jerry,UTA,UTA,0.228,2.524,1.075,3.060,Utah Jazz,Motion / inside-out,Aggressive wall
+2006,1610612763,0.720,-0.003,0.580,-0.619,0.257,0.783,barone-tony,MEM,MEM,-0.309,-0.361,-0.886,-4.440,Memphis Grizzlies,Isolation / pick-and-roll,Run them off the line
+2006,1610612764,0.937,0.626,-0.437,-1.120,1.142,-0.069,jordan-eddie,WAS,WAS,0.228,0.089,-0.935,-0.800,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2006,1610612765,-1.710,-0.236,-0.553,0.494,-1.148,0.673,saunders-flip,DET,DET,0.094,-0.473,-0.984,3.690,Detroit Pistons,Grind it out,Run them off the line
+2006,1610612766,0.068,-0.462,0.503,1.011,-0.926,1.465,bickerstaff-bernie,CHA,CHA,0.632,1.213,-0.641,-3.970,Charlotte Bobcats,Motion / inside-out,Gamble and pressure
+2007,1610612737,-0.221,-1.204,0.717,0.481,-0.627,1.750,woodson-mike,ATL,ATL,-0.340,-0.531,-1.038,-2.230,Atlanta Hawks,Motion / inside-out,Run them off the line
+2007,1610612738,-0.382,0.690,0.472,0.660,0.926,-1.197,rivers-doc,BOS,BOS,2.003,0.767,0.675,9.300,Boston Celtics,Pace and space,Aggressive wall
+2007,1610612739,-0.593,0.261,0.447,-0.665,-0.139,0.153,brown-mike,CLE,CLE,-0.340,0.298,1.626,-0.530,Cleveland Cavaliers,Isolation / pick-and-roll,Disciplined / no-foul
+2007,1610612740,-0.623,0.443,-0.439,-0.527,0.573,0.113,scott-byron,NOP,NOH,0.272,-1.721,1.309,5.460,New Orleans Hornets,Spread half-court,Disciplined / no-foul
+2007,1610612741,0.295,-0.626,0.024,0.468,0.431,0.082,boylan-jim,CHI,CHI,0.985,0.947,-0.150,-3.190,Chicago Bulls,Motion / inside-out,Aggressive wall
+2007,1610612742,-0.545,-0.064,-0.995,-0.422,-2.146,-0.525,johnson-avery,DAL,DAL,-1.562,0.731,1.055,4.700,Dallas Mavericks,Grind it out,Disciplined / no-foul
+2007,1610612743,2.102,0.212,1.433,0.616,0.536,-0.276,karl-george,DEN,DEN,0.883,-1.036,-0.785,3.740,Denver Nuggets,Pace and space,Aggressive wall
+2007,1610612744,1.943,1.724,1.241,-1.137,-0.019,0.755,nelson-don,GSW,GSW,1.494,0.947,-1.927,2.380,Golden State Warriors,Pace and space,Gamble and pressure
+2007,1610612745,-0.493,0.816,0.180,-0.028,-2.070,-1.197,adelman-rick,HOU,HOU,-0.441,-0.639,0.929,4.830,Houston Rockets,Spread half-court,Disciplined / no-foul
+2007,1610612746,0.040,-1.142,-1.038,0.668,-0.662,1.186,sr-dunleavy-mike,LAC,LAC,-0.441,0.154,-0.150,-6.560,Los Angeles Clippers,Grind it out,Run them off the line
+2007,1610612747,0.974,0.863,0.615,0.727,-0.227,0.414,jackson-phil,LAL,LAL,-0.340,-0.639,0.040,7.340,Los Angeles Lakers,Pace and space,Run them off the line
+2007,1610612748,-0.561,-0.037,-0.872,-0.018,0.408,-0.640,riley-pat,MIA,MIA,0.374,0.478,-0.912,-8.530,Miami Heat,Grind it out,Aggressive wall
+2007,1610612749,-0.168,-0.544,0.569,-0.110,0.521,1.251,krystkowiak-larry,MIL,MIL,-0.238,0.659,-0.214,-6.920,Milwaukee Bucks,Isolation / pick-and-roll,Gamble and pressure
+2007,1610612750,-0.096,-0.751,-0.001,-1.346,0.535,0.114,wittman-randy,MIN,MIN,-0.340,1.344,0.167,-6.260,Minnesota Timberwolves,Isolation / pick-and-roll,Aggressive wall
+2007,1610612751,-0.084,0.075,0.954,2.097,-0.093,0.140,frank-lawrence,BKN,NJN,-0.543,1.416,0.294,-5.150,New Jersey Nets,Motion / inside-out,Aggressive wall
+2007,1610612752,-0.114,-0.074,1.064,-1.686,0.702,0.253,thomas-isiah,NYK,NYK,-1.154,-0.099,-0.404,-6.550,New York Knicks,Isolation / pick-and-roll,Run them off the line
+2007,1610612753,0.262,2.308,0.474,-0.677,-0.582,-1.125,gundy-van-stan,ORL,ORL,-0.951,-0.531,0.929,4.790,Orlando Magic,Spread half-court,Disciplined / no-foul
+2007,1610612754,1.576,1.592,-0.756,0.350,0.356,-0.910,brien-o-jim,IND,IND,0.883,1.416,0.357,-1.870,Indiana Pacers,Pace and space,Aggressive wall
+2007,1610612755,-0.444,-1.675,1.134,-0.927,0.709,1.816,cheeks-maurice,PHI,PHI,1.902,-0.964,-0.848,0.190,Philadelphia 76ers,Isolation / pick-and-roll,Gamble and pressure
+2007,1610612756,1.257,0.930,0.227,1.405,-2.048,-0.085,antoni-d-mike,PHX,PHO,-1.460,-1.469,-1.546,5.140,Phoenix Suns,Pace and space,Run them off the line
+2007,1610612757,-1.175,-0.015,-2.087,0.101,0.182,0.400,mcmillan-nate,POR,POR,-1.154,-0.711,-0.975,-0.520,Portland Trail Blazers,Grind it out,Run them off the line
+2007,1610612758,0.743,-0.225,0.541,-1.703,0.659,-0.332,theus-reggie,SAC,SAC,0.679,0.875,-1.038,-1.860,Sacramento Kings,Isolation / pick-and-roll,Gamble and pressure
+2007,1610612759,-0.943,0.727,-0.944,-0.036,-1.523,-1.203,popovich-gregg,SAS,SAS,-0.441,-1.108,2.388,5.100,San Antonio Spurs,Spread half-court,Disciplined / no-foul
+2007,1610612760,1.159,-1.898,-0.435,-0.642,-0.117,0.586,carlesimo-j-p,OKC,SEA,-1.358,-0.603,0.231,-8.040,Seattle SuperSonics,Isolation / pick-and-roll,Run them off the line
+2007,1610612761,-0.529,-0.032,-0.760,0.816,1.607,-0.177,mitchell-sam,TOR,TOR,0.272,-0.964,1.055,2.470,Toronto Raptors,Grind it out,Aggressive wall
+2007,1610612762,0.418,-1.165,1.512,1.768,0.118,0.676,sloan-jerry,UTA,UTA,1.800,2.245,0.484,6.860,Utah Jazz,Motion / inside-out,Aggressive wall
+2007,1610612763,0.893,1.026,0.303,-1.717,0.325,0.646,iavaroni-marc,MEM,MEM,-1.053,-1.288,0.040,-5.760,Memphis Grizzlies,Isolation / pick-and-roll,Run them off the line
+2007,1610612764,-0.684,0.497,-0.333,-1.148,2.284,-0.456,jordan-eddie,WAS,WAS,0.272,-0.531,-0.341,-0.610,Washington Wizards,Spread half-court,Aggressive wall
+2007,1610612765,-1.317,-0.347,-0.892,0.580,-1.226,0.363,saunders-flip,DET,DET,0.170,0.442,0.231,6.670,Detroit Pistons,Grind it out,Run them off the line
+2007,1610612766,-0.122,0.034,0.678,0.103,-0.223,1.006,vincent-sam,CHA,CHA,0.170,0.118,-1.483,-4.490,Charlotte Bobcats,Motion / inside-out,Gamble and pressure
+2008,1610612737,-0.779,0.844,-1.050,0.000,-0.091,0.217,woodson-mike,ATL,ATL,-0.053,-0.958,-0.830,1.700,Atlanta Hawks,Spread half-court,Run them off the line
+2008,1610612738,-0.585,-0.039,0.478,1.251,-0.086,-0.389,rivers-doc,BOS,BOS,0.744,0.631,1.154,7.440,Boston Celtics,Motion / inside-out,Aggressive wall
+2008,1610612739,-1.060,0.969,-1.019,-0.286,-0.154,0.254,brown-mike,CLE,CLE,0.246,-0.367,0.658,8.680,Cleveland Cavaliers,Spread half-court,Run them off the line
+2008,1610612740,-1.342,0.546,-1.060,-0.218,0.806,-0.389,scott-byron,NOP,NOH,-0.053,-0.219,0.807,1.410,New Orleans Hornets,Spread half-court,Aggressive wall
+2008,1610612741,0.416,-0.597,0.248,-0.181,-0.765,1.253,negro-del-vinny,CHI,CHI,-0.153,0.076,-1.177,-0.160,Chicago Bulls,Isolation / pick-and-roll,Gamble and pressure
+2008,1610612742,-0.106,0.580,-1.387,0.227,-0.748,-0.785,carlisle-rick,DAL,DAL,-0.950,-0.404,0.658,1.680,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2008,1610612743,0.838,0.245,1.518,0.962,0.421,-0.579,karl-george,DEN,DEN,0.844,0.852,-0.780,3.130,Denver Nuggets,Pace and space,Aggressive wall
+2008,1610612744,2.196,-0.154,0.017,-0.862,-0.558,1.259,nelson-don,GSW,GSW,-0.352,0.557,-2.566,-3.800,Golden State Warriors,Isolation / pick-and-roll,Gamble and pressure
+2008,1610612745,-0.582,0.862,-0.262,0.031,-1.088,-1.160,adelman-rick,HOU,HOU,-1.348,-1.623,1.005,3.730,Houston Rockets,Spread half-court,Disciplined / no-foul
+2008,1610612746,0.092,0.245,0.498,0.626,-0.574,0.803,sr-dunleavy-mike,LAC,LAC,-0.850,-0.330,-1.028,-8.470,Los Angeles Clippers,Pace and space,Run them off the line
+2008,1610612747,0.858,0.047,0.059,0.456,0.551,0.744,jackson-phil,LAL,LAL,0.943,-0.847,-0.136,7.110,Los Angeles Lakers,Pace and space,Gamble and pressure
+2008,1610612748,-0.686,0.670,-1.251,-0.273,0.201,-0.364,spoelstra-erik,MIA,MIA,1.242,0.557,-0.185,0.490,Miami Heat,Spread half-court,Aggressive wall
+2008,1610612749,0.334,-0.163,-0.391,1.065,0.250,0.127,skiles-scott,MIL,MIL,2.338,2.922,0.360,-0.880,Milwaukee Bucks,Pace and space,Aggressive wall
+2008,1610612750,-0.069,0.286,0.165,0.006,-0.394,-0.765,mchale-kevin,MIN,MIN,-1.249,0.668,0.856,-4.740,Minnesota Timberwolves,Isolation / pick-and-roll,Disciplined / no-foul
+2008,1610612751,-0.613,1.128,0.256,-0.035,0.342,0.513,frank-lawrence,BKN,NJN,-0.252,1.333,0.112,-2.310,New Jersey Nets,Spread half-court,Gamble and pressure
+2008,1610612752,1.619,2.360,0.703,-0.279,0.058,0.770,antoni-d-mike,NYK,NYK,-0.252,-0.774,-0.284,-2.330,New York Knicks,Pace and space,Run them off the line
+2008,1610612753,0.066,2.635,-0.887,-0.464,-1.122,-1.676,gundy-van-stan,ORL,ORL,-0.950,-0.995,1.303,6.480,Orlando Magic,Spread half-court,Disciplined / no-foul
+2008,1610612754,1.483,0.622,-0.206,-0.259,-0.238,-1.418,brien-o-jim,IND,IND,-0.551,1.296,0.608,-0.760,Indiana Pacers,Pace and space,Disciplined / no-foul
+2008,1610612755,-0.525,-1.125,1.653,-0.307,0.479,0.669,dileo-tony,PHI,PHI,1.641,-0.737,-0.929,0.160,Philadelphia 76ers,Motion / inside-out,Gamble and pressure
+2008,1610612756,1.343,0.007,1.152,0.123,0.106,-1.965,porter-terry,PHX,PHO,-0.452,-0.108,-0.780,1.620,Phoenix Suns,Pace and space,Disciplined / no-foul
+2008,1610612757,-1.641,0.537,-0.578,-0.228,-0.671,0.003,mcmillan-nate,POR,POR,-0.053,-0.330,0.856,5.000,Portland Trail Blazers,Spread half-court,Disciplined / no-foul
+2008,1610612758,0.784,0.527,-0.660,-0.534,-0.569,1.043,natt-kenny,SAC,SAC,-0.252,1.222,-1.673,-8.600,Sacramento Kings,Pace and space,Gamble and pressure
+2008,1610612759,-1.212,0.719,-1.572,0.281,-1.461,-1.300,popovich-gregg,SAS,SAS,-1.548,-1.660,2.344,3.360,San Antonio Spurs,Spread half-court,Disciplined / no-foul
+2008,1610612760,0.845,-1.628,0.599,-0.192,-0.546,1.709,brooks-scott,OKC,OKC,-0.252,-0.737,0.311,-6.040,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2008,1610612761,0.129,-0.476,-1.517,1.136,0.628,-0.232,triano-jay,TOR,TOR,-0.651,-1.254,0.212,-2.540,Toronto Raptors,Grind it out,Disciplined / no-foul
+2008,1610612762,0.504,-1.013,1.630,2.320,-0.061,0.967,sloan-jerry,UTA,UTA,1.740,0.963,-0.284,2.310,Utah Jazz,Motion / inside-out,Gamble and pressure
+2008,1610612763,-0.542,-0.896,0.311,-1.785,0.090,0.404,iavaroni-marc,MEM,MEM,0.844,0.409,0.112,-5.230,Memphis Grizzlies,Isolation / pick-and-roll,Aggressive wall
+2008,1610612764,-0.211,-0.780,0.221,-0.352,1.026,0.384,tapscott-ed,WAS,WAS,0.046,-0.330,-0.929,-6.980,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2008,1610612765,-1.628,-1.111,-0.908,0.168,-1.116,-0.177,curry-michael,DET,DET,-1.548,0.446,0.360,-0.360,Detroit Pistons,Grind it out,Run them off the line
+2008,1610612766,-1.241,-0.070,1.351,1.305,0.326,0.043,brown-larry,CHA,CHA,1.142,-0.256,-0.136,-1.200,Charlotte Bobcats,Motion / inside-out,Aggressive wall
+2009,1610612737,-1.134,-0.163,-0.501,0.006,-0.644,1.196,woodson-mike,ATL,ATL,-0.134,-0.895,-0.574,4.440,Atlanta Hawks,Grind it out,Run them off the line
+2009,1610612738,-0.539,0.159,0.862,1.874,-0.419,-0.519,rivers-doc,BOS,BOS,1.716,1.014,0.031,3.370,Boston Celtics,Motion / inside-out,Aggressive wall
+2009,1610612739,-0.722,0.627,0.743,0.760,0.160,-1.501,brown-mike,CLE,CLE,-1.113,-0.451,1.900,6.170,Cleveland Cavaliers,Motion / inside-out,Disciplined / no-foul
+2009,1610612740,0.054,0.143,0.134,0.387,-0.250,1.060,bower-jeff,NOP,NOH,0.192,-1.029,0.031,-2.270,New Orleans Hornets,Pace and space,Run them off the line
+2009,1610612741,0.185,-1.482,0.175,-0.233,0.855,-0.206,negro-del-vinny,CHI,CHI,-1.113,-0.718,0.581,-1.640,Chicago Bulls,Isolation / pick-and-roll,Disciplined / no-foul
+2009,1610612742,-0.013,0.030,-1.352,1.243,-0.087,-1.390,carlisle-rick,DAL,DAL,0.301,-0.984,-0.024,2.660,Dallas Mavericks,Grind it out,Disciplined / no-foul
+2009,1610612743,0.831,0.162,0.901,-0.306,-0.156,-0.481,karl-george,DEN,DEN,0.519,1.014,-0.739,4.150,Denver Nuggets,Isolation / pick-and-roll,Gamble and pressure
+2009,1610612744,3.252,0.404,-0.650,-0.250,-0.393,0.613,nelson-don,GSW,GSW,1.933,1.413,-2.883,-3.280,Golden State Warriors,Pace and space,Gamble and pressure
+2009,1610612745,0.534,1.041,0.680,0.421,-1.224,0.226,adelman-rick,HOU,HOU,0.301,-0.585,0.031,-0.020,Houston Rockets,Pace and space,Run them off the line
+2009,1610612746,-0.057,0.006,0.788,1.048,-0.476,-0.111,sr-dunleavy-mike,LAC,LAC,-1.222,-0.629,0.141,-6.010,Los Angeles Clippers,Motion / inside-out,Run them off the line
+2009,1610612747,0.065,0.149,-0.304,-0.306,0.325,-0.539,jackson-phil,LAL,LAL,-0.134,-1.473,0.361,4.780,Los Angeles Lakers,Isolation / pick-and-roll,Disciplined / no-foul
+2009,1610612748,-1.356,-0.045,-1.670,-1.115,0.649,-1.613,spoelstra-erik,MIA,MIA,0.627,0.792,0.636,1.990,Miami Heat,Grind it out,Aggressive wall
+2009,1610612749,-0.370,0.873,-1.321,0.214,-1.100,-0.019,skiles-scott,MIL,MIL,1.389,1.680,1.461,1.370,Milwaukee Bucks,Spread half-court,Aggressive wall
+2009,1610612750,1.466,-1.147,-0.663,-0.993,0.832,-0.461,rambis-kurt,MIN,MIN,-0.352,-0.363,-0.079,-9.060,Minnesota Timberwolves,Isolation / pick-and-roll,Run them off the line
+2009,1610612751,-0.408,-0.922,0.811,-0.413,-1.489,2.302,vandeweghe-kiki,BKN,NJN,-0.025,0.037,-1.068,-8.930,New Jersey Nets,Isolation / pick-and-roll,Gamble and pressure
+2009,1610612752,0.586,2.113,0.146,0.116,0.152,0.898,antoni-d-mike,NYK,NYK,-0.025,-0.940,-0.903,-4.010,New York Knicks,Pace and space,Run them off the line
+2009,1610612753,-0.419,3.004,-0.598,-0.635,-0.519,-1.978,gundy-van-stan,ORL,ORL,-1.222,-1.029,2.010,7.120,Orlando Magic,Spread half-court,Disciplined / no-foul
+2009,1610612754,1.754,1.319,-0.877,0.275,-0.920,-0.714,brien-o-jim,IND,IND,0.083,1.325,-0.409,-3.110,Indiana Pacers,Pace and space,Gamble and pressure
+2009,1610612755,-0.360,-0.334,-0.287,-0.103,0.426,0.616,jordan-eddie,PHI,PHI,0.519,0.126,-0.299,-3.930,Philadelphia 76ers,Grind it out,Gamble and pressure
+2009,1610612756,1.170,0.918,-0.360,0.269,-0.150,-0.749,gentry-alvin,PHX,PHO,-1.875,-0.185,-1.618,4.670,Phoenix Suns,Pace and space,Run them off the line
+2009,1610612757,-2.041,-0.130,-1.186,0.019,-0.189,0.243,mcmillan-nate,POR,POR,-0.025,-0.407,0.581,3.180,Portland Trail Blazers,Grind it out,Run them off the line
+2009,1610612758,0.541,-0.450,0.116,-0.723,-0.916,-0.103,westphal-paul,SAC,SAC,-0.787,0.703,-0.134,-4.060,Sacramento Kings,Isolation / pick-and-roll,Run them off the line
+2009,1610612759,-0.471,0.253,-0.033,0.475,-2.019,-0.979,popovich-gregg,SAS,SAS,-1.331,-0.629,1.406,5.070,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2009,1610612760,0.229,-0.800,0.285,-0.695,-0.637,1.389,brooks-scott,OKC,OKC,0.736,0.037,-0.079,3.550,Oklahoma City Thunder,Isolation / pick-and-roll,Gamble and pressure
+2009,1610612761,0.175,-0.239,-0.259,0.046,0.887,0.339,triano-jay,TOR,TOR,-1.658,0.836,-0.464,-1.830,Toronto Raptors,Grind it out,Run them off the line
+2009,1610612762,0.471,-0.852,1.930,2.969,0.719,0.188,sloan-jerry,UTA,UTA,0.954,1.813,1.021,5.330,Utah Jazz,Motion / inside-out,Aggressive wall
+2009,1610612763,0.322,-1.652,1.394,-2.143,0.529,1.303,hollins-lionel,MEM,MEM,-0.134,-1.029,-0.244,-1.390,Memphis Grizzlies,Isolation / pick-and-roll,Run them off the line
+2009,1610612764,-0.390,-0.883,-1.131,-1.144,-0.193,-0.862,saunders-flip,WAS,WAS,-0.569,0.481,-0.739,-4.720,Washington Wizards,Grind it out,Run them off the line
+2009,1610612765,-1.712,-0.925,-0.114,-0.539,0.922,0.309,kuester-john,DET,DET,0.954,1.591,-0.189,-5.020,Detroit Pistons,Grind it out,Aggressive wall
+2009,1610612766,-1.130,-0.223,2.736,0.462,1.587,-0.101,brown-larry,CHA,CHA,1.498,-1.517,0.251,1.300,Charlotte Bobcats,Motion / inside-out,Aggressive wall
+2010,1610612737,-1.161,0.052,-1.676,0.830,-0.751,-0.295,drew-larry,ATL,ATL,-1.207,-0.934,0.552,-1.100,Atlanta Hawks,Grind it out,Disciplined / no-foul
+2010,1610612738,-0.820,-0.945,0.859,1.668,-0.869,-0.169,rivers-doc,BOS,BOS,1.463,0.298,0.609,4.830,Boston Celtics,Motion / inside-out,Aggressive wall
+2010,1610612739,0.418,0.087,0.077,0.524,0.690,0.113,scott-byron,CLE,CLE,-0.780,-0.934,-0.178,-8.880,Cleveland Cavaliers,Pace and space,Run them off the line
+2010,1610612740,-1.493,-0.672,-1.435,-0.102,1.182,-0.942,williams-monty,NOP,NOH,1.036,-0.472,1.451,1.280,New Orleans Hornets,Grind it out,Aggressive wall
+2010,1610612741,-0.766,-0.139,1.067,0.658,-1.141,-0.693,thibodeau-tom,CHI,CHI,0.182,-0.369,1.451,6.530,Chicago Bulls,Motion / inside-out,Disciplined / no-foul
+2010,1610612742,-0.332,1.273,-1.358,1.704,-0.022,-0.515,carlisle-rick,DAL,DAL,-0.459,-1.190,0.665,4.410,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2010,1610612743,1.366,0.881,2.310,-0.042,1.003,-0.787,karl-george,DEN,DEN,-0.780,-0.267,1.002,4.810,Denver Nuggets,Pace and space,Disciplined / no-foul
+2010,1610612744,1.238,0.660,-0.132,-0.283,0.519,1.136,smart-keith,GSW,GSW,1.143,1.529,-2.425,-2.000,Golden State Warriors,Pace and space,Gamble and pressure
+2010,1610612745,0.958,1.035,-0.134,1.125,-2.077,0.073,adelman-rick,HOU,HOU,-0.886,-0.523,-0.515,2.370,Houston Rockets,Pace and space,Run them off the line
+2010,1610612746,0.201,0.245,1.578,0.679,0.729,-0.127,negro-del-vinny,LAC,LAC,-0.673,1.067,-0.234,-2.710,Los Angeles Clippers,Motion / inside-out,Aggressive wall
+2010,1610612747,-0.508,-0.017,-0.309,-0.062,0.906,-0.482,jackson-phil,LAL,LAL,-0.673,-2.473,-0.740,6.010,Los Angeles Lakers,Grind it out,Run them off the line
+2010,1610612748,-0.517,0.348,-0.734,-1.077,0.777,-0.257,spoelstra-erik,MIA,MIA,-0.886,-0.318,1.058,6.760,Miami Heat,Spread half-court,Disciplined / no-foul
+2010,1610612749,-0.964,-0.117,-0.714,-0.837,-0.847,-0.326,skiles-scott,MIL,MIL,1.356,0.349,0.665,-1.020,Milwaukee Bucks,Grind it out,Aggressive wall
+2010,1610612750,1.952,0.074,-1.084,-1.273,1.195,-0.343,rambis-kurt,MIN,MIN,-0.352,1.118,0.047,-5.970,Minnesota Timberwolves,Isolation / pick-and-roll,Aggressive wall
+2010,1610612751,-0.974,-0.451,-0.947,0.364,-0.551,0.342,johnson-avery,BKN,NJN,-1.741,0.605,0.328,-6.280,New Jersey Nets,Grind it out,Run them off the line
+2010,1610612752,1.531,1.966,-0.341,-0.532,-0.603,1.265,antoni-d-mike,NYK,NYK,0.395,0.554,-0.964,0.480,New York Knicks,Pace and space,Gamble and pressure
+2010,1610612753,-0.556,2.559,-0.741,-0.709,0.090,-2.313,gundy-van-stan,ORL,ORL,-0.139,-0.523,1.844,4.920,Orlando Magic,Spread half-court,Disciplined / no-foul
+2010,1610612754,1.145,0.550,-0.654,-1.190,-0.709,-0.517,brien-o-jim,IND,IND,-0.673,0.400,0.272,-1.380,Indiana Pacers,Isolation / pick-and-roll,Run them off the line
+2010,1610612755,-0.047,-0.868,-0.752,0.511,-0.779,0.106,collins-doug,PHI,PHI,0.075,0.092,0.496,1.010,Philadelphia 76ers,Grind it out,Run them off the line
+2010,1610612756,0.957,1.214,-0.969,0.763,0.201,-1.427,gentry-alvin,PHX,PHO,-0.352,-0.934,-1.133,-0.460,Phoenix Suns,Pace and space,Run them off the line
+2010,1610612757,-1.659,0.180,0.126,0.301,0.426,0.885,mcmillan-nate,POR,POR,2.104,0.092,-0.908,1.850,Portland Trail Blazers,Grind it out,Gamble and pressure
+2010,1610612758,1.260,-0.882,0.142,-1.259,-1.198,0.356,westphal-paul,SAC,SAC,0.075,0.195,0.440,-4.800,Sacramento Kings,Isolation / pick-and-roll,Run them off the line
+2010,1610612759,0.271,0.961,-0.376,0.154,-1.551,-1.142,popovich-gregg,SAS,SAS,-0.886,-2.011,0.552,5.860,San Antonio Spurs,Pace and space,Disciplined / no-foul
+2010,1610612760,0.410,-0.189,0.243,-0.944,-1.327,1.186,brooks-scott,OKC,OKC,-0.566,-0.062,-0.009,3.810,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2010,1610612761,0.373,-1.397,1.247,-0.202,-0.342,2.744,triano-jay,TOR,TOR,-0.459,1.118,-0.908,-6.280,Toronto Raptors,Isolation / pick-and-roll,Gamble and pressure
+2010,1610612762,-0.394,-0.705,0.461,1.426,0.997,-0.343,sloan-jerry,UTA,UTA,0.395,2.350,-1.077,-1.440,Utah Jazz,Motion / inside-out,Gamble and pressure
+2010,1610612763,-0.189,-1.990,1.052,-1.434,1.026,-0.047,hollins-lionel,MEM,MEM,2.424,-0.062,-0.627,2.550,Memphis Grizzlies,Isolation / pick-and-roll,Aggressive wall
+2010,1610612764,0.776,-1.153,-0.097,-1.611,-0.049,0.976,saunders-flip,WAS,WAS,1.036,1.016,-1.751,-7.300,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2010,1610612765,-1.337,-0.748,0.431,-0.342,0.260,1.602,kuester-john,DET,DET,0.395,0.298,-0.852,-3.780,Detroit Pistons,Grind it out,Gamble and pressure
+2010,1610612766,-1.153,-0.744,1.426,0.687,1.208,0.409,silas-paul,CHA,CHA,-0.566,-0.010,0.889,-4.080,Charlotte Bobcats,Motion / inside-out,Aggressive wall
+2011,1610612737,-0.864,0.450,-0.556,0.910,-0.688,0.364,drew-larry,ATL,ATL,0.565,-0.949,0.807,2.670,Atlanta Hawks,Grind it out,Run them off the line
+2011,1610612738,-0.750,-0.747,-0.548,2.104,-0.634,0.764,rivers-doc,BOS,BOS,1.012,0.341,-0.368,2.260,Boston Celtics,Motion / inside-out,Gamble and pressure
+2011,1610612739,-0.029,0.200,0.897,0.237,0.120,0.524,scott-byron,CLE,CLE,-0.595,-0.261,-0.486,-7.340,Cleveland Cavaliers,Motion / inside-out,Run them off the line
+2011,1610612740,-1.740,-1.635,-0.368,0.588,1.647,0.338,williams-monty,NOP,NOH,-0.238,0.427,0.043,-3.110,New Orleans Hornets,Grind it out,Aggressive wall
+2011,1610612741,-1.334,-0.495,0.294,1.110,-2.564,-0.467,thibodeau-tom,CHI,CHI,-0.863,-1.422,0.748,7.430,Chicago Bulls,Motion / inside-out,Disciplined / no-foul
+2011,1610612742,0.063,0.919,-1.661,0.172,1.349,-0.949,carlisle-rick,DAL,DAL,0.119,-0.218,1.042,1.780,Dallas Mavericks,Spread half-court,Aggressive wall
+2011,1610612743,1.484,0.306,3.471,1.018,2.071,-0.763,karl-george,DEN,DEN,0.476,-0.992,0.748,3.160,Denver Nuggets,Pace and space,Aggressive wall
+2011,1610612744,0.697,0.440,-1.134,0.498,0.541,-0.034,jackson-mark,GSW,GSW,-0.149,1.244,-2.308,-2.790,Golden State Warriors,Pace and space,Gamble and pressure
+2011,1610612745,0.203,0.269,-0.748,-0.074,-0.740,0.242,mchale-kevin,HOU,HOU,0.030,0.083,0.219,0.570,Houston Rockets,Grind it out,Run them off the line
+2011,1610612746,-1.381,0.848,-0.600,0.008,1.059,-0.734,negro-del-vinny,LAC,LAC,0.387,1.588,0.102,2.820,Los Angeles Clippers,Spread half-court,Aggressive wall
+2011,1610612747,-0.388,-0.421,-0.657,0.946,-0.133,-0.996,brown-mike,LAL,LAL,-2.737,-2.152,1.042,1.960,Los Angeles Lakers,Grind it out,Disciplined / no-foul
+2011,1610612748,-0.206,-0.657,0.495,-0.627,1.238,-0.564,spoelstra-erik,MIA,MIA,1.815,-0.347,0.513,5.720,Miami Heat,Isolation / pick-and-roll,Aggressive wall
+2011,1610612749,1.291,-0.092,0.538,1.121,0.174,0.609,skiles-scott,MIL,MIL,0.744,0.384,-1.250,-0.230,Milwaukee Bucks,Pace and space,Gamble and pressure
+2011,1610612750,1.085,0.732,0.365,-0.425,-0.662,-0.301,adelman-rick,MIN,MIN,-1.398,-0.906,-0.016,-1.830,Minnesota Timberwolves,Pace and space,Run them off the line
+2011,1610612751,-0.643,1.081,-1.158,0.260,-0.365,1.235,johnson-avery,BKN,NJN,-0.060,0.040,-1.368,-6.370,New Jersey Nets,Spread half-court,Gamble and pressure
+2011,1610612752,0.866,1.292,0.682,-0.130,0.587,0.137,antoni-d-mike,NYK,NYK,1.904,0.685,0.396,2.390,New York Knicks,Pace and space,Aggressive wall
+2011,1610612753,-1.464,2.557,-0.100,0.284,0.025,-1.521,gundy-van-stan,ORL,ORL,-0.774,-0.777,1.454,0.460,Orlando Magic,Spread half-court,Disciplined / no-foul
+2011,1610612754,-0.381,-0.637,-0.297,-0.988,0.576,-0.526,vogel-frank,IND,IND,0.298,0.599,-0.427,2.600,Indiana Pacers,Isolation / pick-and-roll,Aggressive wall
+2011,1610612755,-0.975,-1.143,-2.031,0.442,-1.132,-1.921,collins-doug,PHI,PHI,-0.238,-0.691,1.277,3.590,Philadelphia 76ers,Grind it out,Disciplined / no-foul
+2011,1610612756,0.612,0.211,-1.317,0.606,-0.946,-1.269,gentry-alvin,PHX,PHO,-0.595,-0.347,-0.780,0.290,Phoenix Suns,Grind it out,Run them off the line
+2011,1610612757,-0.127,0.560,0.169,-0.128,0.117,0.351,mcmillan-nate,POR,POR,0.298,-0.390,-0.133,-0.220,Portland Trail Blazers,Spread half-court,Run them off the line
+2011,1610612758,1.808,-0.039,1.335,-1.026,0.026,0.551,smart-keith,SAC,SAC,0.119,-0.390,-1.485,-4.950,Sacramento Kings,Isolation / pick-and-roll,Gamble and pressure
+2011,1610612759,0.776,0.634,-0.200,0.382,-0.721,-1.329,popovich-gregg,SAS,SAS,-0.774,-1.723,1.748,7.280,San Antonio Spurs,Pace and space,Disciplined / no-foul
+2011,1610612760,1.159,0.523,0.095,-1.517,-0.405,0.196,brooks-scott,OKC,OKC,-0.684,-0.046,-0.545,6.440,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2011,1610612761,-1.218,-0.428,-0.574,0.902,0.625,0.281,casey-dwane,TOR,TOR,-0.863,2.233,1.395,-3.670,Toronto Raptors,Grind it out,Aggressive wall
+2011,1610612762,0.039,-1.619,0.427,0.062,0.545,0.091,corbin-tyrone,UTA,UTA,0.030,1.588,0.455,0.920,Utah Jazz,Motion / inside-out,Aggressive wall
+2011,1610612763,-0.321,-1.565,0.252,-0.766,0.459,0.364,hollins-lionel,MEM,MEM,2.261,0.814,-0.192,2.430,Memphis Grizzlies,Isolation / pick-and-roll,Aggressive wall
+2011,1610612764,0.644,-0.672,0.263,-0.980,0.074,0.104,wittman-randy,WAS,WAS,0.387,0.900,-1.250,-5.140,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2011,1610612765,-1.190,-1.132,0.925,-0.641,-0.414,0.535,frank-lawrence,DET,DET,0.387,0.771,-0.133,-5.190,Detroit Pistons,Motion / inside-out,Gamble and pressure
+2011,1610612766,-0.327,-1.287,-0.414,0.801,-0.665,2.785,silas-paul,CHA,CHA,-0.863,-0.089,-1.250,-13.960,Charlotte Bobcats,Grind it out,Run them off the line
+2012,1610612737,0.264,1.026,-0.501,2.072,0.006,0.025,drew-larry,ATL,ATL,0.562,-1.263,0.105,-0.080,Atlanta Hawks,Pace and space,Run them off the line
+2012,1610612738,-0.235,-0.708,-0.297,0.710,0.092,0.729,rivers-doc,BOS,BOS,0.562,0.662,-0.150,-0.620,Boston Celtics,Grind it out,Gamble and pressure
+2012,1610612739,0.125,-0.366,-0.317,-1.078,0.505,0.352,scott-byron,CLE,CLE,0.782,1.157,-0.744,-4.870,Cleveland Cavaliers,Isolation / pick-and-roll,Gamble and pressure
+2012,1610612740,-1.611,-0.510,0.324,-0.468,0.992,1.449,williams-monty,NOP,NOH,-0.650,0.222,0.784,-3.120,New Orleans Hornets,Grind it out,Run them off the line
+2012,1610612741,-1.247,-1.354,0.266,1.841,-1.785,-0.538,thibodeau-tom,CHI,CHI,-0.540,0.112,0.105,-0.020,Chicago Bulls,Motion / inside-out,Run them off the line
+2012,1610612742,0.923,-0.198,-1.541,0.148,0.897,-0.107,carlisle-rick,DAL,DAL,-0.430,1.267,-0.320,-0.240,Dallas Mavericks,Grind it out,Aggressive wall
+2012,1610612743,1.376,-0.656,3.309,0.170,1.280,-0.426,karl-george,DEN,DEN,0.672,-0.603,-1.423,5.370,Denver Nuggets,Motion / inside-out,Gamble and pressure
+2012,1610612744,1.187,-0.126,-1.562,-0.206,1.433,-1.984,jackson-mark,GSW,GSW,-1.421,0.387,1.717,1.320,Golden State Warriors,Grind it out,Disciplined / no-foul
+2012,1610612745,1.814,2.560,1.709,0.514,0.756,-1.016,mchale-kevin,HOU,HOU,-0.209,-0.438,1.462,3.690,Houston Rockets,Pace and space,Disciplined / no-foul
+2012,1610612746,-0.539,0.514,0.223,0.914,0.999,-0.937,negro-del-vinny,LAC,LAC,1.884,1.377,0.020,6.430,Los Angeles Clippers,Motion / inside-out,Aggressive wall
+2012,1610612747,1.035,1.594,-0.203,0.169,0.081,-0.160,antoni-d-mike,LAL,LAL,-1.972,-2.253,0.699,1.480,Los Angeles Lakers,Pace and space,Disciplined / no-foul
+2012,1610612748,-0.798,0.996,-0.001,0.200,1.287,-0.025,spoelstra-erik,MIA,MIA,1.223,-0.218,-0.404,7.030,Miami Heat,Spread half-court,Aggressive wall
+2012,1610612749,1.246,-0.298,0.725,0.169,-0.937,1.851,boylan-jim,MIL,MIL,0.782,-0.163,-1.847,-1.830,Milwaukee Bucks,Pace and space,Gamble and pressure
+2012,1610612750,0.413,-0.588,0.841,1.072,-0.248,-0.492,adelman-rick,MIN,MIN,1.443,-0.933,0.444,-1.830,Minnesota Timberwolves,Motion / inside-out,Aggressive wall
+2012,1610612751,-1.489,0.616,-0.308,-1.031,-1.109,0.468,carlesimo-j-p,BKN,BRK,-0.650,-1.648,0.190,1.250,Brooklyn Nets,Spread half-court,Run them off the line
+2012,1610612752,-1.067,2.700,-0.575,-2.524,1.820,0.349,woodson-mike,NYK,NYK,1.223,0.662,1.038,3.730,New York Knicks,Spread half-court,Aggressive wall
+2012,1610612753,-0.048,-0.528,-0.276,0.368,0.512,-0.425,vaughn-jacque,ORL,ORL,-2.082,-0.493,0.953,-7.120,Orlando Magic,Grind it out,Disciplined / no-foul
+2012,1610612754,-0.938,0.029,-0.606,-0.624,-1.687,-1.837,vogel-frank,IND,IND,-0.870,-0.383,0.953,3.340,Indiana Pacers,Grind it out,Disciplined / no-foul
+2012,1610612755,-0.527,-0.866,-0.854,0.569,-0.113,-0.420,collins-doug,PHI,PHI,0.011,-0.218,-0.065,-3.510,Philadelphia 76ers,Grind it out,Run them off the line
+2012,1610612756,0.651,-0.815,-0.518,0.411,-1.029,0.747,gentry-alvin,PHX,PHO,0.562,0.222,-1.338,-5.750,Phoenix Suns,Grind it out,Gamble and pressure
+2012,1610612757,-0.298,0.974,-0.493,-0.078,-0.631,1.570,stotts-terry,POR,POR,-1.311,-0.823,-0.150,-2.530,Portland Trail Blazers,Spread half-court,Run them off the line
+2012,1610612758,0.783,-0.002,0.275,-1.543,0.802,-0.117,smart-keith,SAC,SAC,-0.099,1.267,-2.102,-4.260,Sacramento Kings,Isolation / pick-and-roll,Gamble and pressure
+2012,1610612759,1.110,0.497,0.070,1.713,-1.248,-0.639,popovich-gregg,SAS,SAS,0.011,-1.373,1.208,6.670,San Antonio Spurs,Pace and space,Disciplined / no-foul
+2012,1610612760,0.902,0.014,-0.065,-1.271,0.515,-0.431,brooks-scott,OKC,OKC,-0.209,-0.383,-0.065,9.150,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2012,1610612761,-0.803,0.091,-1.144,-0.094,-0.287,0.501,casey-dwane,TOR,TOR,-0.099,2.367,-0.065,-1.960,Toronto Raptors,Grind it out,Gamble and pressure
+2012,1610612762,-0.472,-0.927,-0.583,0.569,-0.376,0.453,corbin-tyrone,UTA,UTA,0.342,1.212,-0.235,0.300,Utah Jazz,Grind it out,Gamble and pressure
+2012,1610612763,-1.595,-1.903,0.161,-0.609,-0.217,-0.486,hollins-lionel,MEM,MEM,1.664,0.277,0.699,4.320,Memphis Grizzlies,Grind it out,Aggressive wall
+2012,1610612764,0.101,-0.503,-1.571,0.556,0.455,-0.887,wittman-randy,WAS,WAS,0.011,0.112,0.953,-2.780,Washington Wizards,Grind it out,Aggressive wall
+2012,1610612765,-0.616,-0.661,1.870,-0.380,0.531,0.829,frank-lawrence,DET,DET,-0.650,0.277,-0.404,-4.330,Detroit Pistons,Motion / inside-out,Run them off the line
+2012,1610612766,-0.278,-0.818,0.326,-1.219,1.479,1.344,dunlap-mike,CHA,CHA,-0.540,-0.383,-2.017,-9.290,Charlotte Bobcats,Isolation / pick-and-roll,Gamble and pressure
+2013,1610612737,0.272,1.521,-0.689,2.258,0.097,0.114,budenholzer-mike,ATL,ATL,0.432,-0.920,-0.033,-0.880,Atlanta Hawks,Pace and space,Run them off the line
+2013,1610612738,-0.196,-0.197,-0.538,-0.161,-1.142,1.240,stevens-brad,BOS,BOS,-0.153,0.570,-0.155,-4.970,Boston Celtics,Grind it out,Run them off the line
+2013,1610612739,-0.434,-0.572,-0.825,-0.258,1.832,-1.590,brown-mike,CLE,CLE,-0.542,-0.775,0.826,-3.860,Cleveland Cavaliers,Grind it out,Disciplined / no-foul
+2013,1610612740,-0.689,-1.737,1.448,-0.517,0.687,0.797,williams-monty,NOP,NOP,0.042,1.628,-0.401,-1.980,New Orleans Pelicans,Motion / inside-out,Gamble and pressure
+2013,1610612741,-1.587,-0.984,0.301,1.923,-1.251,-1.095,thibodeau-tom,CHI,CHI,0.140,-1.256,0.580,1.200,Chicago Bulls,Motion / inside-out,Disciplined / no-foul
+2013,1610612742,0.003,0.406,-0.791,0.358,0.947,0.191,carlisle-rick,DAL,DAL,1.211,0.666,-1.075,2.910,Dallas Mavericks,Grind it out,Gamble and pressure
+2013,1610612743,1.648,0.510,0.617,0.051,-0.709,0.095,shaw-brian,DEN,DEN,-0.737,0.859,0.029,-1.400,Denver Nuggets,Pace and space,Run them off the line
+2013,1610612744,0.976,0.857,-0.697,0.233,-0.864,-1.995,jackson-mark,GSW,GSW,0.042,0.426,1.132,5.150,Golden State Warriors,Pace and space,Disciplined / no-foul
+2013,1610612745,0.959,1.895,1.922,-0.514,-0.007,-0.126,mchale-kevin,HOU,HOU,-1.029,-1.064,-0.217,5.060,Houston Rockets,Pace and space,Run them off the line
+2013,1610612746,0.727,0.820,-0.303,1.235,-0.106,0.157,rivers-doc,LAC,LAC,0.237,0.330,-1.198,7.270,Los Angeles Clippers,Pace and space,Gamble and pressure
+2013,1610612747,1.879,0.869,-0.974,1.518,-0.398,1.554,antoni-d-mike,LAL,LAL,-1.127,-1.112,-2.117,-5.330,Los Angeles Lakers,Pace and space,Run them off the line
+2013,1610612748,-1.157,0.896,1.085,0.152,1.498,0.057,spoelstra-erik,MIA,MIA,2.185,-0.151,-0.891,4.150,Miami Heat,Motion / inside-out,Aggressive wall
+2013,1610612749,-0.737,-0.727,0.481,0.375,0.497,1.083,drew-larry,MIL,MIL,-0.347,0.474,-1.872,-8.410,Milwaukee Bucks,Motion / inside-out,Gamble and pressure
+2013,1610612750,1.343,-0.366,1.205,0.891,-0.077,0.164,adelman-rick,MIN,MIN,1.211,-1.833,-0.033,3.100,Minnesota Timberwolves,Pace and space,Run them off the line
+2013,1610612751,-0.974,1.103,-0.884,0.071,0.690,0.849,kidd-jason,BKN,BRK,1.308,1.003,-1.320,-1.580,Brooklyn Nets,Spread half-court,Gamble and pressure
+2013,1610612752,-1.403,1.165,-1.187,-1.067,1.685,0.549,woodson-mike,NYK,NYK,0.432,1.435,-0.094,-1.400,New York Knicks,Spread half-court,Aggressive wall
+2013,1610612753,-0.192,-0.606,-0.632,-0.293,-0.046,-1.006,vaughn-jacque,ORL,ORL,-0.542,-0.199,0.642,-5.880,Orlando Magic,Grind it out,Disciplined / no-foul
+2013,1610612754,-0.728,-0.608,-0.890,-0.594,-1.237,-1.725,vogel-frank,IND,IND,-0.640,-0.871,1.439,3.630,Indiana Pacers,Grind it out,Disciplined / no-foul
+2013,1610612755,1.952,-0.001,1.850,-0.157,1.059,0.856,brown-brett,PHI,PHI,1.308,1.387,-1.259,-10.660,Philadelphia 76ers,Pace and space,Gamble and pressure
+2013,1610612756,0.754,1.112,-0.133,-2.384,-0.900,0.689,hornacek-jeff,PHX,PHO,0.334,1.051,-0.462,3.020,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2013,1610612757,0.398,0.859,-1.104,0.309,-2.107,0.773,stotts-terry,POR,POR,-2.587,-1.016,0.151,4.440,Portland Trail Blazers,Spread half-court,Run them off the line
+2013,1610612758,0.111,-1.045,-0.489,-1.891,0.538,-1.246,malone-michael,SAC,SAC,-0.834,0.907,1.316,-2.080,Sacramento Kings,Isolation / pick-and-roll,Disciplined / no-foul
+2013,1610612759,0.435,-0.052,-0.066,1.025,-1.855,-0.968,popovich-gregg,SAS,SAS,-0.737,-1.496,1.194,8.000,San Antonio Spurs,Pace and space,Disciplined / no-foul
+2013,1610612760,0.753,0.331,-0.274,-0.545,1.089,-0.214,brooks-scott,OKC,OKC,0.334,0.282,0.703,6.660,Oklahoma City Thunder,Isolation / pick-and-roll,Aggressive wall
+2013,1610612761,-0.921,0.712,-1.316,-0.042,-0.815,1.149,casey-dwane,TOR,TOR,0.529,1.051,0.274,2.550,Toronto Raptors,Spread half-court,Gamble and pressure
+2013,1610612762,-1.020,-0.567,-0.319,-0.487,-0.864,0.873,corbin-tyrone,UTA,UTA,-1.419,0.570,0.029,-6.270,Utah Jazz,Grind it out,Run them off the line
+2013,1610612763,-1.686,-2.288,0.271,-0.217,0.179,-1.142,joerger-dave,MEM,MEM,0.237,-0.775,0.764,2.180,Memphis Grizzlies,Grind it out,Disciplined / no-foul
+2013,1610612764,-0.251,-0.305,-0.482,0.500,0.192,-0.915,wittman-randy,WAS,WAS,1.406,0.234,0.764,0.480,Washington Wizards,Grind it out,Aggressive wall
+2013,1610612765,0.301,-0.938,1.836,-1.164,0.588,0.981,cheeks-maurice,DET,DET,0.237,0.138,-0.646,-4.130,Detroit Pistons,Isolation / pick-and-roll,Gamble and pressure
+2013,1610612766,-0.778,-1.065,-0.253,0.409,0.136,-0.973,clifford-steve,CHA,CHA,-0.932,-1.544,1.929,-0.890,Charlotte Bobcats,Grind it out,Disciplined / no-foul
+2014,1610612737,-0.098,1.162,-0.176,2.556,1.753,0.135,budenholzer-mike,ATL,ATL,1.362,-1.142,-0.815,4.750,Atlanta Hawks,Pace and space,Aggressive wall
+2014,1610612738,0.919,0.332,-0.584,1.255,-0.473,0.174,stevens-brad,BOS,BOS,0.347,0.160,0.091,-0.400,Boston Celtics,Pace and space,Run them off the line
+2014,1610612739,-0.820,1.437,-0.038,0.098,-0.002,-0.224,blatt-david,CLE,CLE,-0.584,-1.595,-0.079,4.080,Cleveland Cavaliers,Spread half-court,Run them off the line
+2014,1610612740,-1.310,-0.631,2.184,-0.068,-1.608,1.805,williams-monty,NOP,NOP,-1.345,-0.576,0.147,1.130,New Orleans Pelicans,Motion / inside-out,Run them off the line
+2014,1610612741,-0.534,0.087,0.927,0.281,-2.039,-0.575,thibodeau-tom,CHI,CHI,-1.683,-1.312,-0.249,2.540,Chicago Bulls,Motion / inside-out,Run them off the line
+2014,1610612742,0.759,0.664,-0.082,-0.448,1.054,-0.502,carlisle-rick,DAL,DAL,1.192,-0.066,-1.494,3.360,Dallas Mavericks,Pace and space,Gamble and pressure
+2014,1610612743,1.058,0.393,0.233,-0.169,-0.263,0.203,shaw-brian,DEN,DEN,-0.245,1.915,-0.079,-3.070,Denver Nuggets,Pace and space,Gamble and pressure
+2014,1610612744,2.229,0.950,-0.165,2.084,-1.026,-0.936,kerr-steve,GSW,GSW,0.854,0.670,-0.192,10.010,Golden State Warriors,Pace and space,Aggressive wall
+2014,1610612745,1.295,2.630,0.864,0.460,-0.061,0.793,mchale-kevin,HOU,HOU,1.108,0.160,-1.098,3.820,Houston Rockets,Pace and space,Gamble and pressure
+2014,1610612746,0.228,1.198,-1.683,1.255,0.915,-0.968,rivers-doc,LAC,LAC,-0.076,1.463,0.487,6.800,Los Angeles Clippers,Spread half-court,Aggressive wall
+2014,1610612747,0.060,-0.893,-0.807,-0.596,0.560,1.520,scott-byron,LAL,LAL,-1.006,1.463,0.826,-6.170,Los Angeles Lakers,Grind it out,Run them off the line
+2014,1610612748,-1.739,-0.042,-0.107,-0.543,0.895,0.450,spoelstra-erik,MIA,MIA,0.770,0.443,-0.815,-2.920,Miami Heat,Grind it out,Gamble and pressure
+2014,1610612749,0.054,-0.832,1.383,1.192,1.139,1.434,kidd-jason,MIL,MIL,2.207,0.896,-0.871,-0.090,Milwaukee Bucks,Motion / inside-out,Gamble and pressure
+2014,1610612750,0.270,-1.721,-0.345,0.259,0.176,1.072,saunders-flip,MIN,MIN,0.516,-1.028,-1.833,-8.000,Minnesota Timberwolves,Grind it out,Gamble and pressure
+2014,1610612751,-0.663,-0.484,-0.835,-0.671,0.530,0.903,hollins-lionel,BKN,BRK,-0.330,-1.142,-0.645,-3.130,Brooklyn Nets,Grind it out,Run them off the line
+2014,1610612752,-1.457,-0.497,-2.065,0.613,0.325,0.730,fisher-derek,NYK,NYK,0.008,1.632,-0.985,-9.500,New York Knicks,Grind it out,Gamble and pressure
+2014,1610612753,-0.146,-0.573,0.666,-0.925,0.275,-0.299,vaughn-jacque,ORL,ORL,0.262,0.274,0.656,-5.870,Orlando Magic,Isolation / pick-and-roll,Aggressive wall
+2014,1610612754,-0.518,-0.183,-1.639,0.081,-0.792,-0.999,vogel-frank,IND,IND,-1.091,0.670,1.732,-0.230,Indiana Pacers,Grind it out,Disciplined / no-foul
+2014,1610612755,0.811,1.121,0.977,0.692,0.293,1.157,brown-brett,PHI,PHI,1.615,1.123,-1.041,-9.040,Philadelphia 76ers,Pace and space,Gamble and pressure
+2014,1610612756,1.155,0.558,-0.187,-1.688,-0.538,0.982,hornacek-jeff,PHX,PHO,0.600,0.896,-0.758,-0.380,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2014,1610612757,0.052,1.070,-1.625,-0.462,-2.366,-0.652,stotts-terry,POR,POR,-1.683,-1.312,0.770,4.410,Portland Trail Blazers,Spread half-court,Disciplined / no-foul
+2014,1610612758,0.676,-1.213,0.889,-0.825,0.884,-1.187,karl-george,SAC,SAC,-1.260,-0.293,0.204,-3.070,Sacramento Kings,Isolation / pick-and-roll,Disciplined / no-foul
+2014,1610612759,-0.139,0.120,-0.502,1.097,-2.039,0.357,popovich-gregg,SAS,SAS,0.008,-0.859,1.392,6.340,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2014,1610612760,1.101,-0.038,0.342,-1.537,0.604,0.579,brooks-scott,OKC,OKC,-0.753,0.443,0.430,2.470,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2014,1610612761,-0.712,0.773,-1.064,-0.989,-0.095,0.956,casey-dwane,TOR,TOR,0.093,0.160,-0.871,2.450,Toronto Raptors,Spread half-court,Gamble and pressure
+2014,1610612762,-1.963,0.205,0.493,-0.567,-0.769,-0.926,snyder-quin,UTA,UTA,-0.414,-0.349,0.826,0.710,Utah Jazz,Spread half-court,Disciplined / no-foul
+2014,1610612763,-1.058,-1.618,0.534,-0.272,0.544,-0.716,joerger-dave,MEM,MEM,1.023,-1.255,0.260,3.620,Memphis Grizzlies,Motion / inside-out,Aggressive wall
+2014,1610612764,-0.322,-1.227,-0.353,1.202,0.201,-1.522,wittman-randy,WAS,WAS,-0.330,0.274,1.392,0.170,Washington Wizards,Motion / inside-out,Disciplined / no-foul
+2014,1610612765,-0.633,0.533,0.964,-0.013,-0.326,0.366,gundy-van-stan,DET,DET,-0.076,-0.745,0.091,-1.390,Detroit Pistons,Motion / inside-out,Run them off the line
+2014,1610612766,-0.790,-0.774,-1.294,-0.432,-0.248,-1.842,clifford-steve,CHA,CHO,-1.091,-0.972,2.524,-3.440,Charlotte Hornets,Grind it out,Disciplined / no-foul
+2015,1610612737,0.494,0.959,0.855,2.160,-0.037,-0.091,budenholzer-mike,ATL,ATL,1.056,-0.867,-0.865,3.490,Atlanta Hawks,Pace and space,Gamble and pressure
+2015,1610612738,1.278,0.101,0.599,0.924,-0.432,-0.249,stevens-brad,BOS,BOS,1.226,1.239,-0.865,2.840,Boston Celtics,Pace and space,Gamble and pressure
+2015,1610612739,-1.214,1.269,-0.609,0.157,-0.342,-1.115,lue-tyronn,CLE,CLE,-0.473,-0.241,1.226,5.450,Cleveland Cavaliers,Spread half-court,Disciplined / no-foul
+2015,1610612740,0.489,-0.189,0.376,-0.120,0.514,-0.442,gentry-alvin,NOP,NOP,-0.388,0.897,1.386,-3.560,New Orleans Pelicans,Isolation / pick-and-roll,Aggressive wall
+2015,1610612741,-0.034,-0.819,-0.097,0.256,-1.233,0.324,hoiberg-fred,CHI,CHI,-2.087,-1.550,-0.704,-1.460,Chicago Bulls,Grind it out,Run them off the line
+2015,1610612742,-0.593,1.028,-1.609,0.286,1.161,-1.706,carlisle-rick,DAL,DAL,-0.303,-0.639,-0.007,-0.020,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2015,1610612743,-0.092,-0.175,1.513,0.517,0.387,0.259,malone-michael,DEN,DEN,-0.473,0.385,0.582,-2.810,Denver Nuggets,Motion / inside-out,Run them off the line
+2015,1610612744,1.617,1.477,0.253,2.623,-0.993,-0.831,kerr-steve,GSW,GSW,-0.473,-0.070,-0.114,10.380,Golden State Warriors,Pace and space,Run them off the line
+2015,1610612745,0.871,1.612,1.274,0.200,1.364,0.415,bickerstaff-b-j,HOU,HOU,1.396,0.556,-1.829,0.340,Houston Rockets,Pace and space,Gamble and pressure
+2015,1610612746,0.103,0.723,-1.197,0.408,-0.436,-0.753,rivers-doc,LAC,LAC,0.547,0.726,-1.293,4.130,Los Angeles Clippers,Spread half-court,Gamble and pressure
+2015,1610612747,-0.018,0.044,-1.109,-1.795,0.101,1.264,scott-byron,LAL,LAL,-1.323,-0.412,-0.811,-8.920,Los Angeles Lakers,Isolation / pick-and-roll,Run them off the line
+2015,1610612748,-1.097,-1.283,0.246,-1.024,-1.429,-0.903,spoelstra-erik,MIA,MIA,-0.898,-0.753,0.850,1.500,Miami Heat,Isolation / pick-and-roll,Disciplined / no-foul
+2015,1610612749,-0.674,-1.891,2.142,0.566,1.445,1.811,kidd-jason,MIL,MIL,0.886,0.670,-1.669,-3.980,Milwaukee Bucks,Motion / inside-out,Gamble and pressure
+2015,1610612750,-0.172,-1.657,0.080,1.006,0.678,1.290,mitchell-sam,MIN,MIN,0.377,-0.525,-0.811,-3.380,Minnesota Timberwolves,Motion / inside-out,Gamble and pressure
+2015,1610612751,-0.231,-1.340,-0.260,0.058,0.701,1.896,brown-tony,BKN,BRK,-0.048,-1.891,-0.275,-7.120,Brooklyn Nets,Grind it out,Run them off the line
+2015,1610612752,-1.066,-0.597,-1.564,-0.653,-1.029,0.763,fisher-derek,NYK,NYK,-2.257,-0.298,-0.222,-2.740,New York Knicks,Grind it out,Run them off the line
+2015,1610612753,0.106,-0.615,-0.197,0.405,0.526,0.790,skiles-scott,ORL,ORL,0.547,0.328,0.154,-1.680,Orlando Magic,Grind it out,Gamble and pressure
+2015,1610612754,0.415,-0.322,-0.567,-0.715,0.298,0.345,vogel-frank,IND,IND,0.971,-0.241,-0.114,1.620,Indiana Pacers,Isolation / pick-and-roll,Aggressive wall
+2015,1610612755,0.880,0.786,0.485,0.351,-1.351,0.420,brown-brett,PHI,PHI,0.292,1.751,-1.186,-9.920,Philadelphia 76ers,Pace and space,Gamble and pressure
+2015,1610612756,1.285,0.288,0.186,-0.622,0.529,0.317,hornacek-jeff,PHX,PHO,0.292,1.580,0.475,-6.320,Phoenix Suns,Isolation / pick-and-roll,Aggressive wall
+2015,1610612757,0.172,0.874,-0.432,-0.775,-0.574,-1.223,stotts-terry,POR,POR,-0.898,0.897,-0.007,0.980,Portland Trail Blazers,Spread half-court,Disciplined / no-foul
+2015,1610612758,1.920,-0.524,1.038,0.811,1.471,-1.311,karl-george,SAC,SAC,0.717,-0.412,-0.704,-2.320,Sacramento Kings,Pace and space,Aggressive wall
+2015,1610612759,-0.870,-1.232,-0.793,0.792,-1.820,-0.898,popovich-gregg,SAS,SAS,0.801,-1.550,1.547,10.280,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2015,1610612760,0.448,-0.226,1.035,-0.601,-0.646,1.257,donovan-billy,OKC,OKC,-1.238,-0.241,-0.114,7.090,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2015,1610612761,-1.441,0.000,-0.112,-1.854,0.006,-0.267,casey-dwane,TOR,TOR,-0.388,-0.469,0.797,4.080,Toronto Raptors,Isolation / pick-and-roll,Disciplined / no-foul
+2015,1610612762,-2.222,0.201,-0.352,-1.474,-0.363,-0.243,snyder-quin,UTA,UTA,0.292,0.044,0.797,1.840,Utah Jazz,Spread half-court,Aggressive wall
+2015,1610612763,-1.155,-1.269,0.479,-0.495,2.297,-0.678,joerger-dave,MEM,MEM,1.736,2.377,-0.597,-2.140,Memphis Grizzlies,Grind it out,Aggressive wall
+2015,1610612764,1.162,-0.094,-0.244,1.012,0.208,-1.112,wittman-randy,WAS,WAS,1.226,0.499,0.797,-0.500,Washington Wizards,Pace and space,Aggressive wall
+2015,1610612765,-0.378,0.317,-0.266,-1.809,-1.785,-0.353,gundy-van-stan,DET,DET,-0.558,-0.753,1.654,0.430,Detroit Pistons,Isolation / pick-and-roll,Disciplined / no-foul
+2015,1610612766,-0.174,1.200,-0.865,0.119,0.591,-1.231,clifford-steve,CHA,CHO,-0.558,-1.038,1.922,2.360,Charlotte Hornets,Spread half-court,Disciplined / no-foul
+2016,1610612737,0.385,-0.170,1.264,0.876,1.400,-1.837,budenholzer-mike,ATL,ATL,1.223,-1.270,-0.406,-1.230,Atlanta Hawks,Motion / inside-out,Aggressive wall
+2016,1610612738,0.084,1.584,0.034,1.552,-0.066,-0.573,stevens-brad,BOS,BOS,-0.149,0.586,-0.927,2.250,Boston Celtics,Pace and space,Gamble and pressure
+2016,1610612739,-0.104,1.732,-0.585,-0.253,0.320,-0.320,lue-tyronn,CLE,CLE,-1.521,-1.481,-0.601,2.870,Cleveland Cavaliers,Spread half-court,Run them off the line
+2016,1610612740,0.634,-0.172,-0.173,0.063,0.702,-0.185,gentry-alvin,NOP,NOP,-0.377,-1.354,0.050,-1.690,New Orleans Pelicans,Isolation / pick-and-roll,Run them off the line
+2016,1610612741,-0.382,-1.255,-0.276,0.102,-0.711,1.478,hoiberg-fred,CHI,CHI,-0.377,-1.692,0.050,0.030,Chicago Bulls,Grind it out,Run them off the line
+2016,1610612742,-1.680,1.044,-2.966,-0.100,0.217,-1.613,carlisle-rick,DAL,DAL,1.909,0.376,0.571,-2.530,Dallas Mavericks,Spread half-court,Aggressive wall
+2016,1610612743,0.942,0.279,1.376,0.752,-0.759,0.181,malone-michael,DEN,DEN,-2.092,-0.637,1.287,0.700,Denver Nuggets,Pace and space,Disciplined / no-foul
+2016,1610612744,1.426,0.889,0.261,2.651,-0.283,0.156,kerr-steve,GSW,GSW,0.880,-0.468,-1.187,11.350,Golden State Warriors,Pace and space,Gamble and pressure
+2016,1610612745,1.531,3.038,1.277,0.992,0.493,0.777,antoni-d-mike,HOU,HOU,0.537,-0.637,-0.601,5.840,Houston Rockets,Pace and space,Gamble and pressure
+2016,1610612746,-0.102,0.278,-0.138,-0.194,-0.349,-1.113,rivers-doc,LAC,LAC,-0.720,0.080,0.115,4.420,Los Angeles Clippers,Grind it out,Disciplined / no-foul
+2016,1610612747,0.970,-0.463,0.358,-0.984,0.102,0.778,walton-luke,LAL,LAL,0.309,0.165,-0.601,-6.290,Los Angeles Lakers,Isolation / pick-and-roll,Gamble and pressure
+2016,1610612748,-0.599,-0.020,-0.223,-0.731,-1.911,0.475,spoelstra-erik,MIA,MIA,-0.149,0.460,-0.211,0.770,Miami Heat,Grind it out,Run them off the line
+2016,1610612749,-0.817,-0.553,2.081,0.935,0.992,1.432,kidd-jason,MIL,MIL,0.995,0.249,-0.862,-0.450,Milwaukee Bucks,Motion / inside-out,Gamble and pressure
+2016,1610612750,-0.646,-1.401,0.121,0.432,0.305,1.451,thibodeau-tom,MIN,MIN,0.537,0.122,-0.536,-0.640,Minnesota Timberwolves,Motion / inside-out,Gamble and pressure
+2016,1610612751,2.017,1.132,0.837,-0.276,-0.665,-0.315,atkinson-kenny,BKN,BRK,-1.292,0.122,-0.406,-6.740,Brooklyn Nets,Pace and space,Run them off the line
+2016,1610612752,-0.107,-0.776,-0.220,-0.603,0.271,1.766,hornacek-jeff,NYK,NYK,-1.178,0.207,-1.708,-3.870,New York Knicks,Isolation / pick-and-roll,Gamble and pressure
+2016,1610612753,0.012,-0.346,-1.017,0.009,-0.448,0.561,vogel-frank,ORL,ORL,-0.949,-0.342,0.441,-6.610,Orlando Magic,Grind it out,Run them off the line
+2016,1610612754,-0.123,-0.930,-0.974,-0.142,1.187,-0.871,mcmillan-nate,IND,IND,0.995,0.671,-0.797,-0.640,Indiana Pacers,Grind it out,Aggressive wall
+2016,1610612755,0.891,0.678,0.473,1.091,-1.078,0.703,brown-brett,PHI,PHI,0.880,1.051,-0.927,-5.830,Philadelphia 76ers,Pace and space,Gamble and pressure
+2016,1610612756,1.653,-1.263,0.434,-1.868,-0.459,0.608,watson-earl,PHX,PHO,0.423,2.316,-0.211,-5.140,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2016,1610612757,0.155,0.107,0.118,-0.943,-1.036,-0.710,stotts-terry,POR,POR,-1.292,1.346,0.050,-0.230,Portland Trail Blazers,Isolation / pick-and-roll,Run them off the line
+2016,1610612758,-0.613,-0.531,-0.051,0.310,1.875,-1.142,joerger-dave,SAC,SAC,0.194,0.755,-0.276,-3.290,Sacramento Kings,Grind it out,Aggressive wall
+2016,1610612759,-0.864,-0.737,-1.179,0.574,-1.343,0.011,popovich-gregg,SAS,SAS,0.880,-0.721,0.571,7.130,San Antonio Spurs,Grind it out,Run them off the line
+2016,1610612760,0.553,-0.427,1.519,-0.994,-1.026,1.670,donovan-billy,OKC,OKC,-0.263,0.376,1.483,1.140,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2016,1610612761,-0.670,-0.576,-0.614,-2.244,0.517,-0.157,casey-dwane,TOR,TOR,0.880,0.586,-0.276,3.650,Toronto Raptors,Isolation / pick-and-roll,Aggressive wall
+2016,1610612762,-2.092,0.213,0.330,-0.730,-1.520,-0.066,snyder-quin,UTA,UTA,-1.063,-0.595,1.418,4.000,Utah Jazz,Spread half-court,Disciplined / no-foul
+2016,1610612763,-1.751,0.010,-0.082,0.116,1.631,-1.045,fizdale-david,MEM,MEM,0.995,1.979,0.506,0.960,Memphis Grizzlies,Grind it out,Aggressive wall
+2016,1610612764,0.432,-0.657,0.144,-0.038,0.068,0.064,brooks-scott,WAS,WAS,1.223,0.165,-0.797,1.360,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2016,1610612765,-0.634,-1.099,-1.502,-1.035,-0.374,-1.452,gundy-van-stan,DET,DET,-0.720,-0.511,2.915,-1.290,Detroit Pistons,Grind it out,Disciplined / no-foul
+2016,1610612766,-0.499,0.393,-0.628,0.678,1.950,-0.712,clifford-steve,CHA,CHO,-0.720,-1.903,1.873,-0.070,Charlotte Hornets,Grind it out,Disciplined / no-foul
+2017,1610612737,0.244,0.586,0.046,0.927,0.741,-0.895,budenholzer-mike,ATL,ATL,0.735,-0.517,-1.041,-5.300,Atlanta Hawks,Pace and space,Aggressive wall
+2017,1610612738,-0.647,0.476,-0.726,0.099,-0.406,0.198,stevens-brad,BOS,BOS,0.016,-0.118,0.503,3.230,Boston Celtics,Spread half-court,Run them off the line
+2017,1610612739,0.279,0.962,-0.195,-0.090,0.907,0.324,lue-tyronn,CLE,CLE,-0.943,-1.364,-0.269,0.590,Cleveland Cavaliers,Pace and space,Run them off the line
+2017,1610612740,1.383,-0.345,1.166,1.047,-0.136,-0.222,gentry-alvin,NOP,NOP,-0.583,-0.916,-0.690,1.480,New Orleans Pelicans,Pace and space,Run them off the line
+2017,1610612741,0.244,0.318,-1.468,0.571,1.597,-0.287,hoiberg-fred,CHI,CHI,-0.703,-0.467,2.047,-6.840,Chicago Bulls,Grind it out,Disciplined / no-foul
+2017,1610612742,-0.756,1.001,-2.118,0.283,0.624,-2.423,carlisle-rick,DAL,DAL,-0.224,-0.018,0.854,-2.700,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2017,1610612743,-0.243,0.475,0.986,0.813,-0.141,0.508,malone-michael,DEN,DEN,-0.464,-1.015,-0.129,1.570,Denver Nuggets,Motion / inside-out,Run them off the line
+2017,1610612744,0.942,0.102,-1.131,2.405,-0.573,-0.410,kerr-steve,GSW,GSW,-0.464,-0.367,-0.971,5.790,Golden State Warriors,Pace and space,Run them off the line
+2017,1610612745,-0.076,3.609,-0.410,-0.609,0.057,0.799,antoni-d-mike,HOU,HOU,0.496,-1.115,1.556,8.210,Houston Rockets,Spread half-court,Disciplined / no-foul
+2017,1610612746,0.554,-0.473,2.162,-0.654,0.363,-0.889,rivers-doc,LAC,LAC,-0.464,0.480,-1.111,0.150,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+2017,1610612747,1.133,-0.136,1.425,0.030,-0.017,0.721,walton-luke,LAL,LAL,-0.583,-0.168,0.012,-1.440,Los Angeles Lakers,Pace and space,Run them off the line
+2017,1610612748,-0.890,0.491,-0.212,0.048,-0.702,-0.181,spoelstra-erik,MIA,MIA,0.136,1.079,0.924,0.150,Miami Heat,Spread half-court,Aggressive wall
+2017,1610612749,-0.504,-0.822,0.873,0.051,-0.490,2.204,kidd-jason,MIL,MIL,1.455,1.328,-1.252,-0.450,Milwaukee Bucks,Motion / inside-out,Gamble and pressure
+2017,1610612750,-0.582,-1.605,-0.762,-0.693,0.579,0.245,thibodeau-tom,MIN,MIN,1.095,-0.218,-0.901,2.350,Minnesota Timberwolves,Grind it out,Gamble and pressure
+2017,1610612751,0.654,1.643,-0.112,0.860,-2.437,-0.437,atkinson-kenny,BKN,BRK,-2.382,0.381,-0.480,-3.670,Brooklyn Nets,Pace and space,Run them off the line
+2017,1610612752,-0.204,-1.507,-0.405,-0.200,0.648,-0.036,hornacek-jeff,NYK,NYK,-1.063,0.730,-0.690,-3.530,New York Knicks,Grind it out,Run them off the line
+2017,1610612753,0.229,0.124,-0.339,0.499,-0.778,0.981,vogel-frank,ORL,ORL,-0.224,-0.317,-1.462,-4.920,Orlando Magic,Pace and space,Run them off the line
+2017,1610612754,-0.608,-1.115,-0.167,-0.907,0.937,-0.250,mcmillan-nate,IND,IND,1.455,-0.966,-1.041,1.180,Indiana Pacers,Isolation / pick-and-roll,Aggressive wall
+2017,1610612755,1.100,0.197,-0.015,1.897,0.083,-1.411,brown-brett,PHI,PHI,-0.464,1.228,0.643,4.300,Philadelphia 76ers,Pace and space,Aggressive wall
+2017,1610612756,1.103,-0.354,0.884,-0.629,-0.134,0.224,triano-jay,PHX,PHO,-1.303,0.929,-0.830,-8.800,Phoenix Suns,Isolation / pick-and-roll,Run them off the line
+2017,1610612757,-0.501,-0.250,-0.428,-2.034,-1.048,-0.613,stotts-terry,POR,POR,-1.543,-0.018,0.994,2.600,Portland Trail Blazers,Isolation / pick-and-roll,Disciplined / no-foul
+2017,1610612758,-1.173,-1.240,-1.335,-0.622,1.845,-0.262,joerger-dave,SAC,SAC,0.615,0.281,-0.058,-6.600,Sacramento Kings,Grind it out,Aggressive wall
+2017,1610612759,-1.032,-1.148,-0.879,0.030,-0.933,-0.493,popovich-gregg,SAS,SAS,0.256,-1.165,0.643,2.890,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2017,1610612760,-0.401,0.199,0.102,-1.110,1.104,0.025,donovan-billy,OKC,OKC,2.054,-0.018,-0.199,3.420,Oklahoma City Thunder,Isolation / pick-and-roll,Aggressive wall
+2017,1610612761,-0.073,0.886,0.227,0.175,-1.740,0.586,casey-dwane,TOR,TOR,0.016,0.929,0.012,7.290,Toronto Raptors,Pace and space,Run them off the line
+2017,1610612762,-0.702,0.481,0.218,0.076,-0.877,-0.613,snyder-quin,UTA,UTA,1.215,-0.168,1.485,4.470,Utah Jazz,Spread half-court,Aggressive wall
+2017,1610612763,-1.151,-0.392,0.847,0.090,0.961,-0.244,bickerstaff-b-j,MEM,MEM,0.975,3.123,-0.830,-5.810,Memphis Grizzlies,Motion / inside-out,Gamble and pressure
+2017,1610612764,-0.274,-0.557,-1.332,1.132,0.419,0.654,brooks-scott,WAS,WAS,0.735,0.929,-0.409,0.530,Washington Wizards,Grind it out,Gamble and pressure
+2017,1610612765,-0.592,-0.073,-0.223,0.002,1.050,-0.419,gundy-van-stan,DET,DET,0.855,-1.065,0.573,-0.260,Detroit Pistons,Grind it out,Aggressive wall
+2017,1610612766,0.259,-0.460,-0.396,-0.681,0.257,-1.330,clifford-steve,CHA,CHO,-0.703,-1.414,2.117,0.070,Charlotte Hornets,Isolation / pick-and-roll,Disciplined / no-foul
+2018,1610612737,1.854,0.985,1.489,0.772,1.025,0.073,pierce-lloyd,ATL,ATL,0.390,2.199,-0.380,-6.060,Atlanta Hawks,Pace and space,Aggressive wall
+2018,1610612738,-0.082,0.563,-1.244,0.767,1.016,-0.420,stevens-brad,BOS,BOS,1.000,-0.017,-0.040,3.900,Boston Celtics,Grind it out,Aggressive wall
+2018,1610612739,-1.634,-0.276,-0.912,-1.543,0.247,0.071,drew-larry,CLE,CLE,-0.933,-0.983,-0.040,-9.390,Cleveland Cavaliers,Grind it out,Run them off the line
+2018,1610612740,1.610,-0.579,1.237,0.628,0.224,0.344,gentry-alvin,NOP,NOP,-0.831,-0.301,-0.153,-1.100,New Orleans Pelicans,Pace and space,Run them off the line
+2018,1610612741,-0.621,-1.158,0.449,-1.130,0.575,0.231,boylen-jim,CHI,CHI,-0.526,-0.585,0.130,-8.320,Chicago Bulls,Isolation / pick-and-roll,Run them off the line
+2018,1610612742,-0.537,1.353,-1.116,0.215,0.293,-1.257,carlisle-rick,DAL,DAL,-0.831,-0.415,0.244,-0.870,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2018,1610612743,-1.049,-0.108,-0.211,1.493,0.479,0.444,malone-michael,DEN,DEN,-0.119,-0.244,0.528,4.190,Denver Nuggets,Motion / inside-out,Run them off the line
+2018,1610612744,0.518,0.611,-1.802,1.888,0.361,-1.465,kerr-steve,GSW,GSW,-0.729,0.381,0.017,6.420,Golden State Warriors,Pace and space,Disciplined / no-foul
+2018,1610612745,-1.044,3.253,-0.749,-1.352,-0.775,0.688,antoni-d-mike,HOU,HOU,1.000,0.665,-1.515,4.960,Houston Rockets,Spread half-court,Gamble and pressure
+2018,1610612746,0.916,-1.145,0.577,-0.313,-1.419,-0.003,rivers-doc,LAC,LAC,-1.034,1.461,-0.607,1.090,Los Angeles Clippers,Isolation / pick-and-roll,Run them off the line
+2018,1610612747,1.427,-0.213,1.979,0.163,0.359,0.283,walton-luke,LAL,LAL,-0.220,-0.358,-0.380,-1.330,Los Angeles Lakers,Pace and space,Run them off the line
+2018,1610612748,-0.901,0.301,0.087,0.468,1.091,-1.333,spoelstra-erik,MIA,MIA,0.288,0.153,0.301,-0.450,Miami Heat,Grind it out,Aggressive wall
+2018,1610612749,1.438,1.309,1.391,0.168,1.402,-2.778,budenholzer-mike,MIL,MIL,-0.933,-2.063,1.832,8.040,Milwaukee Bucks,Pace and space,Disciplined / no-foul
+2018,1610612750,0.094,-0.749,-0.266,-0.071,0.633,0.335,saunders-ryan,MIN,MIN,0.492,-0.472,-1.231,-1.020,Minnesota Timberwolves,Grind it out,Gamble and pressure
+2018,1610612751,0.425,0.994,0.708,-0.063,-1.572,-0.468,atkinson-kenny,BKN,BRK,-0.831,-0.472,-0.380,-0.400,Brooklyn Nets,Pace and space,Run them off the line
+2018,1610612752,-0.252,-0.374,-0.074,-1.771,0.138,1.074,fizdale-david,NYK,NYK,-0.729,0.267,-0.550,-8.930,New York Knicks,Isolation / pick-and-roll,Run them off the line
+2018,1610612753,-0.870,0.117,-1.470,0.969,-0.733,-0.726,clifford-steve,ORL,ORL,-0.627,-0.699,1.492,0.280,Orlando Magic,Grind it out,Disciplined / no-foul
+2018,1610612754,-0.985,-1.202,0.488,0.856,0.725,-0.297,mcmillan-nate,IND,IND,1.712,-0.813,-0.494,2.760,Indiana Pacers,Motion / inside-out,Aggressive wall
+2018,1610612755,0.934,-0.217,-0.134,1.370,-1.609,0.353,brown-brett,PHI,PHI,-1.339,0.438,0.868,2.250,Philadelphia 76ers,Pace and space,Run them off the line
+2018,1610612756,0.253,-0.369,0.084,0.019,-0.953,1.565,kokoskov-igor,PHX,PHO,1.102,2.143,-2.592,-8.610,Phoenix Suns,Isolation / pick-and-roll,Gamble and pressure
+2018,1610612757,-0.277,-0.262,0.430,-1.292,-1.424,-0.555,stotts-terry,POR,POR,-1.441,-0.188,0.471,4.430,Portland Trail Blazers,Isolation / pick-and-roll,Disciplined / no-foul
+2018,1610612758,1.573,-0.613,0.090,-0.148,1.150,0.645,joerger-dave,SAC,SAC,1.204,0.494,-0.891,-0.810,Sacramento Kings,Isolation / pick-and-roll,Gamble and pressure
+2018,1610612759,-0.790,-1.339,-2.597,-0.348,0.240,-1.385,popovich-gregg,SAS,SAS,-1.441,-1.608,1.322,1.800,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2018,1610612760,1.365,-0.115,0.852,-1.176,-0.128,0.804,donovan-billy,OKC,OKC,2.018,0.438,0.641,3.560,Oklahoma City Thunder,Isolation / pick-and-roll,Aggressive wall
+2018,1610612761,-0.015,0.514,-0.340,0.219,-0.677,-0.395,nurse-nick,TOR,TOR,0.695,-0.472,0.017,5.490,Toronto Raptors,Spread half-court,Run them off the line
+2018,1610612762,0.127,0.792,1.335,1.266,-2.291,-0.545,snyder-quin,UTA,UTA,-0.017,-0.529,1.832,5.280,Utah Jazz,Pace and space,Disciplined / no-foul
+2018,1610612763,-1.702,-0.240,-0.683,0.927,1.319,-0.545,bickerstaff-b-j,MEM,MEM,1.509,1.915,0.301,-2.080,Memphis Grizzlies,Grind it out,Aggressive wall
+2018,1610612764,0.736,0.330,0.377,0.742,0.100,1.294,brooks-scott,WAS,WAS,1.102,0.040,-1.685,-3.300,Washington Wizards,Pace and space,Gamble and pressure
+2018,1610612765,-1.323,0.807,0.408,-0.383,-1.595,0.620,casey-dwane,DET,DET,0.390,0.722,0.925,-0.560,Detroit Pistons,Spread half-court,Run them off the line
+2018,1610612766,-0.724,0.470,-0.017,-0.425,0.810,0.437,borrego-james,CHA,CHO,-0.322,-1.097,0.017,-1.320,Charlotte Hornets,Spread half-court,Run them off the line
+2019,1610612737,1.129,0.342,0.410,-0.201,-0.987,1.339,pierce-lloyd,ATL,ATL,-0.102,1.509,-1.540,-7.710,Atlanta Hawks,Pace and space,Gamble and pressure
+2019,1610612738,-0.338,0.064,0.609,-0.992,0.593,-0.353,stevens-brad,BOS,BOS,0.580,0.652,-0.040,5.830,Boston Celtics,Isolation / pick-and-roll,Aggressive wall
+2019,1610612739,-0.731,-0.524,-0.248,-0.618,-0.644,1.074,beilein-john,CLE,CLE,-0.955,-1.776,-0.040,-7.770,Cleveland Cavaliers,Grind it out,Run them off the line
+2019,1610612740,1.463,0.475,0.881,0.801,-0.639,1.327,gentry-alvin,NOP,NOP,-0.358,0.509,0.200,-0.550,New Orleans Pelicans,Pace and space,Run them off the line
+2019,1610612741,-0.074,0.322,1.570,-0.260,-0.032,1.904,boylen-jim,CHI,CHI,2.968,1.795,-1.120,-4.000,Chicago Bulls,Isolation / pick-and-roll,Gamble and pressure
+2019,1610612742,-0.402,1.729,-1.592,-0.135,-0.114,-0.175,carlisle-rick,DAL,DAL,-1.893,-1.252,0.140,4.870,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2019,1610612743,-1.402,-0.930,-0.212,0.907,0.326,0.327,malone-michael,DEN,DEN,0.068,-0.157,-0.400,2.350,Denver Nuggets,Grind it out,Run them off the line
+2019,1610612744,0.084,-0.680,-0.827,1.588,0.323,0.520,kerr-steve,GSW,GSW,0.751,-0.395,-0.640,-8.120,Golden State Warriors,Grind it out,Gamble and pressure
+2019,1610612745,1.557,2.736,0.152,-1.645,-0.075,0.439,antoni-d-mike,HOU,HOU,0.751,-0.205,-1.120,3.130,Houston Rockets,Pace and space,Gamble and pressure
+2019,1610612746,0.581,-0.207,-0.786,-0.681,0.400,-1.288,rivers-doc,LAC,LAC,-0.529,0.224,0.080,6.660,Los Angeles Clippers,Isolation / pick-and-roll,Disciplined / no-foul
+2019,1610612747,0.223,-0.595,1.226,0.059,-0.059,-0.209,vogel-frank,LAL,LAL,1.092,0.176,0.800,6.280,Los Angeles Lakers,Motion / inside-out,Aggressive wall
+2019,1610612748,-0.931,0.849,-1.030,1.505,2.082,-1.160,spoelstra-erik,MIA,MIA,-0.188,0.557,1.220,2.590,Miami Heat,Spread half-court,Aggressive wall
+2019,1610612749,2.237,1.051,-0.231,0.003,1.387,-2.453,budenholzer-mike,MIL,MIL,-0.699,-1.109,2.480,9.410,Milwaukee Bucks,Pace and space,Disciplined / no-foul
+2019,1610612750,1.500,1.197,1.049,-0.187,-1.465,0.818,saunders-ryan,MIN,MIN,0.324,0.795,-0.160,-4.020,Minnesota Timberwolves,Pace and space,Gamble and pressure
+2019,1610612751,0.460,0.930,1.649,0.195,-0.379,-1.173,atkinson-kenny,BKN,BRK,-1.552,-0.681,0.200,-1.010,Brooklyn Nets,Pace and space,Disciplined / no-foul
+2019,1610612752,-0.756,-1.507,0.880,-1.126,0.872,-0.677,miller-mike,NYK,NYK,-0.358,1.081,0.500,-6.720,New York Knicks,Isolation / pick-and-roll,Aggressive wall
+2019,1610612753,-0.795,-0.483,-0.937,0.274,0.078,-0.289,clifford-steve,ORL,ORL,0.324,-1.205,0.980,-0.930,Orlando Magic,Grind it out,Disciplined / no-foul
+2019,1610612754,-0.643,-1.594,0.178,0.360,-0.235,0.474,mcmillan-nate,IND,IND,0.154,-0.443,-0.460,1.630,Indiana Pacers,Motion / inside-out,Run them off the line
+2019,1610612755,-0.612,-0.556,-0.767,0.744,-1.849,0.114,brown-brett,PHI,PHI,-0.273,0.605,1.700,2.250,Philadelphia 76ers,Grind it out,Disciplined / no-foul
+2019,1610612756,0.468,-0.545,-0.247,1.549,-0.762,0.750,williams-monty,PHX,PHO,0.751,0.938,0.800,0.560,Phoenix Suns,Motion / inside-out,Aggressive wall
+2019,1610612757,0.234,-0.210,-1.398,-2.659,0.044,-0.178,stotts-terry,POR,POR,-1.382,0.319,-1.300,-0.610,Portland Trail Blazers,Isolation / pick-and-roll,Run them off the line
+2019,1610612758,-0.534,0.273,-0.914,-0.381,0.942,-0.060,walton-luke,SAC,SAC,0.665,1.128,0.560,-1.590,Sacramento Kings,Grind it out,Aggressive wall
+2019,1610612759,0.240,-1.521,-2.321,-0.311,0.230,-0.321,popovich-gregg,SAS,SAS,-0.955,-0.395,1.040,-0.650,San Antonio Spurs,Grind it out,Disciplined / no-foul
+2019,1610612760,-0.621,-0.750,-0.155,-1.320,-0.652,0.564,donovan-billy,OKC,OKC,-0.188,-1.347,-0.400,2.330,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2019,1610612761,0.226,0.871,0.839,0.726,2.232,-1.388,nurse-nick,TOR,TOR,1.518,0.033,-0.460,5.970,Toronto Raptors,Pace and space,Aggressive wall
+2019,1610612762,-0.709,0.718,-0.313,-0.926,-1.514,-0.592,snyder-quin,UTA,UTA,-1.467,-0.776,0.860,2.520,Utah Jazz,Spread half-court,Disciplined / no-foul
+2019,1610612763,1.193,-0.868,-0.192,0.854,0.312,-0.911,jenkins-taylor,MEM,MEM,-0.102,0.747,0.200,-0.910,Memphis Grizzlies,Pace and space,Aggressive wall
+2019,1610612764,1.186,-0.579,-0.203,0.117,-0.370,0.861,brooks-scott,WAS,WAS,0.921,1.414,-1.300,-5.240,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2019,1610612765,-1.312,-0.044,1.017,0.362,-1.976,0.731,casey-dwane,DET,DET,-0.102,-0.728,-0.940,-4.380,Detroit Pistons,Motion / inside-out,Run them off the line
+2019,1610612766,-2.060,0.403,1.038,1.003,0.699,1.218,borrego-james,CHA,CHO,0.239,-2.014,-1.840,-7.030,Charlotte Hornets,Motion / inside-out,Run them off the line
+2020,1610612737,-0.604,-0.246,-0.258,-0.179,-0.210,0.478,mcmillan-nate,ATL,ATL,-1.292,-0.114,0.002,2.140,Atlanta Hawks,Grind it out,Run them off the line
+2020,1610612738,-0.436,0.363,-0.233,-0.834,0.347,-0.592,stevens-brad,BOS,BOS,0.447,1.260,0.222,1.320,Boston Celtics,Spread half-court,Aggressive wall
+2020,1610612739,-0.924,-1.112,0.857,0.457,-0.542,1.097,bickerstaff-b-j,CLE,CLE,0.651,-0.498,-0.877,-8.190,Cleveland Cavaliers,Motion / inside-out,Gamble and pressure
+2020,1610612740,0.354,-1.251,2.101,0.306,1.300,-0.849,gundy-van-stan,NOP,NOP,-0.474,-0.333,1.615,-0.200,New Orleans Pelicans,Motion / inside-out,Disciplined / no-foul
+2020,1610612741,-0.163,-0.236,0.180,0.883,-0.726,0.503,donovan-billy,CHI,CHI,-0.781,0.216,1.835,-0.940,Chicago Bulls,Motion / inside-out,Disciplined / no-foul
+2020,1610612742,-0.982,1.009,-1.359,-1.057,0.550,-1.288,carlisle-rick,DAL,DAL,-0.883,0.271,0.002,2.260,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2020,1610612743,-1.097,-0.231,-0.029,0.537,0.968,-0.554,malone-michael,DEN,DEN,0.549,0.436,0.809,4.820,Denver Nuggets,Grind it out,Aggressive wall
+2020,1610612744,1.373,1.103,0.029,1.747,-0.114,-0.135,kerr-steve,GSW,GSW,0.754,1.699,-0.877,1.100,Golden State Warriors,Pace and space,Gamble and pressure
+2020,1610612745,0.908,1.562,0.992,0.041,0.193,0.458,silas-stephen,HOU,HOU,0.549,0.491,-0.511,-7.500,Houston Rockets,Pace and space,Gamble and pressure
+2020,1610612746,-1.169,0.146,-1.475,-0.359,-0.507,-0.848,lue-tyronn,LAC,LAC,-0.474,-0.333,0.955,6.020,Los Angeles Clippers,Grind it out,Disciplined / no-foul
+2020,1610612747,-0.564,-0.724,0.713,0.180,-0.618,0.407,vogel-frank,LAL,LAL,1.367,-0.443,1.395,2.770,Los Angeles Lakers,Motion / inside-out,Aggressive wall
+2020,1610612748,-1.439,0.915,-0.267,1.778,2.424,-1.522,spoelstra-erik,MIA,MIA,1.470,-0.498,0.076,-0.060,Miami Heat,Spread half-court,Aggressive wall
+2020,1610612749,1.469,0.241,-0.161,-0.742,0.927,-2.647,budenholzer-mike,MIL,MIL,-0.883,-1.926,1.395,5.570,Milwaukee Bucks,Isolation / pick-and-roll,Disciplined / no-foul
+2020,1610612750,0.969,0.501,1.123,0.747,-0.524,0.885,finch-chris,MIN,MIN,0.958,0.820,-0.730,-5.250,Minnesota Timberwolves,Pace and space,Gamble and pressure
+2020,1610612751,0.145,0.489,-0.006,0.545,0.234,-1.306,nash-steve,BKN,BRK,-1.292,-0.278,-0.364,4.240,Brooklyn Nets,Pace and space,Disciplined / no-foul
+2020,1610612752,-1.819,-1.095,-0.383,-1.408,0.823,0.524,thibodeau-tom,NYK,NYK,-0.679,0.216,0.589,2.130,New York Knicks,Grind it out,Run them off the line
+2020,1610612753,-0.292,-0.890,-0.937,-0.722,0.745,-0.015,clifford-steve,ORL,ORL,-0.883,-1.267,0.296,-9.020,Orlando Magic,Grind it out,Run them off the line
+2020,1610612754,1.093,-0.494,1.437,0.842,-1.650,2.066,bjorkgren-nate,IND,IND,0.344,0.491,-2.123,-0.130,Indiana Pacers,Motion / inside-out,Gamble and pressure
+2020,1610612755,0.055,-1.129,-0.499,-0.666,-0.419,0.006,rivers-doc,PHI,PHI,1.470,0.436,0.296,5.280,Philadelphia 76ers,Isolation / pick-and-roll,Aggressive wall
+2020,1610612756,-0.961,-0.037,-1.777,0.562,-0.414,0.089,williams-monty,PHX,PHO,0.038,0.106,0.515,5.670,Phoenix Suns,Grind it out,Run them off the line
+2020,1610612757,-0.441,1.290,-0.990,-2.094,0.107,-0.201,stotts-terry,POR,POR,-1.190,0.601,-0.217,1.810,Portland Trail Blazers,Spread half-court,Run them off the line
+2020,1610612758,0.470,-0.417,-0.111,-0.010,-0.876,0.929,walton-luke,SAC,SAC,-0.269,0.381,-2.050,-3.450,Sacramento Kings,Isolation / pick-and-roll,Gamble and pressure
+2020,1610612759,-0.224,-1.883,-0.238,-0.389,-0.930,1.323,popovich-gregg,SAS,SAS,-0.576,-0.992,-0.364,-1.580,San Antonio Spurs,Grind it out,Run them off the line
+2020,1610612760,0.824,0.150,1.030,-0.775,0.604,-0.123,daigneault-mark,OKC,OKC,-0.883,-1.377,0.076,-10.130,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2020,1610612761,-0.119,1.191,0.158,0.188,1.426,-0.855,nurse-nick,TOR,TOR,2.084,2.304,-1.097,-0.540,Toronto Raptors,Spread half-court,Aggressive wall
+2020,1610612762,-0.273,2.266,-1.020,-0.650,-1.470,-1.192,snyder-quin,UTA,UTA,-2.111,-1.816,1.102,8.970,Utah Jazz,Spread half-court,Disciplined / no-foul
+2020,1610612763,0.424,-1.245,-0.112,0.716,0.210,-0.569,jenkins-taylor,MEM,MEM,0.754,0.216,0.369,1.070,Memphis Grizzlies,Motion / inside-out,Aggressive wall
+2020,1610612764,2.333,-1.771,0.786,-0.227,-0.770,-0.336,brooks-scott,WAS,WAS,0.140,1.370,-0.144,-1.850,Washington Wizards,Isolation / pick-and-roll,Gamble and pressure
+2020,1610612765,-0.794,-0.214,1.096,0.663,-1.056,1.398,casey-dwane,DET,DET,0.242,0.161,-0.657,-4.380,Detroit Pistons,Motion / inside-out,Gamble and pressure
+2020,1610612766,-0.431,0.693,0.659,1.805,2.077,0.683,borrego-james,CHA,CHO,0.856,-1.597,-1.537,-1.940,Charlotte Hornets,Motion / inside-out,Gamble and pressure
+2021,1610612737,-0.114,-0.296,-0.931,-0.379,-0.113,-0.465,mcmillan-nate,ATL,ATL,-0.964,-0.903,0.107,1.550,Atlanta Hawks,Grind it out,Disciplined / no-foul
+2021,1610612738,-1.051,0.717,0.154,0.133,-0.184,-1.365,udoka-ime,BOS,BOS,0.179,-0.549,0.400,7.020,Boston Celtics,Spread half-court,Disciplined / no-foul
+2021,1610612739,-1.227,-0.336,0.039,0.913,-0.676,0.419,bickerstaff-b-j,CLE,CLE,-0.050,-1.198,-0.185,2.040,Cleveland Cavaliers,Motion / inside-out,Run them off the line
+2021,1610612740,-0.460,-0.970,0.617,0.513,0.674,-1.094,green-willie,NOP,NOP,0.751,0.218,1.057,-0.840,New Orleans Pelicans,Motion / inside-out,Aggressive wall
+2021,1610612741,0.018,-1.847,-0.873,-1.038,-1.306,1.211,donovan-billy,CHI,CHI,-0.507,0.395,1.131,-0.380,Chicago Bulls,Isolation / pick-and-roll,Run them off the line
+2021,1610612742,-1.916,1.088,-1.872,-0.313,-0.870,-0.459,kidd-jason,DAL,DAL,-0.164,-0.431,0.911,3.120,Dallas Mavericks,Spread half-court,Disciplined / no-foul
+2021,1610612743,-0.228,0.448,0.159,1.956,-0.319,0.133,malone-michael,DEN,DEN,-0.736,-0.254,1.131,2.160,Denver Nuggets,Motion / inside-out,Disciplined / no-foul
+2021,1610612744,-0.058,1.577,0.455,2.014,0.645,-0.752,kerr-steve,GSW,GSW,0.751,0.513,1.423,5.520,Golden State Warriors,Pace and space,Aggressive wall
+2021,1610612745,1.530,1.349,2.355,-0.217,0.147,0.995,silas-stephen,HOU,HOU,-0.050,0.808,-1.720,-8.260,Houston Rockets,Pace and space,Gamble and pressure
+2021,1610612746,-0.221,-0.231,-1.828,-0.183,-0.985,0.518,lue-tyronn,LAC,LAC,-0.393,-1.493,-1.720,0.090,Los Angeles Clippers,Grind it out,Run them off the line
+2021,1610612747,1.070,-0.299,1.720,-0.909,-0.155,0.798,vogel-frank,LAL,LAL,-0.164,-0.018,-0.697,-3.080,Los Angeles Lakers,Isolation / pick-and-roll,Run them off the line
+2021,1610612748,-1.443,0.598,-1.095,1.221,2.267,-1.739,spoelstra-erik,MIA,MIA,1.666,0.985,0.911,4.230,Miami Heat,Grind it out,Aggressive wall
+2021,1610612749,1.136,0.808,-0.666,-1.057,1.996,-1.968,budenholzer-mike,MIL,MIL,-0.850,-1.611,1.350,3.220,Milwaukee Bucks,Isolation / pick-and-roll,Disciplined / no-foul
+2021,1610612750,1.666,1.558,0.547,0.389,1.132,0.178,finch-chris,MIN,MIN,2.123,2.048,-1.355,2.530,Minnesota Timberwolves,Pace and space,Gamble and pressure
+2021,1610612751,0.329,-1.123,-0.720,-0.111,0.107,-0.096,nash-steve,BKN,BRK,-0.736,0.513,-1.209,0.820,Brooklyn Nets,Grind it out,Run them off the line
+2021,1610612752,-1.508,0.847,-0.645,-0.771,1.223,-0.836,thibodeau-tom,NYK,NYK,-0.736,0.336,1.496,-0.010,New York Knicks,Spread half-court,Disciplined / no-foul
+2021,1610612753,0.555,0.495,0.153,0.476,0.403,-0.790,mosley-jamahl,ORL,ORL,-0.736,0.218,0.327,-7.670,Orlando Magic,Pace and space,Disciplined / no-foul
+2021,1610612754,-0.196,-0.096,0.777,0.228,-1.285,1.075,carlisle-rick,IND,IND,-0.507,0.690,-0.404,-3.260,Indiana Pacers,Motion / inside-out,Run them off the line
+2021,1610612755,-1.351,-0.660,-0.503,-0.095,-0.840,-0.086,rivers-doc,PHI,PHI,-0.278,-0.018,0.034,2.570,Philadelphia 76ers,Grind it out,Run them off the line
+2021,1610612756,0.878,-1.259,-1.329,0.677,-0.447,-0.804,williams-monty,PHX,PHO,0.751,0.159,0.253,6.940,Phoenix Suns,Grind it out,Aggressive wall
+2021,1610612757,-0.024,0.623,0.171,-0.330,1.379,0.134,billups-chauncey,POR,POR,0.408,1.753,0.107,-8.550,Portland Trail Blazers,Spread half-court,Aggressive wall
+2021,1610612758,0.807,-0.623,-0.058,-0.636,-0.550,1.050,gentry-alvin,SAC,SAC,-0.507,-0.962,-0.551,-5.260,Sacramento Kings,Isolation / pick-and-roll,Run them off the line
+2021,1610612759,1.124,-1.476,0.146,1.279,-1.173,1.721,popovich-gregg,SAS,SAS,-0.278,-0.962,-1.209,0.020,San Antonio Spurs,Motion / inside-out,Run them off the line
+2021,1610612760,0.361,0.548,1.373,-0.793,1.106,0.045,daigneault-mark,OKC,OKC,-0.621,-1.375,-0.478,-7.900,Oklahoma City Thunder,Isolation / pick-and-roll,Run them off the line
+2021,1610612761,-1.398,-0.679,-0.936,-1.966,0.549,0.075,nurse-nick,TOR,TOR,2.352,0.395,-0.843,2.380,Toronto Raptors,Grind it out,Gamble and pressure
+2021,1610612762,-0.824,1.887,-0.291,-1.684,-0.405,-1.758,snyder-quin,UTA,UTA,-1.651,-1.670,1.131,5.670,Utah Jazz,Spread half-court,Disciplined / no-foul
+2021,1610612763,1.078,-1.481,0.347,-0.259,-0.409,0.406,jenkins-taylor,MEM,MEM,1.094,0.159,0.765,5.370,Memphis Grizzlies,Isolation / pick-and-roll,Aggressive wall
+2021,1610612764,-0.620,-1.187,0.686,0.366,-1.622,-0.048,jr-unseld-wes,WAS,WAS,-1.879,0.572,0.107,-3.230,Washington Wizards,Motion / inside-out,Run them off the line
+2021,1610612765,0.009,-0.250,0.804,0.310,-0.817,1.603,casey-dwane,DET,DET,0.865,1.989,-0.843,-7.360,Detroit Pistons,Motion / inside-out,Gamble and pressure
+2021,1610612766,1.174,0.522,1.589,1.611,1.142,0.468,borrego-james,CHA,CHO,0.865,-0.313,-1.428,0.530,Charlotte Hornets,Pace and space,Gamble and pressure
+2022,1610612737,0.846,-1.259,-0.569,-1.032,-0.751,1.154,mcmillan-nate,ATL,ATL,-0.097,-0.159,-0.120,0.320,Atlanta Hawks,Isolation / pick-and-roll,Run them off the line
+2022,1610612738,-0.425,2.269,-0.228,0.909,-0.621,-0.767,mazzulla-joe,BOS,BOS,-1.036,-1.833,1.675,6.380,Boston Celtics,Spread half-court,Disciplined / no-foul
+2022,1610612739,-1.932,-0.315,0.000,0.031,-0.917,-0.206,bickerstaff-b-j,CLE,CLE,1.610,0.099,0.213,5.230,Cleveland Cavaliers,Grind it out,Aggressive wall
+2022,1610612740,-0.167,-0.950,0.867,0.463,1.199,-0.135,green-willie,NOP,NOP,0.757,0.227,0.944,1.630,New Orleans Pelicans,Motion / inside-out,Aggressive wall
+2022,1610612741,-0.405,-1.203,-0.146,-0.654,1.646,-0.125,donovan-billy,CHI,CHI,0.842,-0.738,1.210,1.370,Chicago Bulls,Isolation / pick-and-roll,Aggressive wall
+2022,1610612742,-1.502,2.405,-1.662,-0.722,-0.890,0.020,kidd-jason,DAL,DAL,-0.523,1.129,-0.319,-0.140,Dallas Mavericks,Spread half-court,Run them off the line
+2022,1610612743,-0.629,-0.544,1.149,1.755,-0.475,0.407,malone-michael,DEN,DEN,-0.267,-0.481,0.279,3.040,Denver Nuggets,Motion / inside-out,Run them off the line
+2022,1610612744,1.357,2.213,-0.189,2.549,0.217,-0.577,kerr-steve,GSW,GSW,-0.182,0.356,0.013,1.660,Golden State Warriors,Pace and space,Aggressive wall
+2022,1610612745,-0.050,-0.603,2.266,-1.317,2.298,-0.301,silas-stephen,HOU,HOU,-0.609,0.614,-0.120,-7.620,Houston Rockets,Isolation / pick-and-roll,Aggressive wall
+2022,1610612746,-0.672,0.074,-1.046,-0.487,-0.414,-0.310,lue-tyronn,LAC,LAC,-0.694,-0.867,0.412,0.310,Los Angeles Clippers,Grind it out,Disciplined / no-foul
+2022,1610612747,1.080,-0.785,1.135,-0.266,0.009,-0.891,ham-darvin,LAL,LAL,-1.377,-2.412,0.213,0.430,Los Angeles Lakers,Isolation / pick-and-roll,Disciplined / no-foul
+2022,1610612748,-1.735,0.531,-1.624,0.252,1.829,-1.586,spoelstra-erik,MIA,MIA,1.696,-0.674,1.143,-0.130,Miami Heat,Spread half-court,Aggressive wall
+2022,1610612749,0.795,1.465,-0.833,0.128,-0.942,-1.599,budenholzer-mike,MIL,MIL,-1.804,-2.154,1.210,3.610,Milwaukee Bucks,Pace and space,Disciplined / no-foul
+2022,1610612750,0.884,-0.073,1.103,0.312,-0.578,0.103,finch-chris,MIN,MIN,0.671,1.064,-1.117,-0.220,Minnesota Timberwolves,Pace and space,Gamble and pressure
+2022,1610612751,-0.730,0.341,-1.598,0.495,-1.148,0.507,vaughn-jacque,BKN,BRK,-0.267,0.227,-1.516,1.030,Brooklyn Nets,Grind it out,Run them off the line
+2022,1610612752,-1.214,0.365,-0.475,-1.464,1.149,-0.824,thibodeau-tom,NYK,NYK,-0.950,0.099,0.745,2.990,New York Knicks,Spread half-court,Disciplined / no-foul
+2022,1610612753,-0.109,-0.564,0.924,-0.700,1.549,-0.967,mosley-jamahl,ORL,ORL,0.501,0.163,1.143,-2.390,Orlando Magic,Isolation / pick-and-roll,Aggressive wall
+2022,1610612754,0.926,0.658,0.777,1.204,-0.648,1.314,carlisle-rick,IND,IND,0.415,1.322,-2.513,-2.910,Indiana Pacers,Pace and space,Gamble and pressure
+2022,1610612755,-1.459,0.101,-0.043,0.481,0.065,-0.371,rivers-doc,PHI,PHI,0.415,0.549,0.811,4.370,Philadelphia 76ers,Grind it out,Aggressive wall
+2022,1610612756,-0.620,-0.527,-2.273,1.333,-0.656,-0.102,williams-monty,PHX,PHO,0.330,1.644,0.013,2.080,Phoenix Suns,Grind it out,Gamble and pressure
+2022,1610612757,-0.362,0.680,0.514,-0.047,-0.406,1.533,billups-chauncey,POR,POR,-0.353,0.549,-0.718,-3.960,Portland Trail Blazers,Spread half-court,Gamble and pressure
+2022,1610612758,0.594,0.921,-0.094,0.752,-0.562,0.417,brown-mike,SAC,SAC,0.074,-0.352,0.811,2.300,Sacramento Kings,Pace and space,Run them off the line
+2022,1610612759,1.160,-0.860,0.443,0.905,-1.375,1.602,popovich-gregg,SAS,SAS,-0.438,-0.481,-0.718,-9.820,San Antonio Spurs,Pace and space,Run them off the line
+2022,1610612760,1.056,-0.357,1.209,-0.887,0.826,0.479,daigneault-mark,OKC,OKC,1.610,0.871,-2.047,0.960,Oklahoma City Thunder,Isolation / pick-and-roll,Gamble and pressure
+2022,1610612761,-1.148,-0.795,-0.062,-0.766,0.267,0.454,nurse-nick,TOR,TOR,2.378,0.936,0.479,1.590,Toronto Raptors,Grind it out,Aggressive wall
+2022,1610612762,0.663,0.842,0.223,0.330,-0.464,0.475,hardy-will,UTA,UTA,-1.377,-0.223,-0.519,-1.030,Utah Jazz,Pace and space,Run them off the line
+2022,1610612763,0.847,-0.295,0.629,-0.094,0.789,-0.269,jenkins-taylor,MEM,MEM,0.501,-0.159,-0.053,3.600,Memphis Grizzlies,Isolation / pick-and-roll,Aggressive wall
+2022,1610612764,-0.433,-0.456,0.006,0.104,-0.990,0.654,jr-unseld-wes,WAS,WAS,-1.292,-0.931,0.080,-1.060,Washington Wizards,Grind it out,Run them off the line
+2022,1610612765,-0.050,-0.287,-0.551,-0.494,-0.389,0.962,casey-dwane,DET,DET,-0.523,1.451,-1.316,-7.730,Detroit Pistons,Grind it out,Gamble and pressure
+2022,1610612766,0.809,-0.556,0.867,0.282,-0.303,0.630,clifford-steve,CHA,CHO,-0.011,0.163,-0.319,-5.890,Charlotte Hornets,Motion / inside-out,Run them off the line
+2023,1610612737,0.764,0.292,-0.444,-0.450,0.407,0.720,snyder-quin,ATL,ATL,0.308,0.005,-0.395,-2.380,Atlanta Hawks,Isolation / pick-and-roll,Gamble and pressure
+2023,1610612738,-0.665,2.284,-0.695,-0.611,0.286,-0.941,mazzulla-joe,BOS,BOS,-1.614,-2.478,0.381,10.750,Boston Celtics,Spread half-court,Disciplined / no-foul
+2023,1610612739,-0.817,0.722,0.242,1.327,-0.088,-0.264,bickerstaff-b-j,CLE,CLE,0.188,-0.100,0.804,1.980,Cleveland Cavaliers,Motion / inside-out,Aggressive wall
+2023,1610612740,-0.264,-0.796,0.672,0.101,1.591,-0.776,green-willie,NOP,NOP,0.909,-0.312,0.804,4.460,New Orleans Pelicans,Motion / inside-out,Aggressive wall
+2023,1610612741,-1.166,-1.247,-0.698,-1.239,1.902,-0.812,donovan-billy,CHI,CHI,0.669,0.164,0.452,-1.770,Chicago Bulls,Grind it out,Aggressive wall
+2023,1610612742,0.655,1.335,-1.589,-1.176,0.123,-0.841,kidd-jason,DAL,DAL,-0.052,-0.417,-0.395,2.300,Dallas Mavericks,Spread half-court,Run them off the line
+2023,1610612743,-0.955,-1.426,0.708,1.252,-0.934,0.406,malone-michael,DEN,DEN,-1.133,0.164,-0.113,5.230,Denver Nuggets,Motion / inside-out,Run them off the line
+2023,1610612744,0.269,0.813,0.289,1.305,0.564,-0.697,kerr-steve,GSW,GSW,-0.773,0.164,0.240,2.770,Golden State Warriors,Pace and space,Disciplined / no-foul
+2023,1610612745,0.171,-0.007,0.736,-1.233,0.341,-0.612,udoka-ime,HOU,HOU,0.068,1.432,0.169,1.240,Houston Rockets,Isolation / pick-and-roll,Aggressive wall
+2023,1610612746,-0.696,-0.491,-0.405,-0.913,0.248,-0.356,lue-tyronn,LAC,LAC,-0.533,-0.470,-0.677,3.410,Los Angeles Clippers,Grind it out,Run them off the line
+2023,1610612747,1.021,-1.242,1.461,0.742,0.427,-1.219,ham-darvin,LAL,LAL,-0.533,-2.055,0.310,1.070,Los Angeles Lakers,Motion / inside-out,Disciplined / no-foul
+2023,1610612748,-1.215,-0.149,-1.158,0.552,1.128,-1.148,spoelstra-erik,MIA,MIA,0.669,-0.946,1.651,1.100,Miami Heat,Grind it out,Aggressive wall
+2023,1610612749,0.634,0.914,-0.603,-0.518,-0.021,-1.254,griffin-adrian,MIL,MIL,-1.854,-0.153,1.016,2.440,Milwaukee Bucks,Spread half-court,Disciplined / no-foul
+2023,1610612750,-0.792,-0.433,0.483,0.478,-0.557,-1.345,finch-chris,MIN,MIN,0.909,0.269,0.804,6.390,Minnesota Timberwolves,Motion / inside-out,Aggressive wall
+2023,1610612751,-0.900,0.419,-0.391,-0.041,0.172,-0.595,vaughn-jacque,BKN,BRK,-0.893,0.058,0.169,-3.020,Brooklyn Nets,Spread half-court,Disciplined / no-foul
+2023,1610612752,-1.643,0.157,-0.943,-1.363,0.284,0.384,thibodeau-tom,NYK,NYK,0.188,-0.840,0.240,4.360,New York Knicks,Spread half-court,Run them off the line
+2023,1610612753,-0.977,-0.910,2.092,-0.717,-0.194,-0.221,mosley-jamahl,ORL,ORL,1.990,0.745,1.651,1.480,Orlando Magic,Motion / inside-out,Aggressive wall
+2023,1610612754,1.446,-0.574,1.807,0.762,-1.924,2.203,carlisle-rick,IND,IND,-0.052,1.907,-1.171,2.750,Indiana Pacers,Pace and space,Gamble and pressure
+2023,1610612755,-0.583,-0.803,0.304,-1.053,-0.018,0.414,nurse-nick,PHI,PHI,1.149,1.220,-1.030,2.510,Philadelphia 76ers,Isolation / pick-and-roll,Gamble and pressure
+2023,1610612756,-0.155,-0.641,-1.372,0.190,0.196,-0.083,vogel-frank,PHX,PHO,-1.013,-0.734,-0.113,3.080,Phoenix Suns,Grind it out,Run them off the line
+2023,1610612757,-0.726,-0.890,0.770,-1.473,-0.223,1.115,billups-chauncey,POR,POR,0.789,1.273,-1.242,-8.290,Portland Trail Blazers,Isolation / pick-and-roll,Gamble and pressure
+2023,1610612758,0.072,1.046,-0.521,0.758,0.004,0.162,brown-mike,SAC,SAC,0.428,1.115,1.863,2.290,Sacramento Kings,Pace and space,Aggressive wall
+2023,1610612759,1.251,0.072,0.243,2.692,-0.642,0.470,popovich-gregg,SAS,SAS,-0.533,-0.946,0.452,-5.800,San Antonio Spurs,Pace and space,Run them off the line
+2023,1610612760,0.765,-0.484,0.112,-0.755,0.756,-0.539,daigneault-mark,OKC,OKC,1.750,0.534,-1.383,7.360,Oklahoma City Thunder,Isolation / pick-and-roll,Gamble and pressure
+2023,1610612761,0.286,-0.951,1.036,1.409,0.242,0.490,rajakovic-darko,TOR,TOR,0.068,-1.051,-1.312,-6.450,Toronto Raptors,Motion / inside-out,Run them off the line
+2023,1610612762,0.491,0.205,0.298,0.564,0.580,-0.323,hardy-will,UTA,UTA,-1.494,-0.523,-0.395,-4.220,Utah Jazz,Pace and space,Run them off the line
+2023,1610612763,-0.335,0.915,-1.264,0.418,0.532,0.287,jenkins-taylor,MEM,MEM,1.630,0.164,-0.677,-6.570,Memphis Grizzlies,Spread half-court,Gamble and pressure
+2023,1610612764,1.899,-0.342,1.062,0.604,-0.719,1.683,jr-unseld-wes,WAS,WAS,-0.172,0.481,-2.300,-9.290,Washington Wizards,Pace and space,Gamble and pressure
+2023,1610612765,0.580,-1.231,0.150,-0.284,-0.659,0.712,williams-monty,DET,DET,-1.253,1.537,1.087,-9.060,Detroit Pistons,Isolation / pick-and-roll,Run them off the line
+2023,1610612766,-0.717,-0.252,-0.334,-0.387,0.662,0.754,clifford-steve,CHA,CHO,0.188,-0.206,-0.889,-10.120,Charlotte Hornets,Grind it out,Gamble and pressure
+2024,1610612737,1.596,-0.224,0.436,1.087,-0.124,0.574,snyder-quin,ATL,ATL,0.943,0.687,0.802,-1.410,Atlanta Hawks,Pace and space,Aggressive wall
+2024,1610612738,-1.535,2.945,-1.773,-0.238,-0.407,-0.438,mazzulla-joe,BOS,BOS,-0.888,-1.979,0.802,8.280,Boston Celtics,Spread half-court,Disciplined / no-foul
+2024,1610612739,0.267,0.941,-0.558,-0.171,-0.465,-0.691,atkinson-kenny,CLE,CLE,-0.055,-0.479,0.002,8.810,Cleveland Cavaliers,Spread half-court,Run them off the line
+2024,1610612740,-0.023,-0.862,0.374,-0.047,1.267,1.154,green-willie,NOP,NOP,-0.305,0.020,-1.398,-8.590,New Orleans Pelicans,Isolation / pick-and-roll,Gamble and pressure
+2024,1610612741,1.759,0.968,0.438,0.851,-0.182,0.996,donovan-billy,CHI,CHI,-1.554,-0.646,1.202,-1.830,Chicago Bulls,Pace and space,Run them off the line
+2024,1610612742,0.144,-0.754,-0.292,-0.899,-1.945,0.973,kidd-jason,DAL,DAL,-0.888,-0.590,-1.131,-0.740,Dallas Mavericks,Isolation / pick-and-roll,Run them off the line
+2024,1610612743,0.267,-1.547,2.017,1.132,-0.296,-0.413,malone-michael,DEN,DEN,-1.137,-0.924,-0.131,3.970,Denver Nuggets,Motion / inside-out,Run them off the line
+2024,1610612744,-0.276,1.216,0.350,1.865,-0.262,-1.085,kerr-steve,GSW,GSW,1.193,-0.035,0.535,3.560,Golden State Warriors,Pace and space,Aggressive wall
+2024,1610612745,-0.358,-0.897,0.620,-2.170,-1.654,1.164,udoka-ime,HOU,HOU,0.111,-0.202,0.935,4.970,Houston Rockets,Isolation / pick-and-roll,Run them off the line
+2024,1610612746,-0.762,-0.822,-0.403,-0.795,0.519,-0.443,lue-tyronn,LAC,LAC,0.860,-0.035,1.802,4.840,Los Angeles Clippers,Grind it out,Aggressive wall
+2024,1610612747,-0.713,0.162,-0.111,-0.071,0.358,0.195,redick-jj,LAL,LAL,-0.388,-0.646,-0.198,1.450,Los Angeles Lakers,Grind it out,Run them off the line
+2024,1610612748,-1.277,0.217,-0.610,0.366,0.399,-0.568,spoelstra-erik,MIA,MIA,-0.139,-1.812,0.669,0.110,Miami Heat,Grind it out,Disciplined / no-foul
+2024,1610612749,0.046,0.131,-0.408,-0.765,0.668,-1.199,rivers-doc,MIL,MIL,-1.054,-0.868,0.935,2.120,Milwaukee Bucks,Isolation / pick-and-roll,Disciplined / no-foul
+2024,1610612750,-0.862,0.930,-0.092,-0.028,-0.721,-0.305,finch-chris,MIN,MIN,0.444,-0.646,0.202,5.150,Minnesota Timberwolves,Spread half-court,Run them off the line
+2024,1610612751,-1.481,0.946,-0.037,0.751,0.103,1.435,fernandez-jordi,BKN,BRK,0.860,1.575,0.136,-6.950,Brooklyn Nets,Spread half-court,Gamble and pressure
+2024,1610612752,-1.045,-0.931,0.375,-0.085,-0.865,0.603,thibodeau-tom,NYK,NYK,0.361,-0.757,-0.198,3.590,New York Knicks,Motion / inside-out,Run them off the line
+2024,1610612753,-1.598,-0.176,0.173,-0.858,-2.099,0.491,mosley-jamahl,ORL,ORL,1.942,1.686,1.469,-0.700,Orlando Magic,Grind it out,Aggressive wall
+2024,1610612754,0.369,-0.478,-0.034,0.815,-0.980,1.650,carlisle-rick,IND,IND,0.361,0.020,-0.198,1.680,Indiana Pacers,Motion / inside-out,Gamble and pressure
+2024,1610612755,-0.778,0.140,0.479,-1.316,0.670,1.833,nurse-nick,PHI,PHI,1.359,0.242,-1.997,-6.290,Philadelphia 76ers,Isolation / pick-and-roll,Gamble and pressure
+2024,1610612756,-0.731,0.506,-2.795,0.873,0.249,-0.199,budenholzer-mike,PHX,PHO,-1.470,0.076,-0.464,-2.550,Phoenix Suns,Grind it out,Run them off the line
+2024,1610612757,-0.091,-0.009,1.497,-1.246,-1.318,0.670,billups-chauncey,POR,POR,0.777,0.798,-1.531,-2.670,Portland Trail Blazers,Isolation / pick-and-roll,Gamble and pressure
+2024,1610612758,-0.420,-0.720,-0.853,-0.571,0.762,-0.687,christie-doug,SAC,SAC,-0.139,0.576,1.402,0.580,Sacramento Kings,Grind it out,Aggressive wall
+2024,1610612759,0.152,0.482,0.356,1.071,0.172,0.757,johnson-mitch,SAS,SAS,-0.555,-1.757,-1.198,-2.450,San Antonio Spurs,Pace and space,Run them off the line
+2024,1610612760,0.432,0.004,-0.412,-0.888,1.722,-1.538,daigneault-mark,OKC,OKC,1.859,1.186,-0.131,12.700,Oklahoma City Thunder,Isolation / pick-and-roll,Aggressive wall
+2024,1610612761,0.379,-1.134,1.313,1.165,0.302,0.964,rajakovic-darko,TOR,TOR,0.444,1.797,-0.598,-4.400,Toronto Raptors,Motion / inside-out,Gamble and pressure
+2024,1610612762,0.450,0.743,-0.194,-0.113,1.424,0.212,hardy-will,UTA,UTA,-1.970,-0.257,-0.464,-8.510,Utah Jazz,Pace and space,Run them off the line
+2024,1610612763,1.768,-0.368,-0.519,0.085,0.412,-0.792,jenkins-taylor,MEM,MEM,0.194,0.909,0.069,4.790,Memphis Grizzlies,Pace and space,Aggressive wall
+2024,1610612764,0.876,0.412,-0.249,-0.032,0.046,0.333,keefe-brian,WAS,WAS,-1.054,0.687,-1.931,-12.140,Washington Wizards,Pace and space,Gamble and pressure
+2024,1610612765,0.186,-0.625,0.765,-0.486,0.112,-0.893,bickerstaff-b-j,DET,DET,0.527,1.353,0.802,1.730,Detroit Pistons,Isolation / pick-and-roll,Aggressive wall
+2024,1610612766,-0.736,0.243,-0.384,-0.080,1.557,-0.547,lee-charles,CHA,CHO,-0.638,0.020,-0.198,-9.100,Charlotte Hornets,Grind it out,Aggressive wall

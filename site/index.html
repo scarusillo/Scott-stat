@@ -204,6 +204,7 @@ fetch("data.json").then(r => r.json()).then(d => { D = d; D.byId = new Map(D.pla
   D.cById = new Map(D.classic.map(p => [p.id, p])); route(); })
   .catch(() => { $("#app").innerHTML = `<p class="note">The data file didn't load. Reload the page to try again.</p>`; });
 addEventListener("hashchange", route);
+document.addEventListener("click", e => { const a = e.target.closest?.("[data-sf]"); if (!a) return; const [sd, fm] = a.dataset.sf.split("|"); state.sside = sd; state.sfam = fm; state.sq = ""; save(); });
 
 function route() {
   let h = location.hash.slice(1) || "home";
@@ -218,7 +219,7 @@ function route() {
   scrollTo(0, 0);
   if (h.startsWith("player-")) return playerView(h.slice(7));
   if (h.startsWith("legend-")) return classicView(h.slice(7));
-  ({ home, about, why, leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup }[view] || home)();
+  ({ home, about, why, leaders, study, legacy, guide, compare, careers, coachlab, progression, coaches, scenarios, finder, method, launch, synergy, lineup, schemes: schemeView }[view] || home)();
 }
 
 /* ---------- leaderboard ---------- */
@@ -265,7 +266,7 @@ function leaders() {
       <td class="num">${f(p.war, 0, false)}</td></tr>`).join("")}
     </tbody></table></div>
     <p class="note">${plus ? `Scott Stat = all-game impact + ${(D.meta.clutch_weight * 100).toFixed(0)}% of the clutch rise (clutch possessions are ${(D.meta.clutch_possession_share * 100).toFixed(0)}% of possessions but ${(D.meta.clutch_weight * 100).toFixed(0)}% of what decides games) + the playoff rise weighted by the player's share of playoff possessions. Production = what his own box score explains. Lift = the rest: teammates playing better and the team defending better while he's on the floor. ± is one standard error. "Late career" marks players whose careers began before 1996-97: only their later seasons are measured here, so use the Classic tier for their full careers.`
-      : `<b>Peak wins per season</b> (the default ranking): wins added above a replacement player, averaged over his best five straight seasons, era-neutral: his per-possession level, at a standard 100 possessions a game over 82 games, with his minutes measured against his own era's heavy-minute norm (stars averaged about 44 minutes in the 1960s and about 35 today) on a 38-minute standard. A workhorse still outranks an equally efficient part-timer, and playing more than his era's stars still counts, but a fast pace or a 44-minute era does not: both are traits of the era, not the player. The in-era version is its own ranking. <b>Scoring load</b>: points per 100 team possessions he scored above an average player in his minutes, league- and pace-relative (best five straight seasons), with scoring titles. Three more ways to rank, three questions. <b>Impact peak</b>: how much better his team was with him on the floor (best five straight seasons, points per 100 possessions). It splits into two parts shown side by side: <b>Individual</b>, what his own stats were worth, era-adjusted, and <b>Team credit</b>, his share of how much his team did better or worse than its players' stats predict (from team results and game-by-game results with and without him). <b>Era dominance</b>: how far above his own league he was, in standard deviations, which is the fairest way to compare a 10-team league with a 30-team one. At the very top, gaps under about half a point of impact are within the margin of error.`}</p>
+      : `<b>Peak wins per season</b> (the default ranking): wins added above a replacement player, averaged over his best five-season stretch (a short or missed season counts as a low year), era-neutral: his per-possession level, at a standard 100 possessions a game over 82 games, with his minutes measured against his own era's heavy-minute norm (stars averaged about 44 minutes in the 1960s and about 35 today) on a 38-minute standard. A workhorse still outranks an equally efficient part-timer, and playing more than his era's stars still counts, but a fast pace or a 44-minute era does not: both are traits of the era, not the player. The in-era version is its own ranking. <b>Scoring load</b>: points per 100 team possessions he scored above an average player in his minutes, league- and pace-relative (best five seasons), with scoring titles. Three more ways to rank, three questions. <b>Impact peak</b>: how much better his team was with him on the floor (best five seasons, points per 100 possessions). It splits into two parts shown side by side: <b>Individual</b>, what his own stats were worth, era-adjusted, and <b>Team credit</b>, his share of how much his team did better or worse than its players' stats predict (from team results and game-by-game results with and without him). <b>Era dominance</b>: how far above his own league he was, in standard deviations, which is the fairest way to compare a 10-team league with a 30-team one. At the very top, gaps under about half a point of impact are within the margin of error.`}</p>
   </div>`;
   $("#t-plus").onclick = () => { state.tier = "plus"; save(); leaders(); };
   $("#t-classic").onclick = () => { state.tier = "classic"; save(); leaders(); };
@@ -282,7 +283,7 @@ const SECTIONS = {
   home: [["home", "Overview"]],
   players: [["leaders", "Rankings"], ["compare", "Head to head"], ["careers", "Careers"], ["progression", "Risers & fallers"], ["finder", "GM finder"]],
   goat: [["legacy", "All-time ranking"]],
-  coaches: [["coaches", "All-time coaches"], ["coachlab", "Coach lab"], ["scenarios", "Fit finder"]],
+  coaches: [["coaches", "All-time coaches"], ["schemes", "Schemes"], ["coachlab", "Coach lab"], ["scenarios", "Fit finder"]],
   teammates: [["synergy", "Synergy"], ["lineup", "Lineup lab"]],
   about: [["why", "Why it's better"], ["about", "About"], ["guide", "How to read it"], ["study", "The study"], ["method", "Method & tests"]],
 };
@@ -347,7 +348,7 @@ function home() {
         ${duo ? post("#synergy", "Best duo", `${duo.team} · ${duo.y0}-${String(duo.y1 + 1).slice(2)}`, `${esc(duo.a)} + ${esc(duo.b)}`, f(duo.tot, 0), "extra points", `Better together than their own ratings say, by ${f(duo.syn, 2)} per 100 possessions over ${Math.round(duo.poss).toLocaleString()} possessions on the floor together.`, "Explore synergy", `<span class="duo">${av(duo.a)}${av(duo.b)}</span>`) : ""}
         ${gem ? post("#synergy", "Hidden gem", `${gem.team} · ${gem.y0}-${String(gem.y1 + 1).slice(2)}`, `LeBron James + Mo Williams`, f(gem.syn, 1), "per 100", `A star and a role player who were better together than either one's numbers suggest, over ${Math.round(gem.poss).toLocaleString()} possessions. LeBron and Wade: about zero.`, "Find more like it", `<span class="duo">${av("LeBron James")}${av("Mo Williams")}</span>`) : ""}
         ${coach ? post("#coachlab", "Player development", "Coach lab", `${esc(coach.c)} grows players`, f(coach.v, 2), "per 100", `How much better his ${coach.n} players played under him than their own career trends predict: the most of any coach with 15 or more.`, "Open the coach lab", av(coach.c)) : ""}
-        ${peak ? post(`#legend-${peak.id}`, "Highest peak", `Best five seasons · ${esc(peak.best5_years || "")}`, `${esc(peak.name)}`, f(peak.best5, 1), "per 100", `The most points per 100 possessions added over an average player across five straight seasons, of anyone with six or more seasons.`, "See his career", av(peak.name)) : ""}
+        ${peak ? post(`#legend-${peak.id}`, "Highest peak", `Best five seasons · ${esc(peak.best5_years || "")}`, `${esc(peak.name)}`, f(peak.best5, 1), "per 100", `The most points per 100 possessions added over an average player across his best five seasons, of anyone with six or more seasons.`, "See his career", av(peak.name)) : ""}
         ${winner ? post(`#legend-${winner.id}`, "Winning beyond the box score", "Every team-season since 1951-52", `${esc(winner.name)}`, f(winner.winning, 1), "per 100", `His teams won more than their box scores predicted, on every roster he played for. Nobody with eight or more seasons did it by more.`, "See his career", av(winner.name)) : ""}
       </div></section>
 
@@ -771,7 +772,7 @@ function study() {
     <p class="lede">One measure of how much a player changes his team, applied to every player, coach and season on record, then tested against seasons it hadn't seen. What held up, what didn't, and what a front office can use.</p></div>
 
   <div class="panel"><h3>1 · The greatest peaks are a tier, not an order</h3>
-    <p class="note">Best five straight seasons, points per 100 possessions over an average player. Grey = his own play. Orange = his share of how far his team beat its box scores. The black line is the margin of error (±${se}). Everyone whose bar reaches the shaded band is statistically tied with the leader: ${t1.map(p => esc(p.name)).join(", ")}.</p>
+    <p class="note">Best five seasons, points per 100 possessions over an average player. Grey = his own play. Orange = his share of how far his team beat its box scores. The black line is the margin of error (±${se}). Everyone whose bar reaches the shaded band is statistically tied with the leader: ${t1.map(p => esc(p.name)).join(", ")}.</p>
     ${tierChart(tiers, se)}
     <p class="note">Add championships and career length and the debate narrows to two: Michael Jordan and LeBron James hold the top two places under every weighting on the Legacy tab.</p></div>
 
@@ -840,10 +841,10 @@ function legacy() {
     <p class="lede">Who was best on the court, and who won the most? Every default ingredient measures a player at his best, per season, so a long career earns nothing by itself; career totals are an optional dial. Scoring &amp; creation and winning count half by default: both overlap with impact, which already includes what his scoring did for his team and part of his team's results.</p></div>
     <div class="cols2">
       <div class="panel prose"><h3>The ingredients</h3><ul>
-        <li><b>Peak:</b> wins added per season over his best five straight seasons: impact per possession x his minutes relative to his era's norm, at a standard 100 possessions a game over 82 games (era-neutral: a fast pace or a 44-minute era doesn't count).</li>
+        <li><b>Peak:</b> wins added per season over his best five-season stretch (missed seasons count as low years): impact per possession x his minutes relative to his era's norm, at a standard 100 possessions a game over 82 games (era-neutral: a fast pace or a 44-minute era doesn't count).</li>
         <li><b>Career value (off by default):</b> total wins added above a replacement player, every season. This is longevity: add it if you think lasting should count.</li>
         <li><b>Championships:</b> every title split among that team's players by how much each raised the team's title odds in those playoffs (his playoff rating, not his regular season), then adjusted for league size (a title among 30 teams counts more than one among 8). The best player on a champion typically gets 60-75% of that title; a second option about 20-25%.</li>
-        <li><b>Scoring &amp; creation:</b> how much offense he carried: points, plus 1.1 points per assist (a basket worth about 2.2, half credited to the passer), plus half a possession's worth per offensive rebound (a new possession, same split), per 100 team possessions above an average player in his minutes, best five straight seasons, relative to his league and era. Impact already counts what this did for winning; this ingredient values the load itself.</li>
+        <li><b>Scoring &amp; creation:</b> how much offense he carried: points, plus 1.1 points per assist (a basket worth about 2.2, half credited to the passer), plus half a possession's worth per offensive rebound (a new possession, same split), per 100 team possessions above an average player in his minutes, best five seasons, relative to his league and era. Impact already counts what this did for winning; this ingredient values the load itself.</li>
         <li><b>Winning:</b> did his teams win more than their box scores said they should? Fitted jointly over every NBA team-season since 1951-52, so it is identified by players changing teams: a player whose teams outperform on every roster he joins gets the credit; one whose teams fall short everywhere gets the blame. Counted as wins per season beyond the box score, in his prime (his ten best seasons), with no credit for career length. This is where defense, spacing, screening and lifting (or dragging) teammates show up.</li></ul></div>
       <div class="panel stack" style="gap:14px"><h3>Weights</h3>
         ${[["peak", "Peak"], ["rings", "Championships"], ["scoring", "Scoring &amp; creation"], ["winning", "Winning"], ["career", "Longevity (career value)"]].map(([k, l]) => `<label for="w-${k}" class="wrow"><span>${l}</span><input id="w-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}"><span class="num">${W[k]}</span></label>`).join("")}
@@ -945,6 +946,7 @@ function coachlab() {
     <div class="tiles">${(L => L ? `<div class="tile a"><small>Coaching impact, all eras</small><b class="${cls(L.impact)}">${f(L.impact)}</b><small>±${(L.se ?? 0).toFixed(1)} per 100 · ${f(L.added, 0)} wins added</small></div>
       <div class="tile"><small>Record</small><b>${(L.pct * 100).toFixed(0)}%</b><small>${L.w}-${L.l} · playoffs ${L.pw}-${L.pl}${L.titles ? " · " + L.titles + " title" + (L.titles > 1 ? "s" : "") : ""}</small></div>` : "")(D.clegacy.find(x => x.id === c.id))}
       <div class="tile o"><small>Offense (play-by-play era)</small><b class="${cls(c.off)}">${f(c.off)}</b></div><div class="tile d"><small>Defense (play-by-play era)</small><b class="${cls(c.def)}">${f(c.def)}</b></div>
+      ${(F => F ? `<div class="tile"><small>Scheme</small><b style="font-size:18px;line-height:1.2"><a href="#schemes" data-sf="O|${esc(F[2])}">${esc(F[2])}</a></b><small>offense, ${Math.round(F[3] * 100)}% of seasons · defense: <a href="#schemes" data-sf="D|${esc(F[4])}">${esc(F[4])}</a> (${Math.round(F[5] * 100)}%)</small></div>` : "")(D.sfit.coaches.find(x => x[0] === c.id))}
       <div class="tile"><small>Rotation IQ</small><b class="${cls(c.rotation)}">${f(c.rotation)}</b><small>wins per 82 games</small></div>
       <div class="tile"><small>Closing IQ</small><b class="${cls(c.closing)}">${f(c.closing, 2)}</b><small>extra talent on the floor late</small></div>
       <div class="tile"><small>Players' own production</small><b class="${cls(c.ind)}">${f(c.ind, 2)}</b><small>vs their own norm, ${c.dev_n} player-seasons</small></div>
@@ -1258,6 +1260,68 @@ function scenarios() {
   bindRows();
 }
 
+/* ---------- schemes: offensive and defensive systems, and who thrives in them ---------- */
+function schemeView() {
+  const S = D.sfit, side = state.sside || "O", fams = side === "O" ? S.offense : S.defense;
+  const fam = fams.some(x => x.name === state.sfam) ? state.sfam : fams[0].name;
+  const F = fams.find(x => x.name === fam);
+  const cells = S.cells[side], types = [...new Set(cells.map(c => c[0]))].sort(), cols = fams.map(x => x.name);
+  const cell = (t, s) => cells.find(c => c[0] === t && c[1] === s);
+  const color = v => v == null ? "transparent" : `color-mix(in srgb, var(${v > 0 ? "--good" : "--bad"}) ${Math.min(60, Math.abs(v) * 260)}%, transparent)`;
+  const TR = { pace: "Pace", three: "3PA rate", rim: "Rim attempts", astd: "Assisted makes", opp_three: "Opp. 3PA", opp_rim: "Opp. rim attempts", opp_tov: "Turnovers forced", opp_ftr: "Fouls (opp. FT rate)", drb: "Defensive rebounding" };
+  const q = (state.sq || "").toLowerCase();
+  const pl = S.players.filter(p => p[0] === side && (q ? p[1].toLowerCase().includes(q) : p[2] === fam));
+  const top = q ? pl.sort((a, b) => b[3] - a[3]) : pl.sort((a, b) => b[3] - a[3]).slice(0, 12);
+  const worst = q ? [] : pl.slice().sort((a, b) => a[3] - b[3]).slice(0, 6);
+  const coachesIn = S.coaches.filter(c => (side === "O" ? c[2] : c[4]) === fam && (side === "O" ? c[3] : c[5]) >= 0.5 && c[6] >= 4)
+    .sort((a, b) => b[6] - a[6]).slice(0, 10);
+  const R = S.cell_rel[side];
+  const prow = p => `<tr><td class="l">${who(p[1])}</td>${q ? `<td class="l">${esc(p[2])}</td>` : ""}<td class="num ${cls(p[3])}"><b>${f(p[3], 2)}</b><span class="pm">±${p[5].toFixed(1)}</span></td>
+    <td class="l">${esc(p[8])} <span class="pm">${esc(p[7])}</span></td><td class="l"><span class="chip">${esc(p[9] || "")}</span></td></tr>`;
+  $("#app").innerHTML = `<div class="stack">
+    <div><div class="eyebrow">Coaching systems · 1996-97 to 2024-25 · ${S.n.toLocaleString()} player-seasons</div><h1>Who thrives in which scheme</h1>
+      <p class="lede">Every team-season is sorted into an offensive and a defensive family by what it actually did, measured against its own season: pace, threes, rim attempts and ball movement on offense; the shots it allowed, turnovers forced, fouls and rebounding on defense. Then the question a front office asks: which players, and which kinds of players, play above their own norm in each system?</p></div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Side"><button id="ss-o" class="${side === "O" ? "on" : ""}">Offense</button><button id="ss-d" class="${side === "D" ? "on" : ""}">Defense</button></div>
+      <label for="sfam">Scheme<select id="sfam">${fams.map(x => `<option ${x.name === fam ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+      <label for="sq">Find a player<input id="sq" type="search" placeholder="Name" value="${esc(state.sq || "")}"></label>
+    </div>
+    <div class="feed" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))">${fams.map(x => `<button class="panel stack sfam ${x.name === fam ? "on" : ""}" data-fam="${esc(x.name)}" style="gap:6px;text-align:left;cursor:pointer;font:inherit;color:inherit;${x.name === fam ? "outline:2px solid var(--accent)" : ""}">
+      <h3 style="margin:0">${esc(x.name)}</h3><span class="note" style="margin:0">${esc(x.desc)}</span>
+      <span class="chips">${Object.entries(x.centre).filter(([, v]) => Math.abs(v) >= 0.4).map(([k, v]) => `<span class="chip">${v > 0 ? "↑" : "↓"} ${TR[k]}</span>`).join("")}</span>
+      <span class="note" style="margin:0">${x.n} team-seasons · e.g. ${x.examples.slice(0, 3).map(esc).join(", ")}</span></button>`).join("")}</div>
+    <div class="split">
+      <div class="panel tablewrap"><h3>${q ? `“${esc(state.sq)}” in every ${side === "O" ? "offensive" : "defensive"} scheme` : `Thrived in ${esc(fam)}`}</h3>
+        <table><thead><tr><th class="l">Player</th>${q ? `<th class="l">Scheme</th>` : ""}<th>Fit</th><th class="l">Teams</th><th class="l">Type</th></tr></thead><tbody>
+        ${top.length ? top.map(prow).join("") : `<tr><td class="l">No player with enough minutes both inside and outside a scheme.</td></tr>`}</tbody></table>
+        ${worst.length ? `<h3 style="margin-top:18px">Struggled in ${esc(fam)}</h3><div style="overflow-x:auto"><table><tbody>${worst.map(prow).join("")}</tbody></table></div>` : ""}
+        <p class="note">Fit = points per 100 possessions of ${side === "O" ? "offense" : "defense"} he produced in seasons his team ran this scheme, minus his level in seasons it didn't, after the normal aging curve. Shrunk toward 0, by an amount chosen to best predict seasons left out. Players with 5,000+ possessions in the scheme and 3,000+ outside it.</p></div>
+      <div class="panel stack" style="align-self:start;gap:12px"><h3>Coaches who ran it</h3>
+        ${coachesIn.length ? `<div class="chips">${coachesIn.map(c => `<span class="chip">${esc(c[1])} · ${c[6]} seasons</span>`).join("")}</div>` : `<p class="note">No coach ran it in at least half of four or more seasons.</p>`}
+        <h3>Share of the league</h3>
+        <div class="chips">${Object.entries(F.share_by_era).map(([e, v]) => `<span class="chip">${e}: ${Math.round(v * 100)}% of teams</span>`).join("")}</div>
+        <p class="note">Average team strength in this family: ${f(F.srs, 1)} points per game (SRS). A family isn't good or bad by itself; the fits are measured against each family's own average.</p></div>
+    </div>
+    <div class="panel tablewrap"><h3>Player type × ${side === "O" ? "offensive" : "defensive"} scheme</h3>
+      <p class="note">Points per 100 possessions a player type ${side === "O" ? "scores" : "prevents"} in this family compared with the same type in other families. Green = thrives, red = struggles. Odd and even seasons agree at r ${R.r.toFixed(2)} across ${R.cells} well-sampled cells${side === "D" ? ": weak, so read the defensive grid as a hint, not a finding" : ""}.</p>
+      <table><thead><tr><th class="l">Player type</th>${cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>
+      ${types.map(t => `<tr><td class="l"><b>${esc(t)}</b></td>${cols.map(c => { const x = cell(t, c); return `<td class="num" style="background:${color(x?.[2])}" data-tip="${esc(x ? `${t} in ${c}: ${f(x[2], 2)} per 100 over ${x[3].toLocaleString()} possessions` : "")}">${x ? f(x[2], 2) : "–"}</td>`; }).join("")}</tr>`).join("")}
+      </tbody></table></div>
+    <div class="grid2">
+      <div class="panel prose"><h3>How solid is this?</h3><ul>
+        <li><b>The families are real but not crisp.</b> Re-running the grouping from 20 random starts puts ${Math.round(S.stability.offense * 100)}% of offenses and ${Math.round(S.stability.defense * 100)}% of defenses in the same family. Teams sit on a spectrum; a family is its centre of gravity.</li>
+        <li><b>Player fit is a small, real signal.</b> Predicting a season a player wasn't measured on, his scheme fit cuts the error by ${S.test.O.cut}% on offense (r ${S.test.O.r}, ${S.test.O.n.toLocaleString()} seasons) and ${S.test.D.cut}% on defense (r ${S.test.D.r}). That's enough to break a tie between two free agents, not enough to override a player's overall rating.</li>
+        <li><b>It's a measure of association.</b> A player can land in a scheme because a coach built it around him, and a team's scheme changes when its players do.</li></ul></div>
+      <div class="panel prose"><h3>Man-to-man vs zone: what we can't see yet</h3>
+        <p>Public play-by-play records who shot, from where, and who was on the floor; it doesn't record the coverage. Man vs zone, drop vs switch on the pick-and-roll, and play types (isolation, post-up, handoffs) need tracking or charting data: NBA.com's play-type and defensive-matchup tables (2015-16 on), or Synergy. The defensive families here are shot-profile fingerprints: "Run them off the line" looks like a switching, closeout defense; "Aggressive wall" looks like a team that packs the paint and jumps passing lanes. With matchup data, the same fit test can rank every player in man and in zone.</p></div>
+    </div></div>`;
+  $("#ss-o").onclick = () => { state.sside = "O"; save(); schemeView(); };
+  $("#ss-d").onclick = () => { state.sside = "D"; save(); schemeView(); };
+  $("#sfam").onchange = e => { state.sfam = e.target.value; state.sq = ""; save(); schemeView(); };
+  document.querySelectorAll(".sfam").forEach(b => b.onclick = () => { state.sfam = b.dataset.fam; state.sq = ""; save(); schemeView(); });
+  $("#sq").oninput = e => { state.sq = e.target.value; const pos = e.target.selectionStart; schemeView(); const i = $("#sq"); i.focus(); i.setSelectionRange(pos, pos); };
+}
+
 /* ---------- method ---------- */
 function method() {
   const v = D.validation || {}; const cl = v.classic || {};
@@ -1281,7 +1345,7 @@ function method() {
     <li><b>No playoffs in the all-era tier.</b> Added as its own number. Short playoff runs are pulled toward the player's own regular-season level; playoff rise repeats across a career (r 0.2 to 0.4).</li>
     <li><b>No availability.</b> Added peak wins per season, where missed games count.</li>
     <li><b>No contract value.</b> Added wins per dollar for 2009-25 on the GM finder.</li>
-    <li><b>Legacy weights are a choice.</b> Every player now shows his rank range across 243 weightings.</li></ul>
+    <li><b>Legacy weights are a choice.</b> Every player now shows his rank range across 81 weightings.</li></ul>
     <p>Checks that now pass every run: all 75 titles fully credited, league-average rating at zero each season, league wins added matching games played, and player ratings summing to team results (r 0.98).</p></div>
   <div class="panel prose"><h3>What it can't do yet</h3><ul><li>Prime Jordan, Magic and Bird are Classic only. A with-or-without-you signal from game logs would sharpen pre-1996 defense.</li><li>"Coach" still includes the front office and the team's system.</li><li>Single seasons are noisy. Read the ± and the eras.</li></ul></div></div>`;
 }

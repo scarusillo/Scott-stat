@@ -54,7 +54,8 @@ def runs(df, col, n):
     best, at = np.nan, None
     for i in range(len(df) - n + 1):
         w = df.iloc[i:i + n]
-        if w.season.iat[-1] - w.season.iat[0] != n - 1:
+        # n PLAYED seasons in a row of his career: a season lost entirely to injury is skipped, not a break
+        if w.season.iat[-1] - w.season.iat[0] > 2 * (n - 1):
             continue
         v = np.average(w[col], weights=w.poss)
         if np.isnan(best) or v > best:
@@ -167,29 +168,35 @@ def classic_table():
     a["z"] = (a.net - a.season.map(q.groupby("season").net.mean())) / a.season.map(q.groupby("season").net.std())
     a["rank_in_season"] = q.groupby("season").net.rank(ascending=False).reindex(a.index)
     rows = []
+    # peaks use EVERY season, short ones included (weighted by possessions, and in wins an injured year simply
+    # counts as few wins): requiring 1,000+ possessions in each of five straight seasons erased the peak of any
+    # player with one short season per five-year stretch (Derrick Rose, Bill Walton) and dropped him from Legacy
+    allg = {k: g for k, g in a.groupby("player_id")}
     for pid, x in a[a.poss >= MIN_SEASON_POSS].groupby("player_id"):
         w = x.poss
-        b3, at3 = runs(x, "net", 3)
-        b5, at5 = runs(x, "net", 5)
+        xa = allg[pid]
+        b3, at3 = runs(xa, "net", 3)
+        b5, at5 = runs(xa, "net", 5)
         top = x.loc[x.net.idxmax()]
         # the impact peak window, split: what his own stats explain vs credit from team results
-        xs = x.sort_values("season")
+        xs = xa.sort_values("season")
         win = None
         for i in range(len(xs) - 4):
             w5 = xs.iloc[i:i + 5]
-            if w5.season.iat[-1] - w5.season.iat[0] == 4:
+            if w5.season.iat[-1] - w5.season.iat[0] <= 8:
                 v = np.average(w5.net, weights=w5.poss)
                 if win is None or v > win[0]:
                     win = (v, np.average(w5.production, weights=w5.poss))
-        bp5, bp5y = runs(x.assign(net=x.production), "net", 5)
-        bpo5, bpo5y = runs(x.assign(net=x.net_with_playoffs, poss=x.poss_total), "net", 5)
-        xw = x.sort_values("season")
-        era5 = [xw.WAR82.iloc[i:i + 5].sum() / 5 for i in range(len(xw) - 4) if xw.season.iat[i + 4] - xw.season.iat[i] == 4]
-        wins5 = [(xw.WAR_neutral.iloc[i:i + 5].sum() / 5, f"{xw.season.iat[i]}-{(xw.season.iat[i + 4] + 1) % 100:02d}")
-                 for i in range(len(xw) - 4) if xw.season.iat[i + 4] - xw.season.iat[i] == 4]
+        bp5, bp5y = runs(xa.assign(net=xa.production), "net", 5)
+        bpo5, bpo5y = runs(xa.assign(net=xa.net_with_playoffs, poss=xa.poss_total), "net", 5)
+        # wins over five CALENDAR seasons: a short season counts its few wins, a season missed entirely counts 0
+        xw = xa.groupby("season")[["WAR82", "WAR_neutral"]].sum()
+        span = range(xw.index.min(), max(xw.index.max() - 4, xw.index.min()) + 1)
+        era5 = [xw.WAR82.reindex(range(y, y + 5), fill_value=0).sum() / 5 for y in span]
+        wins5 = [(xw.WAR_neutral.reindex(range(y, y + 5), fill_value=0).sum() / 5, f"{y}-{(y + 5) % 100:02d}") for y in span]
         war5, war5y = max(wins5) if wins5 else (np.nan, None)
         xp = x[x.po_poss > 0]
-        bz5, bz5y = runs(x.assign(net=x.z), "net", 5)
+        bz5, bz5y = runs(xa.assign(net=xa.z), "net", 5)
         rows.append({"best5_with_playoffs": bpo5, "best5_with_playoffs_years": bpo5y, "peak_wins_per_season": war5, "peak_wins_years": war5y,
                      "peak_wins_in_era": max(era5) if era5 else np.nan,
                      "playoff_rise": np.average(xp.playoff_rise, weights=xp.po_poss) if len(xp) else np.nan,
