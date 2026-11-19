@@ -173,8 +173,64 @@ def main():
     out["titles_adj"] = tadj.reindex(out.index).fillna(0)
     out["playoff_wins"] = out.pw
     out = out[out.games > 0].sort_values("wins_added", ascending=False)
+    # TITLES ABOVE EXPECTATION: titles won minus the title odds his teams had going in (championships.py: odds from
+    # regular-season strength), weighted by his share of each season. A title his talent made likely earns little.
+    ch = pd.read_csv(OUT / "championships_seasons.csv").drop_duplicates(["season_start", "team"])
+    ptitle = pd.Series(ch.p_title.to_numpy(), index=pd.MultiIndex.from_arrays([ch.season_start + 1, ch.team]))
+    cs["p_title"] = pd.MultiIndex.from_arrays([cs.season, cs.team]).map(ptitle).fillna(0).to_numpy() * cs.weight
+    exp_t = cs.groupby("coach_id").p_title.sum()
+    out["titles_expected"] = exp_t.reindex(out.index).fillna(0)
+    t26 = titles[titles.t <= 2026].groupby("leaderId").t.nunique()
+    out["titles_above"] = t26.reindex(out.index).fillna(0) - out.titles_expected
+
+    # PLAYER GROWTH, every era: each player's own box-score production under this coach vs his production for every
+    # other coach, age-adjusted, possession-weighted; shrunk toward 0 by K possessions. Box production only (no team
+    # results), so it measures players playing better individually, not the team's record.
+    x = c[c.age.notna()][["season", "player_id", "age", "prod", "poss"]]
+    pr = x.merge(x.assign(season=x.season - 1), on=["season", "player_id"], suffixes=("", "_n"))
+    pr = pr[(pr.poss >= 500) & (pr.poss_n >= 500)]
+    ch_age = pr.groupby(pr.age.clip(19, 39).round()).apply(lambda g: (g.prod_n - g["prod"]).mean(), include_groups=False)
+    ages = np.arange(19, 41)
+    lev = pd.Series(np.r_[0, np.cumsum(ch_age.reindex(ages).fillna(0).to_numpy()[:-1])], index=ages)
+    c["padj"] = c["prod"] - c.age.clip(19, 40).round().map(lev).fillna(0)
+    main_coach = cs.sort_values("weight").drop_duplicates(["season", "team"], keep="last").set_index(["season", "team"]).coach_id
+    c["coach_id"] = pd.MultiIndex.from_arrays([c.season, c.team]).map(main_coach)
+    pc = c.dropna(subset=["coach_id"])
+    pc = pc.assign(wp=pc.poss.clip(upper=6000))
+    tot = pc.assign(s_=pc.wp * pc.padj).groupby("player_id")[["wp", "s_"]].sum()
+    under = pc.assign(s_=pc.wp * pc.padj).groupby(["coach_id", "player_id"])[["wp", "s_"]].sum()
+    under = under.join(tot, on="player_id", rsuffix="_all")
+    under["away_w"] = under.wp_all - under.wp
+    under = under[under.away_w >= 1500]                       # needs a real record elsewhere
+    under["growth"] = under.s_ / under.wp - (under.s__all - under.s_) / under.away_w
+    K_G = 6000.0
+    gq = under.reset_index().groupby("coach_id").apply(lambda g: pd.Series({
+        "growth": float(np.sum(g.wp * g.growth) / (g.wp.sum() + K_G)), "growth_players": int(len(g)), "growth_poss": float(g.wp.sum())}),
+        include_groups=False)
+    out = out.join(gq)
+    # reliability of player growth as a coach trait: odd vs even seasons
+    pc2 = pc.assign(half=pc.season % 2)
+    halves = []
+    for h_ in (0, 1):
+        u = pc2[pc2.half == h_].assign(s_=lambda d: d.wp * d.padj).groupby(["coach_id", "player_id"])[["wp", "s_"]].sum().join(tot, on="player_id", rsuffix="_all")
+        u["away_w"] = u.wp_all - u.wp
+        u = u[u.away_w >= 1500]
+        u["growth"] = u.s_ / u.wp - (u.s__all - u.s_) / u.away_w
+        halves.append(u.reset_index().groupby("coach_id").apply(lambda g: np.sum(g.wp * g.growth) / (g.wp.sum() + K_G), include_groups=False))
+    hh = pd.concat(halves, axis=1).dropna()
+    growth_rel = float(np.corrcoef(hh[0], hh[1])[0, 1])
+    # impact reliability the same way (team-level): refit on odd and even seasons
+    imp_h = []
+    for h_ in (0, 1):
+        keep = (tm.s.to_numpy() % 2) == h_
+        bh, _ = fit(X[keep], y[keep], w[keep], pen)
+        imp_h.append(pd.Series(bh[Xp.shape[1]:], index=coaches))
+    big = out[out.seasons >= 8].index
+    ih = pd.concat(imp_h, axis=1).reindex(big).dropna()
+    impact_rel = float(np.corrcoef(ih[0], ih[1])[0, 1])
+    print("reliability (odd vs even seasons, coaches with 8+ seasons): impact", round(impact_rel, 2), "player growth", round(growth_rel, 2))
     out.to_csv(OUT / "coach_legacy.csv", float_format="%.3f")
-    meta = {"cv": grid, "chosen": {"lambda_player": lp, "lambda_coach": lc}, "best_without_coaches": grid[best_nc],
+    meta = {"reliability_impact": impact_rel, "reliability_growth": growth_rel, "cv": grid, "chosen": {"lambda_player": lp, "lambda_coach": lc}, "best_without_coaches": grid[best_nc],
             "best_with_coaches": grid[best], "n_team_seasons": int(len(y)), "n_coaches": int(len(coaches))}
     (OUT / "coach_legacy_meta.json").write_text(json.dumps(meta, indent=1))
     pd.set_option("display.width", 220)

@@ -640,48 +640,50 @@ function compare() {
 
 /* ---------- coaches ---------- */
 function coaches() {
-  const W = { impact: 1, winning: 1, playoffs: 0.5, titles: 1, ...(state.cw || {}) };
+  const W = { impact: 1, growth: 1, beat: 0.5, winning: 0, titles: 0, ...(state.cw2 || {}) };
   const minS = state.cmin || 5;
   const pool = D.clegacy.filter(c => c.seasons >= minS);
-  const ref = k => { const t = pool.map(c => Math.max(0, c[k] ?? 0)).sort((a, b) => b - a).slice(0, 10); return t.reduce((a, b) => a + b, 0) / t.length; };
-  const R = { added: ref("added"), above: ref("above"), pw: ref("pw"), tadj: ref("tadj") };
-  const z = c => [100 * Math.max(0, c.added ?? 0) / R.added, 100 * Math.max(0, c.above) / R.above, 100 * c.pw / R.pw, 100 * c.tadj / R.tadj];
-  const tot = W.impact + W.winning + W.playoffs + W.titles || 1;
-  const scoreW = (c, w) => { const v = z(c); return (w[0] * v[0] + w[1] * v[1] + w[2] * v[2] + w[3] * v[3]) / (w[0] + w[1] + w[2] + w[3] || 1); };
-  const base = [W.impact, W.winning, W.playoffs, W.titles];
+  const K = ["added", "growth", "tabove", "above", "tadj"], KW = ["impact", "growth", "beat", "winning", "titles"];
+  const ref = {}; K.forEach(k => { const t = pool.map(c => Math.max(0, c[k] ?? 0)).sort((a, b) => b - a).slice(0, 10); ref[k] = t.reduce((a, b) => a + b, 0) / t.length || 1; });
+  const z = c => K.map(k => 100 * Math.max(0, c[k] ?? 0) / ref[k]);
+  const scoreW = (c, w) => { const v = z(c); const t = w.reduce((a, b) => a + b, 0) || 1; return v.reduce((s, x, i) => s + w[i] * x, 0) / t; };
+  const base = KW.map(k => W[k]);
   const rows = pool.map(c => ({ c, s: scoreW(c, base) })).sort((a, b) => b.s - a.s);
   const range = new Map(pool.map(c => [c.id, [999, 0]]));
-  for (const a of [0.5, 1, 2]) for (const b of [0.5, 1, 2]) for (const d of [0.5, 1, 2]) for (const e of [0.5, 1, 2]) {
-    const w = [a * W.impact, b * W.winning, d * W.playoffs, e * W.titles];
+  for (const a of [0.5, 1, 2]) for (const b of [0.5, 1, 2]) for (const d of [0.5, 1, 2]) {
+    const w = [a * W.impact, b * W.growth, d * W.beat, W.winning, W.titles];
     pool.map(c => [c.id, scoreW(c, w)]).sort((x, y) => y[1] - x[1]).forEach(([id], i) => { const r = range.get(id); r[0] = Math.min(r[0], i + 1); r[1] = Math.max(r[1], i + 1); });
   }
-  const presets = [["Default", { impact: 1, winning: 1, playoffs: 0.5, titles: 1 }], ["Coaching impact only", { impact: 1, winning: 0, playoffs: 0, titles: 0 }],
-    ["Titles count double", { impact: 1, winning: 1, playoffs: 0.5, titles: 2 }], ["No titles", { impact: 1, winning: 1, playoffs: 0.5, titles: 0 }]];
+  const presets = [["Default: who elevates", { impact: 1, growth: 1, beat: 0.5, winning: 0, titles: 0 }], ["Player growth only", { impact: 0, growth: 1, beat: 0, winning: 0, titles: 0 }],
+    ["Team impact only", { impact: 1, growth: 0, beat: 0, winning: 0, titles: 0 }], ["Add raw wins and titles", { impact: 1, growth: 1, beat: 0.5, winning: 1, titles: 1 }]];
   const m = D.cl_meta;
+  const gems = pool.filter(c => c.titles === 0).map(c => ({ c, s: scoreW(c, base) })).sort((a, b) => b.s - a.s).slice(0, 3).map(r => r.c.name);
   $("#app").innerHTML = `<div class="stack">
-    <div><div class="eyebrow">Coaches · every head coach since 1949-50</div><h1>The best coaches of all time</h1>
-      <p class="lede">A great coach makes his team win more than its players should, and wins when it counts. Four ingredients, each scored against the all-time top-10 level; you choose the weights.</p></div>
+    <div><div class="eyebrow">Coaches · every head coach since 1949-50</div><h1>Who makes players better</h1>
+      <p class="lede">Titles mostly measure the talent a coach was handed. This ranking measures what he added to it: did his teams beat their talent, did his players play better for him than anywhere else, and did he win more than his roster made likely? Best without a title: ${gems.map(esc).join(", ")}.</p></div>
     <div class="cols2">
-      <div class="panel prose"><h3>The four ingredients</h3><ul>
-        <li><b>Coaching impact:</b> how much better his teams were than their players' box scores and their own winning habits predict, fitted over every team-season since 1951-52 with players and coaches together, so it's learned from the players who played for him and elsewhere. Counted as wins added over his career.</li>
-        <li><b>Winning:</b> regular-season wins above .500.</li>
-        <li><b>Playoffs:</b> playoff wins.</li>
-        <li><b>Championships:</b> titles, adjusted for league size (one among 30 teams counts more than one among 8).</li></ul>
-        <p class="note">Coaching is real: adding coaches to the model raises how much of each team's results it explains on held-out seasons from ${m.best_without_coaches.toFixed(3)} to ${m.best_with_coaches.toFixed(3)}. A coach who had one superstar for his whole career (Popovich with Duncan, Kerr with Curry) shares that credit with him, which is why their impact carries wide error bars.</p></div>
+      <div class="panel prose"><h3>The ingredients</h3><ul>
+        <li><b>Team impact:</b> how much better his teams were than their players' box scores and their own winning habits predict, fitted over every team-season since 1951-52 with players and coaches together. Counted as wins added over his career.</li>
+        <li><b>Player growth:</b> his players' own box-score production for him against their production for every other coach, age-adjusted. The players who grew, not the team's record.</li>
+        <li><b>Titles beyond the odds:</b> championships won minus the title odds his teams had going in. A title his roster made likely earns little.</li>
+        <li><b>Raw wins and raw titles</b> (off by default): available if you want results to count on their own.</li></ul>
+        <p class="note">Both main measures are stable traits, not luck: on odd and even seasons separately, coaches' team impact agrees at r ${m.reliability_impact.toFixed(2)} and player growth at r ${m.reliability_growth.toFixed(2)}. Adding coaches to the team model raises how much of each team's results it explains on held-out seasons from ${m.best_without_coaches.toFixed(3)} to ${m.best_with_coaches.toFixed(3)}.</p></div>
       <div class="panel stack" style="gap:14px"><h3>Weights</h3>
-        ${[["impact", "Coaching impact"], ["winning", "Winning"], ["playoffs", "Playoffs"], ["titles", "Championships"]].map(([k, l]) => `<label for="cw-${k}" class="wrow"><span>${l}</span><input id="cw-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}"><span class="num">${W[k]}</span></label>`).join("")}
+        ${[["impact", "Team impact"], ["growth", "Player growth"], ["beat", "Titles beyond the odds"], ["winning", "Raw wins"], ["titles", "Raw titles"]].map(([k, l]) => `<label for="cw-${k}" class="wrow"><span>${l}</span><input id="cw-${k}" type="range" min="0" max="3" step="0.5" value="${W[k]}"><span class="num">${W[k]}</span></label>`).join("")}
         <div class="row">${presets.map(([l], i) => `<button data-cpreset="${i}">${l}</button>`).join("")}</div>
-        <label for="cmin" class="row" style="justify-content:space-between"><span>At least</span><select id="cmin">${[3, 5, 8, 12].map(v => `<option value="${v}" ${v === minS ? "selected" : ""}>${v} seasons</option>`).join("")}</select></label></div>
+        <label for="cmin" class="wrow"><span>At least</span><select id="cmin">${[3, 5, 8, 12].map(v => `<option value="${v}" ${v === minS ? "selected" : ""}>${v} seasons</option>`).join("")}</select><span></span></label></div>
     </div>
-    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Coach</th><th class="l">Teams</th><th>Seasons</th><th>Score</th><th>Rank range</th><th>Win %</th><th>Coaching impact</th><th>Wins added</th><th>Playoff W-L</th><th>Titles</th></tr></thead>
+    <div class="panel tablewrap"><table><thead><tr><th></th><th class="l">Coach</th><th class="l">Teams</th><th>Seasons</th><th>Score</th><th>Rank range</th><th>Team impact</th><th>Player growth</th><th>Titles vs odds</th><th>Win %</th></tr></thead>
       <tbody>${rows.slice(0, 60).map((r, i) => { const c = r.c, rg = range.get(c.id), lab = D.coaches.some(x => x.id === c.id);
-        return `<tr ${lab ? `data-cl="${c.id}" tabindex="0"` : `style="cursor:default"`}><td class="rank num">${i + 1}</td><td class="l">${who(c.name)}</td><td class="l" style="white-space:normal;max-width:180px;font-size:12.5px;color:var(--muted)">${esc(c.teams.split("/").join(" · "))}</td>
+        return `<tr ${lab ? `data-cl="${c.id}" tabindex="0"` : `style="cursor:default"`}><td class="rank num">${i + 1}</td><td class="l">${who(c.name)}</td><td class="l" style="white-space:normal;max-width:170px;font-size:12.5px;color:var(--muted)">${esc(c.teams.split("/").join(" · "))}</td>
         <td class="num">${c.seasons.toFixed(0)}<span class="pm">${c.first}–${String(c.last).slice(2)}</span></td><td class="num"><b>${r.s.toFixed(0)}</b></td><td class="num">${rg[0] === rg[1] ? rg[0] : rg[0] + "–" + rg[1]}</td>
-        <td class="num">${(c.pct * 100).toFixed(0)}%</td><td class="num ${cls(c.impact)}">${f(c.impact)}<span class="pm">±${(c.se ?? 0).toFixed(1)}</span></td><td class="num">${f(c.added, 0)}</td>
-        <td class="num">${c.pw}-${c.pl}</td><td class="num">${c.titles || ""}</td></tr>`; }).join("")}</tbody></table></div>
-    <p class="note">Coaching impact: points per 100 possessions his teams played above what their players predict, ± one standard error (bootstrapped over seasons). Wins added: impact × his seasons, at a standard pace. Rank range: best and worst rank across 81 weightings. Click a coach from 1996-97 on to open his coach lab: which players grew under him, by position and play style.</p></div>`;
-  for (const k of ["impact", "winning", "playoffs", "titles"]) $("#cw-" + k).oninput = e => { state.cw = { ...W, [k]: +e.target.value }; save(); coaches(); $("#cw-" + k).focus(); };
-  document.querySelectorAll("[data-cpreset]").forEach(b => b.onclick = () => { state.cw = presets[+b.dataset.cpreset][1]; save(); coaches(); });
+        <td class="num ${cls(c.impact)}">${f(c.impact)}<span class="pm">±${(c.se ?? 0).toFixed(1)} · ${f(c.added, 0)} W</span></td>
+        <td class="num ${cls(c.growth)}">${f(c.growth, 2)}<span class="pm">${c.gn} players</span></td>
+        <td class="num ${cls(c.tabove)}">${c.titles}<span class="pm">vs ${(c.texp ?? 0).toFixed(1)} expected</span></td>
+        <td class="num">${(c.pct * 100).toFixed(0)}%</td></tr>`; }).join("")}</tbody></table></div>
+    <p class="note">Team impact: points per 100 possessions above what his players predict (± one standard error, bootstrapped over seasons) and the wins that adds over his career. Player growth: points per 100 possessions his players' own production rose under him, shrunk toward zero when few players had a record elsewhere. Titles vs odds: titles won against the sum of his teams' title odds. Rank range: best and worst rank across 27 weightings of the three main ingredients. Click a coach from 1996-97 on to open his coach lab.</p></div>`;
+  for (const k of KW) $("#cw-" + k).oninput = e => { state.cw2 = { ...W, [k]: +e.target.value }; save(); coaches(); $("#cw-" + k).focus(); };
+  document.querySelectorAll("[data-cpreset]").forEach(b => b.onclick = () => { state.cw2 = presets[+b.dataset.cpreset][1]; save(); coaches(); });
   $("#cmin").onchange = e => { state.cmin = +e.target.value; save(); coaches(); };
   document.querySelectorAll("tr[data-cl]").forEach(tr => { const go = () => { state.cl = tr.dataset.cl; save(); location.hash = "coachlab"; };
     tr.onclick = go; tr.onkeydown = e => { if (e.key === "Enter") go(); }; });

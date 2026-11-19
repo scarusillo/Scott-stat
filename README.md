@@ -950,6 +950,19 @@ Coach legacy (reader-weighted, each ingredient vs the all-time top-10 level): co
 Default: Phil Jackson, Popovich, Riley, Auerbach, Kerr, Spoelstra, Sloan, Daly, Larry Brown, Doc Rivers; Karl 13th,
 Fratello 30th, Skiles 33rd. Impact alone: Jackson, Fitzsimmons, Larry Brown, Daly, Adelman, Thibodeau.
 
+## Coaches: elevation, not titles
+
+Raw titles and wins mostly measure the talent a coach was handed (Jackson had Jordan, Pippen, Rodman, Shaq, Kobe).
+Default coach ranking now measures what a coach ADDED: team impact (career wins added, joint fit) 1, player growth 1,
+titles beyond the odds 0.5; raw wins and raw titles are optional dials (default 0).
+- Player growth, every era: each player's age-adjusted box production under the coach vs under every other coach
+  (needs 1,500+ possessions elsewhere), possession-weighted, shrunk by 6,000 possessions. Box only, so it is the
+  players getting better, not the record.
+- Titles beyond the odds: titles minus the sum of his teams' preseason title odds (championships.py), by share of season.
+- Reliability, odd vs even seasons (coaches with 8+ seasons): team impact r 0.64, player growth r 0.47.
+Default: Jackson, Kerr, Sloan, Fitzsimmons, Spoelstra, Riley, Daigneault, Daly, Popovich, Ramsay. Best without a title:
+Sloan, Fitzsimmons, D'Antoni. Player growth alone: Kerr, Daigneault, Sloan, D'Antoni, Doug Moe.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

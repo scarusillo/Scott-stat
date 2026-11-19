@@ -136,7 +136,9 @@ def main():
     cl_ = cl_[cl_.seasons >= 3]
     clegacy = [{"id": q.coach_id, "name": q.coach, "teams": q.teams, "first": int(q.first), "last": int(q.last), "seasons": r(q.seasons, 1),
                 "w": int(q.w), "l": int(q.l), "pct": r(q.win_pct, 3), "impact": r(q.impact), "se": r(q.impact_se), "added": r(q.wins_added, 1),
-                "above": r(q.wins_above_500, 1), "pw": int(q.playoff_wins), "pl": int(q.pl), "titles": int(q.titles), "tadj": r(q.titles_adj)}
+                "above": r(q.wins_above_500, 1), "pw": int(q.playoff_wins), "pl": int(q.pl), "titles": int(q.titles), "tadj": r(q.titles_adj),
+                "growth": r(q.growth), "gn": int(q.growth_players) if q.growth_players == q.growth_players else 0,
+                "texp": r(q.titles_expected), "tabove": r(q.titles_above)}
                for q in cl_.itertuples()]
     # synergy (synergy.py): duos and trios
     sp = pd.read_csv(OUT / "synergy_pairs.csv")
