@@ -134,10 +134,19 @@ def main():
     # all-era coach legacy (coach_legacy.py)
     cl_ = pd.read_csv(OUT / "coach_legacy.csv")
     cl_ = cl_[cl_.seasons >= 3]
+    cga = pd.read_csv(OUT / "coach_growth_adjusted.csv", index_col=0)
+    cl_ = cl_.assign(growth=cl_.coach_id.map(cga.growth_net_of_teammates), growth_raw=cl_.coach_id.map(cga.growth_alone))
+    cvs = json.load(open(OUT / "coach_vs_star.json"))
+    tl = pd.read_csv(OUT / "teammate_lift.csv")
+    tl = tl[tl.career_poss >= 50000]
+    cvs_site = {"experiments": cvs["experiments"], "reliability": cvs["reliability"], "fit_gain_pct": cvs["fit_gain_pct"],
+                "lift_top": [[q.player, r(q.lift)] for q in tl.head(12).itertuples()],
+                "lift_stars": [[q.player, r(q.lift)] for q in tl[tl.player.isin(["Steve Nash", "Nikola Jokić", "Stephen Curry", "Shaquille O'Neal", "Kobe Bryant", "Chris Paul", "Magic Johnson", "Tim Duncan", "Michael Jordan", "LeBron James", "Larry Bird", "Kevin Durant"])].itertuples()]}
     clegacy = [{"id": q.coach_id, "name": q.coach, "teams": q.teams, "first": int(q.first), "last": int(q.last), "seasons": r(q.seasons, 1),
                 "w": int(q.w), "l": int(q.l), "pct": r(q.win_pct, 3), "impact": r(q.impact), "se": r(q.impact_se), "added": r(q.wins_added, 1),
                 "above": r(q.wins_above_500, 1), "pw": int(q.playoff_wins), "pl": int(q.pl), "titles": int(q.titles), "tadj": r(q.titles_adj),
-                "growth": r(q.growth), "gn": int(q.growth_players) if q.growth_players == q.growth_players else 0,
+                "growth": r(q.growth) if q.growth == q.growth else None, "growth_raw": r(q.growth_raw) if q.growth_raw == q.growth_raw else None,
+                "gn": int(q.growth_players) if q.growth_players == q.growth_players else 0,
                 "texp": r(q.titles_expected), "tabove": r(q.titles_above)}
                for q in cl_.itertuples()]
     # synergy (synergy.py): duos and trios
@@ -209,7 +218,7 @@ def main():
              "board": [[q.player_id, q.player, q.team, int(q.age), q.pos, r(q.rating, 1), r(q.norm_now, 1), r(q.gap, 1),
                         r(q.expected_next, 1)] for q in sb.itertuples()]}
     data = {"study": study, "value": {"r_wins": r(vmeta["r_salary_vs_wins"]), "r_ppg": r(vmeta["r_salary_vs_ppg"]),
-                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn, "cmp": json.load(open(OUT / "compare_metrics.json")), "clegacy": clegacy, "cl_meta": json.load(open(OUT / "coach_legacy_meta.json")),
+                      "price": {k: r(v / 1e6, 1) for k, v in vmeta["price_per_win_by_season"].items()}}, "aging": aging, "schemes": schemes, "meta": meta, "players": players, "recent": recent, "progression": prog, "scenarios": scen, "classic": classic_rows, "coaches": coach_rows, "pairs": pairs, "syn": syn, "cmp": json.load(open(OUT / "compare_metrics.json")), "clegacy": clegacy, "cvs": cvs_site, "cl_meta": json.load(open(OUT / "coach_legacy_meta.json")),
             "validation": {
                 "classic": val.get("classic_meta", {}).get("validation"),
                 "clutch_split_half": val.get("playoffs_meta", {}).get("all_clutch", {}).get("split_half"),

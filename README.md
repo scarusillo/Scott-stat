@@ -963,6 +963,19 @@ titles beyond the odds 0.5; raw wins and raw titles are optional dials (default 
 Default: Jackson, Kerr, Sloan, Fitzsimmons, Spoelstra, Riley, Daigneault, Daly, Popovich, Ramsay. Best without a title:
 Sloan, Fitzsimmons, D'Antoni. Player growth alone: Kerr, Daigneault, Sloan, D'Antoni, Doug Moe.
 
+## Coach or star? (`src/coach_vs_star.py`)
+
+One model: each player-season's age-adjusted box production = player fixed effect + his coach + every teammate (weighted by
+the teammate's share of possessions / 5, "teammate lift"), ridge, penalties by 5-fold CV on held-out player-seasons.
+Teammate terms improve held-out fit 4.9%. Reliability odd/even seasons: coach growth net of teammates
+r 0.72 (coaches 8+ seasons; the earlier away-baseline growth was 0.47), teammate lift
+r 0.54 (players 30,000+ possessions). The coach page now uses growth net of teammates.
+Natural experiments (players' production there vs elsewhere, per 100): Kerr, Curry healthy +0.54 (SE 0.17); Kerr, Curry out (2019-20) +0.41 (SE 0.25); Mark Jackson with Curry (2012-14) -0.47 (SE 0.18); Phil Jackson with Jordan +0.06 (SE 0.13); Phil Jackson, Bulls without Jordan (1994-95) -0.04 (SE 0.28); Phil Jackson, Lakers +0.36 (SE 0.12); Jordan's teammates under other coaches -0.18 (SE 0.19).
+Most stars LOWER teammates' own production (they take the shots): LeBron -1.3, Jordan -1.1, Duncan -0.9, Magic -0.8;
+Curry about neutral (-0.2); Nash +1.7 and Jokic +0.7 raise it. So Kerr's growth is Kerr (survives the adjustment, holds with
+Curry out, absent for Curry under Mark Jackson); Phil Jackson's growth comes from the Lakers years, and his case rests on
+team impact. New default top 10: Jackson, Kerr, Spoelstra, Fitzsimmons, Popovich, Sloan, Riley, D'Antoni, Thibodeau, Doc Rivers.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.

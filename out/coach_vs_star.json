@@ -1,0 +1,147 @@
+{
+ "reliability": {
+  "coach_growth_net": 0.7182678514195925,
+  "teammate_lift": 0.5405954632189647
+ },
+ "cv": {
+  "coach_only_lc0.5": 67664478.15387847,
+  "lc0.5_lt0.5": 64378962.91574374,
+  "lc0.5_lt2": 65513328.982625484,
+  "lc0.5_lt8": 66718281.199408785,
+  "coach_only_lc2": 67890865.77821377,
+  "lc2_lt0.5": 64513620.98077248,
+  "lc2_lt2": 65714088.71941139,
+  "lc2_lt8": 66937695.67598378,
+  "coach_only_lc8": 67827901.12866676,
+  "lc8_lt0.5": 64335684.40572323,
+  "lc8_lt2": 65582947.14690803,
+  "lc8_lt8": 66843373.936005846
+ },
+ "best": "lc8_lt0.5",
+ "coach_only_lambda": 0.5,
+ "teammates_improve_fit": true,
+ "fit_gain_pct": 4.919558738907429,
+ "experiments": {
+  "kerr_with_curry": {
+   "label": "Kerr, Curry healthy",
+   "growth": 0.5354242589758965,
+   "se": 0.16747099866114595,
+   "players": 50,
+   "poss": 301595.179
+  },
+  "kerr_without_curry": {
+   "label": "Kerr, Curry out (2019-20)",
+   "growth": 0.4105050076237782,
+   "se": 0.2451869168997173,
+   "players": 14,
+   "poss": 30872.943
+  },
+  "curry_under_mark_jackson": {
+   "label": "Mark Jackson with Curry (2012-14)",
+   "growth": -0.46666377032899403,
+   "se": 0.17907713030430378,
+   "players": 15,
+   "poss": 62913.85800000001
+  },
+  "phil_with_jordan": {
+   "label": "Phil Jackson with Jordan",
+   "growth": 0.055905590179297054,
+   "se": 0.13386299608229596,
+   "players": 31,
+   "poss": 222042.16600000003
+  },
+  "phil_bulls_without_jordan": {
+   "label": "Phil Jackson, Bulls without Jordan (1994-95)",
+   "growth": -0.03609552640385478,
+   "se": 0.2787879729474687,
+   "players": 19,
+   "poss": 74067.25600000001
+  },
+  "phil_lakers": {
+   "label": "Phil Jackson, Lakers",
+   "growth": 0.3551751089130386,
+   "se": 0.12436164603764838,
+   "players": 48,
+   "poss": 406651.691
+  },
+  "jordan_under_others": {
+   "label": "Jordan's teammates under other coaches",
+   "growth": -0.18158377118721628,
+   "se": 0.1866678937071736,
+   "players": 48,
+   "poss": 199488.837
+  }
+ },
+ "coaches": {
+  "kerr-steve": {
+   "coach": "Steve Kerr",
+   "growth_alone": 0.694,
+   "growth_net_of_teammates": 0.488,
+   "seasons": 12,
+   "star_share": 0.296
+  },
+  "jackson-phil": {
+   "coach": "Phil Jackson",
+   "growth_alone": 0.177,
+   "growth_net_of_teammates": 0.234,
+   "seasons": 20,
+   "star_share": -0.322
+  },
+  "sloan-jerry": {
+   "coach": "Jerry Sloan",
+   "growth_alone": 0.041,
+   "growth_net_of_teammates": 0.21,
+   "seasons": 26,
+   "star_share": NaN
+  },
+  "popovich-gregg": {
+   "coach": "Gregg Popovich",
+   "growth_alone": 0.204,
+   "growth_net_of_teammates": 0.172,
+   "seasons": 29,
+   "star_share": 0.16
+  },
+  "spoelstra-erik": {
+   "coach": "Erik Spoelstra",
+   "growth_alone": 0.423,
+   "growth_net_of_teammates": 0.354,
+   "seasons": 18,
+   "star_share": 0.164
+  },
+  "daigneault-mark": {
+   "coach": "Mark Daigneault",
+   "growth_alone": 0.812,
+   "growth_net_of_teammates": 0.387,
+   "seasons": 6,
+   "star_share": 0.524
+  },
+  "fitzsimmons-cotton": {
+   "coach": "Cotton Fitzsimmons",
+   "growth_alone": 0.157,
+   "growth_net_of_teammates": 0.149,
+   "seasons": 20,
+   "star_share": 0.047
+  },
+  "antoni-d-mike": {
+   "coach": "Mike D'Antoni",
+   "growth_alone": 0.629,
+   "growth_net_of_teammates": 0.461,
+   "seasons": 16,
+   "star_share": 0.267
+  },
+  "moe-doug": {
+   "coach": "Doug Moe",
+   "growth_alone": 0.217,
+   "growth_net_of_teammates": -0.006,
+   "seasons": 15,
+   "star_share": 1.026
+  },
+  "riley-pat": {
+   "coach": "Pat Riley",
+   "growth_alone": -0.369,
+   "growth_net_of_teammates": -0.182,
+   "seasons": 24,
+   "star_share": 0.506
+  }
+ }
+}
