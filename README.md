@@ -1013,6 +1013,11 @@ from the all-time ranking (Derrick Rose, Bill Walton and 84 others with 6+ seaso
 season: per-100 windows weight by possessions, and wins windows count a short season's few wins and a missed
 season as 0.
 
+**NBA.com play types and matchups (`src/fetch_nba_playtypes.py`):** stats.nba.com refuses cloud IPs, so run
+the fetcher from a home connection. It pulls offensive and defensive play types (2015-16 on) and defensive
+matchups (2017-18 on) into `data/nba_stats/`. NBA.com does not publish man vs zone; defensive play types
+(guarding isolation, pick-and-roll, post-ups, spot-ups) are the closest public proxy.
+
 ## Known limits
 
 - Play-by-play starts 1996-97: most of Jordan's career is box-score only.
